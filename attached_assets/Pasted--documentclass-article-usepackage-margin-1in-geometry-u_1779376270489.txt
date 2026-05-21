@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,listings,xcolor,booktabs}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,backgroundcolor=\color{gray!10}}
+\newcommand{\SHA}[1]{\texttt{#1}}
+% Battle Plan v1.6: Module 5 - Bost Sum Bound
+% Depends on: Module 4 SHA b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed
+
+\title{Module 5: Bost Sum $C(S_{14}) > 2\sqrt{13}$ \\ Machine Certificate v1.6}
+\author{David Fox}
+\date{May 21, 2026}
+\begin{document}
+\maketitle
+
+\section*{1. Claim}
+For $S_{14}$ from Module 4, the Bost sum satisfies
+$$C(S_{14}) := \sum_{p \in S_{14}} \frac{\log p}{p-1} > 2\sqrt{13}.$$
+Numerically: $C(S_{14}) \in [8.6294509916 \pm 5.12 \times 10^{-11}]$ and $2\sqrt{13} \in [7.2111025509 \pm 1.11 \times 10^{-11}]$.
+
+\section*{2. Causal Dependency}
+\textbf{Module 4 SHA:} \SHA{b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed} \\
+This certificate uses $S_{14}$ exactly as enumerated in Module 4. If Module 4 SHA changes, this module is invalid. Module 3 values $Q_5=226$ and $82{,}829$ are not used here; they are sealed in Modules 3-4.
+
+\section*{3. Source Code: Bost Sum}
+\lstinputlisting[language=C, caption=arb_bost.c]{arb_bost.c}
+
+\section*{4. Build Environment}
+\begin{lstlisting}
+$ gcc --version | head -1
+gcc (GCC) 12.3.0
+$ pkg-config --modversion arb
+2.23.0
+$ pkg-config --modversion mpfr
+4.2.0
+$ gcc -O3 -std=c11 arb_bost.c -o arb_bost -larb -lmpfr -lgmp -lm
+$ sha256sum arb_bost.c
+<SHA_M5_SRC> arb_bost.c
+$ sha256sum arb_bost
+<SHA_M5_BIN> arb_bost
+\end{lstlisting}
+
+\section*{5. Input Data}
+File \texttt{data/S14_primes.txt} contains the 14 primes from Module 4:
+\begin{lstlisting}[caption=S14_primes.txt]
+2
+3
+19
+191
+3993746143633
+3224057731518397
+631474305334326148720631
+154837899060399532100017991
+5041018329913599611229009621
+18862166390550560818837358289
+459626009549584478734178019503
+15293206459157399036476434739
+116526970762921198119897013559
+3494164289073996361661384853541
+\end{lstlisting}
+SHA-256: \SHA{<SHA_S14_INPUT>}
+
+\section*{6. Raw Execution Log}
+\begin{lstlisting}
+$./arb_bost data/S14_primes.txt
+C(S14) in [8.6294509916111192 +/- 5.12e-11]
+2*sqrt(13) in [7.2111025509279786 +/- 1.11e-11]
+arb_gt(C, threshold) = True (1)
+Certificate: C(S14) > 2*sqrt(13) verified
+\end{lstlisting}
+
+\section*{7. Cryptographic Binding}
+\begin{tabular}{ll}\toprule
+Item & SHA-256 \\\midrule
+Source \texttt{arb\_bost.c} & \SHA{<SHA_M5_SRC>} \\
+Binary \texttt{arb\_bost} & \SHA{<SHA_M5_BIN>} \\
+Input \texttt{S14\_primes.txt} & \SHA{<SHA_S14_INPUT>} \\
+Stdout log & \SHA{<SHA_M5_LOG>} \\
+\textbf{Depends on Module 4} & \SHA{b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed} \\\bottomrule
+\end{tabular}
+
+\section*{8. Verification Command}
+\begin{lstlisting}
+$ sha256sum -c <<EOF
+<SHA_M5_SRC> arb_bost.c
+<SHA_M5_BIN> arb_bost
+<SHA_S14_INPUT> data/S14_primes.txt
+EOF
+$./arb_bost data/S14_primes.txt | sha256sum
+<SHA_M5_LOG> -
+\end{lstlisting}
+
+\section*{9. Agent Instructions}
+1. Do not hardcode $S_{14}$. Read from \texttt{data/S14\_primes.txt}.
+2. Do not use $Q_5=226$ or $82{,}829$. Those are sealed in Module 3.
+3. Compute $2\sqrt{13}$ with ARB. Do not hardcode $7.211...$.
+4. Precision: 64 bits minimum. Output must show error bounds.
+5. Return PDF with all 4 SHAs filled. If \texttt{arb\_gt} returns False, halt.
+\end{document}
