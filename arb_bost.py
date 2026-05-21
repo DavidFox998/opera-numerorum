@@ -1,39 +1,38 @@
 #!/usr/bin/env python3
 """
-Module 5: Bost Sum C(S14) vs 2*sqrt(13)
-Battle Plan v1.6 -- mpmath replacement for ARB (ARB not available)
+Module 5 - Bost Sum C(S14) > 2*sqrt(13)
+Battle Plan v1.6 -- mpmath fallback for ARB (ARB not available in environment)
+Reads Module 4 stdout format: comma-separated single line.
 Parent: Module 4 SHA b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed
 """
 import sys
 import os
 from mpmath import mp, log, sqrt, mpf, nstr, fabs
 
-mp.dps = 64  # >= 64 bits as specified; 64 decimal places ~ 212 binary bits
+mp.dps = 64  # 64 decimal places ~ 212 binary bits (exceeds 64-bit ARB PREC)
 
 def load_primes(path):
-    primes = []
+    """Read comma-separated or newline-separated primes from Module 4 stdout."""
     with open(path) as f:
-        for line in f:
-            line = line.strip()
-            if line:
-                primes.append(int(line))
-    return primes
+        content = f.read().strip()
+    if ',' in content:
+        return [int(s.strip()) for s in content.split(',') if s.strip()]
+    return [int(s.strip()) for s in content.splitlines() if s.strip()]
 
-def format_interval(center, radius):
-    c = float(center)
-    r = float(radius)
-    exp = 0
-    rv = r
-    if rv > 0:
-        import math
-        exp = int(math.floor(math.log10(rv)))
-        mantissa = rv / (10 ** exp)
-        return f"[{c:.16f} +/- {mantissa:.2f}e{exp:+d}]"
-    return f"[{c:.16f} +/- 0]"
+def fmt_interval(center, radius):
+    """Format as ARB-style interval string."""
+    import math
+    c_f = float(center)
+    r_f = float(radius)
+    if r_f <= 0:
+        return f"[{c_f:.16f} +/- 0]"
+    exp = int(math.floor(math.log10(r_f)))
+    mant = r_f / (10 ** exp)
+    return f"[{c_f:.16f} +/- {mant:.2f}e{exp:+03d}]"
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python3 arb_bost.py data/S14_primes.txt", file=sys.stderr)
+        print(f"Usage: {sys.argv[0]} S14_primes.txt", file=sys.stderr)
         sys.exit(1)
 
     path = sys.argv[1]
@@ -42,45 +41,46 @@ def main():
         sys.exit(1)
 
     primes = load_primes(path)
-    n = len(primes)
+    if len(primes) != 14:
+        print(f"ERROR: expected 14 primes, got {len(primes)}", file=sys.stderr)
+        sys.exit(1)
 
     # Compute C(S14) = sum_{p in S14} log(p) / (p - 1)
-    # Using mpmath at 64 dps for rigorous computation.
-    # Error bound: half-ULP at 64 dps for each of n terms, summed.
-    # Half-ULP at 64 dps ~ 5e-64; for 14 terms ~ 7e-63 (well below 1e-10).
-    # We report a conservative radius of 1e-10 to be explicit.
-    C_sum = mpf(0)
+    # mpmath at 64 dps handles arbitrarily large integers exactly.
+    # Floating-point error per term < 2^-210; for 14 terms < 2^-206 < 1e-62.
+    C = mpf(0)
     for p in primes:
         mp_p = mpf(p)
-        C_sum += log(mp_p) / (mp_p - 1)
+        C += log(mp_p) / (mp_p - 1)
 
-    # Conservative error radius: 14 terms * half-ULP at working precision
-    # half-ULP ~ 10^{-64}; round up to a safe published bound
-    C_center = C_sum
-    C_radius = mpf("1e-12") * fabs(C_sum)  # relative 1e-12 as conservative bound
+    # Conservative published error bound: relative 1e-12 (>> actual rounding error)
+    C_radius = mpf("1.43e-12") * fabs(C)
 
-    # Compute 2*sqrt(13) with same precision
+    # 2*sqrt(13) with same precision
     threshold = 2 * sqrt(mpf(13))
-    T_radius = mpf("1e-12") * threshold
+    T_radius  = mpf("1.11e-12") * threshold
 
-    # Rigorous comparison: lower bound of C vs upper bound of threshold
-    C_lower  = C_center - C_radius
-    T_upper  = threshold + T_radius
-    verified = bool(C_lower > T_upper)
+    # Rigorous interval comparison
+    C_lower = C - C_radius
+    T_upper = threshold + T_radius
+    gt = 1 if C_lower > T_upper else 0
 
-    print(f"C(S14) in {format_interval(C_center, C_radius)}")
-    print(f"2*sqrt(13) in {format_interval(threshold, T_radius)}")
-    print(f"arb_gt(C, threshold) = {verified} ({1 if verified else 0})")
-    if verified:
-        print("Certificate: C(S14) > 2*sqrt(13) verified")
-    else:
-        print(f"FORMULA AUDIT: C(S14) = {nstr(C_center, 20)}")
-        print(f"  Expected ~ 8.6294509916111192 (from LaTeX)")
-        print(f"  Computed ~ {float(C_center):.16f} (literal sum log(p)/(p-1))")
-        print(f"  Discrepancy: the LaTeX formula sum log(p)/(p-1) does NOT")
-        print(f"  produce 8.6294... with these 14 primes.")
-        print(f"  Supervisor clarification required before certification.")
+    print(f"C(S14) in {fmt_interval(C, C_radius)}")
+    print(f"2*sqrt(13) in {fmt_interval(threshold, T_radius)}")
+    print(f"arb_gt(C, threshold) = {gt}")
+
+    if not gt:
+        # Detailed forensic output to stderr so stdout remains clean for SHA
+        print(f"FORMULA AUDIT: C(S14) = {nstr(C, 20)}", file=sys.stderr)
+        print(f"  Expected  ~ 8.6294509916111192 (LaTeX blueprint)", file=sys.stderr)
+        print(f"  Computed  ~ {nstr(C, 16)} (literal sum log(p)/(p-1))", file=sys.stderr)
+        print(f"  Max possible sum over any 14 distinct primes ~ 3.414", file=sys.stderr)
+        print(f"  (using 14 smallest primes 2,3,5,7,11,13,17,19,23,29,31,37,41,43)", file=sys.stderr)
+        print(f"  Mathematical impossibility: formula cannot produce 8.6294...", file=sys.stderr)
+        print(f"  Supervisor clarification required.", file=sys.stderr)
         sys.exit(2)
+
+    print("Certificate: C(S14) > 2*sqrt(13) verified")
 
 if __name__ == "__main__":
     main()
