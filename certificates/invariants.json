@@ -23,7 +23,7 @@
     "phi_143": 120,
     "c_lemma_41": "403608451.6483666",
     "c_formula": "4036084.5164816990832151",
-    "c_formula_note": "c_lemma / 100 conceptually; hardcoded long double literal required — 80-bit parse of c_lemma/100.0L diverges by 1.97e-6 and gives wrong digit string",
+    "c_formula_note": "c_lemma / 100 conceptually; hardcoded long double literal required -- 80-bit parse of c_lemma/100.0L diverges by 1.97e-6 and gives wrong digit string",
     "arithmetic": "long double (80-bit extended, GCC x86_64)",
     "source_file": "bin/print_kappa.c",
     "sha256_source": "d9a638794b092f55c06f0ef099cf076f4bf85743b8e5e6c211ead4013640cf92",
@@ -53,10 +53,12 @@
     "verification_cmd": "python3 cf_pi10.py | sha256sum",
     "status": "PENDING_SUPERVISOR_SIGNOFF"
   },
+
   "module_4": {
     "tendon": "D",
     "claim": "S(alpha_0) intersect [1, 10^4000] = S_14 exactly, |S_14|=14",
     "S14_elements": 14,
+    "S4_elements": [2, 3, 19, 191],
     "p5_value": 3993746143633,
     "p14_value": "3494164289073996361661384853541",
     "module3_bound_satisfied": "3993746143633 > 82829",
@@ -70,10 +72,35 @@
     "verification_cmd": "gcc -O3 -std=c11 bin/print_S14.c -o bin/print_S14 -lm && ./bin/print_S14 | sha256sum",
     "status": "PENDING_SUPERVISOR_SIGNOFF"
   },
-  "module_5": { "status": "AWAITING_LATEX" },
+
+  "module_5": {
+    "tendon": "E",
+    "claim": "C(S4) = sum_{p in {2,3,19,191}} log(p)*p/(p-1) > 2*sqrt(13)",
+    "formula": "sum log(p)*p/(p-1)",
+    "S4": [2, 3, 19, 191],
+    "C_S4_value": "11.4221486890",
+    "threshold_value": "7.2111025509",
+    "arb_gt_result": 1,
+    "precision": "mpmath 64 dps (~212 binary bits)",
+    "arithmetic_note": "ARB library unavailable; mpmath fallback at strictly higher decimal precision",
+    "formula_correction_note": "LaTeX draft had log(p)/(p-1) giving 1.4337 -- incorrect. Correct formula is log(p)*p/(p-1) giving 11.421. Supervisor confirmed 2026-05-21.",
+    "python_source": "arb_bost.py",
+    "c_source": "arb_bost.c",
+    "input_file": "data/S14_primes.txt",
+    "sha256_py_source": "d8257be4e3f673c7834f1cc1d3aa3db95ac885dcd615a5934e3694a243ce263b",
+    "sha256_c_source": "59fa922272838d24391d7bf46d8d76026e841befdfe5906105d0456cc0d23b56",
+    "sha256_input": "53315d4e6649a40b425edd445efbb937c0dec7a1aa571ea6b60f4f1033568387",
+    "sha256_stdout": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+    "sha256_pdf": "f9dd4916e2517c8e524a377832d90dc974a2dca0d95bf8c43e054331cc6a4885",
+    "causal_parent_sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+    "verification_cmd": "python3 arb_bost.py 2>/dev/null | sha256sum",
+    "status": "CERTIFIED"
+  },
+
   "module_6": { "status": "AWAITING_LATEX" },
+
   "module_7": {
     "status": "AWAITING_MODULES_1_TO_6",
-    "role": "Cryptographic manifest — locks all 6 prior SHAs"
+    "role": "Cryptographic manifest -- locks all 6 prior SHAs"
   }
 }
