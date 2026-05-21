@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "TH6j7YjA_IsBpgJ_BJ6ZX"
+uri = "file://certificates/Tendon_A_Certificate.pdf"
+type = "pdf"
+title = "Tendon A — Machine Certificate v1.6"
