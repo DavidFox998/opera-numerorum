@@ -24,3 +24,9 @@ id = "phvSHLpnCHOsAgKDCjxSk"
 uri = "file://certificates/Module_4_Certificate.pdf"
 type = "pdf"
 title = "Module 4 — S_14 Complete to 10^4000 — v1.6"
+
+[[outputs]]
+id = "hh_4Rss0GWLMUzRGvEMca"
+uri = "file://certificates/Module_5_Certificate.pdf"
+type = "pdf"
+title = "Module 5 Certificate — Bost Sum C(S4) > 2√13 (CERTIFIED)"
