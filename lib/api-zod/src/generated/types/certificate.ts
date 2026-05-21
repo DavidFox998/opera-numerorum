@@ -5,29 +5,9 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
-
-export interface VerificationEntry {
-  p: string;
-  norm: string;
-  threshold: string;
-  member: boolean;
-}
-
-export interface S4Check {
-  expected: string[];
-  found: string[];
-  pass: boolean;
-}
-
-export interface GrhCheck {
-  threshold: string;
-  C_S4: string;
-  C_exceeds_threshold: boolean;
-  conclusion: string;
-}
+import type { GrhCheck } from './grhCheck';
+import type { S4Check } from './s4Check';
+import type { VerificationEntry } from './verificationEntry';
 
 export interface Certificate {
   status: string;
@@ -45,12 +25,3 @@ export interface Certificate {
   verification_table_500: VerificationEntry[];
   runtime_ms: number;
 }
-
-export interface RunResult {
-  success: boolean;
-  certificate?: Certificate;
-  /** @nullable */
-  error?: string | null;
-  runtime_ms: number;
-}
-

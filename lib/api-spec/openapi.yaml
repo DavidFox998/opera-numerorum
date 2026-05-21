@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: verify
+    description: Machine verification endpoints
 paths:
   /healthz:
     get:
@@ -24,6 +26,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /verify/certificate:
+    get:
+      operationId: getCertificate
+      tags: [verify]
+      summary: Get static verification certificate
+      description: Returns the precomputed machine verification certificate for S(pi/10)
+      responses:
+        "200":
+          description: Certificate data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Certificate"
+
+  /verify/run:
+    post:
+      operationId: runVerification
+      tags: [verify]
+      summary: Run live Python verification
+      description: Executes the bost_connes_verify.py script at 4500-digit precision and returns the certificate
+      responses:
+        "200":
+          description: Live verification result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RunResult"
+        "500":
+          description: Script execution failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RunResult"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +71,109 @@ components:
       required:
         - status
 
+    VerificationEntry:
+      type: object
+      required: [p, norm, threshold, member]
+      properties:
+        p:
+          type: string
+        norm:
+          type: string
+        threshold:
+          type: string
+        member:
+          type: boolean
+
+    S4Check:
+      type: object
+      required: [expected, found, pass]
+      properties:
+        expected:
+          type: array
+          items:
+            type: string
+        found:
+          type: array
+          items:
+            type: string
+        pass:
+          type: boolean
+
+    GrhCheck:
+      type: object
+      required: [threshold, C_S4, C_exceeds_threshold, conclusion]
+      properties:
+        threshold:
+          type: string
+        C_S4:
+          type: string
+        C_exceeds_threshold:
+          type: boolean
+        conclusion:
+          type: string
+
+    Certificate:
+      type: object
+      required:
+        - status
+        - timestamp
+        - precision_digits
+        - s4_check
+        - bost_connes_S4
+        - grh_level_10
+        - large_primes
+        - large_primes_pass
+        - exceptional_set
+        - sha256
+        - expected_sha256
+        - sha256_match
+        - verification_table_500
+        - runtime_ms
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+        precision_digits:
+          type: integer
+        s4_check:
+          $ref: "#/components/schemas/S4Check"
+        bost_connes_S4:
+          type: string
+        grh_level_10:
+          $ref: "#/components/schemas/GrhCheck"
+        large_primes:
+          type: array
+          items:
+            $ref: "#/components/schemas/VerificationEntry"
+        large_primes_pass:
+          type: boolean
+        exceptional_set:
+          type: array
+          items:
+            type: string
+        sha256:
+          type: string
+        expected_sha256:
+          type: string
+        sha256_match:
+          type: boolean
+        verification_table_500:
+          type: array
+          items:
+            $ref: "#/components/schemas/VerificationEntry"
+        runtime_ms:
+          type: integer
+
+    RunResult:
+      type: object
+      required: [success, runtime_ms]
+      properties:
+        success:
+          type: boolean
+        certificate:
+          $ref: "#/components/schemas/Certificate"
+        error:
+          type: ["string", "null"]
+        runtime_ms:
+          type: integer
