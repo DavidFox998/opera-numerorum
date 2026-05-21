@@ -16,7 +16,7 @@ import textwrap
 
 SHA_SRC  = "8175b0e904084156c249ccc185420aa98db982976320247a54f082442b6d1d49"
 SHA_OUT  = "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
-SHA_JSON = "c8e789463c71e4d8bbc15571a00a0d9c909f7d21ccc60427698df170dbfb2a94"
+SHA_JSON = "abe8cf160531964ff90371794c25fa8ecbc3330ceb434ca3d69cc6597f1cc235"
 
 # ── Styles ────────────────────────────────────────────────────────────────────
 base = getSampleStyleSheet()
@@ -93,7 +93,8 @@ story.append(Spacer(1, 6))
 story.append(section("1", "Claim"))
 story.append(Paragraph(
     "The transcendental α₀ used in S₁₄ is defined as <b>299 + π/10</b> "
-    "computed to <b>5000 decimal digits</b> via mpmath interval arithmetic.",
+    "computed to <b>5000 decimal digits</b> via mpmath arbitrary-precision "
+    "floating-point arithmetic (mp.dps = 5000).",
     body_style
 ))
 
@@ -113,7 +114,7 @@ story.append(code_block(
     "$ python3 --version\n"
     "Python 3.11.14\n\n"
     "$ pip show mpmath | grep Version\n"
-    "Version: 1.4.1\n\n"
+    "Version: 1.3.0\n\n"
     f"$ sha256sum alpha0.py\n"
     f"{SHA_SRC}  alpha0.py"
 ))

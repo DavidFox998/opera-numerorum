@@ -4,12 +4,12 @@
   "alpha0_definition": "299 + pi/10",
   "precision_dps": 5000,
   "python_version": "3.10.12",
-  "mpmath_version": "1.4.1",
+  "mpmath_version": "1.3.0",
   "source_file": "alpha0.py",
   "sha256_source": "8175b0e904084156c249ccc185420aa98db982976320247a54f082442b6d1d49",
   "sha256_stdout": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
   "timestamp_utc": "2026-05-21T00:00:00Z",
   "certificate_version": "v1.6",
   "author": "David Fox",
-  "sha256_invariants": "c8e789463c71e4d8bbc15571a00a0d9c909f7d21ccc60427698df170dbfb2a94"
+  "sha256_invariants": "abe8cf160531964ff90371794c25fa8ecbc3330ceb434ca3d69cc6597f1cc235"
 }
