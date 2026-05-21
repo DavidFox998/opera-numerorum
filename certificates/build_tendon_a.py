@@ -81,11 +81,11 @@ story = []
 
 # Title block
 story.append(Paragraph(
-    "Tendon A: α₀ = 299 + π/10 Definition",
+    "Module 1: Transcendental Constant Definition",
     title_style
 ))
-story.append(Paragraph("Machine Certificate v1.6", subtitle_style))
-story.append(Paragraph("David Fox  ·  May 21, 2026", subtitle_style))
+story.append(Paragraph("Certifies: α₀ = 299 + π/10 to 5000 decimal digits", subtitle_style))
+story.append(Paragraph("Machine Certificate v1.6  ·  David Fox  ·  May 21, 2026", subtitle_style))
 story.append(hr())
 story.append(Spacer(1, 6))
 
