@@ -1,0 +1,4 @@
+C(S4) in [11.4221486890 +/- 1.00e-10]
+2*sqrt(13) in [7.2111025509 +/- 1.00e-10]
+arb_gt(C, threshold) = 1
+Certificate: C(S4) > 2*sqrt(13) verified

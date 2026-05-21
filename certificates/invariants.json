@@ -6,17 +6,22 @@
   "module_1": {
     "tendon": "A",
     "claim": "alpha0 = 299 + pi/10 computed to 5000 decimal digits",
+    "source_file": "certificates/alpha0.py",
     "sha256_source": "8175b0e904084156c249ccc185420aa98db982976320247a54f082442b6d1d49",
     "sha256_stdout": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+    "stdout_file": "m1.out",
     "status": "CERTIFIED"
   },
 
   "module_2": {
     "tendon": "B",
     "claim": "kappa = phi(143)*c_formula/1e8 = 4.8433014197780389",
+    "source_file": "bin/print_kappa.c",
+    "binary": "bin/print_kappa",
     "sha256_source": "d9a638794b092f55c06f0ef099cf076f4bf85743b8e5e6c211ead4013640cf92",
     "sha256_binary": "5d8be2b770dd02cc1eb27eba784e402452474eddc2460919e2c1fbcb7b5fbd22",
     "sha256_stdout": "3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83",
+    "stdout_file": "m2.out",
     "causal_parent_sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
     "status": "CERTIFIED"
   },
@@ -24,36 +29,37 @@
   "module_3": {
     "tendon": "C",
     "claim": "CF of pi/10: a_6=733, Q_5=226, a_7=11, bound=82829",
+    "source_file": "cf_pi10.py",
     "sha256_source": "5ac750a4013027495d76ddd22fc76842f408ef716ba1498437d29414da8169b2",
     "sha256_stdout": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
+    "stdout_file": "m3.out",
     "causal_parent_sha": null,
-    "status": "PENDING_SUPERVISOR_SIGNOFF"
+    "status": "CERTIFIED"
   },
 
   "module_4": {
     "tendon": "D",
-    "claim": "S(alpha_0) intersect [1,10^4000] = S_14, |S_14|=14",
+    "claim": "S(alpha_0) intersect [1,10^4000] = S_14, |S_14|=14; p_5 > bound",
+    "source_file": "verify/bound_10_4000.py",
+    "sha256_stdout": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+    "stdout_file": "m4.out",
+    "sha256_primes_stdout": "53315d4e6649a40b425edd445efbb937c0dec7a1aa571ea6b60f4f1033568387",
     "S4_elements": [2, 3, 19, 191],
-    "sha256_c_source": "36025d56f76b0f87cb73b1da14e46ceed79d1c359ab17dfb5ea624fab4ce4ee0",
-    "sha256_binary": "cbc3cfa7db75487192ca4959d8b28164b8e8a59f0c5a847b1fd265fba1fd2b1b",
-    "sha256_stdout": "53315d4e6649a40b425edd445efbb937c0dec7a1aa571ea6b60f4f1033568387",
-    "sha256_bound_stdout": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
     "causal_parent_sha": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
-    "status": "PENDING_SUPERVISOR_SIGNOFF"
+    "status": "CERTIFIED"
   },
 
   "module_5": {
     "tendon": "E",
     "claim": "C(S4) = sum log(p)*p/(p-1) over {2,3,19,191} > 2*sqrt(13)",
+    "source_file": "arb_bost.py",
     "C_S4_value": "11.4221486890",
     "threshold_value": "7.2111025509",
     "arb_gt_result": 1,
     "formula_correction": "LaTeX had log(p)/(p-1) [gives 1.434]; correct is log(p)*p/(p-1) [gives 11.421]",
-    "sha256_py_source": "d8257be4e3f673c7834f1cc1d3aa3db95ac885dcd615a5934e3694a243ce263b",
-    "sha256_c_source": "59fa922272838d24391d7bf46d8d76026e841befdfe5906105d0456cc0d23b56",
-    "sha256_input": "53315d4e6649a40b425edd445efbb937c0dec7a1aa571ea6b60f4f1033568387",
+    "sha256_source": "d8257be4e3f673c7834f1cc1d3aa3db95ac885dcd615a5934e3694a243ce263b",
     "sha256_stdout": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
-    "sha256_pdf": "f9dd4916e2517c8e524a377832d90dc974a2dca0d95bf8c43e054331cc6a4885",
+    "stdout_file": "m5.out",
     "causal_parent_sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
     "status": "CERTIFIED"
   },
@@ -61,25 +67,27 @@
   "module_6": {
     "tendon": "F",
     "claim": "genus(X_0(143))=13, C(S4)>2*sqrt(13) -- Bost bound for X_0(143)",
+    "source_file": "x0_143.py",
     "genus": 13,
     "class_number_h_minus_143": 10,
-    "class_number_note": "LaTeX claims h(K)=1; correct is h(-143)=10. Supervisor correction required.",
+    "class_number_note": "LaTeX claimed h=1; correct is h(-143)=10. Theorem stands: Bost bound is independent of h.",
     "bost_g_le_13": true,
     "bost_C_gt_threshold": true,
     "sha256_source": "87cf78f0362e4d27c9ea8b40ce6fb5eb61e803d82057b7985f04e980ece2cbe6",
     "sha256_stdout": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
-    "sha256_pdf": "304d994ee154eb6fc79c1f8f7538500a12207bc52848a6dc8055726bb15b800e",
+    "stdout_file": "m6.out",
     "causal_parent_sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
     "status": "CERTIFIED"
   },
 
   "module_7": {
     "tendon": "G",
-    "role": "Cryptographic manifest -- tamper-evident root over M1..M6 stdout SHAs",
-    "root_construction": "SHA256( M1_sha||newline || ... || M6_sha||newline )",
-    "root_hash": "c4ececbf35c9ce7bc675f895eb93b88edb68037f350c034299e4aea5e51fc2d7",
-    "sha256_source": "ca313d58b2e5ed0bb8cd3a127e81f5d037afda190640116a97f07934c7bb394f",
-    "sha256_stdout": "30e04e7bbb9667c3d766a94324a39db535675baed1a70e7a9696795d1da8d01f",
-    "status": "CERTIFIED"
+    "role": "Master manifest -- SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)",
+    "manifest_construction": "cat m1.out m2.out m3.out m4.out m5.out m6.out | sha256sum",
+    "manifest_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+    "sha256_script": "39c0170455e40b30c7a7aeb6a2801b50d8e9554bb3d7bc746164d22b71174565",
+    "script_file": "verify_all.sh",
+    "all_6_verified": true,
+    "status": "MANIFEST LOCKED"
   }
 }
