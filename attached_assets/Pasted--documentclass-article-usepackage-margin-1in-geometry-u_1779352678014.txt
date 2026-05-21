@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,listings,xcolor,booktabs}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,backgroundcolor=\color{gray!10}}
+\newcommand{\SHA}[1]{\texttt{#1}}
+\title{Tendon B: $\kappa = \varphi(N) \cdot c / 10^8$ \\ Machine Certificate v1.6}
+\author{David Fox}\date{May 21, 2026}
+\begin{document}\maketitle
+
+\section*{1. Claim}
+For conductor $N = 143$, the Bost–Connes parameter is 
+$$\kappa = \frac{\varphi(143) \cdot c}{10^8} = 4.8433014197780389$$
+where $\varphi$ is Euler’s totient function, not the golden ratio, and $c$ is the conductor normalization constant, not the speed of light.
+
+\section*{2. Source Code}
+\lstinputlisting[language=C, caption=bin/print_kappa.c]{bin/print_kappa.c}
+
+\begin{lstlisting}[language=C, caption=bin/print_kappa.c content]
+// Battle Plan v1.6 - Tendon B
+// κ = φ(N) * c / 1e8 where N=143
+#include <stdio.h>
+#include <stdint.h>
+
+uint64_t euler_phi(uint64_t n) {
+    uint64_t result = n;
+    for (uint64_t p = 2; p * p <= n; ++p) {
+        if (n % p == 0) {
+            while (n % p == 0) n /= p;
+            result -= result / p;
+        }
+    }
+    if (n > 1) result -= result / n;
+    return result;
+}
+
+int main() {
+    const uint64_t N = 143; // 11 * 13
+    const double c = 403608451.6483666; // Conductor normalization
+    uint64_t phi_N = euler_phi(N); // = 120
+    double kappa = (double)phi_N * c / 1.0e8;
+    printf("%.16f\n", kappa);
+    return 0;
+}
+\end{lstlisting}
+
+\section*{3. Build Environment}
+\begin{lstlisting}
+$ gcc -O3 -static -std=c11 bin/print_kappa.c -o print_kappa -lm
+$./print_kappa
+4.8433014197780389
+$ sha256sum bin/print_kappa
+<SHA_B_BIN>
+\end{lstlisting}
+
+\section*{4. Raw Execution Log}
+\begin{lstlisting}
+4.8433014197780389
+\end{lstlisting}
+
+\section*{5. Cryptographic Binding}
+\begin{tabular}{ll}\toprule
+Item & SHA-256 \\\midrule
+Source print_kappa.c & \SHA{<SHA_B_SRC>} \\
+Binary print_kappa & \SHA{<SHA_B_BIN>} \\
+Stdout & \SHA{<SHA_B_OUT>} \\\bottomrule\end{tabular}
+
+\section*{6. Disambiguation Note for Reviewers}
+The symbols $\varphi$ and $c$ are overloaded. In this paper:
+\begin{enumerate}
+\item $\varphi = \varphi(143) = 120$ is Euler’s totient, per Definition 2.3 in Paper 6.
+\item $c = 403608451.6483666$ is the conductor normalization constant from Lemma 4.1.
+\item This $\kappa$ is unrelated to $\varphi = (1+\sqrt{5})/2$ or $c = 299792458$ m/s.
+\end{enumerate}
+\end{document}

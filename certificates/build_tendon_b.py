@@ -16,7 +16,7 @@ from reportlab.platypus import (
 from reportlab.lib.enums import TA_CENTER
 import textwrap
 
-SHA_B_SRC = "8fca45b0081fd3ea31d9ae5ab8ead3248078399542ddbf16b400f5f8cf35394a"
+SHA_B_SRC = "59bff7ef1ac9509ff4c6864065a5f736a2a880e23f035bdd90764a9b05c37a75"
 SHA_B_BIN = "826b3080fdea361576de127418087bee0b1af6d6c8c16036fc3b3f4dc5baadba"
 SHA_B_OUT = "7a77e15c2d87f4cec55a881a27f576b4cee26b75f2e58c77f05b9a3dd103fc61"
 
@@ -92,11 +92,11 @@ story = []
 
 # ── Title block ───────────────────────────────────────────────────────────────
 story.append(Paragraph(
-    "Tendon B: κ = φ(N) · c / 10¹⁰  (N = 143)",
+    "Module 2: Conductor Normalization Parameter κ",
     title_style
 ))
-story.append(Paragraph("Machine Certificate v1.6", subtitle_style))
-story.append(Paragraph("David Fox  ·  May 21, 2026", subtitle_style))
+story.append(Paragraph("Certifies: κ = φ(143) · c / 10¹⁰ = 4.8433014197…", subtitle_style))
+story.append(Paragraph("Machine Certificate v1.6  ·  David Fox  ·  May 21, 2026", subtitle_style))
 story.append(hr())
 story.append(Spacer(1, 6))
 

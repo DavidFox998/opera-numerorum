@@ -1,5 +1,5 @@
-// Battle Plan v1.6 - Tendon B
-// k = phi(N) * c / 1e8 where N=143
+// Battle Plan v1.6 - Module 2: Conductor Normalization Parameter
+// k = phi(N) * c / 1e10 where N=143
 #include <stdio.h>
 #include <stdint.h>
 
