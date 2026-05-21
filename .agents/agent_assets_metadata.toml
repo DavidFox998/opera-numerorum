@@ -18,3 +18,9 @@ id = "Wn7qI5DNREolTpPBsz89L"
 uri = "file://certificates/Module_3_Certificate.pdf"
 type = "pdf"
 title = "Module 3 — Continued Fraction Obstruction — v1.6"
+
+[[outputs]]
+id = "phvSHLpnCHOsAgKDCjxSk"
+uri = "file://certificates/Module_4_Certificate.pdf"
+type = "pdf"
+title = "Module 4 — S_14 Complete to 10^4000 — v1.6"

@@ -54,8 +54,21 @@
     "status": "PENDING_SUPERVISOR_SIGNOFF"
   },
   "module_4": {
-    "status": "AWAITING_LATEX",
-    "sha256_stdout_known": "c7c2cda4..."
+    "tendon": "D",
+    "claim": "S(alpha_0) intersect [1, 10^4000] = S_14 exactly, |S_14|=14",
+    "S14_elements": 14,
+    "p5_value": 3993746143633,
+    "p14_value": "3494164289073996361661384853541",
+    "module3_bound_satisfied": "3993746143633 > 82829",
+    "c_source": "bin/print_S14.c",
+    "python_source": "verify/bound_10_4000.py",
+    "sha256_c_source": "36025d56f76b0f87cb73b1da14e46ceed79d1c359ab17dfb5ea624fab4ce4ee0",
+    "sha256_binary": "cbc3cfa7db75487192ca4959d8b28164b8e8a59f0c5a847b1fd265fba1fd2b1b",
+    "sha256_stdout": "53315d4e6649a40b425edd445efbb937c0dec7a1aa571ea6b60f4f1033568387",
+    "sha256_bound_stdout": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+    "causal_parent_sha": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
+    "verification_cmd": "gcc -O3 -std=c11 bin/print_S14.c -o bin/print_S14 -lm && ./bin/print_S14 | sha256sum",
+    "status": "PENDING_SUPERVISOR_SIGNOFF"
   },
   "module_5": { "status": "AWAITING_LATEX" },
   "module_6": { "status": "AWAITING_LATEX" },
