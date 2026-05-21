@@ -84,7 +84,7 @@ story.append(Paragraph(
     "Module 1: Transcendental Constant Definition",
     title_style
 ))
-story.append(Paragraph("Certifies: α₀ = 299 + π/10 to 5000 decimal digits", subtitle_style))
+story.append(Paragraph("Certifies: alpha0 = 299 + pi/10 to 5000 decimal digits", subtitle_style))
 story.append(Paragraph("Machine Certificate v1.6  ·  David Fox  ·  May 21, 2026", subtitle_style))
 story.append(hr())
 story.append(Spacer(1, 6))
@@ -92,7 +92,7 @@ story.append(Spacer(1, 6))
 # ── Section 1: Claim ──────────────────────────────────────────────────────────
 story.append(section("1", "Claim"))
 story.append(Paragraph(
-    "The transcendental α₀ used in S₁₄ is defined as <b>299 + π/10</b> "
+    "The transcendental alpha0 used in S14 is defined as <b>299 + pi/10</b> "
     "computed to <b>5000 decimal digits</b> via mpmath arbitrary-precision "
     "floating-point arithmetic (mp.dps = 5000).",
     body_style
@@ -144,7 +144,7 @@ story.append(Spacer(1, 6))
 table_data = [
     ["Item", "SHA-256 Digest"],
     ["Source  alpha0.py",     SHA_SRC],
-    ["Stdout  α₀ value",      SHA_OUT],
+    ["Stdout  alpha0 value",   SHA_OUT],
     ["invariants.json",       SHA_JSON],
 ]
 col_widths = [1.5*inch, 5.0*inch]
@@ -171,7 +171,7 @@ story.append(Spacer(1, 12))
 story.append(section("6", "Verification Status"))
 status_data = [
     ["Check", "Result"],
-    ["α₀ = 299 + π/10 computed to 5000 dps", "PASS ✓"],
+    ["alpha0 = 299 + pi/10 computed to 5000 dps", "PASS ✓"],
     ["Source SHA-256 bound",                  "PASS ✓"],
     ["Stdout SHA-256 bound",                  "PASS ✓"],
     ["invariants.json SHA-256 bound",         "PASS ✓"],
