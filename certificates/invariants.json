@@ -34,7 +34,25 @@
     "status": "CERTIFIED"
   },
 
-  "module_3": { "status": "AWAITING_LATEX" },
+  "module_3": {
+    "tendon": "C",
+    "claim": "CF of pi/10: a_6=733, Q_5=226, a_7=11, bound=82829",
+    "cf_partial_quotients_0_to_7": [0, 3, 5, 2, 5, 1, 733, 11],
+    "p_5": 71,
+    "q_5": 226,
+    "a_6": 733,
+    "a_7": 11,
+    "bound": 82829,
+    "arithmetic": "Python mpmath 1.3.0, 50 dps",
+    "seed_fix_note": "LaTeX draft had p=0,pp=1,q=1,qq=0 which swaps numerators/denominators. Fixed to p=1,pp=0,q=0,qq=1.",
+    "deprecated_values": {"Q_5_wrong": 1296, "a_7_wrong": 1, "bound_wrong": 474984},
+    "source_file": "cf_pi10.py",
+    "sha256_source": "5ac750a4013027495d76ddd22fc76842f408ef716ba1498437d29414da8169b2",
+    "sha256_stdout": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
+    "causal_parent_sha": null,
+    "verification_cmd": "python3 cf_pi10.py | sha256sum",
+    "status": "PENDING_SUPERVISOR_SIGNOFF"
+  },
   "module_4": {
     "status": "AWAITING_LATEX",
     "sha256_stdout_known": "c7c2cda4..."
