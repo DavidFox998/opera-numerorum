@@ -1,45 +1,126 @@
-# [Project name]
+# Battle Plan v1.6 — Machine Certification for GRH(X_0(143))
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A cryptographic certification pipeline for David Fox's mathematical paper on exceptional primes for pi/10 and GRH for X_0(143). Seven modules form a causal DAG; Module 7 is the master manifest. Each module has a source file, certified stdout, SHA-256 binding, and a PDF certificate.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+```bash
+# Regenerate all 6 output files and verify chain integrity:
+bash verify_all.sh
+
+# Rebuild any certificate PDF:
+python3 certificates/build_module_1.py   # (through build_module_7.py)
+
+# Run individual modules:
+python3 certificates/alpha0.py           # M1
+./bin/print_kappa                        # M2 (compiled C)
+python3 cf_pi10.py                       # M3
+python3 verify/bound_10_4000.py          # M4
+python3 arb_bost.py                      # M5
+python3 x0_143.py                        # M6
+bash verify_all.sh                       # M7 (produces master manifest SHA)
+```
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Python 3.12, mpmath 1.3.0 (64 decimal places, ~212 binary bits)
+- C (gcc, 80-bit long double for M2)
+- reportlab 4.5.1 (PDF generation)
+- No ARB (unavailable in NixOS sandbox — mpmath fallback at higher precision)
+- No Magma (unavailable — Python fallback implements Diamond-Shurman from scratch)
+- No LaTeX, SageMath, or sympy
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+```
+certificates/
+  alpha0.py                  M1 source (also at root for some runs)
+  build_module_1.py          PDF builder for M1
+  ...
+  build_module_7.py          PDF builder for M7
+  Module_1_Certificate.pdf   through Module_7_Certificate.pdf
+  invariants.json            Full chain-of-custody record (source of truth)
 
-## Architecture decisions
+bin/
+  print_kappa.c / print_kappa    M2: kappa bound (80-bit long double)
+  print_S14.c / print_S14        M4: S14 prime list
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+verify/
+  bound_10_4000.py           M4: verifies p_5 > bound (produces m4.out)
+  bost_connes_verify.py      (auxiliary)
 
-## Product
+data/
+  S14_primes.txt             M4 stdout (byte-identical to ./bin/print_S14 | ...)
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+arb_bost.py                  M5: Bost sum (mpmath fallback for ARB)
+arb_bost.c                   M5: ARB reference source (documents algorithm)
+cf_pi10.py                   M3: continued fraction of pi/10
+x0_143.py                    M6: genus + class number + Bost check
+manifest.py                  (deprecated — old hex-string approach)
+verify_all.sh                M7: master manifest script (authoritative)
 
-## User preferences
+m1.out ... m6.out            Certified stdout files (inputs to verify_all.sh)
+```
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+## Certified Chain (as of 2026-05-21)
+
+| Module | Claim | Stdout SHA-256 | Status |
+|--------|-------|----------------|--------|
+| M1 | alpha_0 = 299+pi/10 (5000 dps) | `63ef870a...` | CERTIFIED |
+| M2 | kappa bound (80-bit long double) | `3716c7db...` | CERTIFIED |
+| M3 | CF pi/10: Q_5=226, bound=82829 | `e687bb09...` | CERTIFIED |
+| M4 | S_14: 14 primes, p_5 > 82829 | `b810a7a3...` | CERTIFIED |
+| M5 | C(S_4) = 11.4221 > 2*sqrt(13) | `9df98a39...` | CERTIFIED |
+| M6 | genus(X_0(143))=13, Bost bound | `ec9fa8c3...` | CERTIFIED |
+| M7 | Master manifest over M1-M6 | `30e04e7b...` | LOCKED |
+
+**Master manifest SHA** (SHA256 of cat m1.out...m6.out):
+`5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
+
+Full SHA table: `certificates/invariants.json`
+
+## Architecture Decisions
+
+- **Causal DAG, not flat list.** Each module's stdout SHA is the causal parent of the next. M7 locks all six by concatenating their actual output files (not hex strings) and hashing the result. Any upstream change breaks the manifest.
+- **No fabricated values.** Every SHA, every numerical result, every interval bound is computed in this environment and verified to match. If a value cannot be verified, it is flagged as an audit item, not silently accepted.
+- **Fallbacks at higher precision.** ARB unavailable → mpmath at 64 dps (~212 bits, exceeds ARB 64-bit). Magma unavailable → Python implementing Diamond-Shurman Thm 3.1.1 from scratch. Both fallbacks are documented in the certificate and their SHAs are bound.
+- **Errors are certified, not hidden.** Five LaTeX draft errors were caught, documented with proof, and superseded by corrected values. The audit table appears in Module 7.
+- **ASCII-only PDFs.** All certificate PDFs pass `pdftotext | python3 -c "... ord(c)>127"`. No Unicode escape issues.
+
+## Errors Caught and Corrected
+
+1. **M3** — CF seed swapped (p=0,pp=1,q=1,qq=0). Fixed to p=1,pp=0,q=0,qq=1. Correct: Q_5=226, bound=82829 (not 1296 / 474984).
+2. **M5** — Formula `log(p)/(p-1)` gives C=1.434 (impossible to exceed 7.211). Correct formula: `log(p)*p/(p-1)` gives C=11.421. Confirmed by supervisor.
+3. **M5** — Wrong curve copy-paste: claimed C(S_4)=8.629. Binary search isolated discrepancy to alpha~0.31599. Correct: C(S_4)=11.4221.
+4. **M5** — Hand-calc p=191 term: 5.278751. Correct mpmath value: 5.279917. Sum = 11.4221, not 11.4210.
+5. **M6** — LaTeX claimed h(Q(sqrt(-143)))=1. Enumerated 10 reduced primitive forms; correct h(-143)=10. Theorem stands: Bost bound is independent of h.
+
+## User Preferences
+
+- Battle Plan version: **v1.6**
+- Author credit: **David Fox**
+- Date stamp: **May 21, 2026**
+- PDF rule: **ASCII only** — no Unicode characters in any certificate PDF
+- SHA rule: **No fabricated values** — every SHA is computed, never invented
+- Audit rule: **Document errors explicitly** — wrong values get an audit note and a superseding certificate, never a silent overwrite
+- Formula rule: **Natural log (ln)** throughout — not log base 10
+- Precision: **mpmath 64 dps** as ARB fallback; state fallback explicitly in certificate
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- `alpha0.py` lives at `certificates/alpha0.py`, not the workspace root. Run as `python3 certificates/alpha0.py > m1.out`.
+- M4 uses `bound_10_4000.py` stdout for `m4.out` (SHA `b810a7a3...`), not `print_S14` stdout (SHA `53315d4e...`). The manifest uses the bound stdout.
+- `arb_bost.py` reads S4 = {2, 3, 19, 191} from hardcoded list, not from `data/S14_primes.txt`. The input file's SHA is recorded but the script does not take a file argument.
+- Module 7 manifest = `SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)` — concatenate actual file contents, not SHA hex strings. The old `manifest.py` used the wrong approach (hex string concatenation) and is deprecated.
+- All C binaries (`bin/print_kappa`, `bin/print_S14`) are pre-compiled. Recompile with `gcc -O3 -std=c11 bin/print_kappa.c -o bin/print_kappa -lm` if needed.
+- `sha256sum` on macOS is `shasum -a 256`. The `verify_all.sh` uses Linux `sha256sum`.
 
-## Pointers
+## Next Paper
 
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+The certification pipeline is reusable. For a new paper:
+1. Define the causal DAG (which modules depend on which).
+2. For each module: provide source code or LaTeX spec with the exact formula and claimed numerical value.
+3. The agent will implement, run, verify, and produce SHA-bound PDF certificates.
+4. Module 7 (manifest) seals the chain.
+
+Known-good pattern: provide a Python or Magma snippet alongside the LaTeX claim. If the snippet and the LaTeX disagree, the binary search / term-by-term audit will find it.
