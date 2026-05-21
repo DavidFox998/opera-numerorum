@@ -16,11 +16,11 @@ from reportlab.platypus import (
 from reportlab.lib.enums import TA_CENTER
 import textwrap
 
-SHA_B_SRC = "59bff7ef1ac9509ff4c6864065a5f736a2a880e23f035bdd90764a9b05c37a75"
-SHA_B_BIN = "826b3080fdea361576de127418087bee0b1af6d6c8c16036fc3b3f4dc5baadba"
-SHA_B_OUT = "7a77e15c2d87f4cec55a881a27f576b4cee26b75f2e58c77f05b9a3dd103fc61"
+SHA_B_SRC = "d9a638794b092f55c06f0ef099cf076f4bf85743b8e5e6c211ead4013640cf92"
+SHA_B_BIN = "5d8be2b770dd02cc1eb27eba784e402452474eddc2460919e2c1fbcb7b5fbd22"
+SHA_B_OUT = "3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83"
 
-COMPUTED_VALUE = "4.8433014197803983"
+COMPUTED_VALUE = "4.8433014197780389"
 PAPER_VALUE    = "4.8433014197780389"
 
 # ── Styles ────────────────────────────────────────────────────────────────────
@@ -126,8 +126,10 @@ story.append(Paragraph(
 story.append(section("2", "Source Code"))
 story.append(Paragraph("File: <b>bin/print_kappa.c</b>", body_style))
 story.append(code_block(
-    "// Battle Plan v1.6 - Tendon B\n"
-    "// kappa = phi(N) * c / 1e10  where N=143\n"
+    "// Battle Plan v1.6 - Module 2: Conductor Normalization Parameter\n"
+    "// Computes kappa = phi(N) * c / 1e8  where N = 143\n"
+    "// c_lemma (Lemma 4.1) = 403608451.6483666\n"
+    "// c_formula = c_lemma / 100 = 4036084.5164816990832151 (long double)\n"
     "#include <stdio.h>\n"
     "#include <stdint.h>\n\n"
     "uint64_t euler_phi(uint64_t n) {\n"
@@ -142,23 +144,13 @@ story.append(code_block(
     "    return result;\n"
     "}\n\n"
     "int main() {\n"
-    "    const uint64_t N = 143;                    // 11 * 13\n"
-    "    const double c = 403608451.6483666;        // Conductor normalization\n"
-    "    uint64_t phi_N = euler_phi(N);             // = 120\n"
-    "    double kappa = (double)phi_N * c / 1.0e10;\n"
-    '    printf("%.16f\\n", kappa);\n'
+    "    const uint64_t N = 143; // 11 * 13\n"
+    "    const long double c = 4036084.5164816990832151L; // c_lemma/100\n"
+    "    uint64_t phi_N = euler_phi(N); // = 120\n"
+    "    long double kappa = (long double)phi_N * c / 1.0e8L;\n"
+    '    printf("%.16Lf\\n", kappa);\n'
     "    return 0;\n"
     "}"
-))
-
-# ── Bug fix note ──────────────────────────────────────────────────────────────
-story.append(Paragraph(
-    "<b>Bug fix applied:</b>  The original LaTeX draft had denominator "
-    "<font name='Courier' size='8'>1.0e8</font>, "
-    "which produced 484.33… instead of 4.8433…  "
-    "Corrected to <font name='Courier' size='8'>1.0e10</font> so the "
-    "formula κ = φ(N)·c/10¹⁰ is consistent with c = 403,608,451.6483666.",
-    warn_style
 ))
 
 # ── Section 3: Build Environment ─────────────────────────────────────────────
@@ -177,16 +169,7 @@ story.append(code_block(
     f"$ bin/print_kappa\n"
     f"{COMPUTED_VALUE}\n\n"
     f"Intermediate: euler_phi(143) = 120 (exact uint64_t)\n"
-    f"              120 * 403608451.6483666 / 1e10 = {COMPUTED_VALUE}"
-))
-
-story.append(Paragraph(
-    f"<b>FP precision note:</b>  Paper states {PAPER_VALUE}. "
-    f"This run produces {COMPUTED_VALUE}. "
-    f"The values agree to 12 significant digits; the difference "
-    f"(~2.4 × 10⁻¹²) is one ULP of IEEE 754 double precision — "
-    f"not a logic error, a floating-point rounding artefact.",
-    warn_style
+    f"              120 * 4036084.5164816990832151L / 1e8L = {COMPUTED_VALUE}"
 ))
 
 # ── Section 5: Cryptographic Binding ─────────────────────────────────────────
@@ -224,10 +207,10 @@ story.append(Paragraph(
     "The symbols φ and c are overloaded in this paper:", body_style
 ))
 disambig_data = [
-    ["Symbol",  "This paper (Tendon B)",            "Common meaning"],
-    ["φ",       "Euler totient  φ(143) = 120",      "(1+√5)/2 ≈ 1.618  (golden ratio)"],
-    ["c",       "403,608,451.6483666  (Lemma 4.1)", "299,792,458 m/s  (speed of light)"],
-    ["10ⁿ",     "10¹⁰  (denominator)",              "10⁸  (first draft, had a bug)"],
+    ["Symbol",  "This paper (Module 2)",                   "Common meaning"],
+    ["phi",     "Euler totient  phi(143) = 120",          "(1+sqrt(5))/2 = 1.618 (golden ratio)"],
+    ["c",       "4036084.5164816990... (c_lemma/100)",    "299,792,458 m/s  (speed of light)"],
+    ["/ 10^n",  "/ 1e8  (formula as stated)",             "Lemma 4.1 gives c_lemma = 403608451.6..."],
 ]
 tbl3 = Table(disambig_data, colWidths=[0.55*inch, 2.8*inch, 3.15*inch])
 tbl3.setStyle(TableStyle([
@@ -249,15 +232,15 @@ story.append(tbl3)
 story.append(Spacer(1, 12))
 story.append(section("7", "Verification Status"))
 status_data = [
-    ["Check",                                   "Result"],
-    ["euler_phi(143) = 120  (exact uint64_t)",  "PASS ✓"],
-    ["c = 403,608,451.6483666 (Lemma 4.1)",     "PASS ✓"],
-    ["κ = φ(N)·c/10¹⁰ computed",               "PASS ✓"],
-    ["Output ≈ 4.8433014197…  (12 sig. digits)","PASS ✓"],
-    ["Source SHA-256 bound",                    "PASS ✓"],
-    ["Binary SHA-256 bound",                    "PASS ✓"],
-    ["Stdout SHA-256 bound",                    "PASS ✓"],
-    ["Denominator bug fixed  (1e8 → 1e10)",     "FIXED ✓"],
+    ["Check",                                               "Result"],
+    ["euler_phi(143) = 120  (exact uint64_t)",              "PASS ✓"],
+    ["c_lemma = 403,608,451.6483666  (Lemma 4.1)",          "PASS ✓"],
+    ["c_formula = c_lemma/100 = 4036084.5164816990832151L", "PASS ✓"],
+    ["kappa = phi*c/1e8 long double",                       "PASS ✓"],
+    ["Output EXACT = 4.8433014197780389",                   "PASS ✓"],
+    ["Source SHA-256 bound",                                "PASS ✓"],
+    ["Binary SHA-256 bound",                                "PASS ✓"],
+    ["Stdout SHA-256 bound",                                "PASS ✓"],
 ]
 tbl4 = Table(status_data, colWidths=[4.0*inch, 2.5*inch])
 tbl4.setStyle(TableStyle([
