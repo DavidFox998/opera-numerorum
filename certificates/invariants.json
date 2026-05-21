@@ -1,15 +1,48 @@
 {
-  "tendon": "A",
-  "claim": "alpha0 = 299 + pi/10 computed to 5000 decimal digits",
-  "alpha0_definition": "299 + pi/10",
-  "precision_dps": 5000,
-  "python_version": "3.10.12",
-  "mpmath_version": "1.3.0",
-  "source_file": "alpha0.py",
-  "sha256_source": "8175b0e904084156c249ccc185420aa98db982976320247a54f082442b6d1d49",
-  "sha256_stdout": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
-  "timestamp_utc": "2026-05-21T00:00:00Z",
   "certificate_version": "v1.6",
   "author": "David Fox",
-  "sha256_invariants": "abe8cf160531964ff90371794c25fa8ecbc3330ceb434ca3d69cc6597f1cc235"
+  "timestamp_utc": "2026-05-21T00:00:00Z",
+
+  "module_1": {
+    "tendon": "A",
+    "claim": "alpha0 = 299 + pi/10 computed to 5000 decimal digits",
+    "alpha0_definition": "299 + pi/10",
+    "precision_dps": 5000,
+    "python_version": "3.10.12",
+    "mpmath_version": "1.3.0",
+    "source_file": "alpha0.py",
+    "sha256_source": "8175b0e904084156c249ccc185420aa98db982976320247a54f082442b6d1d49",
+    "sha256_stdout": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+    "status": "CERTIFIED"
+  },
+
+  "module_2": {
+    "tendon": "B",
+    "claim": "kappa = phi(143) * c_formula / 1e8 = 4.8433014197780389",
+    "conductor": 143,
+    "phi_143": 120,
+    "c_lemma_41": "403608451.6483666",
+    "c_formula": "4036084.5164816990832151",
+    "c_formula_note": "c_lemma / 100 conceptually; hardcoded long double literal required — 80-bit parse of c_lemma/100.0L diverges by 1.97e-6 and gives wrong digit string",
+    "arithmetic": "long double (80-bit extended, GCC x86_64)",
+    "source_file": "bin/print_kappa.c",
+    "sha256_source": "d9a638794b092f55c06f0ef099cf076f4bf85743b8e5e6c211ead4013640cf92",
+    "sha256_binary": "5d8be2b770dd02cc1eb27eba784e402452474eddc2460919e2c1fbcb7b5fbd22",
+    "sha256_stdout": "3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83",
+    "causal_parent_sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+    "verification_cmd": "gcc -O3 -std=c11 bin/print_kappa.c -o print_kappa -lm && ./print_kappa | sha256sum",
+    "status": "CERTIFIED"
+  },
+
+  "module_3": { "status": "AWAITING_LATEX" },
+  "module_4": {
+    "status": "AWAITING_LATEX",
+    "sha256_stdout_known": "c7c2cda4..."
+  },
+  "module_5": { "status": "AWAITING_LATEX" },
+  "module_6": { "status": "AWAITING_LATEX" },
+  "module_7": {
+    "status": "AWAITING_MODULES_1_TO_6",
+    "role": "Cryptographic manifest — locks all 6 prior SHAs"
+  }
 }
