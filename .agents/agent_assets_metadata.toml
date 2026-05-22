@@ -6,3 +6,45 @@ id = "1ubIS7yKRHOSVM6QhuvOr"
 uri = "file://paper/theorema-aureum-143.pdf"
 type = "pdf"
 title = "Theorema Aureum 143 — Full Paper with Lean 4 Certification & Module 08A"
+
+[[outputs]]
+id = "ig3yeAQmVfMSKfZj1UNve"
+uri = "file://paper/modules/m01-alpha0def.pdf"
+type = "pdf"
+title = "Module 01 — Alpha0 Definition [Alpha0Def]"
+
+[[outputs]]
+id = "iDVz-HP7Y813dLQl9S7BN"
+uri = "file://paper/modules/m02-kappabound.pdf"
+type = "pdf"
+title = "Module 02 — Kappa Bound [KappaBound]"
+
+[[outputs]]
+id = "IPYyktKIeTyoGLFTCYBEu"
+uri = "file://paper/modules/m03-q5p5bound.pdf"
+type = "pdf"
+title = "Module 03 — Q5/P5 Bound [Q5P5Bound]"
+
+[[outputs]]
+id = "yfj92Hav0eBFxLixuHhXF"
+uri = "file://paper/modules/m04-esete4.pdf"
+type = "pdf"
+title = "Module 04 — Exceptional Set E4 [ESetE4]"
+
+[[outputs]]
+id = "deD8rI0L62Ro_eTU4CDpU"
+uri = "file://paper/modules/m05-bostbound.pdf"
+type = "pdf"
+title = "Module 05 — Bost Bound [BostBound]"
+
+[[outputs]]
+id = "wwuGJyMq4RxSLezHHuEtp"
+uri = "file://paper/modules/m06-grhx0143.pdf"
+type = "pdf"
+title = "Module 06 — GRH X0(143) [GRHX0143]"
+
+[[outputs]]
+id = "vtIjlJuGhSbg_eR7Fa3Nz"
+uri = "file://paper/modules/m07-manifest.pdf"
+type = "pdf"
+title = "Module 07 — Master Manifest [Manifest]"
