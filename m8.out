@@ -1,0 +1,72 @@
+=== J_0(143) Hecke Hankel rank check ===
+mpmath precision: 60 dps
+
+Form decomposition of S_2(Gamma_0(143)):
+  Old: 11.2.a.a x2 (dim=1 appears twice)  -> 4 eigenvalues
+  New: 143.2.a.a  (dim=1, rational)        -> 2 eigenvalues
+  New: 143.2.a.b  (dim=4, totally real)    -> 8 eigenvalues
+  New: 143.2.a.c  (dim=6, totally real)    -> 12 eigenvalues
+  Total: 26 eigenvalues of L_w on H_1
+
+Old form 11.2.a.a lambda_alpha = (42.669041 + 75.20316j)
+Old form 11.2.a.a lambda_beta  = (42.669041 - 75.20316j)
+
+New form 143.2.a.a lambda_alpha = (-37.315318 + 79.16975j)
+New form 143.2.a.a lambda_beta  = (-37.315318 - 79.16975j)
+
+143.2.a.b Galois roots (theta): ['-1.76401', '-0.693822', '0.396339', '2.0615']
+  sigma_0: lambda_alpha = (16.122215 + 85.310644j)
+  sigma_1: lambda_alpha = (-33.864484 + 71.88903j)
+  sigma_2: lambda_alpha = (71.390231 + 53.885456j)
+  sigma_3: lambda_alpha = (-7.4569424 + 89.351057j)
+
+143.2.a.c Galois roots (theta): ['-2.44665', '-1.36536', '-1.23127', '0.633036', '1.70126', '2.70899']
+  sigma_0: lambda_alpha = (24.43049 + 74.718747j)
+  sigma_1: lambda_alpha = (-9.3810125 + 84.059111j)
+  sigma_2: lambda_alpha = (-27.040605 + 86.397784j)
+  sigma_3: lambda_alpha = (-71.251383 + 45.547969j)
+  sigma_4: lambda_alpha = (35.72183 + 78.465816j)
+  sigma_5: lambda_alpha = (26.532589 + 83.814383j)
+
+Total eigenvalues: 26
+Max |Im(lambda_j)| = 89.3511
+
+Max |Im(e_k)| for k=1..25: 0.0 (should be ~0)
+
+Elementary symmetric polynomials e_k = tr(Lambda^k L_w):
+  e_ 1 = 146.451380866
+  e_ 2 = 66940.369515
+  e_ 3 = 7911110.95056
+  e_ 4 = 2059649606.58
+  e_ 5 = 203039158782.0
+  e_ 6 = 3.93341474007e+13
+  e_ 7 = 3.29360595287e+15
+  e_ 8 = 5.31132446514e+17
+  e_ 9 = 3.83247462458e+19
+  e_10 = 5.51396024328e+21
+  e_11 = 3.49334718566e+23
+  e_12 = 4.69822785185e+25
+  e_13 = 2.6799645954e+27
+
+==================================================
+HANKEL MATRIX H_{13} RANK CHECK
+g = genus(X_0(143)) = 13
+rank(H_{g}) = 13
+min pivot magnitude = -3.331e+27
+rank(H) <= g:  PASS
+rank(H) == g:  YES (full rank)
+==================================================
+
+Weil bound verification for key eigenvalues:
+  p=  2: bound = 2*sqrt(2) = 2.8284
+    11.2.a.a:  a_2 = -2  |a_p|=2.00  OK
+    143.2.a.a: a_2 = 0  |a_p|=0.00  OK
+  p=  3: bound = 2*sqrt(3) = 3.4641
+    11.2.a.a:  a_3 = -1  |a_p|=1.00  OK
+    143.2.a.a: a_3 = -1  |a_p|=1.00  OK
+  p= 19: bound = 2*sqrt(19) = 8.7178
+    11.2.a.a:  a_19 = 0  |a_p|=0.00  OK
+    143.2.a.a: a_19 = 2  |a_p|=2.00  OK
+  p=191: bound = 2*sqrt(191) = 27.6405
+    11.2.a.a:  a_191 = 17  |a_p|=17.00  OK
+    143.2.a.a: a_191 = -15  |a_p|=15.00  OK

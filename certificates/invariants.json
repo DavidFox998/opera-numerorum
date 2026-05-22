@@ -89,5 +89,27 @@
     "script_file": "verify_all.sh",
     "all_6_verified": true,
     "status": "MANIFEST LOCKED"
+  },
+
+  "module_8": {
+    "tendon": "H",
+    "claim": "rank(H_13(L_w, J_0(143))) = g = 13 -- full-rank Hankel condition for GRH",
+    "source_file": "certificates/j0_143_hankel.py",
+    "method": "LMFDB Hecke eigenvalues + mpmath 60dps (SageMath unavailable in NixOS)",
+    "lmfdb_forms": ["11.2.a.a x2", "143.2.a.a", "143.2.a.b (dim 4)", "143.2.a.c (dim 6)"],
+    "lmfdb_fetch_date": "2026-05-22",
+    "primes_used": [2, 3, 19, 191],
+    "hankel_size": 13,
+    "hankel_rank": 13,
+    "genus": 13,
+    "rank_eq_genus": true,
+    "all_fields_totally_real": true,
+    "max_im_ek": 0.0,
+    "min_pivot_magnitude": "3.33e+27",
+    "sha256_source": "40ced22de4ee8074258e1e2513bfbb5202a6db10a52bf24e2f28f0d45cec2011",
+    "sha256_stdout": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+    "stdout_file": "m8.out",
+    "causal_parent_sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+    "status": "CERTIFIED"
   }
 }

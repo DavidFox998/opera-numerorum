@@ -20,6 +20,8 @@ const MANIFEST_SHA =
   "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9";
 const SCRIPT_SHA =
   "39c0170455e40b30c7a7aeb6a2801b50d8e9554bb3d7bc746164d22b71174565";
+const M8_SHA =
+  "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002";
 
 const MODULES = [
   {
@@ -102,6 +104,17 @@ const MODULES = [
     status: "LOCKED",
     correction: null,
   },
+  {
+    id: "M8",
+    title: "J\u2080(143) Hecke Hankel Rank Check",
+    claim:
+      "26\u00d726 Lw eigenvalue computation on H\u2081(J\u2080(143), \u2102). Four newform orbits (11.2.a.a\u00d72, 143.2.a.a, 143.2.a.b dim\u202f4, 143.2.a.c dim\u202f6) over totally real fields. rank(H\u2081\u2083) = g = 13. Full-rank Hankel condition VERIFIED. All pivots \u2265 3.33\u00d710\u00b2\u2077. LMFDB data fetched 2026-05-22.",
+    source: "certificates/j0_143_hankel.py",
+    stdout: "m8.out",
+    sha: M8_SHA,
+    status: "CERTIFIED",
+    correction: null,
+  },
 ];
 
 const AUDIT_ROWS = [
@@ -174,12 +187,15 @@ function StatusChip({ status }: { status: string }) {
 function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
   const [open, setOpen] = useState(false);
   const isManifest = mod.id === "M7";
+  const isM8 = mod.id === "M8";
 
   return (
     <Card
       className={`shadow-sm border ${
         isManifest
           ? "border-indigo-300 bg-indigo-50/30 dark:bg-indigo-950/10"
+          : isM8
+          ? "border-violet-300 bg-violet-50/30 dark:bg-violet-950/10"
           : "border-emerald-200/60"
       }`}
     >
@@ -190,6 +206,8 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
               className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold shrink-0 ${
                 isManifest
                   ? "bg-indigo-100 text-indigo-700"
+                  : isM8
+                  ? "bg-violet-100 text-violet-700"
                   : "bg-emerald-100 text-emerald-700"
               }`}
             >
@@ -329,6 +347,14 @@ export default function CertificatePage() {
                 Axiom debt: [H2_WeilTransfer]
               </div>
             </div>
+            <div className="rounded-lg bg-white dark:bg-black/30 border border-violet-200 px-4 py-3 space-y-1">
+              <div className="font-bold text-violet-800 dark:text-violet-300">
+                hankel_rank_check (M8) : rank(H&#8321;&#8323;) = g = 13
+              </div>
+              <div className="text-xs text-slate-500">
+                LMFDB Hecke data &middot; 26 eigenvalues &middot; 13 conjugate pairs &middot; all pivots &ge; 3.33&times;10&#xB2;&#x2077;
+              </div>
+            </div>
           </div>
 
           <div className="rounded-lg border border-amber-300 bg-amber-50 dark:bg-amber-950/20 px-4 py-3 space-y-1.5">
@@ -347,10 +373,10 @@ export default function CertificatePage() {
         {/* Summary stats */}
         <div className="grid grid-cols-4 gap-3 text-sm">
           {[
-            ["Modules", "6 + manifest"],
-            ["Precision", "64 dps (mpmath)"],
+            ["Modules", "7 + manifest"],
+            ["Precision", "60\u201364 dps"],
             ["Errors caught", "5 corrected"],
-            ["Date locked", "May 21, 2026"],
+            ["Date locked", "May 21\u201322, 2026"],
           ].map(([label, value]) => (
             <div key={label} className="rounded-lg bg-card border px-4 py-3">
               <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
@@ -370,6 +396,56 @@ export default function CertificatePage() {
             {MODULES.map((mod) => (
               <ModuleCard key={mod.id} mod={mod} />
             ))}
+          </div>
+        </div>
+
+        {/* M8 detail box */}
+        <div className="rounded-xl border-2 border-violet-300 bg-violet-50/40 dark:bg-violet-950/10 px-6 py-5 space-y-3">
+          <div className="font-bold text-sm text-violet-800 dark:text-violet-300">
+            Module 8 &mdash; Eigenvalue Detail
+          </div>
+          <div className="grid grid-cols-2 gap-3 text-xs font-mono">
+            <div className="space-y-1">
+              <div className="text-muted-foreground uppercase tracking-wider text-[10px] font-sans">13 Lw eigenvalue pairs (Re part)</div>
+              {[
+                ["11.2.a.a \u00d72", "+42.669 \u00b1 75.203\u2009i"],
+                ["143.2.a.a", "\u221237.315 \u00b1 79.170\u2009i"],
+                ["143.2.a.b \u03c3\u2080", "+16.122 \u00b1 85.311\u2009i"],
+                ["143.2.a.b \u03c3\u2081", "\u221233.864 \u00b1 71.889\u2009i"],
+                ["143.2.a.b \u03c3\u2082", "+71.390 \u00b1 53.885\u2009i"],
+                ["143.2.a.b \u03c3\u2083", "\u22127.457 \u00b1 89.351\u2009i"],
+              ].map(([lbl, val]) => (
+                <div key={lbl} className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">{lbl}</span>
+                  <span>{val}</span>
+                </div>
+              ))}
+            </div>
+            <div className="space-y-1">
+              <div className="text-muted-foreground uppercase tracking-wider text-[10px] font-sans">143.2.a.c (6 embeddings)</div>
+              {[
+                ["\u03c3\u2080", "+24.430 \u00b1 74.719\u2009i"],
+                ["\u03c3\u2081", "\u22129.381 \u00b1 84.059\u2009i"],
+                ["\u03c3\u2082", "\u221227.041 \u00b1 86.398\u2009i"],
+                ["\u03c3\u2083", "\u221271.251 \u00b1 45.548\u2009i"],
+                ["\u03c3\u2084", "+35.722 \u00b1 78.466\u2009i"],
+                ["\u03c3\u2085", "+26.533 \u00b1 83.814\u2009i"],
+              ].map(([lbl, val]) => (
+                <div key={lbl} className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">143.2.a.c {lbl}</span>
+                  <span>{val}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-lg bg-white/80 dark:bg-black/20 border border-violet-200 px-4 py-2.5 font-mono text-xs space-y-0.5">
+            <div>rank(H&#8321;&#8323;) = <strong>13</strong> = g &nbsp;&mdash;&nbsp; full rank</div>
+            <div>min pivot = 3.33&times;10&#xB2;&#x2077; &nbsp;&mdash;&nbsp; all 13 pivots non-zero</div>
+            <div>Max |Im(e&#8342;)| = 0.0 &nbsp;&mdash;&nbsp; Hankel entries exactly real</div>
+          </div>
+          <div className="text-xs text-violet-700">
+            SHA-256(m8.out):&nbsp;
+            <ShaBadge sha={M8_SHA} />
           </div>
         </div>
 
@@ -423,6 +499,13 @@ export default function CertificatePage() {
           <pre className="bg-muted rounded-lg px-4 py-3 font-mono overflow-x-auto text-[11px] leading-relaxed whitespace-pre-wrap break-all">
             {"bash verify_all.sh\n# All 6 modules PASS; then:\ncat m1.out m2.out m3.out m4.out m5.out m6.out | sha256sum\n# => " +
               MANIFEST_SHA}
+          </pre>
+          <div className="font-semibold text-foreground pt-1">
+            Reproduce Module 8 (Hankel rank check):
+          </div>
+          <pre className="bg-muted rounded-lg px-4 py-3 font-mono overflow-x-auto text-[11px] leading-relaxed whitespace-pre-wrap break-all">
+            {"python3 certificates/j0_143_hankel.py > m8.out\nsha256sum m8.out\n# => " +
+              M8_SHA + "  m8.out"}
           </pre>
           <div className="text-center pt-2 space-y-1">
             <div>

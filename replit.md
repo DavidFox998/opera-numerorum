@@ -38,7 +38,9 @@ certificates/
   build_module_1.py          PDF builder for M1
   ...
   build_module_7.py          PDF builder for M7
-  Module_1_Certificate.pdf   through Module_7_Certificate.pdf
+  build_module_8.py          PDF builder for M8
+  j0_143_hankel.py           M8 source: J_0(143) Hecke Hankel rank check
+  Module_1_Certificate.pdf   through Module_8_Certificate.pdf
   invariants.json            Full chain-of-custody record (source of truth)
 
 bin/
@@ -60,9 +62,10 @@ manifest.py                  (deprecated — old hex-string approach)
 verify_all.sh                M7: master manifest script (authoritative)
 
 m1.out ... m6.out            Certified stdout files (inputs to verify_all.sh)
+m8.out                       M8 certified stdout (Hankel rank check)
 ```
 
-## Certified Chain (as of 2026-05-21)
+## Certified Chain (as of 2026-05-22)
 
 | Module | Claim | Stdout SHA-256 | Status |
 |--------|-------|----------------|--------|
@@ -73,9 +76,13 @@ m1.out ... m6.out            Certified stdout files (inputs to verify_all.sh)
 | M5 | C(S_4) = 11.4221 > 2*sqrt(13) | `9df98a39...` | CERTIFIED |
 | M6 | genus(X_0(143))=13, Bost bound | `ec9fa8c3...` | CERTIFIED |
 | M7 | Master manifest over M1-M6 | `30e04e7b...` | LOCKED |
+| M8 | rank(H_13(L_w, J_0(143))) = g = 13 | `e2d70821...` | CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
+
+**M8 stdout SHA** (Hankel rank check):
+`e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002`
 
 Full SHA table: `certificates/invariants.json`
 
