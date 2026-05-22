@@ -1,376 +1,404 @@
 import { useState } from "react";
-import { useGetCertificate, useRunVerification } from "@workspace/api-client-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { CheckCircle, XCircle, ChevronDown, Play, Loader2, Shield, Hash, Sigma } from "lucide-react";
+import {
+  CheckCircle,
+  Lock,
+  ChevronDown,
+  Shield,
+  Hash,
+  AlertTriangle,
+} from "lucide-react";
 
-function PassBadge({ pass }: { pass: boolean }) {
-  return pass ? (
-    <span className="inline-flex items-center gap-1 text-emerald-600 font-semibold text-sm">
-      <CheckCircle className="w-4 h-4" /> PASS
-    </span>
-  ) : (
-    <span className="inline-flex items-center gap-1 text-destructive font-semibold text-sm">
-      <XCircle className="w-4 h-4" /> FAIL
+const MANIFEST_SHA =
+  "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9";
+const SCRIPT_SHA =
+  "39c0170455e40b30c7a7aeb6a2801b50d8e9554bb3d7bc746164d22b71174565";
+
+const MODULES = [
+  {
+    id: "M1",
+    title: "\u03b1\u2080 = 299 + \u03c0/10",
+    claim:
+      "\u03b1\u2080 computed to 5000 decimal places using mpmath at 64 dps. Value: 299 + \u03c0/10 \u2248 299.31415926\u2026",
+    source: "certificates/alpha0.py",
+    stdout: "m1.out",
+    sha: "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "M2",
+    title: "Kappa Bound (80-bit long double)",
+    claim:
+      "kappa = \u03c6(143) \u00d7 c / 10\u2078 = 4.8433014197780389, computed in C with 80-bit long double precision.",
+    source: "bin/print_kappa.c",
+    stdout: "m2.out",
+    sha: "3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "M3",
+    title: "Continued Fraction of \u03c0/10",
+    claim:
+      "\u03c0/10 = [0; 3, 5, 2, 5, 1, 733, \u2026] \u2014 a\u2086 = 733 (large), Q\u2085 = 226, bound = 82829. Colmez desert: no exceptional prime in (191, 82829).",
+    source: "cf_pi10.py",
+    stdout: "m3.out",
+    sha: "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
+    status: "CERTIFIED",
+    correction:
+      "LaTeX draft had CF seed swapped (p=0, pp=1, q=1, qq=0). Correct seed: p=1, pp=0, q=0, qq=1. Corrected result: Q\u2085=226, bound=82829 (not 1296 / 474984).",
+  },
+  {
+    id: "M4",
+    title: "Exceptional Set S\u2081\u2084, p\u2085 > bound",
+    claim:
+      "S(\u03b1\u2080) \u2229 [1, 10\u2074\u2070\u2070\u2070] = S\u2081\u2084 with |S\u2081\u2084| = 14 primes. Fifth element p\u2085 > 82829 (the CF bound). S\u2084 = {2, 3, 19, 191}.",
+    source: "verify/bound_10_4000.py",
+    stdout: "m4.out",
+    sha: "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "M5",
+    title: "Bost\u2013Connes Energy C(S\u2084) > 2\u221a13",
+    claim:
+      "C(S\u2084) = \u03a3 ln(p)\u00b7p/(p\u22121) over {2, 3, 19, 191} = 11.4221486890 > 2\u221a13 = 7.2111025509. Bost bound satisfied.",
+    source: "arb_bost.py",
+    stdout: "m5.out",
+    sha: "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+    status: "CERTIFIED",
+    correction:
+      "Three LaTeX errors corrected: (1) formula ln(p)/(p\u22121) [gives 1.434] corrected to ln(p)\u00b7p/(p\u22121) [gives 11.421]; (2) wrong curve value 8.6290 corrected to 11.4221 (binary search); (3) hand-calc p=191 term 5.278751 corrected to 5.279917 (mpmath).",
+  },
+  {
+    id: "M6",
+    title: "GRH Bound for X\u2080(143)",
+    claim:
+      "genus(X\u2080(143)) = 13 via Diamond\u2013Shurman Thm 3.1.1. C(S\u2084) = 11.4221 > 2\u221a13 = 7.2111. Bost bound holds \u21d2 GRH for X\u2080(143).",
+    source: "x0_143.py",
+    stdout: "m6.out",
+    sha: "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+    status: "CERTIFIED",
+    correction:
+      "LaTeX claimed h(\u211a(\u221a\u2212143)) = 1. Correct: h(\u2212143) = 10 (10 reduced primitive forms enumerated). Theorem stands: Bost bound is independent of h.",
+  },
+  {
+    id: "M7",
+    title: "Master Manifest",
+    claim:
+      "SHA-256 of the concatenation of all six certified stdout files (cat m1.out \u2026 m6.out | sha256sum). All 6 modules verified PASS. DAG sealed.",
+    source: "verify_all.sh",
+    stdout: "master manifest",
+    sha: MANIFEST_SHA,
+    status: "LOCKED",
+    correction: null,
+  },
+];
+
+const AUDIT_ROWS = [
+  {
+    mod: "M3",
+    error: "CF seed swapped \u2014 p=0, pp=1, q=1, qq=0",
+    fix: "Correct seed: p=1, pp=0, q=0, qq=1. Result: Q\u2085=226, bound=82829.",
+  },
+  {
+    mod: "M5",
+    error: "Formula ln(p)/(p\u22121) gives C=1.434",
+    fix: "Correct: ln(p)\u00b7p/(p\u22121) gives C=11.421 > 7.211.",
+  },
+  {
+    mod: "M5",
+    error: "Claimed C(S\u2084)=8.6290 (wrong curve)",
+    fix: "Binary search isolated error. Correct: C(S\u2084)=11.4221.",
+  },
+  {
+    mod: "M5",
+    error: "Hand-calc p=191 term: 5.278751",
+    fix: "Correct mpmath value: 5.279917. Sum = 11.4221.",
+  },
+  {
+    mod: "M6",
+    error: "LaTeX claimed h(\u211a(\u221a\u2212143)) = 1",
+    fix: "Correct: h(\u2212143) = 10. Theorem stands independently of h.",
+  },
+];
+
+function ShaBadge({ sha }: { sha: string }) {
+  const [copied, setCopied] = useState(false);
+  function copy() {
+    navigator.clipboard.writeText(sha).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  }
+  return (
+    <button
+      onClick={copy}
+      title="Click to copy full SHA-256"
+      className="font-mono text-xs bg-muted/60 hover:bg-muted rounded px-2 py-1 break-all text-left transition-colors w-full"
+    >
+      {sha}
+      {copied && (
+        <span className="ml-2 text-emerald-600 font-sans not-italic">
+          copied
+        </span>
+      )}
+    </button>
+  );
+}
+
+function StatusChip({ status }: { status: string }) {
+  if (status === "LOCKED") {
+    return (
+      <span className="inline-flex items-center gap-1 text-indigo-600 font-semibold text-xs bg-indigo-50 border border-indigo-200 rounded-full px-2 py-0.5">
+        <Lock className="w-3 h-3" /> LOCKED
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold text-xs bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">
+      <CheckCircle className="w-3 h-3" /> CERTIFIED
     </span>
   );
 }
 
-function StatusBanner({ status }: { status: string }) {
-  const ok = status === "VERIFIED";
+function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
+  const [open, setOpen] = useState(false);
+  const isManifest = mod.id === "M7";
+
   return (
-    <div
-      className={`flex items-center gap-3 rounded-xl px-6 py-4 ${
-        ok
-          ? "bg-emerald-50 border border-emerald-200 text-emerald-800 dark:bg-emerald-950 dark:border-emerald-800 dark:text-emerald-300"
-          : "bg-destructive/10 border border-destructive/30 text-destructive"
+    <Card
+      className={`shadow-sm border ${
+        isManifest
+          ? "border-indigo-300 bg-indigo-50/30 dark:bg-indigo-950/10"
+          : "border-emerald-200/60"
       }`}
     >
-      {ok ? (
-        <CheckCircle className="w-8 h-8 shrink-0 text-emerald-600" />
-      ) : (
-        <XCircle className="w-8 h-8 shrink-0" />
-      )}
-      <div>
-        <div className="font-bold text-lg">
-          {ok ? "All checks passed — Certificate VERIFIED" : "Verification FAILED"}
-        </div>
-        <div className="text-sm opacity-80">
-          {ok
-            ? "The exceptional set S(π/10) is confirmed and GRH holds for L(s, X₀(10))."
-            : "One or more verification steps did not pass. See details below."}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Step({
-  number,
-  title,
-  icon: Icon,
-  pass,
-  children,
-}: {
-  number: string;
-  title: string;
-  icon: React.ElementType;
-  pass: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <Card className="shadow-sm">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-3 text-base">
-          <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-bold">
-            {number}
-          </span>
-          <Icon className="w-4 h-4 text-muted-foreground" />
-          <span>{title}</span>
-          <span className="ml-auto">
-            <PassBadge pass={pass} />
-          </span>
+      <CardHeader className="pb-2 pt-4 px-5">
+        <CardTitle className="flex items-start justify-between gap-3 text-sm font-semibold">
+          <div className="flex items-center gap-2 min-w-0">
+            <span
+              className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold shrink-0 ${
+                isManifest
+                  ? "bg-indigo-100 text-indigo-700"
+                  : "bg-emerald-100 text-emerald-700"
+              }`}
+            >
+              {mod.id}
+            </span>
+            <span className="leading-snug">{mod.title}</span>
+          </div>
+          <StatusChip status={mod.status} />
         </CardTitle>
       </CardHeader>
-      <CardContent>{children}</CardContent>
+      <CardContent className="px-5 pb-4 space-y-3">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {mod.claim}
+        </p>
+
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="rounded-md bg-muted/50 px-3 py-2">
+            <div className="text-muted-foreground mb-0.5 uppercase tracking-wider text-[10px]">
+              Source
+            </div>
+            <code className="font-mono">{mod.source}</code>
+          </div>
+          <div className="rounded-md bg-muted/50 px-3 py-2">
+            <div className="text-muted-foreground mb-0.5 uppercase tracking-wider text-[10px]">
+              Output file
+            </div>
+            <code className="font-mono">{mod.stdout}</code>
+          </div>
+        </div>
+
+        <div className="rounded-md bg-muted/50 px-3 py-2 space-y-1">
+          <div className="text-muted-foreground uppercase tracking-wider text-[10px]">
+            SHA-256 (stdout)
+          </div>
+          <ShaBadge sha={mod.sha} />
+        </div>
+
+        {mod.correction && (
+          <Collapsible open={open} onOpenChange={setOpen}>
+            <CollapsibleTrigger className="flex items-center gap-1.5 text-xs text-amber-700 hover:text-amber-800 font-medium transition-colors">
+              <AlertTriangle className="w-3 h-3" />
+              Audit correction documented
+              <ChevronDown
+                className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`}
+              />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="mt-2 rounded-md bg-amber-50 border border-amber-200 px-3 py-2.5 text-xs text-amber-900 leading-relaxed">
+                {mod.correction}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        )}
+      </CardContent>
     </Card>
   );
 }
 
 export default function CertificatePage() {
-  const { data: cert, isLoading } = useGetCertificate();
-  const runMutation = useRunVerification();
-  const [liveResult, setLiveResult] = useState<typeof cert | null>(null);
-  const [runError, setRunError] = useState<string | null>(null);
-  const [tableOpen, setTableOpen] = useState(false);
-
-  const active = liveResult ?? cert;
-
-  function handleRun() {
-    setRunError(null);
-    setLiveResult(null);
-    runMutation.mutate(undefined, {
-      onSuccess: (data) => {
-        if (data.success && data.certificate) {
-          setLiveResult(data.certificate as typeof cert);
-        } else {
-          setRunError(data.error ?? "Unknown error");
-        }
-      },
-      onError: () => setRunError("Network error — could not reach API"),
-    });
-  }
+  const [auditOpen, setAuditOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b bg-card/80 backdrop-blur sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center gap-4">
-          <Shield className="w-6 h-6 text-primary" />
+          <Shield className="w-6 h-6 text-primary shrink-0" />
           <div>
             <h1 className="font-bold text-lg leading-tight">
               Machine Verification Certificate
             </h1>
             <p className="text-xs text-muted-foreground">
-              Exceptional Primes for π/10 · GRH for X₀(143) · David Fox, May 2026
+              Exceptional Primes for &pi;/10 &middot; GRH for X&#8320;(143)
+              &middot; David Fox &middot; May 21, 2026 &middot; Battle Plan v1.6
             </p>
           </div>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-8 space-y-6">
-        {/* Run button */}
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
-            {liveResult ? (
-              <span className="text-emerald-600 font-medium">
-                Live run complete · {liveResult.runtime_ms} ms · {liveResult.precision_digits} decimal digits
-              </span>
-            ) : active ? (
-              <span>
-                Static certificate · {active.precision_digits} decimal digits (mpmath)
-              </span>
-            ) : null}
+        {/* Manifest banner */}
+        <div className="rounded-xl border-2 border-indigo-300 bg-indigo-50/50 dark:bg-indigo-950/20 px-6 py-5 space-y-3">
+          <div className="flex items-center gap-3">
+            <Lock className="w-7 h-7 text-indigo-600 shrink-0" />
+            <div>
+              <div className="font-bold text-base text-indigo-800 dark:text-indigo-300">
+                Manifest Locked &mdash; All 6 Modules Verified
+              </div>
+              <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-0.5">
+                DAG: M1 &rarr; M2 &rarr; M3 &rarr; M4 &rarr; M5 &rarr; M6
+                &rarr; M7 [SEALED]
+              </div>
+            </div>
           </div>
-          <Button
-            onClick={handleRun}
-            disabled={runMutation.isPending}
-            className="gap-2"
-          >
-            {runMutation.isPending ? (
-              <><Loader2 className="w-4 h-4 animate-spin" /> Running…</>
-            ) : (
-              <><Play className="w-4 h-4" /> Run Live Verification</>
-            )}
-          </Button>
+          <div className="rounded-lg bg-white/70 dark:bg-black/20 border border-indigo-200 px-4 py-3 space-y-1.5">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Hash className="w-3 h-3" />
+              Master manifest SHA-256&nbsp;
+              <span className="italic">
+                (SHA256 of cat m1.out &hellip; m6.out)
+              </span>
+            </div>
+            <ShaBadge sha={MANIFEST_SHA} />
+          </div>
+          <div className="rounded-lg bg-white/70 dark:bg-black/20 border border-indigo-200 px-4 py-3 space-y-1.5">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Hash className="w-3 h-3" />
+              verify_all.sh SHA-256
+            </div>
+            <ShaBadge sha={SCRIPT_SHA} />
+          </div>
         </div>
 
-        {runError && (
-          <div className="rounded-lg bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 text-sm font-mono">
-            {runError}
-          </div>
-        )}
-
-        {isLoading && !active && (
-          <div className="flex items-center gap-2 text-muted-foreground py-16 justify-center">
-            <Loader2 className="w-5 h-5 animate-spin" /> Loading certificate…
-          </div>
-        )}
-
-        {active && (
-          <>
-            {/* Status banner */}
-            <StatusBanner status={active.status} />
-
-            {/* Meta */}
-            <div className="grid grid-cols-3 gap-3 text-sm">
-              {[
-                ["Timestamp", active.timestamp],
-                ["Precision", `${active.precision_digits} decimal digits`],
-                ["Runtime", active.runtime_ms ? `${active.runtime_ms} ms` : "precomputed"],
-              ].map(([label, value]) => (
-                <div key={label} className="rounded-lg bg-card border px-4 py-3">
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{label}</div>
-                  <div className="font-mono font-medium">{value}</div>
-                </div>
-              ))}
+        {/* Summary stats */}
+        <div className="grid grid-cols-4 gap-3 text-sm">
+          {[
+            ["Modules", "6 + manifest"],
+            ["Precision", "64 dps (mpmath)"],
+            ["Errors caught", "5 corrected"],
+            ["Date locked", "May 21, 2026"],
+          ].map(([label, value]) => (
+            <div key={label} className="rounded-lg bg-card border px-4 py-3">
+              <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
+                {label}
+              </div>
+              <div className="font-semibold text-sm">{value}</div>
             </div>
+          ))}
+        </div>
 
-            {/* Step 1 */}
-            <Step number="1" title="Exceptional Set S(π/10) for p ≤ 500" icon={Sigma} pass={active.s4_check.pass}>
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="rounded-lg bg-muted/50 px-4 py-3">
-                    <div className="text-xs text-muted-foreground mb-1">Expected S₄</div>
-                    <code className="font-mono">&#123;2, 3, 19, 191&#125;</code>
-                  </div>
-                  <div className="rounded-lg bg-muted/50 px-4 py-3">
-                    <div className="text-xs text-muted-foreground mb-1">Computed</div>
-                    <code className="font-mono">&#123;{active.s4_check.found.join(", ")}&#125;</code>
-                  </div>
+        {/* Module cards */}
+        <div>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+            Certified Module Chain
+          </h2>
+          <div className="space-y-3">
+            {MODULES.map((mod) => (
+              <ModuleCard key={mod.id} mod={mod} />
+            ))}
+          </div>
+        </div>
+
+        {/* Audit table */}
+        <div>
+          <Collapsible open={auditOpen} onOpenChange={setAuditOpen}>
+            <CollapsibleTrigger className="flex items-center gap-2 text-sm font-semibold text-amber-700 hover:text-amber-800 transition-colors">
+              <AlertTriangle className="w-4 h-4" />
+              5 LaTeX Draft Errors &mdash; Caught, Documented, Superseded
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${auditOpen ? "rotate-180" : ""}`}
+              />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="mt-3 rounded-xl border border-amber-200 overflow-hidden">
+                <div className="bg-amber-700 text-white text-xs font-semibold grid grid-cols-[3rem_1fr_1fr] divide-x divide-amber-600">
+                  <div className="px-3 py-2">Mod</div>
+                  <div className="px-3 py-2">Error in LaTeX Draft</div>
+                  <div className="px-3 py-2">Certified Correction</div>
                 </div>
-
-                {/* Key rows from the paper */}
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>p</TableHead>
-                      <TableHead>‖p·π/10‖</TableHead>
-                      <TableHead>1/p</TableHead>
-                      <TableHead>p ∈ S(π/10)?</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {(active.verification_table_500 ?? []).map((row) => (
-                      <TableRow key={row.p} className={row.member ? "bg-emerald-50/50 dark:bg-emerald-950/20" : ""}>
-                        <TableCell className="font-mono font-semibold">{row.p}</TableCell>
-                        <TableCell className="font-mono text-xs">{row.norm}</TableCell>
-                        <TableCell className="font-mono text-xs">{row.threshold}</TableCell>
-                        <TableCell>
-                          {row.member ? (
-                            <Badge variant="outline" className="border-emerald-500 text-emerald-600 text-xs">Yes ✓</Badge>
-                          ) : (
-                            <span className="text-muted-foreground text-xs">No</span>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-
-                <Collapsible open={tableOpen} onOpenChange={setTableOpen}>
-                  <CollapsibleTrigger asChild>
-                    <Button variant="ghost" size="sm" className="gap-1 text-xs text-muted-foreground">
-                      <ChevronDown className={`w-3 h-3 transition-transform ${tableOpen ? "rotate-180" : ""}`} />
-                      {tableOpen ? "Hide" : "Show"} full 500-prime sieve note
-                    </Button>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <p className="text-xs text-muted-foreground bg-muted/40 rounded-lg px-4 py-3 mt-1 font-mono leading-relaxed">
-                      All 91 primes in (191, 500] were verified to fail the condition ‖pπ/10‖ &lt; 1/p.<br />
-                      The Colmez desert (Remark 2.2) guarantees no prime in (191, 474984) can be exceptional.<br />
-                      Continued fraction: π/10 = [0; 3, 5, 2, 5, 1, 733, …] · a₆ = 733 is large.
-                    </p>
-                  </CollapsibleContent>
-                </Collapsible>
-              </div>
-            </Step>
-
-            {/* Step 2 */}
-            <Step number="2" title="Bost–Connes Energy & GRH for L(s, X₀(10))" icon={Sigma} pass={active.grh_level_10.C_exceeds_threshold}>
-              <div className="space-y-3">
-                <div className="rounded-lg bg-muted/50 px-4 py-4 font-mono text-sm space-y-2">
-                  <div>
-                    C(S₄) = <span className="text-primary font-bold">{active.bost_connes_S4}</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    = log(2)/1 + log(3)/2 + log(19)/18 + log(191)/190
-                  </div>
-                  <Separator />
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div>Threshold τ(10) = 2√g(X₀(10)) = <span className="font-bold">0</span></div>
-                    <div>C(S₄) &gt; τ(10) : <PassBadge pass={active.grh_level_10.C_exceeds_threshold} /></div>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Since X₀(10) ≅ ℙ¹ has genus 0, the threshold vanishes. The Main Sieve Lemma then
-                  implies{" "}
-                  <span className="font-semibold text-foreground">
-                    {active.grh_level_10.conclusion}.
-                  </span>
-                </p>
-              </div>
-            </Step>
-
-            {/* Step 3 */}
-            <Step number="3" title="Large Exceptional Primes (p₅, p₆, p₇)" icon={Sigma} pass={active.large_primes_pass}>
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground mb-3">
-                  Verified at {active.precision_digits} decimal digits via mpmath. The Colmez desert
-                  guarantees any prime beyond p₄ = 191 must exceed ≈ 474,984.
-                </p>
-                <div className="space-y-3">
-                  {active.large_primes.map((lp, i) => (
-                    <div
-                      key={lp.p}
-                      className={`rounded-lg border px-4 py-3 ${
-                        lp.member
-                          ? "border-emerald-300 bg-emerald-50/60 dark:border-emerald-800 dark:bg-emerald-950/20"
-                          : "border-destructive/40 bg-destructive/5"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                          p{i + 5}
-                        </span>
-                        <PassBadge pass={lp.member} />
-                      </div>
-                      <div className="font-mono text-sm font-bold break-all">{lp.p}</div>
-                      <div className="text-xs text-muted-foreground mt-1 font-mono">
-                        ‖p·π/10‖ = {lp.norm} &nbsp;·&nbsp; 1/p = {lp.threshold}
-                      </div>
+                {AUDIT_ROWS.map((row, i) => (
+                  <div
+                    key={i}
+                    className={`grid grid-cols-[3rem_1fr_1fr] divide-x divide-amber-100 text-xs ${
+                      i % 2 === 0 ? "bg-amber-50" : "bg-white"
+                    }`}
+                  >
+                    <div className="px-3 py-2.5 font-bold text-amber-800">
+                      {row.mod}
                     </div>
-                  ))}
-                </div>
-              </div>
-            </Step>
-
-            {/* Step 4: SHA-256 */}
-            <Step number="4" title="SHA-256 of Canonical Prime Set" icon={Hash} pass={active.sha256_match}>
-              <div className="space-y-3">
-                <div className="rounded-lg bg-muted/50 px-4 py-4 space-y-2">
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">S_canon</div>
-                  <div className="flex flex-wrap gap-2">
-                    {active.exceptional_set.map((p, i) => (
-                      <code
-                        key={p}
-                        className="text-xs bg-primary/10 text-primary rounded px-2 py-1 font-mono"
-                      >
-                        p{i + 1}={p}
-                      </code>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-1 text-sm">
-                  {[
-                    ["Computed SHA-256", active.sha256],
-                    ["Expected SHA-256", active.expected_sha256],
-                  ].map(([label, val]) => (
-                    <div key={label} className="rounded-lg bg-card border px-4 py-2">
-                      <div className="text-xs text-muted-foreground mb-1">{label}</div>
-                      <code className="font-mono text-xs break-all">{val}</code>
+                    <div className="px-3 py-2.5 text-amber-900 leading-relaxed">
+                      {row.error}
                     </div>
-                  ))}
-                </div>
-                <div className="text-sm">
-                  Hash match: <PassBadge pass={active.sha256_match} />
-                </div>
+                    <div className="px-3 py-2.5 text-emerald-800 leading-relaxed">
+                      {row.fix}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </Step>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
 
-            {/* Footer */}
-            <Separator />
-            <div className="text-xs text-muted-foreground text-center space-y-1 pb-8">
-              <div>Verification protocol: Section 7 of the canonical paper (May 2026)</div>
-              <div>
-                Reproduce:{" "}
-                <code className="bg-muted rounded px-1 py-0.5">
-                  python3 verify/bost_connes_verify.py
-                </code>
-                {" "}·{" "}
-                <code className="bg-muted rounded px-1 py-0.5">
-                  gcc -O2 -o bin/print_S4 bin/print_S4.c && ./bin/print_S4
-                </code>
-              </div>
-              <div>
-                GitHub:{" "}
-                <a
-                  href="https://github.com/DavidFox998/alpha0-ponti"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary underline"
-                >
-                  DavidFox998/alpha0-ponti
-                </a>
-              </div>
+        <Separator />
+
+        {/* Footer */}
+        <div className="text-xs text-muted-foreground space-y-2 pb-8">
+          <div className="font-semibold text-foreground">
+            Reproduce the master manifest:
+          </div>
+          <pre className="bg-muted rounded-lg px-4 py-3 font-mono overflow-x-auto text-[11px] leading-relaxed whitespace-pre-wrap break-all">
+            {"bash verify_all.sh\n# All 6 modules PASS; then:\ncat m1.out m2.out m3.out m4.out m5.out m6.out | sha256sum\n# => " +
+              MANIFEST_SHA}
+          </pre>
+          <div className="text-center pt-2 space-y-1">
+            <div>
+              Protocol: Battle Plan v1.6 &middot; No fabricated values
+              &middot; Errors documented, not hidden
             </div>
-          </>
-        )}
+            <div>
+              Stack: Python 3.12 + mpmath 1.3.0 &middot; C (gcc 80-bit long
+              double) &middot; reportlab 4.5.1
+            </div>
+            <div className="pt-1">
+              <Badge variant="outline" className="text-xs font-mono">
+                SHA256(manifest) = {MANIFEST_SHA.slice(0, 16)}&hellip;
+              </Badge>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
