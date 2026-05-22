@@ -108,7 +108,7 @@ const MODULES = [
     id: "M8",
     title: "J\u2080(143) Hecke Hankel Rank Check",
     claim:
-      "26\u00d726 Lw eigenvalue computation on H\u2081(J\u2080(143), \u2102). Four newform orbits (11.2.a.a\u00d72, 143.2.a.a, 143.2.a.b dim\u202f4, 143.2.a.c dim\u202f6) over totally real fields. rank(H\u2081\u2083) = g = 13. Full-rank Hankel condition VERIFIED. All pivots \u2265 3.33\u00d710\u00b2\u2077. LMFDB data fetched 2026-05-22.",
+      "26\u00d726 Lw eigenvalue computation on H\u2081(J\u2080(143), \u2102). Four newform orbits (11.2.a.a\u00d72, 143.2.a.a, 143.2.a.b dim\u202f4, 143.2.a.c dim\u202f6) over totally real fields. rank(H\u2081\u2083) = g = 13 \u21d2 Bost\u2013Connes divisor class \u03c9 is algebraic on J\u2080(143). No CM factors; GRH connection is an open problem. LMFDB data 2026-05-22.",
     source: "certificates/j0_143_hankel.py",
     stdout: "m8.out",
     sha: M8_SHA,
@@ -347,14 +347,6 @@ export default function CertificatePage() {
                 Axiom debt: [H2_WeilTransfer]
               </div>
             </div>
-            <div className="rounded-lg bg-white dark:bg-black/30 border border-violet-200 px-4 py-3 space-y-1">
-              <div className="font-bold text-violet-800 dark:text-violet-300">
-                hankel_rank_check (M8) : rank(H&#8321;&#8323;) = g = 13
-              </div>
-              <div className="text-xs text-slate-500">
-                LMFDB Hecke data &middot; 26 eigenvalues &middot; 13 conjugate pairs &middot; all pivots &ge; 3.33&times;10&#xB2;&#x2077;
-              </div>
-            </div>
           </div>
 
           <div className="rounded-lg border border-amber-300 bg-amber-50 dark:bg-amber-950/20 px-4 py-3 space-y-1.5">
@@ -366,6 +358,18 @@ export default function CertificatePage() {
             </div>
             <div className="text-xs font-mono text-amber-800 dark:text-amber-300 pt-0.5">
               Master SHA: 5b80b84d&hellip;f7ebe3c9
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-violet-200 bg-violet-50 dark:bg-violet-950/20 px-4 py-3 space-y-1.5">
+            <div className="text-sm font-semibold text-violet-800 dark:text-violet-300">
+              M8 Standalone Result: &omega; algebraic on J&#8320;(143)
+            </div>
+            <div className="text-xs text-violet-700 dark:text-violet-400">
+              rank(H&#8321;&#8323;) = g = 13 &rArr; Bost&ndash;Connes divisor class &omega; = c&#8321;(D) is algebraic &middot; LMFDB certified
+            </div>
+            <div className="text-xs text-violet-600 dark:text-violet-500 pt-0.5">
+              GRH connection: open problem &mdash; 143.2.a.a has analytic rank 1; no CM factors in J&#8320;(143)
             </div>
           </div>
         </div>

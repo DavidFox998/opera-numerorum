@@ -75,8 +75,10 @@ story += [
     b("The 13x13 Hankel matrix H_13 formed from the exterior-power traces "
       "e_k = tr(Lambda^k L_w) of the Bost-Connes weighted Hecke operator "
       "L_w = sum_{p in S_4} delta_p T_p on H_1(J_0(143), C) has rank exactly g = 13."),
-    b("This is the full-rank condition required for the Bost-Connes rank argument "
-      "in David Fox's conditional proof of GRH for X_0(143)."),
+    b("By Fox 2026, Theorem 1.2, rank(H) = g implies the Bost-Connes divisor class "
+      "omega = c_1(D) is algebraic on J_0(143).  "
+      "This module certifies the algebraicity of omega.  "
+      "No claim regarding GRH is made here; see Scope and Limits (Section 12)."),
 ]
 
 story += [
@@ -292,8 +294,28 @@ story += [
     pre("  python3 certificates/j0_143_hankel.py > m8.out\n"
         "  sha256sum m8.out\n"
         f"  # Expected: {SHA_M8_STDOUT}  m8.out"),
+]
+
+story += [
+    h("12.  Scope and Limits"),
+    ok("WE PROVE:  omega is algebraic on J_0(143).  rank(H_13) = 13 = g."),
+    b("WE DO NOT PROVE:  GRH for L(s,E) for any factor E of J_0(143)."),
+    b("REASON 1:  The rational newform 143.2.a.a has analytic rank 1 "
+      "(LMFDB: analytic_rank=1), so L(E,1)=0.  "
+      "A vanishing central value is not a contradiction to GRH, "
+      "but standard Beilinson regulator arguments that require L(E,1) != 0 do not apply."),
+    b("REASON 2:  The newforms 143.2.a.b and 143.2.a.c are totally real but not CM "
+      "(LMFDB: is_cm=false, cm_discs=[]).  "
+      "CM structure is required for the Beilinson K_2 regulator route to GRH."),
+    b("REASON 3:  The curve y^2=x^3-x has conductor 32 and CM by Q(sqrt(-1)); "
+      "it is unrelated to X_0(143).  "
+      "No CM elliptic curve factor of J_0(143) is known."),
+    b("OPEN PROBLEM:  Determine whether algebraic omega implies any zero-free region "
+      "for L(s, J_0(143)).  This is not known.  "
+      "The sole remaining axiom in the M1-M6 chain is H2_WeilTransfer (see M6/M7)."),
     hr(thick=1.5, color="#1a237e"),
-    ok("CERTIFIED.  rank(H_13) = 13 = g(X_0(143)).  Hankel full-rank condition holds."),
+    ok("CERTIFIED.  rank(H_13) = 13 = g(X_0(143)).  omega algebraic.  "
+       "GRH connection: open problem."),
     ok(f"SHA256(m8.out) = {SHA_M8_STDOUT}"),
 ]
 

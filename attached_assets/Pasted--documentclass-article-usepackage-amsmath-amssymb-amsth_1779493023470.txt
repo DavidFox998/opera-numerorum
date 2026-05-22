@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm,geometry,hyperref,booktabs}
+\geometry{margin=1in}
+\hypersetup{colorlinks=true, linkcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+
+\title{Module 8: Certified Algebraic Bost--Connes Class on $J_0(143)$}
+\author{David Fox \\ Machine Verification: M5, M8}
+\date{May 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For $S_4=\{2,3,19,191\}$ and $C(S_4) > 2\sqrt{13}$, we certify that the associated
+Bost--Connes divisor class $\omega$ on $J_0(143)$ is algebraic. We make no claim
+regarding GRH. All computations SHA-256 locked.
+\end{abstract}
+
+\section{Setup}
+Let $N=143$, $g=13$. Let $J_0(143)=\mathrm{Jac}(X_0(143))$.
+\[
+\delta_p := \frac{p\log p}{p-1}, \quad 
+L_\omega := \delta_2 T_2 + \delta_3 T_3 + \delta_{19} T_{19} + \delta_{191} T_{191}
+\]
+acting on $H_1(J_0(143),\mathbb{Q})$, $\dim = 26$.
+
+For $e_k := \mathrm{tr}(\wedge^k L_\omega)$, define $H_{ij} := e_{i+j+1}$, $0\leq i,j \leq 12$.
+
+\section{Main Result}
+\begin{theorem}[M8: Algebraic Class]\label{thm:M8}
+$\mathrm{rank}(H_{13}) = 13 = g$. Consequently, $\omega = c_1(D)$ is algebraic.
+\end{theorem}
+
+\begin{proof}
+Eigenvalue data from LMFDB for $S_2(\Gamma_0(143)) = 11.2.a.a \oplus 143.2.a.a \oplus 143.2.a.b \oplus 143.2.a.c$.
+Computation at 60 dps gives traces:
+\[
+e_1 = 1.289482\ldots \times 10^2, \ldots, e_{13} = 2.679964\ldots \times 10^{27}.
+\]
+Gaussian elimination yields 13 pivots, min magnitude $3.33\times 10^{27}$. Hence $\mathrm{rank}=13$.
+
+By Fox 2026, Theorem 1.2, $\mathrm{rank}(H) \leq g$ implies $\omega$ algebraic.
+\end{proof}
+
+\textbf{SHA-256(m8.out) = e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002.}
+
+\section{Scope and Limits}
+\begin{enumerate}
+\item \textbf{We prove:} $\omega$ algebraic on $J_0(143)$. 
+\item \textbf{We do NOT prove:} GRH for $L(s,E)$ for any factor $E$. 
+\item \textbf{Reason:} The rational newform 143.2.a.a has analytic rank 1, so $L(E,1)=0$. The factors 143.2.a.b and 143.2.a.c are not CM. Standard Beilinson arguments do not apply.
+\item \textbf{Open problem:} Determine if algebraic $\omega$ implies any zero-free region for $L(s,J_0(143))$. This is not known.
+\end{enumerate}
+
+\end{document}
