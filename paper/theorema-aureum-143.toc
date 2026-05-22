@@ -1,0 +1,14 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {paragraph}{Notation.}{3}{section*.2}%
+\contentsline {section}{\numberline {2}The Exceptional Set for $\pi /10$}{3}{section.2}%
+\contentsline {section}{\numberline {3}Bost--Connes Energy and the GRH Criterion}{4}{section.3}%
+\contentsline {section}{\numberline {4}The Main Sieve Lemma}{4}{section.4}%
+\contentsline {section}{\numberline {5}Level 143 and the Descent to $\zeta (s)$}{5}{section.5}%
+\contentsline {section}{\numberline {6}Large Exceptional Primes}{5}{section.6}%
+\contentsline {section}{\numberline {7}Module 08A: The Exceptional Boost $E$}{6}{section.7}%
+\contentsline {paragraph}{Module chain summary.}{7}{section*.4}%
+\contentsline {section}{\numberline {8}Machine Verification Protocol}{7}{section.8}%
+\contentsline {section}{\numberline {9}Lean 4 Formal Certification}{7}{section.9}%
+\contentsline {paragraph}{Master SHA (M7 LOCKED).}{9}{section*.10}%
+\contentsline {paragraph}{Certification context.}{9}{section*.11}%
+\contentsline {section}{\numberline {10}Open Items}{9}{section.10}%
