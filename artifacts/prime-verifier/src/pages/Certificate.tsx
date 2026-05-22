@@ -303,6 +303,47 @@ export default function CertificatePage() {
           </div>
         </div>
 
+        {/* Theorem status */}
+        <div className="rounded-xl border-2 border-slate-300 bg-slate-50/60 dark:bg-slate-950/20 px-6 py-5 space-y-4">
+          <div className="flex items-center gap-3">
+            <CheckCircle className="w-6 h-6 text-slate-600 shrink-0" />
+            <div className="font-bold text-base text-slate-800 dark:text-slate-200">
+              Status: Conditional Theorem Proven
+            </div>
+          </div>
+
+          <div className="space-y-2 font-mono text-sm">
+            <div className="rounded-lg bg-white dark:bg-black/30 border border-slate-200 px-4 py-3 space-y-1">
+              <div className="font-bold text-slate-800 dark:text-slate-100">
+                main_theorem : H2_WeilTransfer &rarr; RiemannHypothesis
+              </div>
+              <div className="text-xs text-slate-500">
+                Axiom debt: []
+              </div>
+            </div>
+            <div className="rounded-lg bg-white dark:bg-black/30 border border-slate-200 px-4 py-3 space-y-1">
+              <div className="font-bold text-slate-800 dark:text-slate-100">
+                rh_via_weil : RiemannHypothesis
+              </div>
+              <div className="text-xs text-slate-500">
+                Axiom debt: [H2_WeilTransfer]
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-amber-300 bg-amber-50 dark:bg-amber-950/20 px-4 py-3 space-y-1.5">
+            <div className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+              Sole Open Assumption: H2_WeilTransfer
+            </div>
+            <div className="text-xs text-amber-700 dark:text-amber-400">
+              The chain is locked. H2 is open. RH is not claimed unconditionally.
+            </div>
+            <div className="text-xs font-mono text-amber-800 dark:text-amber-300 pt-0.5">
+              Master SHA: 5b80b84d&hellip;f7ebe3c9
+            </div>
+          </div>
+        </div>
+
         {/* Summary stats */}
         <div className="grid grid-cols-4 gap-3 text-sm">
           {[
