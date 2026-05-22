@@ -42,3 +42,9 @@ id = "TYh6fyvj_2vYARZu97JZL"
 uri = "file://certificates/Module_7_Certificate.pdf"
 type = "pdf"
 title = "Module 7 — Master Manifest (LOCKED)"
+
+[[outputs]]
+id = "e7kPLNS5tXfqHW9V_WELi"
+uri = "file://certificates/Module_8_Certificate.pdf"
+type = "pdf"
+title = "Module 8 Certificate — J₀(143) Hankel Rank Check"
