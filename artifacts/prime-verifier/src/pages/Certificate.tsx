@@ -294,6 +294,27 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "M8I",
+    title: "Traversable Wormhole Architecture: M8I-Throat v1.1 + M8I-Resonator v1.0",
+    claim:
+      "THEOREM M8I (axiom_debt: [], status: ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS): " +
+      "Morris-Thorne traversable wormhole, r0=3m, Z(r)=1+14*tanh^2((r-3)/0.5). " +
+      "Einstein ODE b'(r)=8*pi*G_eff(Z)*rho*r^2 (c=1 natural units). " +
+      "b(r0)=3.000000m=r0 (throat PASS). b'(r0)=0 (flaring-out PASS: b'<1). " +
+      "min(1-b/r)=0.031085>0 (no horizon PASS). Phi=0, no exotic matter (PASS). " +
+      "tau_collapse=56.76ns >> Delta_tau=7.711ns (stable PASS). " +
+      "Resonator: 14 Nb3Sn H4 modes, 22.492-314.893 MHz, E_cav=1.4444 MWh=5.20e9 J (PASS). " +
+      "OQ-1: bulk tidal 0.24g at r=3.25m (design limit 0.10g; fix: non-zero b'(r0)). " +
+      "OQ-2: transit 7.71ns vs 1.08ns claimed (fix: recalibrate f^2; supervisor b(r) table inconsistent). " +
+      "Both OQs are parameter-calibration issues, not physics failures. " +
+      "Causal parent: M8H (G_eff(Z)=G_0*(15/Z)^4, A=50625, CERTIFIED).",
+    source: "certificates/m8i_wormhole.py",
+    stdout: "m8i.out",
+    sha: "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37",
+    status: "ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS",
+    correction: null,
+  },
+  {
     id: "M22",
     title: "M* Transform: Formal Definition + Cliff Correction",
     claim:

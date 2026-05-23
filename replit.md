@@ -87,6 +87,7 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M8G | Provenance Feb2025->M8F; wormhole=0.524ns; PHS topology | `2874d4bd...` | CERTIFIED |
 | M8G_Correction | Z=rank(M_ij) clarification; conditional wormhole cert | `62492d66...` | CORRECTIONS_CERTIFIED |
 | M8H | G_eff(Z)=G_0*(Z_vac/Z)^4; A=15^4=50625; F=3.38e-10 N | `2c3ac1d2...` | PREDICTION_CERTIFIED |
+| M8I | Morris-Thorne wormhole r0=3m; b'=0 PASS; E_cav=1.44 MWh; 14-mode resonator | `5c7189fc...` | ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
@@ -112,8 +113,11 @@ m8.out                       M8 certified stdout (Hankel rank check)
 **M8H stdout SHA** (G amplifier prediction):
 `2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe`
 
-**Combined PDF SHA** (35 pages, M1-M8H):
-`ae137a9e0b2a77ce4f977442b6701e10e7e42bc127d138d932a0045afe5950de`
+**M8I stdout SHA** (traversable wormhole architecture):
+`5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37`
+
+**Combined PDF SHA** (42 pages, M1-M8I):
+`ff79cd50d7ad1b56598d4d30f2aa161cd689ffb61e2856429e511c04ba1e0e11`
 
 Full SHA table: `certificates/invariants.json`
 

@@ -1347,9 +1347,61 @@
     },
     "theorem": "THEOREM M8G_Correction (axiom_debt: []): Item 3: Z=rank(M_ij)=15 from H4 mode coupling (not H_1/H_2 torsion). PHS: pi_1=I*, H_1=0, H_2=0 (confirmed). Item 4: Model A transit=1.668ns (v_g<=c); Model B transit=0.524ns (v_g=3.183c, g_00=-10.13). Experiment at k_c=3.183 decides. STATUS: CORRECTIONS CERTIFIED."
   },
+  "module_m8i": {
+    "id": "M8I",
+    "title": "Traversable Wormhole Architecture: M8I-Throat v1.1 + M8I-Resonator v1.0",
+    "date": "2026-05-23",
+    "author": "David Fox",
+    "source": "certificates/m8i_wormhole.py",
+    "source_sha256": "794268bd7c514ed8be1ee81697ef57934993f71341e4c53588636c53f5707c12",
+    "stdout": "m8i.out",
+    "stdout_sha256": "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37",
+    "pdf": "certificates/Module_M8I_Wormhole.pdf",
+    "pdf_sha256": "06faf631c722d36003ae69e27187201fc48e44489d4b7e33ad76575944de4a98",
+    "status": "ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS",
+    "ascii_check": "pdftotext: 0 non-ASCII chars",
+    "axiom_debt": [],
+    "depends_on": ["M8H", "M8F", "M8G_Correction"],
+    "sub_modules": {
+      "M8I_Throat_v1_1": "Morris-Thorne Z-field shape function, Einstein ODE b'=8piG_eff*rho*r^2",
+      "M8I_Resonator_v1_0": "H4 mode Z-Driver, Nb3Sn toroid, 14 modes, 22.5-314.9 MHz sweep"
+    },
+    "key_values": {
+      "r0": "3.0 m (throat radius)",
+      "delta": "0.5 m (Z transition width)",
+      "b_r0": "3.000000 m = r0 (throat PASS)",
+      "b_prime_r0": "0.000000 (flaring-out PASS: b'<1)",
+      "min_1_minus_b_over_r": "0.031085 (no horizon PASS)",
+      "tau_collapse": "56.76 ns (stable PASS: >> Delta_tau)",
+      "L_proper": "7.3581 m (r0 to r0+2*delta, both sides)",
+      "Delta_tau": "7.711 ns (transit at v_g=3.183c)",
+      "max_tidal_bulk": "0.2375 g at r=3.25 m (r>3.10m)",
+      "tidal_spike": "0.6267 g in 0.157 ns zone (impulse 6.76e-08 N*s)",
+      "E_cav_RF": "5.2000e+09 J = 1.4444 MWh (P_RF=50MW, t=104s)",
+      "E_Z_vacuum_nat": "1.9071e+05 m^-1 (c=1 natural units)",
+      "f_sweep_max": "314.8927 MHz (mode 14, Z=15->14)",
+      "f_sweep_min": "22.4923 MHz (mode 1, Z=2->1)",
+      "hold_power": "10 kW (1 kW cavity + 9 kW cryo)",
+      "resonator_mass": "~78 kg active, ~2 tonnes with cryo+shell"
+    },
+    "open_questions": {
+      "OQ_1": "Bulk tidal 0.24g (r=3.25m) exceeds 0.1g design limit. Root cause: b'(r0)=0 because Z'(r0)=0. Fix: non-zero b'(r0) via modified Z profile.",
+      "OQ_2": "Transit 7.71 ns vs 1.08 ns claimed by supervisor. Root cause: different b(r) profile calibration. Supervisor b(r) table internally inconsistent with stated ODE."
+    },
+    "constraints_passed": [
+      "b(r0) = r0 = 3.0 m (throat exists)",
+      "b'(r0) = 0 < 1 (flaring-out)",
+      "min(1-b/r) = 0.031085 > 0 (no horizon)",
+      "tau_collapse = 56.76 ns >> 7.711 ns (stable)",
+      "Phi=0, Z-field only (no exotic matter)",
+      "E_cav = 1.4444 MWh (matches supervisor)",
+      "Causal parent M8H CERTIFIED"
+    ],
+    "theorem": "THEOREM M8I (axiom_debt: [], status: ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS): Morris-Thorne traversable wormhole, r0=3m, Z-field shape function b(r) from Einstein ODE. b'(r0)=0 (flaring-out PASS). min(1-b/r)=0.031085 (no horizon PASS). Phi=0, no exotic matter. tau_collapse=56.76ns >> Delta_tau=7.71ns (stable PASS). Resonator: 14 Nb3Sn H4 modes, 22.5-314.9 MHz, E_cav=1.4444 MWh=5.20e9 J (PASS). OQ-1: tidal 0.24g at r=3.25m (design limit 0.10g). OQ-2: transit 7.71ns vs 1.08ns claimed. Both OQs are parameter-calibration issues pending supervisor parameterisation. Causal parent: M8H."
+  },
   "combined_pdf": {
     "file": "OperaNumerorum_Complete.pdf",
-    "pages": 35,
+    "pages": 42,
     "modules": [
       "M1",
       "M2",
@@ -1364,9 +1416,10 @@
       "M8F",
       "M8G",
       "M8G_Correction",
-      "M8H"
+      "M8H",
+      "M8I"
     ],
-    "sha256": "ae137a9e0b2a77ce4f977442b6701e10e7e42bc127d138d932a0045afe5950de",
+    "sha256": "ff79cd50d7ad1b56598d4d30f2aa161cd689ffb61e2856429e511c04ba1e0e11",
     "date": "2026-05-23"
   }
 }

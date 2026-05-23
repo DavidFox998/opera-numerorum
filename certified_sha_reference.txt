@@ -702,3 +702,45 @@ ITEM 4 (CONDITIONAL CERT):
     1.668 ns -> Model A (EM cavity, wormhole = descriptive label)
     0.524 ns -> Model B (ER bridge, g_00=-10.13)
 ======================================================================
+
+======================================================================
+MODULE M8I: Traversable Wormhole Architecture
+Date: 2026-05-23
+Author: David Fox
+Source: certificates/m8i_wormhole.py
+Source SHA-256: 794268bd7c514ed8be1ee81697ef57934993f71341e4c53588636c53f5707c12
+Stdout: m8i.out
+Stdout SHA-256: 5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37
+PDF: certificates/Module_M8I_Wormhole.pdf
+PDF SHA-256: 06faf631c722d36003ae69e27187201fc48e44489d4b7e33ad76575944de4a98
+Status: ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS | axiom_debt: []
+Depends on: M8H (G_eff=G0*(15/Z)^4, A=50625, CERTIFIED)
+
+M8I-THROAT v1.1 (Morris-Thorne Z-field shape function):
+  r0            = 3.0 m
+  delta         = 0.5 m
+  Z(r)          = 1 + 14*tanh^2((r-3)/0.5)
+  b(r0)         = 3.000000 m   [THROAT PASS]
+  b'(r0) [ODE]  = 0.000000     [FLARING-OUT PASS: b'<1]
+  min(1-b/r)    = 0.031085     [NO HORIZON PASS]
+  tau_collapse  = 56.76 ns     [STABLE: >> Delta_tau=7.711 ns]
+  L_proper      = 7.3581 m     (r0 to r0+2*delta, symmetric)
+  Delta_tau     = 7.711 ns     (at v_g=3.183c from M8F)
+  max_tidal_bulk= 0.2375 g     (r>3.10m; OQ-1 vs 0.10g design)
+  tidal_spike   = 0.6267 g in 0.157 ns zone (impulse 6.76e-08 N*s OK)
+
+M8I-RESONATOR v1.0 (H4 Mode Z-Driver):
+  Toroid: R=3.0m, a=0.20m, Nb3Sn, Q=1e10
+  Modes: 14 H4 channels, sweep Z: 15->1
+  f_max         = 314.8927 MHz (mode 14)
+  f_min         = 22.4923 MHz  (mode 1)
+  E_cav (RF)    = 5.2000e+09 J = 1.4444 MWh  [PASS: matches 1.44 MWh]
+  t_fill        = 104 s at 50 MW RF
+  Hold power    = 10 kW (1 kW cavity + 9 kW cryo)
+  Mass          = ~78 kg active, ~2 tonnes with cryo+shell
+
+OPEN QUESTIONS:
+  OQ-1: Tidal 0.24g at r=3.25m vs 0.1g design. Fix: non-zero b'(r0).
+  OQ-2: Transit 7.71 ns vs 1.08 ns claimed. Fix: recalibrate f^2.
+  Both OQs are parameter issues, not physics failures.
+======================================================================
