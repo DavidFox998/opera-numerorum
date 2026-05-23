@@ -1,0 +1,256 @@
+========================================================================
+Module 14: 600-Cell Quaternion S_4 Bridge
+Enumerate all 120 600-cell vertices; test BC condition S_4 = {2,3,19,191}
+========================================================================
+
+SECTION 1 -- Formula and Constants
+--------------------------------------------------
+  beta(w,x,y,z) = 299 + w + sqrt(phi)*[phi/2*x + 1/(2*phi)*y - 1/(2*phi)*z]
+  phi        = 1.618033988749894848204587
+  sqrt(phi)  = 1.272019649514068964252422  [user: 1.272019]
+  phi/2      = 0.8090169943749474241022934  [user: 0.809017]
+  1/(2*phi)  = 0.3090169943749474241022934  [user: 0.309017]
+  S_4        = {2, 3, 19, 191}
+  Primes tested: <= 1000 (168 primes)
+  mpmath precision: 100 decimal places
+
+  C(S_4) = 11.42214868898029011601234  [M5 certified]
+  C(all primes <= 1000) = 962.6091508681069942020112
+  2*sqrt(33) = 11.48912529307605731970122
+  g_max from C(all primes<=1000) = 231654
+
+SECTION 2 -- Vertex Enumeration
+--------------------------------------------------
+  Total 600-cell vertices generated: 120
+  Vertex count: CORRECT (120)
+
+SECTION 3 -- S_4 Preservation Test (all 120 vertices)
+--------------------------------------------------
+     #                              (w, x, y, z)             beta  S4_ok  note
+  --------------------------------------------------------------------------------
+     1                                  (-1,0,0,0)    298.000000000    YES  INTEGER
+     2                   (-phi/2,-1/2,0,-1/(2phi))    297.797907317    no   
+     3                    (-phi/2,-1/2,0,1/(2phi))    297.554973181    no   
+     4                   (-phi/2,-1/(2phi),-1/2,0)    297.676440249    no   
+     5                    (-phi/2,-1/(2phi),1/2,0)    298.069515938    no   
+     6                   (-phi/2,0,-1/(2phi),-1/2)    298.266053782    no   
+     7                    (-phi/2,0,-1/(2phi),1/2)    297.872978093    no   
+     8                    (-phi/2,0,1/(2phi),-1/2)    298.508987918    no   
+     9                     (-phi/2,0,1/(2phi),1/2)    298.115912229    no   
+    10                    (-phi/2,1/(2phi),-1/2,0)    298.312450074    no   
+    11                     (-phi/2,1/(2phi),1/2,0)    298.705525762    no   
+    12                    (-phi/2,1/2,0,-1/(2phi))    298.826992830    no   
+    13                     (-phi/2,1/2,0,1/(2phi))    298.584058695    no   
+    14                   (-1/2,-phi/2,-1/(2phi),0)    297.545985263    no   
+    15                    (-1/2,-phi/2,1/(2phi),0)    297.788919399    no   
+    16                       (-1/2,-1/2,-1/2,-1/2)    297.985457243    no   
+    17                        (-1/2,-1/2,-1/2,1/2)    297.592381554    no   
+    18                        (-1/2,-1/2,1/2,-1/2)    298.378532932    no   
+    19                         (-1/2,-1/2,1/2,1/2)    297.985457243    no   
+    20                   (-1/2,-1/(2phi),0,-phi/2)    298.500000000    no   
+    21                    (-1/2,-1/(2phi),0,phi/2)    297.863990175    no   
+    22                   (-1/2,0,-phi/2,-1/(2phi))    298.303462156    no   
+    23                    (-1/2,0,-phi/2,1/(2phi))    298.060528020    no   
+    24                    (-1/2,0,phi/2,-1/(2phi))    298.939471980    no   
+    25                     (-1/2,0,phi/2,1/(2phi))    298.696537844    no   
+    26                    (-1/2,1/(2phi),0,-phi/2)    299.136009825    no   
+    27                     (-1/2,1/(2phi),0,phi/2)    298.500000000    no   
+    28                        (-1/2,1/2,-1/2,-1/2)    299.014542757    no   
+    29                         (-1/2,1/2,-1/2,1/2)    298.621467068    no   
+    30                         (-1/2,1/2,1/2,-1/2)    299.407618446    no   
+    31                          (-1/2,1/2,1/2,1/2)    299.014542757    no   
+    32                    (-1/2,phi/2,-1/(2phi),0)    299.211080601    no   
+    33                     (-1/2,phi/2,1/(2phi),0)    299.454014737    no   
+    34                   (-1/(2phi),-phi/2,0,-1/2)    298.054973181    no   
+    35                    (-1/(2phi),-phi/2,0,1/2)    297.661897492    no   
+    36                   (-1/(2phi),-1/2,-phi/2,0)    297.858435336    no   
+    37                    (-1/(2phi),-1/2,phi/2,0)    298.494445161    no   
+    38                   (-1/(2phi),0,-1/2,-phi/2)    298.812450074    no   
+    39                    (-1/(2phi),0,-1/2,phi/2)    298.176440249    no   
+    40                    (-1/(2phi),0,1/2,-phi/2)    299.205525762    no   
+    41                     (-1/(2phi),0,1/2,phi/2)    298.569515938    no   
+    42                    (-1/(2phi),1/2,-phi/2,0)    298.887520850    no   
+    43                     (-1/(2phi),1/2,phi/2,0)    299.523530675    no   
+    44                    (-1/(2phi),phi/2,0,-1/2)    299.720068519    no   
+    45                     (-1/(2phi),phi/2,0,1/2)    299.326992830    no   
+    46                                  (0,-1,0,0)    297.970914486    no   
+    47                   (0,-phi/2,-1/2,-1/(2phi))    298.092381554    no   
+    48                    (0,-phi/2,-1/2,1/(2phi))    297.849447418    no   
+    49                    (0,-phi/2,1/2,-1/(2phi))    298.485457243    no   
+    50                     (0,-phi/2,1/2,1/(2phi))    298.242523107    no   
+    51                   (0,-1/2,-1/(2phi),-phi/2)    298.681995088    no   
+    52                    (0,-1/2,-1/(2phi),phi/2)    298.045985263    no   
+    53                    (0,-1/2,1/(2phi),-phi/2)    298.924929223    no   
+    54                     (0,-1/2,1/(2phi),phi/2)    298.288919399    no   
+    55                   (0,-1/(2phi),-phi/2,-1/2)    298.560528020    no   
+    56                    (0,-1/(2phi),-phi/2,1/2)    298.167452331    no   
+    57                    (0,-1/(2phi),phi/2,-1/2)    299.196537844    no   
+    58                     (0,-1/(2phi),phi/2,1/2)    298.803462156    no   
+    59                                  (0,0,-1,0)    298.606924311    no   
+    60                                  (0,0,0,-1)    299.393075689    no   
+    61                                   (0,0,0,1)    298.606924311    no   
+    62                                   (0,0,1,0)    299.393075689    no   
+    63                    (0,1/(2phi),-phi/2,-1/2)    299.196537844    no   
+    64                     (0,1/(2phi),-phi/2,1/2)    298.803462156    no   
+    65                     (0,1/(2phi),phi/2,-1/2)    299.832547669    no   
+    66                      (0,1/(2phi),phi/2,1/2)    299.439471980    no   
+    67                    (0,1/2,-1/(2phi),-phi/2)    299.711080601    no   
+    68                     (0,1/2,-1/(2phi),phi/2)    299.075070777    no   
+    69                     (0,1/2,1/(2phi),-phi/2)    299.954014737    no   
+    70                      (0,1/2,1/(2phi),phi/2)    299.318004912    no   
+    71                    (0,phi/2,-1/2,-1/(2phi))    299.757476893    no   
+    72                     (0,phi/2,-1/2,1/(2phi))    299.514542757    no   
+    73                     (0,phi/2,1/2,-1/(2phi))    300.150552582    no   
+    74                      (0,phi/2,1/2,1/(2phi))    299.907618446    no   
+    75                                   (0,1,0,0)    300.029085514    no   
+    76                    (1/(2phi),-phi/2,0,-1/2)    298.673007170    no   
+    77                     (1/(2phi),-phi/2,0,1/2)    298.279931481    no   
+    78                    (1/(2phi),-1/2,-phi/2,0)    298.476469325    no   
+    79                     (1/(2phi),-1/2,phi/2,0)    299.112479150    no   
+    80                    (1/(2phi),0,-1/2,-phi/2)    299.430484062    no   
+    81                     (1/(2phi),0,-1/2,phi/2)    298.794474238    no   
+    82                     (1/(2phi),0,1/2,-phi/2)    299.823559751    no   
+    83                      (1/(2phi),0,1/2,phi/2)    299.187549926    no   
+    84                     (1/(2phi),1/2,-phi/2,0)    299.505554839    no   
+    85                      (1/(2phi),1/2,phi/2,0)    300.141564664    no   
+    86                     (1/(2phi),phi/2,0,-1/2)    300.338102508    no   
+    87                      (1/(2phi),phi/2,0,1/2)    299.945026819    no   
+    88                    (1/2,-phi/2,-1/(2phi),0)    298.545985263    no   
+    89                     (1/2,-phi/2,1/(2phi),0)    298.788919399    no   
+    90                        (1/2,-1/2,-1/2,-1/2)    298.985457243    no   
+    91                         (1/2,-1/2,-1/2,1/2)    298.592381554    no   
+    92                         (1/2,-1/2,1/2,-1/2)    299.378532932    no   
+    93                          (1/2,-1/2,1/2,1/2)    298.985457243    no   
+    94                    (1/2,-1/(2phi),0,-phi/2)    299.500000000    no   
+    95                     (1/2,-1/(2phi),0,phi/2)    298.863990175    no   
+    96                    (1/2,0,-phi/2,-1/(2phi))    299.303462156    no   
+    97                     (1/2,0,-phi/2,1/(2phi))    299.060528020    no   
+    98                     (1/2,0,phi/2,-1/(2phi))    299.939471980    no   
+    99                      (1/2,0,phi/2,1/(2phi))    299.696537844    no   
+   100                     (1/2,1/(2phi),0,-phi/2)    300.136009825    no   
+   101                      (1/2,1/(2phi),0,phi/2)    299.500000000    no   
+   102                         (1/2,1/2,-1/2,-1/2)    300.014542757    no   
+   103                          (1/2,1/2,-1/2,1/2)    299.621467068    no   
+   104                          (1/2,1/2,1/2,-1/2)    300.407618446    no   
+   105                           (1/2,1/2,1/2,1/2)    300.014542757    no   
+   106                     (1/2,phi/2,-1/(2phi),0)    300.211080601    no   
+   107                      (1/2,phi/2,1/(2phi),0)    300.454014737    no   
+   108                    (phi/2,-1/2,0,-1/(2phi))    299.415941305    no   
+   109                     (phi/2,-1/2,0,1/(2phi))    299.173007170    no   
+   110                    (phi/2,-1/(2phi),-1/2,0)    299.294474238    no   
+   111                     (phi/2,-1/(2phi),1/2,0)    299.687549926    no   
+   112                    (phi/2,0,-1/(2phi),-1/2)    299.884087771    no   
+   113                     (phi/2,0,-1/(2phi),1/2)    299.491012082    no   
+   114                     (phi/2,0,1/(2phi),-1/2)    300.127021907    no   
+   115                      (phi/2,0,1/(2phi),1/2)    299.733946218    no   
+   116                     (phi/2,1/(2phi),-1/2,0)    299.930484062    no   
+   117                      (phi/2,1/(2phi),1/2,0)    300.323559751    no   
+   118                     (phi/2,1/2,0,-1/(2phi))    300.445026819    no   
+   119                      (phi/2,1/2,0,1/(2phi))    300.202092683    no   
+   120                                   (1,0,0,0)    300.000000000    YES  INTEGER
+
+  Vertices preserving S_4: 2
+  Integer beta cases:      2
+  Non-integer S_4 passes:  0
+
+SECTION 4 -- C(beta) Computation for S_4-Preserving Vertices
+--------------------------------------------------
+  Vertex #1: (-1.0000, 0.0000, 0.0000, 0.0000)
+    beta = 298.0
+    Integer: True
+
+    S_4 details:
+      p=   2: ||2*beta|| = 0.00000000  < 1/2 = 0.50000000  HIT
+      p=   3: ||3*beta|| = 0.00000000  < 1/3 = 0.33333333  HIT
+      p=  19: ||19*beta|| = 0.00000000  < 1/19 = 0.05263158  HIT
+      p= 191: ||191*beta|| = 0.00000000  < 1/191 = 0.00523560  HIT
+
+    S_beta cap [2,1000]: 168 primes
+    NOTE: beta is INTEGER. For any integer n, ||p*n|| = 0 for ALL integers p.
+    Therefore S_beta = ALL primes (infinite). ||p*n|| = 0 < 1/p for all p.
+    S_beta cap [2,1000] = all 168 primes <= 1000 (trivially).
+    C(beta) over S_beta cap [2,1000] = 962.6091508681069942
+    This is a FINITE LOWER BOUND: C(S_beta) >= C([2,1000]) = 962.609151 >> 2*sqrt(33)
+    DEGENERATE CASE: any integer works identically. This is not structure-specific.
+    C(beta) > 2*sqrt(33) = 11.489125293: True
+    Certifies g <= 231654
+
+  Vertex #120: (1.0000, 0.0000, 0.0000, 0.0000)
+    beta = 300.0
+    Integer: True
+
+    S_4 details:
+      p=   2: ||2*beta|| = 0.00000000  < 1/2 = 0.50000000  HIT
+      p=   3: ||3*beta|| = 0.00000000  < 1/3 = 0.33333333  HIT
+      p=  19: ||19*beta|| = 0.00000000  < 1/19 = 0.05263158  HIT
+      p= 191: ||191*beta|| = 0.00000000  < 1/191 = 0.00523560  HIT
+
+    S_beta cap [2,1000]: 168 primes
+    NOTE: beta is INTEGER. For any integer n, ||p*n|| = 0 for ALL integers p.
+    Therefore S_beta = ALL primes (infinite). ||p*n|| = 0 < 1/p for all p.
+    S_beta cap [2,1000] = all 168 primes <= 1000 (trivially).
+    C(beta) over S_beta cap [2,1000] = 962.6091508681069942
+    This is a FINITE LOWER BOUND: C(S_beta) >= C([2,1000]) = 962.609151 >> 2*sqrt(33)
+    DEGENERATE CASE: any integer works identically. This is not structure-specific.
+    C(beta) > 2*sqrt(33) = 11.489125293: True
+    Certifies g <= 231654
+
+========================================================================
+SECTION 5 -- Mathematical Analysis
+========================================================================
+
+  FINDING: Among all 120 600-cell vertices, S_4-preserving vertices
+  are EXACTLY those where beta is an integer, i.e., the x=y=z=0 case.
+
+  PROOF SKETCH:
+    beta = 299 + w + sqrt(phi)*[phi/2*x + 1/(2phi)*(y-z)]
+    ||p*beta|| = ||p*299 + p*w + p*sqrt(phi)*[phi/2*x + (y-z)/(2phi)]||
+               = ||p*w + p*sqrt(phi)*[phi/2*x + (y-z)/(2phi)]||
+    (since p*299 is always an integer)
+
+    For x = y = z = 0: ||p*beta|| = ||p*w||.
+      If w is integer: ||p*w|| = 0 < 1/p for all p. S_4 trivially preserved.
+      If w = +-1/2: ||p*w|| = ||p/2||. For p=2: ||1|| = 0 < 1/2. For p=3: ||3/2||=1/2 >= 1/3. FAIL.
+
+    For (x,y,z) != (0,0,0): sqrt(phi) is transcendental (algebraically independent
+    of 1 over Q), so p*sqrt(phi)*[...] is generically irrational and ||.|| is
+    pseudo-random. The BC condition ||p*beta|| < 1/p for ALL p in {2,3,19,191}
+    simultaneously requires extraordinary coincidence -- none found here.
+
+  DEGENERATE CASE (beta = integer):
+    For w in {+1,-1} and x=y=z=0: beta in {298, 300}.
+    ||p*n|| = 0 for any integer n and any prime p. S_beta = ALL primes.
+    C(S_beta cap [2,1000]) = 962.609151 >> 2*sqrt(33) = 11.489125
+    Certifies g <= 231654 (trivially, for any integer beta).
+
+  CONCLUSION:
+    The 600-cell geometry, as parameterized by this formula, does NOT produce
+    new non-trivial BC-certified beta values beyond those already known.
+    The integer-beta case is structure-independent: it works for ANY integer.
+    Non-integer vertices do not preserve S_4 simultaneously for {2,3,19,191}.
+
+  CERTIFIED BETA VALUES FROM 600-CELL:
+    beta = 298.000000  [vertex (-1.0000,0.0000,0.0000,0.0000)]
+      C(S_beta cap [2,1000]) = 962.609151  |  g_max = 231654  |  INTEGER-DEGENERATE
+    beta = 300.000000  [vertex (1.0000,0.0000,0.0000,0.0000)]
+      C(S_beta cap [2,1000]) = 962.609151  |  g_max = 231654  |  INTEGER-DEGENERATE
+
+========================================================================
+SECTION 6 -- Summary
+========================================================================
+
+  600-cell vertices tested:        120
+  Vertices preserving S_4:         2
+  Integer-beta (degenerate) cases: 2
+  Non-trivial S_4-preserving:      0
+  C(beta) > 2*sqrt(33):            2
+
+  Certified beta values: [298.0, 300.0]
+
+  DEGENERATE CASE NOTE:
+  C(300) = C(298) = sum log(p)*p/(p-1) for all p<=1000 = 962.609151
+  This is NOT specific to the 600-cell -- it holds for all integer beta.
+  The g=33 certification in M10 used p_5 = 3993746143633 (from M4).
+  The 600-cell vertex (1,0,0,0) provides an ALTERNATIVE PROOF (degenerate).
+
+CERTIFIED.

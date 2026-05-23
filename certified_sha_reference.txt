@@ -212,3 +212,23 @@ CONCLUSION:
   By BC Thm 6: C(S_5) > 2*sqrt(33) AND Ramanujan (Deligne) =>
   GRH for L(s, X_0(N)) for all 7 no-CM curves with g(N) = 33.
 =======================================================
+=======================================================
+
+MODULE 14 -- 600-Cell S_4 Bridge (added 2026-05-23)
+-------+----------------------------------------------------------------
+Script  m14_s4_quaternions.py         | 8f29d10c39a99c134c670d0f2b3a3b2edce94160c5b2d590c6ebdf7d025b49f5
+Builder build_module_14.py           | ba2874cb962f702c89903ad9f437b258eb91c174ce5fd4ad2140c2d721d6e887
+Stdout  m14.out                       | 8df0c2a44c9c644c8945a6fb1e07e0677b4b4c57da6a57b7ce803c2290dbb6fc
+PDF     Module_14_S4_Quaternions.pdf  | 4ab49abf06d707f4ca436c250fb38b1a23f493305f3a07e04097f22485978ac9
+
+Parents: M4 (p_5), M5 (C(S_4)), M10 (g=33)
+
+SWEEP: All 120 600-cell vertices tested. S_4-preserving: 2 (both INTEGER-DEGENERATE).
+  beta=300  vertex (1,0,0,0):   C = 962.6092, g_max = 231654  [INTEGER-DEGENERATE]
+  beta=298  vertex (-1,0,0,0):  C = 962.6092, g_max = 231654  [INTEGER-DEGENERATE]
+  Non-trivial S_4-preserving: ZERO
+Formula: beta = 299 + w + sqrt(phi)*[phi/2*x + 1/(2phi)*(y-z)]  [exact sqrt(phi), not approx]
+Coefficients: sqrt(phi)=1.272019..., phi/2=0.809016..., 1/(2phi)=0.309016...
+Result: Icosahedral geometry does NOT generate new non-trivial BC-certified beta.
+        Only integer-axis vertices (x=y=z=0, w=+-1) pass S_4. This is structure-independent.
+=======================================================

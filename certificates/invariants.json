@@ -264,5 +264,74 @@
     "formula_audit_note": "Request wrote log(p)/(p-1) -- WRONG. Correct formula log(p)*p/(p-1) used.",
     "status": "CERTIFIED",
     "date": "2026-05-23"
+  },
+  "module_14": {
+    "claim": "Exhaustive 600-cell S_4 bridge: all 120 vertices tested for BC preservation of S_4 = {2,3,19,191}",
+    "source_file": "certificates/m14_s4_quaternions.py",
+    "builder_file": "certificates/build_module_14.py",
+    "sha256_source": "8f29d10c39a99c134c670d0f2b3a3b2edce94160c5b2d590c6ebdf7d025b49f5",
+    "sha256_builder": "ba2874cb962f702c89903ad9f437b258eb91c174ce5fd4ad2140c2d721d6e887",
+    "sha256_stdout": "8df0c2a44c9c644c8945a6fb1e07e0677b4b4c57da6a57b7ce803c2290dbb6fc",
+    "sha256_pdf": "4ab49abf06d707f4ca436c250fb38b1a23f493305f3a07e04097f22485978ac9",
+    "stdout_file": "m14.out",
+    "pdf_file": "certificates/Module_14_S4_Quaternions.pdf",
+    "certified_betas_file": "M14_certified_betas.txt",
+    "causal_parents": ["M4", "M5", "M10"],
+    "parent_shas": {
+      "M4":  "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "M5":  "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "M10": "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade"
+    },
+    "formula": "beta(w,x,y,z) = 299 + w + sqrt(phi)*[phi/2*x + 1/(2phi)*(y-z)]",
+    "coefficients": {
+      "sqrt_phi": "1.272019649514069...",
+      "phi_over_2": "0.809016994374947...",
+      "inv_2phi": "0.309016994374947...",
+      "user_inputs": {"sqrt_phi": "1.272019", "phi_over_2": "0.809017", "inv_2phi": "0.309017"}
+    },
+    "precision_dps": 100,
+    "vertex_groups": {
+      "G1_count": 8,
+      "G2_count": 16,
+      "G3_count": 96,
+      "total": 120
+    },
+    "sweep_results": {
+      "total_tested": 120,
+      "s4_preserving": 2,
+      "integer_beta_degenerate": 2,
+      "non_trivial_s4_pass": 0,
+      "c_above_2sqrt33": 2
+    },
+    "certified_betas": [
+      {
+        "vertex": [1, 0, 0, 0],
+        "beta": "300.000000",
+        "is_integer": true,
+        "S_beta_cap_1000_count": 168,
+        "C": "962.6091508681069942",
+        "g_max": 231654,
+        "status": "INTEGER-DEGENERATE"
+      },
+      {
+        "vertex": [-1, 0, 0, 0],
+        "beta": "298.000000",
+        "is_integer": true,
+        "S_beta_cap_1000_count": 168,
+        "C": "962.6091508681069942",
+        "g_max": 231654,
+        "status": "INTEGER-DEGENERATE"
+      }
+    ],
+    "degenerate_case_note": "For any integer n: ||p*n||=0 for all primes p. S_beta=all primes. C=962.6 for [2,1000]. This holds for ANY integer beta, not specific to the 600-cell.",
+    "icosahedral_conclusion": "Icosahedral symmetry does NOT generate new non-trivial BC-certified beta values. Only w-axis (x=y=z=0, w=+-1) vertices pass S_4, and these are structure-independent degenerate cases.",
+    "comparison": {
+      "M10_non_trivial": "C(S_5)=40.44, g_max=408 [non-trivial, uses p_5 from CF of pi/10]",
+      "M14_degenerate":  "C(S_int)=962.6, g_max=231654 [trivial, any integer beta gives same]"
+    },
+    "formula_audit_note": "Correct BC formula log(p)*p/(p-1) used throughout [per M5 audit]",
+    "ascii_check": "PASS",
+    "status": "CERTIFIED",
+    "date": "2026-05-23"
   }
 }

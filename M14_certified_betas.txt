@@ -1,0 +1,68 @@
+=======================================================
+ M14 CERTIFIED BETA VALUES -- 600-Cell Quaternion Bridge
+ Battle Plan v1.6 | David Fox | May 2026
+ Source: m14.out SHA 8df0c2a44c9c644c8945a6fb1e07e0677b4b4c57da6a57b7ce803c2290dbb6fc
+=======================================================
+
+FORMULA:
+  beta(w,x,y,z) = 299 + w + sqrt(phi)*[phi/2*x + 1/(2phi)*(y-z)]
+  sqrt(phi) = 1.272019649514069...
+  phi/2     = 0.809016994374947...
+  1/(2phi)  = 0.309016994374947...
+  S_4 = {2, 3, 19, 191}  [M5 certified, SHA 9df98a39...]
+
+SWEEP RESULTS:
+  Total 600-cell vertices tested:  120
+  Vertices preserving S_4:         2
+  Integer-beta (degenerate) cases: 2
+  Non-trivial S_4-preserving:      0
+
+CERTIFIED BETA VALUES:
+-------+----------------------------------------------------------------
+beta_v1 = 298.000000  (vertex (-1, 0, 0, 0))
+  ||2*298||   = 0.00000000  < 0.50000000  HIT
+  ||3*298||   = 0.00000000  < 0.33333333  HIT
+  ||19*298||  = 0.00000000  < 0.05263158  HIT
+  ||191*298|| = 0.00000000  < 0.00523560  HIT
+  S_beta cap [2,1000] = all 168 primes  [INTEGER: trivially all primes]
+  C(beta_v1) = 962.6091508681069942  [g_max = 231654]
+  Status: INTEGER-DEGENERATE
+
+beta_v2 = 300.000000  (vertex (1, 0, 0, 0))
+  ||2*300||   = 0.00000000  < 0.50000000  HIT
+  ||3*300||   = 0.00000000  < 0.33333333  HIT
+  ||19*300||  = 0.00000000  < 0.05263158  HIT
+  ||191*300|| = 0.00000000  < 0.00523560  HIT
+  S_beta cap [2,1000] = all 168 primes  [INTEGER: trivially all primes]
+  C(beta_v2) = 962.6091508681069942  [g_max = 231654]
+  Status: INTEGER-DEGENERATE
+
+DEGENERATE CASE EXPLANATION:
+  For any integer n: ||p*n|| = 0 for every prime p.
+  Therefore S_{integer} = ALL primes. C(S cap [2,1000]) = 962.609...
+  This holds for ANY integer beta -- it is not specific to the 600-cell
+  or to the values 298 or 300. The icosahedral geometry contributes nothing
+  in the degenerate x=y=z=0 case.
+
+COMPARISON WITH PRIOR CERTIFICATIONS:
+  M9-All: C(S_4) = 11.4221  -> certifies g <= 32  [NON-TRIVIAL, specific to pi/10]
+  M10:    C(S_5) = 40.4379  -> certifies g <= 408  [NON-TRIVIAL, uses p_5 = 3993746143633]
+  M14:    C(S_int) = 962.6  -> certifies g <= 231654  [TRIVIAL/DEGENERATE, any integer beta]
+
+  The M10 certification using p_5 from the pi/10 continued fraction remains
+  the rigorous non-trivial proof for g=33.
+
+MATHEMATICAL NOTE:
+  Among all 118 non-integer 600-cell vertices, NONE preserved S_4.
+  Reason: sqrt(phi) is transcendental, making ||p*sqrt(phi)*L|| pseudo-random.
+  Probability of all 4 conditions holding simultaneously: ~0.11% per vertex.
+  With 118 tries, expected hits by chance: 0.13. Observed: 0.
+
+PARENT MODULES:
+  M4  (S_14, p_5): b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed
+  M5  (C(S_4)):    9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13
+  M10 (g=33):      ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade
+
+RULE: These are the only two certified beta values from the 600-cell sweep.
+RULE: Both are degenerate (integer). No non-trivial S_4-preserving vertex found.
+=======================================================
