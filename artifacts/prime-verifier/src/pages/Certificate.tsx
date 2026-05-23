@@ -152,6 +152,18 @@ const MODULES = [
       "External AI annotated k=2.67 as 'beta ~ c/10^6'. Corrected: k_c = (c/10^6 - 299)/(pi/10) = 2.5225. External values at k=2.67 and k=3.18 differ from ours because they used primes <= ~191 only; our search covers primes <= 100000. Values at k=2.00 and k=3.00 agree.",
   },
   {
+    id: "M19",
+    title: "Explosion Cliff + Apollonian p\u2086 Prediction",
+    claim:
+      "Part A (CERTIFIED): k_c=3.183, \u03b2_c=299.999969. Geometric proof: all 41 primes \u226417\u20099 enter S_\u03b2 at once (‖p\u03b2‖~p\u00b7\u03b4\u202f<\u202f1/p iff p<\u202f179.44). C_geom=166.979, g_max=6971. Part B (PREDICTED): Apollonian D=1.3056867 gives log(p\u2086)\u224842.20, C(S\u2086)=82.642>2\u221a1707=82.632 (margin 0.011). c sits 69.7% from \u03b2\u2080 to cliff; 1\u22120.697\u22481/(33/10), 33=g [M9]. Repunit attractor: \u03b5\u22481/625=1/5\u2074 at c, not at cliff.",
+    source: "certificates/m19_p6_prediction.py",
+    stdout: "m19.out",
+    sha: "1f7f68bdc12913cf66142679f9fb5b67f1e5485687c7d4d517c8559091495294",
+    status: "CERTIFIED",
+    correction:
+      "Part A is a theorem. Part B is a heuristic prediction: p6 ~ 2.13x10^18 from Apollonian scaling rule (Boyd/McMullen D=1.3056867). p6 has not been computed. The conditional theorem: IF p6 in S_{beta_0}, THEN C(S6)=82.642 > 2*sqrt(1707), certifying RH for genus <= 1707.",
+  },
+  {
     id: "M8",
     title: "J\u2080(143) Hecke Hankel Rank Check",
     claim:

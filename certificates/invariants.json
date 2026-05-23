@@ -570,5 +570,64 @@
     "ascii_check": "PASS",
     "status": "CERTIFIED",
     "date": "2026-05-23"
+  },
+  "module_19": {
+    "claim": "Fine zoom explosion cliff k_c=3.183 (geometric proof) + Apollonian p6 prediction",
+    "source_file": "certificates/m19_p6_prediction.py",
+    "builder_file": "certificates/build_module_19.py",
+    "sha256_source":  "eb4d4b50ea6d472fbbc199674028b121bd0134df93fdc2e645bdfef9515c81aa",
+    "sha256_builder": "2173e4f93bc8c764ee607bbc42bf356c120e435d7189f21ec6fbc4883b0da4b1",
+    "sha256_stdout":  "1f7f68bdc12913cf66142679f9fb5b67f1e5485687c7d4d517c8559091495294",
+    "sha256_pdf":     "25598fb9fbfe6b6da4759e6f20b34a4996f6b572d854202cf89e596d0a2b53c4",
+    "stdout_file": "m19.out",
+    "pdf_file": "certificates/Module_19_p6_Prediction.pdf",
+    "causal_parents": ["M1", "M4", "M5", "M10", "M18"],
+    "part_A": {
+      "status": "CERTIFIED",
+      "claim": "Explosion cliff at k_cliff=3.183 is geometrically proved",
+      "k_cliff": 3.183,
+      "beta_cliff": "299.999969",
+      "delta": "3.11e-5",
+      "p_thresh": "179.44",
+      "pi_179": 41,
+      "S_beta": "all 41 primes <= 179",
+      "C_geom": "166.9787",
+      "g_max": 6971,
+      "proof": "||p*beta|| ~ p*(300-beta) < 1/p iff p < 1/sqrt(300-beta) = 179.44"
+    },
+    "part_B": {
+      "status": "PREDICTED (heuristic premise, arithmetic certified)",
+      "D_Apollonian": "1.30568673",
+      "D_source": "Boyd 1982; McMullen 1998",
+      "scaling_rule": "log(p_{n+1}) ~ log(p_n) + (log p_n)^(1/D)",
+      "p5_certified": 3993746143633,
+      "log_p5": "29.01575079",
+      "increment": "13.188722",
+      "log_p6_predicted": "42.204473",
+      "p6_predicted": "~2.134e18",
+      "C_p6_predicted": "42.204473",
+      "C_S6_predicted": "82.642372",
+      "two_sqrt_1707": "82.631713",
+      "margin": "0.010659",
+      "g_max_predicted": 1707,
+      "caveat": "p6 not computed; scaling rule is heuristic"
+    },
+    "relative_position": {
+      "k_0": 1.000,
+      "k_c": 2.5225,
+      "k_cliff": 3.183,
+      "pct_c_to_cliff": "69.7%",
+      "remaining": "30.3% = 1/3.3 = 1/(33/10)",
+      "g_resonance": "33 = g from M9"
+    },
+    "repunit": {
+      "eps_at_c": "0.001597982",
+      "one_over_eps": "625.789",
+      "625": "5^4",
+      "eps_at_cliff": "-1.035e-7",
+      "observation": "Repunit structure at c, not at cliff. c is repunit attractor."
+    },
+    "ascii_check": "PASS",
+    "date": "2026-05-23"
   }
 }

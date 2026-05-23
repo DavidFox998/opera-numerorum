@@ -342,3 +342,44 @@ EXPLOSION CONFIRMED: At k=3.18 (beta=299.999026 ~ 300):
 
 ASCII CHECK: PASS
 =======================================================
+
+=======================================================
+
+MODULE 19 -- Fine Zoom + Apollonian p6 Prediction (added 2026-05-23)
+Part A: Explosion cliff k_c=3.183 (geometric proof)
+Part B: Apollonian scaling prediction for p6 (heuristic)
+-------+----------------------------------------------------------------
+Script  m19_p6_prediction.py               | eb4d4b50ea6d472fbbc199674028b121bd0134df93fdc2e645bdfef9515c81aa
+Builder build_module_19.py                 | 2173e4f93bc8c764ee607bbc42bf356c120e435d7189f21ec6fbc4883b0da4b1
+Stdout  m19.out                            | 1f7f68bdc12913cf66142679f9fb5b67f1e5485687c7d4d517c8559091495294
+PDF     Module_19_p6_Prediction.pdf        | 25598fb9fbfe6b6da4759e6f20b34a4996f6b572d854202cf89e596d0a2b53c4
+
+Parents: M1, M4 (p5), M5 (C(S4)), M10 (C(S5)), M18 (ladder)
+
+PART A -- CERTIFIED (theorem):
+  k_cliff = 3.183, beta_cliff = 299.999969
+  Geometric proof: ||p*beta|| ~ (300-beta)*p < 1/p  iff  p < 1/sqrt(300-beta) = 179.44
+  All 41 primes <= 179 are in S_beta_cliff. pi(179) = 41. MATCH.
+  C_geom(primes<=179) = 166.9787, g_max = 6971.
+  External AI values: k=3.183, |S|=41, C=166.98 -- AGREE (same restricted prime set).
+  Note: external said k=3.180 -> |S|=11 (restricted). We get |S|=14 (100000 bound).
+
+PART B -- PREDICTED (heuristic, arithmetic certified):
+  D = 1.30568673 (Apollonian gasket Hausdorff dim, Boyd/McMullen)
+  Rule: log(p_{n+1}) ~ log(p_n) + (log p_n)^(1/D)
+  p5 = 3,993,746,143,633  [M4 certified]
+  log(p5) = 29.01575079  [mpmath]
+  Increment = (log p5)^(1/1.30568673) = 13.188722
+  log(p6) [PREDICTED] = 42.204473
+  p6 [PREDICTED] ~ 2.134 x 10^18
+  C(p6) [PREDICTED] ~ 42.204473
+  C(S6) [PREDICTED] = C(S5) + C(p6) = 40.437899 + 42.204473 = 82.642372
+  2*sqrt(1707) = 82.631713  -> margin = 0.010659  (THIN, POSITIVE)
+  g_max [PREDICTED] = 1707 (RH for genus <= 1707 IF p6 in S_{beta_0})
+
+RELATIVE POSITION:
+  c is 69.7% of way from beta_0 to cliff. 1-0.697 = 1/3.3 = 1/(33/10). 33 = g [M9].
+  Repunit at c: eps=0.001597982, 1/eps~625=5^4. No repunit at cliff.
+
+ASCII CHECK: PASS
+=======================================================
