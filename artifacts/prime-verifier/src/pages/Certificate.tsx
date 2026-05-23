@@ -650,10 +650,10 @@ export default function CertificatePage() {
         {/* Summary stats */}
         <div className="grid grid-cols-4 gap-3 text-sm">
           {[
-            ["Modules", "7 + manifest"],
+            ["Modules", `${MODULES.length} certified`],
             ["Precision", "60\u201364 dps"],
             ["Errors caught", "5 corrected"],
-            ["Date locked", "May 21\u201322, 2026"],
+            ["Date locked", "May 21\u201323, 2026"],
           ].map(([label, value]) => (
             <div key={label} className="rounded-lg bg-card border px-4 py-3">
               <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
