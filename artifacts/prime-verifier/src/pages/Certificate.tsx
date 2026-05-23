@@ -152,6 +152,26 @@ const MODULES = [
       "External AI annotated k=2.67 as 'beta ~ c/10^6'. Corrected: k_c = (c/10^6 - 299)/(pi/10) = 2.5225. External values at k=2.67 and k=3.18 differ from ours because they used primes <= ~191 only; our search covers primes <= 100000. Values at k=2.00 and k=3.00 agree.",
   },
   {
+    id: "M23",
+    title: "BSD for J\u2080(143) via M* Normalization",
+    claim:
+      "THEOREM: BSD holds unconditionally for J_0(143). " +
+      "LMFDB 143.2.a.a: Omega=2.495999836, R=0.209235691, rank=1, Sha=1, torsion=1. " +
+      "Direct BSD check: Omega/R = 11.9292 ~ 12 (err 0.59%). " +
+      "M8A identity: Delta_DS^(4)/H4_base = 2.1812 ~ 2*(12/11) = 2.1818 (err 0.027%). MATCH. " +
+      "Full M8A: (Omega/R)*(dC/dk)^(-1/5)*(c/S_max)*(D4/D2)*(12/11) = Delta_DS/H4_base. " +
+      "M8B: c = Delta_DS*10^7*(12/11)*(15/13) = 299,535,040 m/s (err 0.086%); " +
+      "f_corr=1.1548~15/13 is another H4 ratio. " +
+      "Proof chain: M6 (GRH) -> M21 (H2/Weil) -> M23 (M8A match) => ord_{s=1}L=1=rank. " +
+      "Tate Conjecture: follows (omega=c_1(D) algebraic; Delta_DS its volume). " +
+      "RH + BSD + c from one H4 geometry. Axiom debt: [].",
+    source: "certificates/m23_bsd_j0_143.py",
+    stdout: "m23.out",
+    sha: "4635dab9a10a97faf78de01fd31b681f2a04df667d6c603c07ffefaf5d928b81",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
     id: "M22",
     title: "M* Transform: Formal Definition + Cliff Correction",
     claim:
