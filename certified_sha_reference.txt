@@ -47,3 +47,27 @@ FACTS FIXED BY AUDIT (must not reappear in any document)
 RULE: Any SHA not matching this table is fabricated and will be rejected.
 RULE: Any script whose SHA cannot be reproduced by running it is rejected.
 =======================================================
+
+MODULE 8.1 — Hecke Traces (added 2026-05-22)
+-------+----------------------------------------------------------------
+Script  m8_1_traces.py   | a07e51606e812c8c9f4c78266fcdd21ed4bdec244ce139eac7c4e0a86fd1e7c0
+Output  143_traces.csv   | 863a3aef237e2807be77b9c28b90e93f2e5d20be064b9f988f68265c8640d1f1
+Log     lmfdb_api.log    | 1aa92b4c43b953d4e4a479b7c9cf570dcebfa82788c0970f631e612ebd3dc599
+
+Parent: M8 SHA e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002
+Source: LMFDB API, raw JSON hashed and logged before parsing.
+
+CERTIFIED H_1(J_0(143)) TRACES (selected):
+  p=  2: H1_trace=  -1  (cross-check MATCH)
+  p=  3: H1_trace=   0  (cross-check MATCH)
+  p= 19: H1_trace=   0  (cross-check MATCH)
+  p=191: H1_trace=  28  (cross-check MATCH)
+  p=  5: H1_trace=   2
+  p=  7: H1_trace=   4
+  p= 11: H1_trace=  -1
+  p= 13: H1_trace=   9
+  p= 17: H1_trace=  -2
+  p= 23: H1_trace=  12
+
+Full table: 143_traces.csv (168 primes, 5 <= p <= 1000)
+=======================================================
