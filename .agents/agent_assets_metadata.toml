@@ -112,4 +112,10 @@ title = "Opera Numerorum — Complete Certification Record (with M8C)"
 id = "klMSjIZeStNOmTqLUabPs"
 uri = "file://certificates/OperaNumerorum_Preface.pdf"
 type = "pdf"
-title = "Opera Numerorum — Illustrated Preface (Final Draft)"
+title = "Opera Numerorum — Preface (Final, with new opening)"
+
+[[outputs]]
+id = "px9rnQN6qFsKBuqG84dwj"
+uri = "file://certificates/OperaNumerorum_AllCertificates.zip"
+type = "unspecified"
+title = "Opera Numerorum — Complete Archive (36 PDFs, 3.4 MB)"

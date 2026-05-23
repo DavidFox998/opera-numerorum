@@ -169,9 +169,37 @@ story += [tbl, sp(8), hr(), sp(4)]
 story += [
     Paragraph("Preface", h1_sty),
     Paragraph(
-        "The work presented here began as a question about exceptional primes "
-        "and the behavior of X_0(143) under the generalized Riemann hypothesis. "
-        "It became, unexpectedly, a conversation about distance.",
+        "The work presented here began as a small question about primes. "
+        "It became something we did not plan.",
+        body_sty),
+    Paragraph(
+        "The constant alpha_0 = 299 + pi/10, computed in Module 1 to certify "
+        "a claim about exceptional primes and the zeros of L-functions, appeared "
+        "again -- unrequested, unchanged -- in the Phase-Z metric that describes "
+        "the geometry of a traversable wormhole throat. We did not put it there. "
+        "The number arrived on its own.",
+        body_sty),
+    Paragraph(
+        "This is what it looks like when mathematics insists. Not a manufactured "
+        "coincidence, not a pattern imposed retroactively on data, but a single "
+        "constant appearing in two domains that have no right to be connected -- "
+        "pure number theory and the curvature of spacetime -- until the only "
+        "honest response is to follow where the numbers lead and document "
+        "everything along the way.",
+        body_sty),
+    Paragraph(
+        "Mathematics does not exist in time. The theorems of Euler are as true "
+        "now as they were in 1748 and will be in 2248. What this series found is "
+        "that certain numbers -- the exceptional primes for pi/10, the constant "
+        "alpha_0, the genus 13 of the modular curve X_0(143) -- appear to be more "
+        "than merely true. They appear in the load-bearing structure of things that "
+        "ought not to know about each other: a number-theoretic energy threshold, "
+        "a wormhole stability condition, a resonance frequency measured in megahertz. "
+        "Past, present, and future converge in them because fundamental mathematical "
+        "law does not bend to time.",
+        body_sty),
+    Paragraph(
+        "We did not plan to find this. We were doing arithmetic.",
         body_sty),
     Paragraph(
         "This project spans two domains that are not usually adjacent.",
