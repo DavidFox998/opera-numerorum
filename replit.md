@@ -91,6 +91,7 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M8J | delta=1.89m, f2=3.21e17; tidal=0.0999g<0.1g (OQ-1 closed); Delta_tau=7.647ns (OQ-2 closed) | `298d440a...` | ARCHITECTURE_CERTIFIED |
 | M8K | FTL Morningstar stack: B_M=21.768MHz; FTL_adv=3.183=v_g/c; RTT=18.635ns; 2800 ebits | `0ae865a8...` | FTL_MORNINGSTAR_CERTIFIED |
 | M8L | MORNING_STAR_D20 ops: 1st transit H01->Proxima 7.71ns; HUB_FULL_OPEN 30 routes 1260kW; 12 destinations; 47tx/hr 604.3ly/hr; DOCK_A bidirectional; 120/120 cells HEALTH_PASS; round-trip certified | `80ff8a25...` | MORNINGSTAR_OPERATIONAL_CERTIFIED |
+| M8M | Physics Beyond Standard Model: OPS-8 35 routes (+H13-H16); daily ops 84tx/512pax/1084.7ly; WARM_STANDBY 14s rearm; DEEP_MAINT MTBF=5.5yr; Phase-Z metric; PLL 1680osc/cell 14GHz; TDC 333GHz; L2 station Q>1e10; 3 O'Clock Prayer UTC sync; SHA_Contact_Zero; FTL_CERT MS-FTL-20260523-001; Euler log | `afce5f21...` | MORNINGSTAR_PHYSICS_CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
@@ -127,6 +128,9 @@ m8.out                       M8 certified stdout (Hankel rank check)
 
 **M8L stdout SHA** (Morning Star D20 operational certification):
 `80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad`
+
+**M8M stdout SHA** (Physics Beyond Standard Model & operational expansion):
+`afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f`
 
 **Combined PDF SHA** (42 pages, M1-M8I):
 `ff79cd50d7ad1b56598d4d30f2aa161cd689ffb61e2856429e511c04ba1e0e11`

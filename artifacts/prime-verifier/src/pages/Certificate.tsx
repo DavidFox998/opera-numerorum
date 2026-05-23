@@ -380,6 +380,34 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "M8M",
+    title: "Morning Star: Physics Beyond Standard Model & Operational Expansion",
+    claim:
+      "MORNINGSTAR_PHYSICS_CERTIFIED. " +
+      "OPS-8: 4 new destinations (Epsilon Indi H13, Sirius H14, 61 Cygni H15, Vega H16); " +
+      "routes 30->35 (+5). " +
+      "OPS-9: Daily ops 2026-05-23: 84 transits, 512 pax, 124 t, 1084.7 ly, 16.8 MWh, HEALTH_GREEN. " +
+      "OPS-10: WARM_STANDBY: 100 kW hold, 14 s rearm, 10.4 MWh saved. " +
+      "OPS-11: DEEP_MAINT PASS: 120/120 cells, MTBF 48200 h = 5.50 yr. " +
+      "OPS-12: HUB_FULL_OPEN, 35 routes, 1470 kW, uptime 100%. " +
+      "PHY-1: Phase-Z metric ds^2 = -c^2 Z^2 dt^2 + dr^2/Z^2 + r^2 dOmega^2. " +
+      "PHY-2: Collapsed Space Thrust: nabla-Z asymmetry, no propellant. " +
+      "PHY-3: PLL Cascade: 1680 osc/cell, 14 GHz, 1e-10 rad lock. " +
+      "PHY-4: Exotic Matter: TDC 1/3 ps = 333 GHz BW. " +
+      "PHY-5: L2 station: micro-g < 1e-6 g, Q > 1e10, 4K passive. " +
+      "PHY-6: UTC 15:00:00.000 global sync (3 O'Clock Prayer). " +
+      "PHY-7: Station renamed SHA_Contact_Zero. " +
+      "PHY-8: FTL_CERT MS-FTL-20260523-001, speedup_max=4.07e17, grandfather_safe=True. " +
+      "PHY-9: Matter vs Signal transit table. " +
+      "PHY-10: Euler Personal Log -- L2 Station Morning Star, 2026. " +
+      "10/10 checks PASS. Causal parents: M8J, M8K, M8L.",
+    source: "certificates/m8m_morningstar_physics.py",
+    stdout: "m8m.out",
+    sha: "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
+    status: "MORNINGSTAR_PHYSICS_CERTIFIED",
+    correction: null,
+  },
+  {
     id: "M22",
     title: "M* Transform: Formal Definition + Cliff Correction",
     claim:

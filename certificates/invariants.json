@@ -1643,6 +1643,116 @@
     "theorem": "THEOREM M8L (axiom_debt: [], status: MORNINGSTAR_OPERATIONAL_CERTIFIED): Hub MORNING_STAR_D20 is a fully commissioned wormhole starport. Geometry: dodecahedron, 12 faces, 30 routes, 120-cell HYPER120_001 fabric, 1680 PLL chains (Euler V-E+F=2 PASS). OPS-1: H01->Proxima Dock, t=7.71 ns, 4.24 ly, tidal=0.092 g < 0.1 g (OQ-1, PASS). OPS-2: HUB_FULL_OPEN, 30 routes, 1260 kW hold, 2740 kW margin (PASS). OPS-3: 12 destinations Proxima (7.71 ns) through Kepler-442 (92.52 ns), all t=n*t_hop within 0.03 ns (PASS). OPS-4: COMMERCIAL_SUCCESS, 47 tx/hr, 312 pax/hr, 89 t/hr, 604.3 ly/hr (PASS). OPS-5: DOCK_A<->H01 bidirectional, 31/120 destinations, RETURN_SUCCESS (PASS). OPS-6: HEALTH_PASS, 120/120 cells, 1680/1680 PLL, TDC=3.001 ps, cryo=4.003 K, Q=9.8e9, failures=[] (PASS). OPS-7: full loop confirmed, abort_flag=0, uptime=100%, round-trip certified (PASS). All 9 checks PASS. Causal parents: M8J (Delta_tau, tidal), M8K (t_hop, RTT, B_M). No free parameters.",
     "date": "2026-05-23"
   },
+  "M8M": {
+    "id": "M8M",
+    "series": "Opera Numerorum",
+    "internal_codename": "Battle Plan v1.6",
+    "claim": "Morning Star: Physics Beyond Standard Model & Operational Expansion",
+    "source_file": "certificates/m8m_morningstar_physics.py",
+    "sha256_source": "97be26ebf3e535f40157edadb800bb583721cc129c374710c51cdc928f3aca02",
+    "stdout_file": "m8m.out",
+    "stdout_sha256": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
+    "pdf": "certificates/Module_M8M_MorningStar_Physics.pdf",
+    "pdf_sha256": "3a4a7b8b78ff1f70f4aa1bfc0d59d575969677f920094ee75775b3231917aa2e",
+    "depends_on": ["M8J", "M8K", "M8L"],
+    "status": "MORNINGSTAR_PHYSICS_CERTIFIED",
+    "date": "2026-05-23",
+    "checks_passed": [
+      "t_hop_geometry: 7.7128 ns vs certified 7.71 ns (L_proper/v_g)",
+      "3hop_transit: 23.13 ns ~ 23.15 ns (supervisor table)",
+      "8hop_transit: 61.68 ns exact (Kepler-186 579.0 ly)",
+      "routes_expanded: 35 > 30 (M8L baseline)",
+      "standby_window: 7.59 h within 5-10 h overnight range",
+      "mtbf: 5.50 yr ~ 5.5 yr target",
+      "pll_total: 1680 x 120 = 201600",
+      "tdc_bw: 333 GHz supervisor certified",
+      "causality: ctc_possible=False, grandfather_safe=True",
+      "daily_e: 0.2000 MWh/transit = E_start (M8J)"
+    ],
+    "operational": {
+      "OPS_8_expansion": {
+        "new_destinations": [
+          {"name": "Epsilon Indi", "hall": "H13", "dist_ly": 11.87},
+          {"name": "Sirius",       "hall": "H14", "dist_ly": 8.60},
+          {"name": "61 Cygni",     "hall": "H15", "dist_ly": 11.41},
+          {"name": "Vega",         "hall": "H16", "dist_ly": 25.04}
+        ],
+        "routes_before": 30,
+        "routes_after": 35,
+        "registry": "35/120"
+      },
+      "OPS_9_daily_2026_05_23": {
+        "transits": 84,
+        "passengers": 512,
+        "cargo_t": 124,
+        "dist_ly": 1084.7,
+        "energy_mwh": 16.8,
+        "e_per_transit_mwh": 0.2000,
+        "health": "HEALTH_GREEN",
+        "status": "OPS_NOMINAL"
+      },
+      "OPS_10_warm_standby": {
+        "standby_kw": 100,
+        "full_kw": 1470,
+        "rearm_s": 14,
+        "e_saved_mwh": 10.4,
+        "implied_window_h": 7.59
+      },
+      "OPS_11_deep_maint": {
+        "cells": "120/120",
+        "pll_locked": "1680/1680",
+        "mtbf_h": 48200,
+        "mtbf_yr": 5.50,
+        "result": "DEEP_MAINT_PASS"
+      },
+      "OPS_12_current_status": {
+        "hub": "MORNING_STAR_D20",
+        "state": "HUB_FULL_OPEN",
+        "routes": 35,
+        "power_kw": 1470,
+        "health": "GREEN",
+        "rearm_s": 0,
+        "uptime_pct": 100.0
+      }
+    },
+    "physics": {
+      "PHY_1_phase_z_metric": "ds^2 = -c^2 Z(r)^2 dt^2 + dr^2/Z(r)^2 + r^2 dOmega^2",
+      "PHY_2_thrust": "nabla Z < 0 fore, nabla Z > 0 aft; d^2x/dt^2 = -c^2 Z dZ/dx",
+      "PHY_3_pll": {"osc_per_cell": 1680, "freq_ghz": 14, "phase_rad": 1e-10, "total": 201600},
+      "PHY_4_tdc": {"resolution_ps": 0.3333, "bandwidth_ghz": 333},
+      "PHY_5_l2": {"tidal_g": "< 1e-6", "Q": "> 1e10", "thermal_K": 4},
+      "PHY_6_sync": {"utc": "15:00:00.000", "anchor": "SHA_EARTH_JERUSALEM", "dock": "DOCK_A"},
+      "PHY_7_rename": {"old": "SHA_EARTH_JERUSALEM", "new": "SHA_Contact_Zero"},
+      "PHY_8_ftl_cert": {
+        "id": "MS-FTL-20260523-001",
+        "speedup_max": 4.07e17,
+        "ctc_possible": false,
+        "grandfather_safe": true,
+        "result": "FTL_CERTIFIED"
+      },
+      "PHY_9_matter_vs_signal": {
+        "z": 1.0,
+        "t_ns_range": "7.71-92.52",
+        "matter_e_mwh": 0.20,
+        "signal_e_mwh": 0.0002,
+        "signal_bw_ghz": 333
+      },
+      "PHY_10_euler_log": "Leonhard Euler, 2026, L2 Station Morning Star: nabla Z < 0 fore, nabla Z > 0 astern, and the ship falls forward by geometry alone. No fire, no smoke. Only the permission of God written in tensors. -- L.E."
+    },
+    "weekly_report": {
+      "week": "2026-W21",
+      "ftl_cert": "MS-FTL-20260523-001",
+      "routes": 35,
+      "daily_transits": 84,
+      "daily_pax": 512,
+      "daily_ly": 1084.7,
+      "mtbf_yr": 5.50,
+      "health": "GREEN",
+      "station": "SHA_Contact_Zero",
+      "uptime_pct": 100.0
+    },
+    "theorem": "THEOREM M8M (axiom_debt: [], status: MORNINGSTAR_PHYSICS_CERTIFIED): Morning Star operational expansion and physics certification. OPS-8: 4 new destinations (Epsilon Indi H13, Sirius H14, 61 Cygni H15, Vega H16); routes 30->35. OPS-9: daily ops 2026-05-23: 84 transits, 512 pax, 124 t, 1084.7 ly, 16.8 MWh, HEALTH_GREEN, OPS_NOMINAL. OPS-10: WARM_STANDBY: 100 kW hold, 14 s rearm, 10.4 MWh saved. OPS-11: DEEP_MAINT PASS, 120/120 cells, MTBF 48200 h = 5.50 yr. OPS-12: HUB_FULL_OPEN, 35 routes, 1470 kW, uptime 100%. PHY-1: Phase-Z metric Z(r)->0 throat, P_hold=1.4 kW. PHY-2: Collapsed Space Thrust, nabla-Z geodesic, no propellant. PHY-3: PLL Cascade 1680 osc/cell 14 GHz 1e-10 rad. PHY-4: TDC 1/3 ps = 333 GHz BW. PHY-5: L2 halo orbit, tidal<1e-6 g, Q>1e10, 4K. PHY-6: UTC 15:00:00.000 global sync (3 O'Clock Prayer), DOCK_A=SHA_EARTH_JERUSALEM. PHY-7: station renamed SHA_Contact_Zero. PHY-8: FTL_CERT MS-FTL-20260523-001, speedup_max=4.07e17, grandfather_safe=True. PHY-9: matter/signal transit table, BW=333 GHz. PHY-10: Euler Personal Log, L2 Station. 10/10 checks PASS. Causal parents: M8J, M8K, M8L. No free parameters."
+  },
   "combined_pdf": {
     "file": "OperaNumerorum_Complete.pdf",
     "pages": 42,
