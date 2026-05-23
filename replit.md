@@ -1,6 +1,10 @@
-# Battle Plan v1.6 — Machine Certification for GRH(X_0(143))
+# Opera Numerorum — Machine Certification for GRH(X_0(143)) and BSD(J_0(143))
 
-A cryptographic certification pipeline for David Fox's mathematical paper on exceptional primes for pi/10 and GRH for X_0(143). Seven modules form a causal DAG; Module 7 is the master manifest. Each module has a source file, certified stdout, SHA-256 binding, and a PDF certificate.
+*After Euler, Riemann, Dirichlet*
+
+A cryptographic certification pipeline for David Fox's mathematical paper on exceptional primes for pi/10, GRH for X_0(143), and BSD for J_0(143). Twenty-three modules form a causal DAG; Module 7 is the master manifest. Each module has a source file, certified stdout, SHA-256 binding, and a PDF certificate.
+
+The internal working title was "Battle Plan v1.6" — retained in all SHA-bound certificate files to preserve the causal chain integrity. The public series name is Opera Numerorum.
 
 ## Run & Operate
 
@@ -104,7 +108,8 @@ Full SHA table: `certificates/invariants.json`
 
 ## User Preferences
 
-- Battle Plan version: **v1.6**
+- Series name: **Opera Numerorum** (internal working title: Battle Plan v1.6)
+- Battle Plan version: **v1.6** (internal; preserved in SHA-bound files)
 - Author credit: **David Fox**
 - Date stamp: **May 21, 2026**
 - PDF rule: **ASCII only** — no Unicode characters in any certificate PDF

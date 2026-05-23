@@ -407,11 +407,11 @@ export default function CertificatePage() {
           <Shield className="w-6 h-6 text-primary shrink-0" />
           <div>
             <h1 className="font-bold text-lg leading-tight">
-              Machine Verification Certificate
+              Opera Numerorum
             </h1>
             <p className="text-xs text-muted-foreground">
-              Exceptional Primes for &pi;/10 &middot; GRH for X&#8320;(143)
-              &middot; David Fox &middot; May 21, 2026 &middot; Battle Plan v1.6
+              Machine Certification &middot; GRH for X&#8320;(143) &middot; BSD for J&#8320;(143)
+              &middot; David Fox &middot; May 2026
             </p>
           </div>
         </div>
@@ -643,7 +643,7 @@ export default function CertificatePage() {
           </pre>
           <div className="text-center pt-2 space-y-1">
             <div>
-              Protocol: Battle Plan v1.6 &middot; No fabricated values
+              Opera Numerorum &middot; After Euler, Riemann, Dirichlet &middot; No fabricated values
               &middot; Errors documented, not hidden
             </div>
             <div>

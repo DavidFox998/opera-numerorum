@@ -1,5 +1,6 @@
 =======================================================
- CERTIFIED SHA REFERENCE — Battle Plan v1.6
+ CERTIFIED SHA REFERENCE — Opera Numerorum
+ (Internal codename: Battle Plan v1.6 -- preserved in SHA-bound files)
  David Fox | May 21-22, 2026
  All values locked. Do not alter any SHA below.
 =======================================================

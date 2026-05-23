@@ -1,5 +1,9 @@
 {
   "certificate_version": "v1.6",
+  "series": "Opera Numerorum",
+  "series_subtitle": "After Euler, Riemann, Dirichlet",
+  "internal_codename": "Battle Plan v1.6",
+  "note": "Internal codename preserved in all SHA-bound certificate files to maintain causal chain integrity. Public series name: Opera Numerorum.",
   "author": "David Fox",
   "timestamp_utc": "2026-05-21T00:00:00Z",
   "module_1": {

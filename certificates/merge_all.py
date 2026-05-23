@@ -1,6 +1,7 @@
 """
-Merge all Battle Plan v1.6 certificate PDFs into one combined document.
-Inserts a cover page and section dividers.
+Merge all Opera Numerorum certificate PDFs into one combined document.
+(Internal codename: Battle Plan v1.6 -- preserved in SHA-bound individual certs.)
+Inserts a cover page and section dividers. Output: OperaNumerorum_Complete.pdf
 """
 
 import hashlib
@@ -38,9 +39,10 @@ def build_cover():
     story = []
 
     story.append(Spacer(1, 0.5*inch))
-    story.append(Paragraph("Battle Plan v1.6", title_s))
+    story.append(Paragraph("Opera Numerorum", title_s))
+    story.append(Paragraph("After Euler, Riemann, Dirichlet", sub_s))
     story.append(Paragraph(
-        "Machine Certification for GRH(X_0(143))", sub_s))
+        "Machine Certification for GRH(X_0(143)) and BSD(J_0(143))", sub_s))
     story.append(Spacer(1, 6))
     story.append(Paragraph(
         "Exceptional Primes for pi/10 and the Riemann Hypothesis", sub_s))
@@ -164,7 +166,7 @@ def build_cover():
     story.append(HRFlowable(width="100%", thickness=1.5,
                  color=colors.HexColor("#1a1a6e"), spaceAfter=4))
     story.append(Paragraph(
-        "Battle Plan v1.6 -- David Fox -- May 2026 -- Machine Certification Pipeline",
+        "Opera Numerorum -- David Fox -- May 2026 -- Machine Certification Pipeline",
         cert_s))
 
     doc.build(story)
@@ -195,7 +197,7 @@ MODULE_PDFS = [
     ("TB",  "certificates/Tendon_B_Certificate.pdf"),
 ]
 
-OUTPUT = "BattlePlan_v1.6_Complete.pdf"
+OUTPUT = "OperaNumerorum_Complete.pdf"
 
 print("Building cover page...")
 build_cover()
