@@ -96,3 +96,9 @@ id = "2uJSSfDPgO8GjvQ-RxlLJ"
 uri = "file://OperaNumerorum_Complete.pdf"
 type = "pdf"
 title = "Opera Numerorum — Complete Certification Record (with M8C)"
+
+[[outputs]]
+id = "klMSjIZeStNOmTqLUabPs"
+uri = "file://certificates/OperaNumerorum_Preface.pdf"
+type = "pdf"
+title = "Opera Numerorum — Preface (Draft 1)"
