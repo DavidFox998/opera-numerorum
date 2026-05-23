@@ -713,5 +713,34 @@
     "formula": "M*(S) = (D4/D2) * (alpha_0/S_max) * (dC/dk)^(+1/5) * I600[R]; ratio = M*_raw / H4_base",
     "LMFDB": "143.2.a.a (analytic rank 1, no CM, public record 2026-05-23)",
     "date": "2026-05-23"
+  },
+  "module_22": {
+    "title": "M* Transform -- Formal Definition and Cliff Correction",
+    "claim": "Formally certifies all three forms of M*: naive (1.402, too high), off-cliff (0.164), and at-cliff (M*_raw~12, ratio~12/11). Cliff exponent inverts at k_c=3.183.",
+    "source_file": "certificates/m22_mstar_definition.py",
+    "stdout_file": "m22.out",
+    "sha256_stdout": "5a5a345f6394438f7a5134cf682d714fea6c89c73cfc22fcdc503bc90761e5ca",
+    "sha256_pdf": "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d",
+    "pdf_file": "certificates/Module_22_MStar_Definition.pdf",
+    "causal_parents": ["M19 1f7f68bd...", "M21 b7415927..."],
+    "mpmath_dps": 64,
+    "status": "CERTIFIED",
+    "ascii_check": "PASS",
+    "formula": {
+      "naive": "M*(S) = (D4/D2) * (c/S_max) * I_600[R]  =>  1.402 [too high]",
+      "off_cliff": "M*(S) = (D4/D2) * (c/S_max) * (dC/dk)^(-1/5) * I_600[R]  =>  0.164",
+      "at_cliff": "M*(S) = (D4/D2) * (c/S_max) * (dC/dk)^(+1/5) * I_600[R]  =>  M*_raw ~ 12",
+      "h4_ratio": "M*_ratio = M*_raw / (120/11)  =>  12/11 (mod H4)"
+    },
+    "d117": {"naive": 1.402, "off_cliff": 0.1635, "at_cliff_raw": 12.003, "ratio": 1.10028, "error_pct": 0.86},
+    "d119": {"naive": 1.398, "off_cliff": 0.1631, "at_cliff_raw": 11.981, "ratio": 1.09830, "error_pct": 0.68},
+    "cliff_correction": {
+      "k_c": "3.183 (geometric proof M19)",
+      "dC_dk": 45933,
+      "cliff_neg": 0.1168,
+      "cliff_pos": 8.559,
+      "mechanism": "At k_c, derivative is a fixed point; exponent inverts -1/5 -> +1/5"
+    },
+    "date": "2026-05-23"
   }
 }

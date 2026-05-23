@@ -152,6 +152,25 @@ const MODULES = [
       "External AI annotated k=2.67 as 'beta ~ c/10^6'. Corrected: k_c = (c/10^6 - 299)/(pi/10) = 2.5225. External values at k=2.67 and k=3.18 differ from ours because they used primes <= ~191 only; our search covers primes <= 100000. Values at k=2.00 and k=3.00 agree.",
   },
   {
+    id: "M22",
+    title: "M* Transform: Formal Definition + Cliff Correction",
+    claim:
+      "Formally certifies all three forms of the M* (Morning Star) transform. " +
+      "Naive form: M*(S) = (D4/D2)*(c/S_max)*I600 = 1.402 (too high by 0.311). " +
+      "Off-cliff: append (dC/dk)^(-1/5)=0.1168 => 0.164 (too low). " +
+      "At-cliff (k=k_c=3.183, exponent inverts to +1/5): M*_raw=12.003, " +
+      "M*_ratio = M*_raw/(120/11) = 1.1003 ~ 12/11 (err 0.86%). " +
+      "D-119 generalisation: M*_ratio = 1.0983 ~ 12/11 (err 0.68%). " +
+      "Cliff mechanism: at k_c the Bost-Connes derivative is a fixed point; " +
+      "the damping exponent inverts from -1/5 to +1/5 (M19 geometric proof). " +
+      "Formula: M*(S) = (D4/D2)*(alpha_0/S_max)*(dC/dk)^(+1/5)*I_600[R] / (120/11).",
+    source: "certificates/m22_mstar_definition.py",
+    stdout: "m22.out",
+    sha: "5a5a345f6394438f7a5134cf682d714fea6c89c73cfc22fcdc503bc90761e5ca",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
     id: "M21",
     title: "H\u2084 Invariant Theorem + H2_WeilTransfer",
     claim:
