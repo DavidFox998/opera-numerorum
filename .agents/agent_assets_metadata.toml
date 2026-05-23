@@ -124,4 +124,10 @@ title = "Opera Numerorum — Complete Archive (36 PDFs, 3.4 MB)"
 id = "W90T7YAwZynQkWP5EtbLn"
 uri = "file://OperaNumerorum_CompleteArchive.zip"
 type = "unspecified"
-title = "Opera Numerorum — Complete Archive (with Morningstar folder)"
+title = "Opera Numerorum — Complete Archive (now 47 files)"
+
+[[outputs]]
+id = "QEVQhn42_uKG2fnFGQXLW"
+uri = "file://certificates/MorningStar_Engineering_Summary.pdf"
+type = "pdf"
+title = "Morning Star Engineering Series — Summary PDF"
