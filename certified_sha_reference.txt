@@ -232,3 +232,30 @@ Coefficients: sqrt(phi)=1.272019..., phi/2=0.809016..., 1/(2phi)=0.309016...
 Result: Icosahedral geometry does NOT generate new non-trivial BC-certified beta.
         Only integer-axis vertices (x=y=z=0, w=+-1) pass S_4. This is structure-independent.
 =======================================================
+=======================================================
+
+MODULE 15 -- Delta Boost Audit Certificate (added 2026-05-23)
+Paper section: "The Exceptional Prime Set for pi/10"
+-------+----------------------------------------------------------------
+Script  m15_delta_boost.py        | 055b24376f1af17ccc4ed7370a3b7d74823ef279778f9137d781c61dcb9f39cc
+Builder build_module_15.py        | cd35d500a916b9a38096bc9714a1fd4892a09f9c20bec894d407f0c2ea00e01f
+Stdout  m15.out                    | cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78
+PDF     Module_15_Delta_Boost.pdf  | 6c2595ac7dcdfcf6e77f7981a6b13f02ecc6e0d267a466c0950ba0082bdc8394
+
+Parents: M3 (CF pi/10), M4 (S_14, p_5)
+
+AUDIT FINDINGS (4 errors in paper):
+  E1: All 16 ||p*pi/10|| table values WRONG (errors 1.79e-5 to 3.76e-1)
+  E2: Sign error: paper computes -log(||.||) + log(p) but def says -log(||.||) - log(p)
+  E3: Delta_DS^(4) = 23.796910 WRONG (true = 2.753126...; off by factor ~8.6)
+  E4: p_5 > 6*10^12 WRONG (certified p_5 = 3993746143633 = 3.994e12 < 6e12)
+
+CERTIFIED CORRECT VALUES:
+  ||2*pi/10||   = 0.37168147  delta_2   = 0.29657087632449742694
+  ||3*pi/10||   = 0.05752220  delta_3   = 1.75697196186575970500
+  ||19*pi/10||  = 0.03097396  delta_19  = 0.53016950710688168280
+  ||191*pi/10|| = 0.00441968  delta_191 = 0.16941374902615628599
+  TRUE Delta_DS^(4) = 2.753126094323295100690126
+  S_4 = {2,3,19,191}  [CORRECT]
+  p_5 = 3993746143633 [CORRECT, certified M4]
+=======================================================

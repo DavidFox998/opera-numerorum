@@ -333,5 +333,68 @@
     "ascii_check": "PASS",
     "status": "CERTIFIED",
     "date": "2026-05-23"
+  },
+  "module_15": {
+    "claim": "Audit of LaTeX paper section 'The Exceptional Prime Set for pi/10' -- verify all numerical claims",
+    "source_file": "certificates/m15_delta_boost.py",
+    "builder_file": "certificates/build_module_15.py",
+    "sha256_source":  "055b24376f1af17ccc4ed7370a3b7d74823ef279778f9137d781c61dcb9f39cc",
+    "sha256_builder": "cd35d500a916b9a38096bc9714a1fd4892a09f9c20bec894d407f0c2ea00e01f",
+    "sha256_stdout":  "cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78",
+    "sha256_pdf":     "6c2595ac7dcdfcf6e77f7981a6b13f02ecc6e0d267a466c0950ba0082bdc8394",
+    "stdout_file": "m15.out",
+    "pdf_file": "certificates/Module_15_Delta_Boost.pdf",
+    "causal_parents": ["M3", "M4"],
+    "parent_shas": {
+      "M3": "e687bb0931f2c37c6ae12cfbde7ff9a79b3cccf5b0c88e17e9c3fe4abe1cf80d",
+      "M4": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+    },
+    "paper_source": "LaTeX section attached 2026-05-23: 'The Exceptional Prime Set for pi/10'",
+    "claims_tested": ["C1: table ||p*pi/10||", "C2: delta_p positivity", "C3: delta_p values", "C4: Delta_DS^(4)", "C5: p_5 bound", "C6: S_4 membership"],
+    "audit_errors": {
+      "E1": {
+        "location": "Table in Thm 2",
+        "description": "All 16 ||p*pi/10|| values wrong; errors from 1.79e-5 (p=2) to 3.76e-1 (p=43); truncated SHA unverifiable",
+        "verdict": "WRONG"
+      },
+      "E2": {
+        "location": "Thm 4 proof",
+        "description": "Sign error: paper computes -log(||p*pi/10||) + log(p) but definition states -log(||p*pi/10||) - log(p)",
+        "example": "p=2: paper shows 0.989644 + 0.693147 = 1.682791 but definition requires 0.989718 - 0.693147 = 0.296571",
+        "verdict": "WRONG"
+      },
+      "E3": {
+        "location": "Thm 4",
+        "description": "Delta_DS^(4) = 23.796910 follows from E1+E2 compounding; correct value = 2.753126",
+        "verdict": "WRONG"
+      },
+      "E4": {
+        "location": "Remark 2 (S14)",
+        "description": "p_5 > 6*10^12 contradicts certified p_5 = 3993746143633 = 3.994e12 < 6e12",
+        "verdict": "WRONG"
+      }
+    },
+    "certified_correct": {
+      "S4": [2, 3, 19, 191],
+      "S4_verdict": "CORRECT (certified M4)",
+      "delta_2":   "0.29657087632449742694",
+      "delta_3":   "1.75697196186575970500",
+      "delta_19":  "0.53016950710688168280",
+      "delta_191": "0.16941374902615628599",
+      "Delta_DS4_true": "2.753126094323295100690126",
+      "Delta_DS4_paper": "23.796910",
+      "Delta_DS4_error": "off by 21.044 (factor ~8.6x)",
+      "p5_exact": 3993746143633,
+      "p5_paper_claim": "> 6e12",
+      "p5_verdict": "paper claim WRONG; exact p5 certified in M4"
+    },
+    "table_primes_tested": [2,3,5,7,11,13,17,19,23,29,31,37,41,43,191,197],
+    "all_table_values_correct": false,
+    "qualitative_S4_correct": true,
+    "precision_dps": 100,
+    "formula_note": "delta_p = -log(||p*pi/10||) - log(p) using natural log [per M5 audit rule]",
+    "ascii_check": "PASS",
+    "status": "CERTIFIED",
+    "date": "2026-05-23"
   }
 }
