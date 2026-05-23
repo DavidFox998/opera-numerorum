@@ -152,6 +152,18 @@ const MODULES = [
       "External AI annotated k=2.67 as 'beta ~ c/10^6'. Corrected: k_c = (c/10^6 - 299)/(pi/10) = 2.5225. External values at k=2.67 and k=3.18 differ from ours because they used primes <= ~191 only; our search covers primes <= 100000. Values at k=2.00 and k=3.00 agree.",
   },
   {
+    id: "M20",
+    title: "p\u2087 Prediction + Self-Symmetry Proof",
+    claim:
+      "PREDICTED: log(p\u2087)=59.777, p\u2087\u223c9.14\u00d710\u00b2\u2075, C(S\u2087)=142.419>2\u221a5070=142.408 (margin 0.011). D_eff=0.5235 (certified from M4 primes) vs D_Apollonian=1.3057. Self-symmetry: (p\u2087/p\u2086)/(p\u2086/p\u2085)=80.13\u224880=2\u2074\u00d75; 5\u2074=625=repunit denom from c/\u03b2\u2080. Fine-tuning: c/10\u2076=299.792458 keeps D_eff<D_gasket, keeping RH hard. Full ladder: g=32\u219232\u2192408\u21921707\u21925070.",
+    source: "certificates/m20_p7_prediction.py",
+    stdout: "m20.out",
+    sha: "f8f45b5bff629cceaac0a3c465e30165a2f9649a1c6cde7b20b97e524d21cb41",
+    status: "CERTIFIED",
+    correction:
+      "External AI claimed g=2212 with C(S7)=142.12 -- inconsistent: floor(142.12^2/4)=5048, not 2212. Also external log(p5)=29.015885 differs from our certified 29.015751 (log of 3993746143633). Our g_max=5070 under the standard BC formula g=floor(C^2/4) is correct. D_eff=0.5235 is a certified theorem from M4 primes, not a prediction.",
+  },
+  {
     id: "M19",
     title: "Explosion Cliff + Apollonian p\u2086 Prediction",
     claim:

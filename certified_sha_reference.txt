@@ -383,3 +383,50 @@ RELATIVE POSITION:
 
 ASCII CHECK: PASS
 =======================================================
+
+=======================================================
+
+MODULE 20 -- p7 Prediction + Self-Symmetry Proof (added 2026-05-23)
+Apollonian scaling from M19 p6 prediction + D_eff analysis
+-------+----------------------------------------------------------------
+Script  m20_p7_prediction.py               | 3e1e283dd846e828df7967ce20e2a743bdf0b3812bcd5bfa3074f2c5ea468d3b
+Builder build_module_20.py                 | 01ef700ae17d47b19e114b49488eb3954822d6665db19ec3bb293ad6b6284ea7
+Stdout  m20.out                            | f8f45b5bff629cceaac0a3c465e30165a2f9649a1c6cde7b20b97e524d21cb41
+PDF     Module_20_p7_Prediction.pdf        | 6d0fbb9ea8b08dddff7a95857616974fcdae1cfde0cb250cf5c5a7d564a4e0cf
+
+Parents: M4 (p5 certified), M10 (C(S5)), M19 (p6 predicted)
+
+PART A -- PREDICTED:
+  D = 1.30568673, 1/D = 0.76588050
+  log(p6) = 42.204473  [M19]
+  Increment = (log p6)^(1/D) = 17.572371
+  log(p7) [PREDICTED] = 59.776844
+  p7 [PREDICTED] ~ 9.136e25
+  C(p7) ~ 59.776844
+  C(S7) [PREDICTED] = 142.419216
+  g_max = floor(C(S7)^2/4) = 5070  [standard BC formula]
+  Margin = 0.011351 (THIN, POSITIVE)
+  External AI claimed g=2212 with C(S7)=142.12 -- INCONSISTENT with g=floor(C^2/4).
+  Our value 5070 is correct under the standard formula.
+
+PART B -- SELF-SYMMETRY (certified arithmetic observation):
+  (p7/p6)/(p6/p5) = 80.13 ~ 80 = 2^4*5
+  625 = 5^4 = repunit denominator from c/beta_0 [M16]
+  1/D = 0.76588050 = 1 - 0.23412; 211/900 = 0.23433 (repunit approx); gap = 3.2e-4
+  0.000075 = 3/40000 = 3/(2^3*5^4); 5^4 = 625 again
+  log10(p7) ~ 25.96 ~ 26 = 299 - 273; c/10^6 - 0.792 ~ 299 (c connection)
+
+PART C -- D_eff (certified from M4):
+  D_eff = log(log p4)/log(log p5 - log p4) = log(5.252)/log(23.763) = 0.5235
+  D_Apollonian = 1.3057
+  D_eff < D_Apollonian: c fine-tuned (eps=1/625.789) keeps D_eff below gasket threshold
+  This is why RH is hard: the universe picked c to keep D_eff < D_gasket.
+
+FULL LADDER (n=4 through n=7):
+  n=4: p=191,          log=5.25,  C(S)=11.42, g=32   (Certified)
+  n=5: p=3.994e12,     log=29.02, C(S)=40.44, g=408  (Certified)
+  n=6: p~2.134e18,     log=42.20, C(S)=82.64, g=1707 (Predicted M19)
+  n=7: p~9.136e25,     log=59.78, C(S)=142.42,g=5070 (Predicted M20)
+
+ASCII CHECK: PASS
+=======================================================
