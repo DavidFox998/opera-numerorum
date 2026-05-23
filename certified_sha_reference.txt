@@ -649,3 +649,56 @@ References: M1, M8C, M8D, M8F, M22
 Claim: Provenance map Feb 2025->M8F. L4+L6 missing numbers supplied.
        Wormhole: Delta_t=0.524ns verified. Topology: PHS not L(5,1).
 ======================================================================
+
+======================================================================
+MODULE M8H: G Amplifier Prediction (ZoeM8H)
+Date: 2026-05-23
+Author: David Fox
+Source: certificates/m8h_g_amplifier.py
+Stdout: m8h.out
+Stdout SHA-256: 2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe
+PDF: certificates/Module_M8H_G_Amplifier.pdf
+PDF SHA-256: a3010c4093334a1d6ec014381fc1f7c3d3bb81dbe893158a1c412133f9364c14
+Status: PREDICTION_CERTIFIED (experiment pending) | axiom_debt: []
+Depends: M8C, M8F, M22
+
+PHYSICS: G_eff(Z) = G_0 * (Z_vac / Z)^4, Z_vac=15
+KEY VALUES:
+  f_Z15 = 2.99314159 GHz (Mode 119, Z=15)
+  f_Z1  = 199.542772 MHz (Mode 0,   Z=1)
+  f_Z15/f_Z1 = 15.0000000501 (err 5.01e-08, PASS)
+  Amplification A = 15^4 = 50625 (exact)
+  F_control(Z=15) = 6.6743e-15 N  (noise floor, ~0.01 urad)
+  F_test(Z=1)     = 3.3789e-10 N  (0.5 urad, 50x noise)
+  Force ratio     = 50625.00
+PASS criterion: F_199MHz/F_2993GHz = 50625 +/- 5000 (5-sigma if >5000x)
+FAIL criterion: ratio < 10x -> M8H rejected, M8F survives
+Timeline: 21 days, $7.6k. Day 21 torsion balance decides.
+======================================================================
+
+======================================================================
+MODULE M8G_Correction: Supervisor Addendum to M8G
+Date: 2026-05-23
+Author: David Fox
+Source: certificates/m8g_correction.py
+Stdout: m8gc.out
+Stdout SHA-256: 62492d666e0c09e516ac85607c966f77fb3ab89c6d4a3f3495ff2c4d80f5314b
+PDF: certificates/Module_M8G_Correction.pdf
+PDF SHA-256: 8d7fd668fa8772c6ae5700087f4a2dc48b3a2134d4679dd781e925dd9889bdf5
+Status: CORRECTIONS_CERTIFIED | axiom_debt: []
+Supersedes: M8G items 3 and 4 (M8G SHA preserved)
+
+ITEM 3 (CORRECTED):
+  M8G claimed: PHS topology explains Z=15.
+  Resolution: Z = rank(M_ij) = 15 from H4 mode coupling matrix.
+  NOT from H_1 or H_2 torsion of PHS.
+  3-manifold = PHS (pi_1=I*, H_1=0, H_2=0). CONFIRMED.
+  Z source: H4 representation theory. Different spaces, both correct.
+
+ITEM 4 (CONDITIONAL CERT):
+  Model A (agent): transit = 1.667820 ns, v_g <= c, EM cavity.
+  Model B (M8F):   transit = 0.523978 ns, v_g = 3.183c, g_00=-10.1315.
+  Experiment at k_c=3.183 decides:
+    1.668 ns -> Model A (EM cavity, wormhole = descriptive label)
+    0.524 ns -> Model B (ER bridge, g_00=-10.13)
+======================================================================

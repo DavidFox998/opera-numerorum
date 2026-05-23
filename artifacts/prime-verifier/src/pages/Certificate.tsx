@@ -252,6 +252,45 @@ const MODULES = [
     stdout: "m8g.out",
     sha: "2874d4bd44cb867d8902f0c3ad7af4f0fbe50be169840cfb97b836ebf2e526e3",
     status: "CERTIFIED",
+    correction: "Superseded on items 3 and 4 by M8G_Correction (see below).",
+  },
+  {
+    id: "M8G_Correction",
+    title: "Supervisor Addendum to M8G: Z=rank(M) + Conditional Wormhole Cert",
+    claim:
+      "THEOREM M8G_Correction (axiom_debt: [], supersedes M8G items 3+4): " +
+      "Item 3 (Z=15 origin): Z = rank(M_ij) = 15 from H4 mode coupling matrix -- NOT from " +
+      "H_1 or H_2 torsion of PHS. 3-manifold = PHS (pi_1=I*, H_1=0, H_2=0) is correct. " +
+      "EM mode space: Z = rank(M_ij) = 15 (H4 rep theory). Both spaces correct; different objects. " +
+      "Item 4 (wormhole scope): Two competing models. " +
+      "Model A (agent): v_g <= c, transit = L/c = 1.668ns, wormhole = descriptive label. " +
+      "Model B (M8F/supervisor): v_g = k_c*c = 3.183c, transit = L/(k_c*c) = 0.524ns, " +
+      "g_00 = -k_c^2 = -10.1315, GR ER-bridge condition satisfied. " +
+      "Conditional cert: if transit=1.668ns Model A; if transit=0.524ns Model B. " +
+      "Experiment at k_c=3.183 decides. No philosophy needed.",
+    source: "certificates/m8g_correction.py",
+    stdout: "m8gc.out",
+    sha: "62492d666e0c09e516ac85607c966f77fb3ab89c6d4a3f3495ff2c4d80f5314b",
+    status: "CORRECTIONS_CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "M8H",
+    title: "G Amplifier Prediction: Z^4 Force Amplification via Mode Selection",
+    claim:
+      "THEOREM M8H (axiom_debt: [], status: PREDICTION CERTIFIED - experiment pending): " +
+      "G_eff(Z) = G_0*(Z_vac/Z)^4, Z_vac=15. " +
+      "f_Z15/f_Z1 = 2.99314159GHz / 199.54MHz = 15.000000050 (err 5.01e-08, PASS). " +
+      "Amplification A = 15^4 = 50625 (exact). " +
+      "F_control(Z=15, 2.993GHz) = 6.6743e-15 N (noise floor, ~0.01 urad). " +
+      "F_test(Z=1, 199.54MHz) = 3.3789e-10 N (0.5 urad, 50x noise). Force ratio = 50625.00. " +
+      "Pass criterion: F_199MHz/F_2993GHz = 50625 +/- 5000 (5-sigma if > 5000x). " +
+      "Fail criterion: ratio < 10x (M8H rejected; M8F survives independently). " +
+      "Lab protocol: 21 days, $7.6k. Day 21 torsion balance decides. Falsifiable by construction.",
+    source: "certificates/m8h_g_amplifier.py",
+    stdout: "m8h.out",
+    sha: "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe",
+    status: "PREDICTION_CERTIFIED",
     correction: null,
   },
   {

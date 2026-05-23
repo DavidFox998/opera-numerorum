@@ -85,6 +85,8 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M8D | f_res=alpha_0 MHz, C jumps 5.724x at k_c=3.183 | `27d8e0c1...` | CERTIFIED |
 | M8F | 7-layer protocol, k_eff=3.183, v_g=3.183c, all 8 PASS | `0bd6cee4...` | CERTIFIED |
 | M8G | Provenance Feb2025->M8F; wormhole=0.524ns; PHS topology | `2874d4bd...` | CERTIFIED |
+| M8G_Correction | Z=rank(M_ij) clarification; conditional wormhole cert | `62492d66...` | CORRECTIONS_CERTIFIED |
+| M8H | G_eff(Z)=G_0*(Z_vac/Z)^4; A=15^4=50625; F=3.38e-10 N | `2c3ac1d2...` | PREDICTION_CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
@@ -104,8 +106,14 @@ m8.out                       M8 certified stdout (Hankel rank check)
 **M8G stdout SHA** (provenance + wormhole):
 `2874d4bd44cb867d8902f0c3ad7af4f0fbe50be169840cfb97b836ebf2e526e3`
 
-**Combined PDF SHA** (59 pages, M1-M8G):
-`686e957a0716087752da98d08380f3a18e7fed998c8d7a20e9341fc76850a817`
+**M8G_Correction stdout SHA** (Z=rank(M) + conditional wormhole):
+`62492d666e0c09e516ac85607c966f77fb3ab89c6d4a3f3495ff2c4d80f5314b`
+
+**M8H stdout SHA** (G amplifier prediction):
+`2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe`
+
+**Combined PDF SHA** (35 pages, M1-M8H):
+`ae137a9e0b2a77ce4f977442b6701e10e7e42bc127d138d932a0045afe5950de`
 
 Full SHA table: `certificates/invariants.json`
 

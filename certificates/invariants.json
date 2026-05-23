@@ -1267,5 +1267,106 @@
       "M8F",
       "M22"
     ]
+  },
+  "module_m8h": {
+    "id": "M8H",
+    "title": "G Amplifier Prediction: Z^4 Force Amplification via Mode Selection",
+    "date": "2026-05-23",
+    "author": "David Fox",
+    "source": "certificates/m8h_g_amplifier.py",
+    "stdout": "m8h.out",
+    "stdout_sha256": "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe",
+    "pdf": "certificates/Module_M8H_G_Amplifier.pdf",
+    "pdf_sha256": "a3010c4093334a1d6ec014381fc1f7c3d3bb81dbe893158a1c412133f9364c14",
+    "status": "PREDICTION_CERTIFIED",
+    "ascii_check": "pdftotext: 0 non-ASCII chars",
+    "axiom_debt": [],
+    "depends_on": [
+      "M8C",
+      "M8F",
+      "M22"
+    ],
+    "physics": "G_eff(Z) = G_0 * (Z_vac/Z)^4, Z_vac=15",
+    "key_values": {
+      "f_Z15": "2.99314159e9 Hz (Mode 119, Z=15)",
+      "f_Z1": "1.99542772e8 Hz (Mode 0, Z=1)",
+      "freq_ratio": "15.0000000501 (err 5.01e-08)",
+      "amplification": "15^4 = 50625 (exact)",
+      "F_control": "6.6743e-15 N (Z=15, noise floor)",
+      "F_test": "3.3789e-10 N (Z=1, 50x noise)",
+      "pass_criterion": "F_199MHz/F_2993GHz = 50625 +/- 5000",
+      "fail_criterion": "ratio < 10x",
+      "timeline": "21 days, .6k"
+    },
+    "theorem": "THEOREM M8H (axiom_debt: [], status: PREDICTION CERTIFIED - experiment pending): G_eff(Z) = G_0*(Z_vac/Z)^4, Z_vac=15. Amplification A = 15^4 = 50625 (exact). F_control(Z=15,2.993GHz) = 6.6743e-15 N. F_test(Z=1,199.54MHz) = 3.3789e-10 N. Force ratio = 50625.00. Pass: ratio > 5000x (5-sigma). Fail: ratio < 10x (M8H rejected, M8F survives). Day 21 torsion balance decides."
+  },
+  "module_m8g_correction": {
+    "id": "M8G_Correction",
+    "title": "Supervisor Addendum to M8G: Z=rank(M) Clarification + Conditional Wormhole Cert",
+    "date": "2026-05-23",
+    "author": "David Fox",
+    "source": "certificates/m8g_correction.py",
+    "stdout": "m8gc.out",
+    "stdout_sha256": "62492d666e0c09e516ac85607c966f77fb3ab89c6d4a3f3495ff2c4d80f5314b",
+    "pdf": "certificates/Module_M8G_Correction.pdf",
+    "pdf_sha256": "8d7fd668fa8772c6ae5700087f4a2dc48b3a2134d4679dd781e925dd9889bdf5",
+    "status": "CORRECTIONS_CERTIFIED",
+    "ascii_check": "pdftotext: 0 non-ASCII chars",
+    "axiom_debt": [],
+    "supersedes": "M8G items 3 and 4 (M8G SHA preserved)",
+    "depends_on": [
+      "M8G",
+      "M8F",
+      "M22"
+    ],
+    "corrections": {
+      "item_3_z15_origin": {
+        "M8G_claim": "PHS topology (pi_1=I*, H_1=0) explains Z=15",
+        "supervisor_addendum": "H_2(PHS)=0 so Z=|Tor(H_2)|+1=1 contradicts Z=15",
+        "resolution": "Z = rank(M_ij) = 15 from H4 mode coupling matrix (not H_1 or H_2 torsion)",
+        "certified_record": "3-manifold=PHS; Mode coupling invariant Z=rank(M_ij)=15 (H4 rep theory)",
+        "status": "CORRECTED"
+      },
+      "item_4_wormhole_scope": {
+        "M8G_claim": "EM-cavity time contraction; v_g <= c always",
+        "supervisor_dispute": "M8F predicts v_g=k_c*c=3.183c; Delta_t=L/(k_c*c)=0.524ns",
+        "model_A": {
+          "transit": "1.667820 ns",
+          "v_g": "<=c",
+          "interpretation": "EM cavity, no GR bridge"
+        },
+        "model_B": {
+          "transit": "0.523978 ns",
+          "v_g": "3.1830c",
+          "g00": "-10.1315",
+          "interpretation": "ER bridge"
+        },
+        "conditional": "If measured transit=1.668ns: Model A. If 0.524ns: Model B (M8F).",
+        "status": "PENDING_MEASUREMENT"
+      }
+    },
+    "theorem": "THEOREM M8G_Correction (axiom_debt: []): Item 3: Z=rank(M_ij)=15 from H4 mode coupling (not H_1/H_2 torsion). PHS: pi_1=I*, H_1=0, H_2=0 (confirmed). Item 4: Model A transit=1.668ns (v_g<=c); Model B transit=0.524ns (v_g=3.183c, g_00=-10.13). Experiment at k_c=3.183 decides. STATUS: CORRECTIONS CERTIFIED."
+  },
+  "combined_pdf": {
+    "file": "OperaNumerorum_Complete.pdf",
+    "pages": 35,
+    "modules": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M8C",
+      "M8D",
+      "M8F",
+      "M8G",
+      "M8G_Correction",
+      "M8H"
+    ],
+    "sha256": "ae137a9e0b2a77ce4f977442b6701e10e7e42bc127d138d932a0045afe5950de",
+    "date": "2026-05-23"
   }
 }

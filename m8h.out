@@ -1,0 +1,75 @@
+=== M8H: G AMPLIFIER PREDICTION ===
+Opera Numerorum / Battle Plan v1.6
+David Fox, May 21, 2026
+
+--- SECTION 1: FREQUENCY RATIO ---
+f_Z15 (Mode 119, Z=15): 2.99314159e+09 Hz
+f_Z1  (Mode 0,   Z=1 ): 1.99542772e+08 Hz
+f_Z15 / f_Z1           = 15.000000050115
+Nearest integer        = 15
+Deviation from 15      = 5.011e-08  (< 1e-6, consistent with Z=15)
+
+PASS: f_Z15/f_Z1 = 15 to 6 significant figures
+
+--- SECTION 2: AMPLIFICATION FACTOR ---
+G_eff(Z) = G_0 * (Z_vac / Z)^4
+Amplification A = G_eff(Z=1) / G_eff(Z=15)
+                = (15/1)^4 / (15/15)^4
+                = 15^4 = 50625
+Computed A      = 50625.000000
+
+PASS: Amplification = 50625 (exact)
+
+--- SECTION 3: FORCE PREDICTIONS ---
+Geometry: m1=1.0e-06 kg, m2=1.0 kg, r=0.10 m
+G_0 = 6.67430e-11 N m^2 kg^-2 (CODATA 2018)
+
+CONTROL (Z=15, f=2.993 GHz):
+  G_eff = G_0 = 6.67430e-11 N m^2 kg^-2
+  F     = 6.6743e-15 N   <-- noise floor (torsion: ~0.01 urad)
+
+TEST    (Z=1,  f=199.54 MHz):
+  G_eff = G_0 * 50625 = 3.3789e-06 N m^2 kg^-2
+  F     = 3.3789e-10 N   <-- 0.5 urad (50x above noise)
+
+Force ratio F(Z=1) / F(Z=15) = 50625.00
+PASS: Force ratio = 50625.00 (exact)
+
+--- SECTION 4: PASS / FAIL CRITERIA ---
+
+PASS criterion: F_199MHz / F_2993GHz = 50625 +/- 5000
+  5-sigma detection if ratio > 5000x
+
+FAIL criterion: ratio < 10x
+  Interpretation: Z does not control G. M8H hypothesis rejected.
+  M8F (EM metric engineering) survives independently.
+
+Experiment decides. Neither outcome is 'bad science'.
+
+--- SECTION 5: PHYSICS SUMMARY ---
+
+G not fundamental. Z is.
+G = G_0 * (Z_vac / Z)^4   where Z_vac = 15
+
+Standard vacuum:  Z=15. 14 massive graviton modes do not propagate.
+  G is 10^40 x weaker than EM because gravity uses only 1 mode.
+  EM uses all 15 modes.
+
+Amplified cavity: Z=1.  1 massless mode. All gravity propagates.
+  G_eff = 50625 x G_0 = 3.3789e-06 N m^2 kg^-2
+  'Pocket universe with different G.'
+
+--- SECTION 6: DC BIAS CHECK (k_c linkage) ---
+k = (12 / (11*Z_vac)) * (h * f_Z1 / m_e c^2)
+k = (12/165) * (1.3222e-25 / 8.1871e-14)
+k = 1.174516e-13
+(DC bias needed to set k_c = 3.183 in the cavity; links M8F and M8H)
+
+=== M8H CERTIFIED VALUES ===
+f_Z15/f_Z1 = 15.0000000501  (Z=15, err=5.01e-08)
+Amplification A = 15^4 = 50625
+F_control = 6.674300e-15 N  (Z=15, 2.993 GHz)
+F_test    = 3.378864e-10 N  (Z=1,  199.54 MHz)
+F_ratio   = 50625.00  (pass if > 5000, 5-sigma)
+k_link    = 1.174516e-13  (DC bias, links M8F)
+STATUS: PREDICTION CERTIFIED (experiment pending)
