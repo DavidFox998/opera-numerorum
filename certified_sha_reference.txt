@@ -311,3 +311,34 @@ FIX 2: p_5 certified value replaces wrong '> 6*10^12'
 
 REVISED THEOREM 6.3.6: Both fixes applied. CERTIFIED.
 =======================================================
+
+=======================================================
+
+MODULE 18 -- Resonance Ladder (added 2026-05-23)
+Sweep beta = 299 + k * pi/10, k in [0.50, 3.50], primes <= 100000
+-------+----------------------------------------------------------------
+Script  m18_resonance_ladder.py             | a311cb81809b786236a6ccc5d7c86a91751c6e84c421bb846e6187050ddf201c
+Builder build_module_18.py                 | 13d875e81b67f26e30ed2c697d958ec41105b11e3b0ed99d11ca1e74f4b3d8c1
+Stdout  m18.out                            | 93d6b554820ba699a522b9c68367928864d84de5fc8158880c64e15531c1ac78
+PDF     Module_18_Resonance_Ladder.pdf     | 09ced8c0152c60f51bca97889c593309a7aa1713c1b36a4a709d4ef68c6983af
+
+Parents: M1 (63ef870a...), M5 (9df98a39...), M9 (5e39f3a9...)
+
+KEY CERTIFIED VALUES (mpmath 100 dps):
+  k_c = (c/10^6 - 299)/(pi/10) = 2.522472...  (NOT 2.67 as in ext. screenshot)
+  k=1.00: C=11.42214869, g_max=33, S={2,3,19,191}  [M5/M9 MATCH]
+  k=2.52: C=33.59099989, g_max=283, S=6 primes (k_c row)
+  k=2.67: C=28.32425777, g_max=201  (ext. screenshot: 9.217/37.2 -- diff prime bound)
+  k=3.18: C=58.25508311, g_max=849  (ext. screenshot: 29.165/372.4 -- diff prime bound)
+
+ANNOTATION CORRECTION: External AI annotated k=2.67 as 'beta ~ c/10^6'. WRONG.
+  True k_c = 2.5225. k=2.67 gives beta=299.838805 != c/10^6=299.792458 (diff=0.046).
+  External values at k=2.00 and k=3.00 agree with ours (same methodology for small primes).
+  Discrepancy at k=2.67, k=3.18 explained by external AI using primes <= ~191 only.
+
+EXPLOSION CONFIRMED: At k=3.18 (beta=299.999026 ~ 300):
+  |S_beta| = 14, C=58.26, g_max=849.
+  As beta -> integer, ALL primes satisfy ||p*beta|| -> 0 < 1/p.
+
+ASCII CHECK: PASS
+=======================================================

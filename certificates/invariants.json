@@ -491,5 +491,84 @@
     "ascii_check": "PASS",
     "status": "CERTIFIED",
     "date": "2026-05-23"
+  },
+  "module_18": {
+    "claim": "Resonance Ladder: sweep beta=299+k*pi/10 for k in [0.50,3.50], primes<=100000",
+    "source_file": "certificates/m18_resonance_ladder.py",
+    "builder_file": "certificates/build_module_18.py",
+    "sha256_source":  "a311cb81809b786236a6ccc5d7c86a91751c6e84c421bb846e6187050ddf201c",
+    "sha256_builder": "13d875e81b67f26e30ed2c697d958ec41105b11e3b0ed99d11ca1e74f4b3d8c1",
+    "sha256_stdout":  "93d6b554820ba699a522b9c68367928864d84de5fc8158880c64e15531c1ac78",
+    "sha256_pdf":     "09ced8c0152c60f51bca97889c593309a7aa1713c1b36a4a709d4ef68c6983af",
+    "stdout_file": "m18.out",
+    "pdf_file": "certificates/Module_18_Resonance_Ladder.pdf",
+    "causal_parents": ["M1", "M5", "M9"],
+    "parent_shas": {
+      "M1": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "M5": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "M9": "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821"
+    },
+    "sweep_parameters": {
+      "k_min": 0.50,
+      "k_max": 3.50,
+      "k_step": 0.05,
+      "prime_bound": 100000,
+      "beta_formula": "beta = 299 + k * pi/10",
+      "S_beta_criterion": "||p*beta|| < 1/p",
+      "C_formula": "sum log(p)*p/(p-1) for p in S_beta",
+      "g_max_formula": "ceil(C^2/4)  [BC bound, consistent with M9]"
+    },
+    "certified_key_rows": {
+      "k=1.00": {
+        "beta": "299.314159265...",
+        "S_beta": "[2, 3, 19, 191]",
+        "C": "11.42214869",
+        "g_max": 33,
+        "cross_check": "M5 SHA 9df98a39 PASS; M9 g=33 PASS"
+      },
+      "k=2.52 (k_c)": {
+        "beta": "299.791681...",
+        "note": "closest grid point to c/10^6 = 299.792458",
+        "S_beta_size": 6,
+        "C": "33.59099989",
+        "g_max": 283
+      },
+      "k=2.67 (screenshot)": {
+        "beta": "299.838805",
+        "S_beta_size": 6,
+        "C": "28.32425777",
+        "g_max": 201,
+        "external_claim": "C=9.217, |S|=4",
+        "discrepancy": "External used primes<=~191 only; S_ext={2,5,7,31}"
+      },
+      "k=3.18 (explosion)": {
+        "beta": "299.999026",
+        "S_beta_size": 14,
+        "C": "58.25508311",
+        "g_max": 849,
+        "external_claim": "C=29.165, |S|=11",
+        "discrepancy": "Same cause: external prime bound too small"
+      }
+    },
+    "annotation_corrections": {
+      "error": "External AI annotated k=2.67 as 'beta ~ c/10^6'",
+      "correct": "k_c = (c/10^6 - 299)/(pi/10) = 2.522472 (mpmath certified)",
+      "k=2.67_gives_beta": "299.838805",
+      "c_over_1e6": "299.792458",
+      "difference": "0.046347",
+      "verdict": "WRONG. k_c = 2.5225, not 2.67."
+    },
+    "explosion_confirmed": {
+      "k": 3.18,
+      "beta": "299.999026",
+      "S_beta_size": 14,
+      "C": "58.26",
+      "g_max": 849,
+      "explanation": "As beta->integer, ||p*beta||->0 < 1/p for all primes"
+    },
+    "precision_note": "float64 sweep (error ~1e-8 << 1/p for p<=100000); mpmath 100dps for key rows",
+    "ascii_check": "PASS",
+    "status": "CERTIFIED",
+    "date": "2026-05-23"
   }
 }

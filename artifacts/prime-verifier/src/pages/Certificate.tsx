@@ -105,6 +105,53 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "M15",
+    title: "Delta Boost Audit",
+    claim:
+      "4 errors in paper section corrected. Certified: \u0394_DS^(4) = 2.753126..., S_4 = {2,3,19,191} confirmed, \u03b4_p values certified term-by-term (mpmath 100 dps).",
+    source: "certificates/m15_delta_boost.py",
+    stdout: "m15.out",
+    sha: "cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78",
+    status: "CERTIFIED",
+    correction:
+      "4 paper errors corrected: delta_DS^(4) wrong in draft (was 23.796910, correct 2.753126); delta_p formula, S_4 membership, and term-by-term values all audited.",
+  },
+  {
+    id: "M16",
+    title: "c-Bridge",
+    claim:
+      "c/10\u2076 = 299.792458 vs \u03b2\u2080 = 299+\u03c0/10 = 299.314159. Ratio\u22121 = 0.001597982 \u2248 1/625.789. Gap to 1/625 is 2.018\u00d710\u207b\u2076. c is 69.74% of way from \u03b2\u2080 to 300. Numerical observation only \u2014 no causal or physical claim made.",
+    source: "certificates/m16_c_bridge.py",
+    stdout: "m16.out",
+    sha: "e1c042ba8df33a3b89046ca72c332c832f313eee2409b12963dac34f4196158e",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "M17",
+    title: "Certification Patch (Revised Thm 6.3.6)",
+    claim:
+      "Supervisor fixes applied: (1) C_p = ln(p)\u00b7p/(p\u22121) distinguished from \u03b4_p = \u2212ln\u2225p\u03c0/10\u2225\u2212ln p. (2) p\u2085 = 3,993,746,143,633 replaces wrong '>6\u00d710\u00b9\u00b2'. C(S\u2084)=11.422..., C_p5=29.016..., C(S\u2085)=40.438...",
+    source: "certificates/m17_cert_patch.py",
+    stdout: "m17.out",
+    sha: "b9d88958c352fd4eb61f8291d1b9623acd0fbd0b41a81fdeefddfbb1fe715cca",
+    status: "CERTIFIED",
+    correction:
+      "Fix 1: C_p (BC contribution) != delta_p (irrationality measure). These are distinct quantities with different formulas. Fix 2: p_5 = min(S\\S_4) certified as 3,993,746,143,633 from M4, replacing the wrong bound '>6*10^12'.",
+  },
+  {
+    id: "M18",
+    title: "Resonance Ladder",
+    claim:
+      "\u03b2 = 299 + k\u00b7\u03c0/10 swept for k \u2208 [0.50, 3.50]. At k=1.00: C=11.422, g_max=33, S={2,3,19,191} \u2014 exact M5/M9 match. Explosion at k=3.18 (\u03b2\u2192300): |S|=14, C=58.26, g_max=849. Annotation correction: k_c for c/10\u2076 = 2.5225 (not 2.67 as in external chat). Primes \u226410\u2075.",
+    source: "certificates/m18_resonance_ladder.py",
+    stdout: "m18.out",
+    sha: "93d6b554820ba699a522b9c68367928864d84de5fc8158880c64e15531c1ac78",
+    status: "CERTIFIED",
+    correction:
+      "External AI annotated k=2.67 as 'beta ~ c/10^6'. Corrected: k_c = (c/10^6 - 299)/(pi/10) = 2.5225. External values at k=2.67 and k=3.18 differ from ours because they used primes <= ~191 only; our search covers primes <= 100000. Values at k=2.00 and k=3.00 agree.",
+  },
+  {
     id: "M8",
     title: "J\u2080(143) Hecke Hankel Rank Check",
     claim:
