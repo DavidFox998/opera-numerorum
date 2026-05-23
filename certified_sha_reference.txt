@@ -557,3 +557,35 @@ H4 GEOMETRY (THREE THEOREMS ONE STRUCTURE):
   M* (M21):   M*_ratio = 12/11 (err 0.68%)
   c (M8B):    c ~ Delta_DS*10^7*(12/11)*(15/13) (err 0.086%)
 =======================================================
+
+-------------------------------------------------------
+MODULE M8C: Zoe-M* Bridge (ZoeM8C)
+-------------------------------------------------------
+Source:  certificates/m8c_zoe_mstar.py
+Stdout:  m8c.out
+SHA-256: 02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323
+PDF:     certificates/Module_M8C_ZoeMstar.pdf
+PDF-SHA: 9dc46ef8226b1ee7aa0c949b5ab0c923d72d60bdae48e9f5a351e8ec328163f3
+Status:  CERTIFIED | axiom_debt: []
+
+THREE-PAPER ARC (David J. Fox, May 8, 2026):
+  Paper 1: Linear Recurrence (1,1): Z=1 for CM. 139 Jacobians.
+  Paper 2: Rank Obstructions (2,2): 200 omega on X_5, Z(omega)=15.
+  Paper 3: Zoe Invariant: Lemma 7.6 => Z>binom(g,p) => not algebraic.
+
+LEMMA 7.6 VERIFICATION:
+  X_5 = Jac(y^2 = x^11 - x), g=5, p=2
+  binom(5,2) = 10
+  Z(omega) = 15  [Paper 2 measurement]
+  15 > 10 => True => ALL 200 CLASSES NOT ALGEBRAIC (unconditional)
+
+120-CELL FORMULA:
+  Z(omega_max) = 120 / 2^(g-2)  for X_g = Jac(y^2=x^(2g+1)-x)
+  g=5: 120/2^3 = 120/8 = 15 = Paper 2 measurement  [EXACT MATCH]
+
+M* BRIDGE:
+  M*(S) = (12/11) / Z(omega)
+  J_0(143): Z=1  => M*=12/11 => RH proven [M21]    600-cell
+  X_5:      Z=15 => M*=4/55  => Hodge fails [L7.6]  120-cell
+  (12/11)/15 = 12/165 = 4/55  [exact fraction]
+=======================================================

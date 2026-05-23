@@ -172,6 +172,28 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "M8C",
+    title: "Zoe-M* Bridge (ZoeM8C)",
+    claim:
+      "THEOREM M8C (unconditional, axiom_debt: []): " +
+      "Three-paper arc by David J. Fox (May 8, 2026): " +
+      "Paper 1 (Linear Recurrence): Z=1 for CM, 139 Jacobians verified. " +
+      "Paper 2 (Rank Obstructions): X_5=Jac(y^2=x^11-x), g=5; 200 explicit omega with " +
+      "rank(Hankel)=15>10=binom(5,2); Algorithm A2=False. " +
+      "Paper 3 (Zoe Invariant): Lemma 7.6 M.S. Bound: omega algebraic => Z(omega)<=binom(g,p); " +
+      "Contrapositive: Z=15>10 => ALL 200 CLASSES NOT ALGEBRAIC (unconditional). " +
+      "120-cell formula: Z(omega_max)=120/2^(g-2); for g=5: 120/8=15 = Paper 2 measurement (exact). " +
+      "M* bridge: M*(S)=(12/11)/Z(omega); " +
+      "J_0(143): Z=1 => M*=12/11 => RH proven (M21-M23); " +
+      "X_5: Z=15 => M*=(12/11)/15=4/55 => Hodge obstructed. " +
+      "Same 120-cell geometry. Different Z. Different outcome.",
+    source: "certificates/m8c_zoe_mstar.py",
+    stdout: "m8c.out",
+    sha: "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
     id: "M22",
     title: "M* Transform: Formal Definition + Cliff Correction",
     claim:
