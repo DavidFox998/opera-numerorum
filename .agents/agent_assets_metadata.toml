@@ -59,10 +59,22 @@ title = "M8.1 Certified Hecke Traces (143_traces.csv)"
 id = "RoMqo8fx9sVWpADflAGnX"
 uri = "file://certified_sha_reference.txt"
 type = "text"
-title = "Certified SHA Reference Card"
+title = "Updated SHA Reference Card (M1–M8.1–M6.3)"
 
 [[outputs]]
 id = "mYo3HamVEiLA_M099rnI8"
 uri = "file://lmfdb_api.log"
 type = "unspecified"
 title = "LMFDB API Log (raw fetch record)"
+
+[[outputs]]
+id = "ZbGlYhmD8gdE7CPDYE26b"
+uri = "file://certificates/Module_6_3_Certificate.pdf"
+type = "pdf"
+title = "M6.3 Certificate — Lemma 4.1 Falsified"
+
+[[outputs]]
+id = "drnOpryMgivXTAyFu4A_i"
+uri = "file://m6_3_lemma41.csv"
+type = "table"
+title = "M6.3 Output — 164 primes, 94 failures"

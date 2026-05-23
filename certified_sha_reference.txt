@@ -71,3 +71,33 @@ CERTIFIED H_1(J_0(143)) TRACES (selected):
 
 Full table: 143_traces.csv (168 primes, 5 <= p <= 1000)
 =======================================================
+
+MODULE 6.3 — Lemma 4.1 Falsification (added 2026-05-22)
+-------+----------------------------------------------------------------
+Script  m6_3_lemma41.py        | 7c023ca556e448e4ea882bceb3ee40bf347f28d83fda00846dea65f5fa7e2d2e
+Builder build_module_6_3.py   | 63c7a8291c00335c9420aee39fb2185d668a176581d9fe8d8c581d71a174d428
+Output  m6_3_lemma41.csv      | add9fef4a623392436bfb272180252ac134ad6f5665c688bbc1f9db4b873a332
+PDF     Module_6_3_Certificate | 19b025686696192089381858485aebb49627fc50c783482c923f1ae20efdb9b0
+
+Parents: M1 SHA 63ef870a... (alpha_0), M8.1 SHA 863a3aef... (LMFDB traces)
+
+CERTIFIED RESULTS:
+  Primes tested: 164  (5<=p<=997, p not 11 or 13)
+  Lemma 4.1 FAILURES (R > cos(2*pi/p)): 94
+  Weil failures |a_p(143.2.a.a)| > 2*sqrt(p)): 0
+
+Conclusion A: Lemma 4.1 is FALSE for N=143.
+  94 explicit counterexamples certified.
+
+Conclusion B: Weil bound holds for 143.2.a.a (dim-1 form) for all tested primes.
+
+DEFINITIONS USED:
+  dist(p) = min(frac(p*alpha0), 1-frac(p*alpha0))  [nearest-integer distance]
+  max_ap(p) = max(|ap(143.2.a.a)|, |Tr(ap(143.2.a.b))|, |Tr(ap(143.2.a.c))|)
+  NOT H_1 aggregate trace. No CM exclusion (LMFDB cm=0 for all 3 forms).
+
+AUDIT NOTE: Supersedes prototype table with 118 failures.
+  Prototype errors: (1) used frac instead of min(frac,1-frac) for dist,
+  (2) used H_1 aggregate trace instead of individual form traces for max_ap.
+  Both corrected here. The "four forms" claim and 143.2.a.d were labeling errors.
+=======================================================
