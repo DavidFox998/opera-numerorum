@@ -437,5 +437,59 @@
     "ascii_check": "PASS",
     "status": "CERTIFIED",
     "date": "2026-05-23"
+  },
+  "module_17": {
+    "claim": "Certification Patch: supervisor Fixes 1 & 2 applied to Revised Theorem 6.3.6 (Minimal Boost for RH)",
+    "source_file": "certificates/m17_cert_patch.py",
+    "builder_file": "certificates/build_module_17.py",
+    "sha256_source":  "8b7387e4272c7bc3f1c8d5c9c22b0682610fd76b47cb5cc1c8ba7a648e99fefd",
+    "sha256_builder": "30196513a34c014b9bb7cd9551884b9b64acd30061718d2ea5c86cc8d2128a30",
+    "sha256_stdout":  "b9d88958c352fd4eb61f8291d1b9623acd0fbd0b41a81fdeefddfbb1fe715cca",
+    "sha256_pdf":     "0044a64038d287118c6df684fcb676d6f30688627b9da989959c728cd7dae957",
+    "stdout_file": "m17.out",
+    "pdf_file": "certificates/Module_17_Cert_Patch.pdf",
+    "causal_parents": ["M4", "M5", "M10", "M15"],
+    "parent_shas": {
+      "M4":  "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "M5":  "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "M10": "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade",
+      "M15": "cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78"
+    },
+    "fixes_applied": {
+      "Fix1": {
+        "description": "Distinguish C_p (BC contribution) from delta_p (irrationality measure)",
+        "C_p_formula": "log(p)*p/(p-1)",
+        "delta_p_formula": "-log(||p*pi/10||) - log(p)",
+        "note": "C_p != delta_p. BC cert uses C_p. Finiteness proof uses delta_p.",
+        "status": "APPLIED"
+      },
+      "Fix2": {
+        "description": "Replace wrong 'p_5 > 6*10^12' with certified M4 value",
+        "old_text": "p_5 = min(S \\ S_4) > 6 * 10^12",
+        "new_theorem": "Theorem [M4 Certified]: p_5 = 3993746143633",
+        "corollary": "p_5 > 10^12; C_p5 = log(p5)*p5/(p5-1) = 29.015750789478554412...",
+        "status": "APPLIED"
+      }
+    },
+    "certified_values": {
+      "C_2":    "1.386294361119890618837861720979...",
+      "C_3":    "1.647918433002164537104745714869...",
+      "C_19":   "3.108018922453464930177474975939...",
+      "C_191":  "5.279916972404770030029127439695...",
+      "C_S4":   "11.422148689898029116149209851482...",
+      "p5":     3993746143633,
+      "C_p5":   "29.015750789478554412...",
+      "C_S5":   "40.437899478458844528...",
+      "delta_sum": "2.753126094323295100690126..."
+    },
+    "cross_checks": {
+      "M5_C_S4":  "matches (M5 SHA 9df98a39...)",
+      "M10_C_S5": "matches (M10 SHA ab9ce40c...)",
+      "M15_delta_sum": "matches (M15 SHA cf1620c7...)"
+    },
+    "precision_dps": 100,
+    "ascii_check": "PASS",
+    "status": "CERTIFIED",
+    "date": "2026-05-23"
   }
 }

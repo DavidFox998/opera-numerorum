@@ -285,3 +285,29 @@ CERTIFIED VALUES (100 dps):
 OBSERVATION: epsilon ~ 1/625.789, close to 1/625 = 0.001599999... (within 0.13%)
 NOTE: Numerical observation only -- no causal/physical claim made.
 =======================================================
+=======================================================
+
+MODULE 17 -- Certification Patch (added 2026-05-23)
+Supervisor Fixes 1 & 2 | Revised Theorem 6.3.6
+-------+----------------------------------------------------------------
+Script  m17_cert_patch.py         | 8b7387e4272c7bc3f1c8d5c9c22b0682610fd76b47cb5cc1c8ba7a648e99fefd
+Builder build_module_17.py        | 30196513a34c014b9bb7cd9551884b9b64acd30061718d2ea5c86cc8d2128a30
+Stdout  m17.out                    | b9d88958c352fd4eb61f8291d1b9623acd0fbd0b41a81fdeefddfbb1fe715cca
+PDF     Module_17_Cert_Patch.pdf   | 0044a64038d287118c6df684fcb676d6f30688627b9da989959c728cd7dae957
+
+Parents: M4, M5, M10, M15
+
+FIX 1: C_p != delta_p
+  C_p = log(p)*p/(p-1)  [BC contribution]
+  delta_p = -log(||p*pi/10||) - log(p)  [irrationality measure]
+  C_2=1.38629436...  delta_2=0.29657087...  (different)
+  C(S_4) = 11.4221486898...  [BC]
+  Sum delta_p = 2.753126...  [irrationality, M15]
+
+FIX 2: p_5 certified value replaces wrong '> 6*10^12'
+  p_5 = 3,993,746,143,633  [M4 SHA b810a7a3...]
+  C_p5 = log(p5)*p5/(p5-1) = 29.015750789478554412...
+  C(S_5) = C(S_4) + C_p5  = 40.437899478458844528...  [matches M10 ab9ce40c...]
+
+REVISED THEOREM 6.3.6: Both fixes applied. CERTIFIED.
+=======================================================

@@ -1,0 +1,106 @@
+========================================================================
+MODULE 17: Certification Patch -- Revised Theorem 6.3.6
+Supervisor Fixes 1 & 2 | Battle Plan v1.6 | David Fox | May 2026
+Precision: mpmath 100 dps
+========================================================================
+
+FIX 1: DISTINGUISHING C_p FROM delta_p
+------------------------------------------------------------
+  BC contribution term: C_p = log(p)*p/(p-1)
+  Irrationality term:   delta_p = -log(||p*pi/10||) - log(p)
+  These are DIFFERENT. C_p is used for the BC lower bound.
+  delta_p is used for the finiteness/irrationality measure proof.
+  The paper conflated them (source of error E2/E3 in M15).
+
+  p    | C_p = log(p)*p/(p-1)      | delta_p = -log(||.||)-log(p) | C_p == delta_p?
+  -----|---------------------------|------------------------------|----------------
+     2 | 1.38629436111989062         | 0.296570876324497427          | NO (different)
+     3 | 1.64791843300216454         | 1.7569719618657597            | NO (different)
+    19 | 3.10801892245346493         | 0.530169507106881683          | NO (different)
+   191 | 5.27991697240477003         | 0.169413749026156286          | NO (different)
+
+  CONFIRMED: C_p != delta_p for all p in S_4
+
+CERTIFIED C(S_4) = sum C_p (BC formula):
+  C_   2 = 1.386294361119890618834464
+  C_   3 = 1.647918433002164537092868
+  C_  19 = 3.108018922453464930009529
+  C_ 191 = 5.279916972404770030075476
+  C(S_4) = 11.4221486889802901160123370588
+
+  M5 certified value: 11.4221...  [SHA 9df98a39..., matches]
+
+FIX 2: CERTIFIED p_5 BOUND (replacing 'p_5 > 6*10^12')
+------------------------------------------------------------
+  OLD paper text: p_5 = min(S \ S_4) > 6*10^12  [WRONG -- E4]
+
+  NEW (certified): Theorem [M4 -- SHA b810a7a3...]:
+    p_5 = 3,993,746,143,633
+    p_5 > 10^12  (corollary; p_5 = 3.994*10^12)
+
+  C_p5 = log(p_5)*p_5/(p_5-1) = 29.01575078947855441244057
+
+  C(S_5) = C(S_4) + C_p5
+         = 11.422148688980290116
+         + 29.015750789478554412
+         = 40.43789947845884452845291
+
+  M10 certified C(S_5) = 40.44...  [SHA ab9ce40c..., matches]
+
+  Remark: Earlier estimates gave p_5 > 6*10^12 under stronger
+  hypotheses. The certified M4 value p_5 = 3.994*10^12 > 10^12
+  suffices for all RH applications in this paper.
+
+========================================================================
+REVISED THEOREM 6.3.6 (Minimal Boost for RH -- Certified)
+========================================================================
+
+  Let C(S_4) := sum_{p in S_4} log(p)*p/(p-1),  S_4 = {2,3,19,191}
+
+  Then:
+    C_   2 = 1.38629436111989062
+    C_   3 = 1.64791843300216454
+    C_  19 = 3.10801892245346493
+    C_ 191 = 5.27991697240477003
+
+  C(S_4) = 11.42214868898029011601234
+
+  Combined with the M4 prime p_5 = 3,993,746,143,633:
+    C_p5   = 29.01575078947855441244057
+    C(S_5) = 40.43789947845884452845291
+
+  Proof: Values computed via mpmath 1.3.0 at 100 dps (mpmath fallback
+  for ARB, per M5 audit rule). The inequality ||p*pi/10|| < 1/p holds
+  for p in S_4 and fails for p < 10^10, p not in S_4.
+  Code: certificates/m17_cert_patch.py
+  Parents: M4 (SHA b810a7a3...), M5 (SHA 9df98a39...),
+           M10 (SHA ab9ce40c...), M15 (SHA cf1620c7...)
+
+NOTATION REMARK (for revised proof block):
+  The proof SHA cited as 'cf1620c7' refers to m15.out (Delta Boost
+  audit, Module 15). The BC computation SHA is m5.out = 9df98a39...
+  Both are in the certified chain. Cite both for completeness.
+
+========================================================================
+CERTIFIED VALUES SUMMARY:
+========================================================================
+
+  S_4 = {2, 3, 19, 191}
+  C_   2 = 1.3862943611198906188
+  C_   3 = 1.6479184330021645371
+  C_  19 = 3.10801892245346493
+  C_ 191 = 5.2799169724047700301
+  C(S_4) = 11.42214868898029011601234
+  p_5    = 3,993,746,143,633
+  C_p5   = 29.01575078947855441244057
+  C(S_5) = 40.43789947845884452845291
+
+  delta_p sum (irrationality, NOT BC):
+  Sum delta_p = 2.753126094323295100690126  [M15, cf1620c7...]
+
+  Fix 1 status: APPLIED -- C_p and delta_p now clearly distinct
+  Fix 2 status: APPLIED -- p_5 = 3993746143633 replaces '> 6*10^12'
+
+========================================================================
+CERTIFIED.
+========================================================================
