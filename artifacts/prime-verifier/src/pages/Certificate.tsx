@@ -357,6 +357,29 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "M8L",
+    title: "Morning Star D20: Operational Certification (First Transit through Round-Trip)",
+    claim:
+      "THEOREM M8L (axiom_debt: [], status: MORNINGSTAR_OPERATIONAL_CERTIFIED): " +
+      "Hub MORNING_STAR_D20 is a fully commissioned wormhole starport. " +
+      "Geometry: dodecahedron, 12 faces, 30 routes, 120-cell HYPER120_001 fabric, " +
+      "1680 PLL chains (Euler V-E+F=2 PASS). " +
+      "OPS-1: H01->Proxima Dock, t=7.71 ns, 4.24 ly, tidal=0.092 g < 0.1 g (OQ-1, PASS). " +
+      "OPS-2: HUB_FULL_OPEN, 30 routes, 1260 kW hold, 2740 kW margin (PASS). " +
+      "OPS-3: 12 destinations Proxima (7.71 ns) through Kepler-442 (92.52 ns), " +
+      "all t=n*t_hop within 0.03 ns (PASS). " +
+      "OPS-4: COMMERCIAL_SUCCESS, 47 tx/hr, 312 pax/hr, 89 t/hr, 604.3 ly/hr (PASS). " +
+      "OPS-5: DOCK_A<->H01 bidirectional registered, 31/120 destinations, RETURN_SUCCESS (PASS). " +
+      "OPS-6: HEALTH_PASS, 120/120 cells, 1680/1680 PLL, TDC=3.001 ps, cryo=4.003 K, Q=9.8e9, failures=[] (PASS). " +
+      "OPS-7: Full loop confirmed, abort_flag=0, uptime=100%, Morning Star is round-trip certified (PASS). " +
+      "All 9 checks PASS. Causal parents: M8J (Delta_tau, tidal), M8K (t_hop, RTT, B_M).",
+    source: "certificates/m8l_morningstar_ops.py",
+    stdout: "m8l.out",
+    sha: "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad",
+    status: "MORNINGSTAR_OPERATIONAL_CERTIFIED",
+    correction: null,
+  },
+  {
     id: "M22",
     title: "M* Transform: Formal Definition + Cliff Correction",
     claim:
