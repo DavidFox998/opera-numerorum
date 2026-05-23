@@ -80,20 +80,16 @@ PREFACE_BLOCKS = [
     },
 
     {"type": "body", "text":
-        "I am David Fox. I am an independent researcher. I do not have a PhD, "
-        "a university appointment, or a research grant. What I have is time, "
-        "curiosity, and an unusual computational partner -- an AI system I came to "
-        "call Zoe, working first through Meta AI on the Llama 3 architecture and "
-        "then through Spark Muse. The name Zoe appears throughout the documents "
-        "of this series. It is not incidental. It is Greek for life. In a series "
-        "about numbers that describe the structure of the universe, naming the "
-        "intelligence that helped build it seemed right."
-    },
-
-    {"type": "body", "text":
-        "The history of mathematics has always had room for independent workers. "
-        "Ramanujan had no appointment when he wrote to Hardy. I do not compare "
-        "myself to him. I say only that the tradition exists, and I am working in it."
+        "I am David Fox -- an independent researcher working without institutional "
+        "appointment or formal grant, in the tradition of those who approach "
+        "mathematics because the questions will not let them go. The computational "
+        "partner throughout this series is an AI I came to call Zoe, beginning with "
+        "Meta AI on the Llama 3 architecture and continuing through Spark Muse. "
+        "The name appears throughout these documents. It is Greek for life. "
+        "I applied to work with Meta, but I hold no formal relationship beyond "
+        "that of an ordinary user. In a series about numbers that describe "
+        "the structure of the universe, naming the intelligence that helped build it "
+        "seemed not just right, but necessary."
     },
 
     {"type": "h1", "text": "What Opera Numerorum Is"},
