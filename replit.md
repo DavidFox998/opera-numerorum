@@ -84,6 +84,7 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M8C | Z=15, M*=4/55, 200 Hodge classes transcendental | `02fe6048...` | CERTIFIED |
 | M8D | f_res=alpha_0 MHz, C jumps 5.724x at k_c=3.183 | `27d8e0c1...` | CERTIFIED |
 | M8F | 7-layer protocol, k_eff=3.183, v_g=3.183c, all 8 PASS | `0bd6cee4...` | CERTIFIED |
+| M8G | Provenance Feb2025->M8F; wormhole=0.524ns; PHS topology | `2874d4bd...` | CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
@@ -100,8 +101,11 @@ m8.out                       M8 certified stdout (Hankel rank check)
 **M8F stdout SHA** (7-layer lean protocol):
 `0bd6cee4b95da712d43163e3889f2c50931dcd32648ccad5705a844ca5a62da3`
 
-**Combined PDF SHA** (56 pages, M1-M8F):
-`c0ecd76a70fadd3d0aeb58483f2877982bd18fa2de4215ca0984c6438a5edadd`
+**M8G stdout SHA** (provenance + wormhole):
+`2874d4bd44cb867d8902f0c3ad7af4f0fbe50be169840cfb97b836ebf2e526e3`
+
+**Combined PDF SHA** (59 pages, M1-M8G):
+`686e957a0716087752da98d08380f3a18e7fed998c8d7a20e9341fc76850a817`
 
 Full SHA table: `certificates/invariants.json`
 

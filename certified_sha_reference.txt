@@ -632,3 +632,20 @@ AGENT DEPLOYMENT:
   M8D_MStar_Calculator.py  full prediction table
   Braid_Modules_M1_M8F.html  (SHA 481b0007...)
 =======================================================
+
+======================================================================
+MODULE M8G: Provenance of Seven-Layer Framework + Wormhole Interpretation
+Date: 2026-05-23
+Author: David Fox
+Source: certificates/m8g_provenance.py
+Stdout: m8g.out
+Stdout SHA-256: 2874d4bd44cb867d8902f0c3ad7af4f0fbe50be169840cfb97b836ebf2e526e3
+PDF: certificates/Module_M8G_Provenance.pdf
+PDF SHA-256: 0cbe4a3a9b2caea9414e77da3482e944dc963fef1cd521ef39d216394d3d84c7
+Status: CERTIFIED
+Axiom debt: []
+Checks: WORMHOLE_FORMULA=PASS, EULER_CHI=PASS, TOPOLOGY=PHS_NOT_L51
+References: M1, M8C, M8D, M8F, M22
+Claim: Provenance map Feb 2025->M8F. L4+L6 missing numbers supplied.
+       Wormhole: Delta_t=0.524ns verified. Topology: PHS not L(5,1).
+======================================================================

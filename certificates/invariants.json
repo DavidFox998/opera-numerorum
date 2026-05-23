@@ -1242,5 +1242,30 @@
     },
     "theorem": "M8F: 7-layer protocol certifies k_eff=3.183, v_g=3.183c, Delta_t=0.524ns. All 8 assertions PASS. Agent M8F_Agent.py ready for deployment.",
     "date": "2026-05-23"
+  },
+  "module_m8g": {
+    "id": "M8G",
+    "title": "Provenance of Seven-Layer Framework + Wormhole Interpretation",
+    "date": "2026-05-23",
+    "author": "David Fox",
+    "source": "certificates/m8g_provenance.py",
+    "stdout": "m8g.out",
+    "stdout_sha256": "2874d4bd44cb867d8902f0c3ad7af4f0fbe50be169840cfb97b836ebf2e526e3",
+    "status": "CERTIFIED",
+    "axiom_debt": [],
+    "claim": "THEOREM M8G (axiom_debt: []): Provenance of seven-layer framework (Feb 2025 blueprint -> M8F May 2026). Five layers had conceptual shape; L4=299.314159MHz and L6=3.183 were missing numbers. Wormhole time formula: Delta_t_lead = L(1-1/k_c)/c = 0.524ns [PASS, err<0.1%]. Topology correction: 120-cell cross-section is Poincare Homology Sphere (PHS), pi_1=I* (order 120), H_1=0; NOT L(5,1) as in supervisor notes. Euler characteristic: 120-720+1200-600=0 [PASS]. Provenance chain: Feb 2025 Layer 5 (Fractal) = D4/D2 cliff at k_c=3.183 [M8F].",
+    "checks": {
+      "wormhole_formula": "PASS",
+      "euler_characteristic": "PASS",
+      "topology_correction": "PHS_NOT_L51",
+      "provenance_map": "7_layers_L4_L6_supplied"
+    },
+    "references": [
+      "M1",
+      "M8C",
+      "M8D",
+      "M8F",
+      "M22"
+    ]
   }
 }

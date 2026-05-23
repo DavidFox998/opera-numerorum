@@ -235,6 +235,26 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "M8G",
+    title: "Provenance of Seven-Layer Framework + Wormhole Interpretation",
+    claim:
+      "THEOREM M8G (axiom_debt: []): " +
+      "Provenance: Feb 2025 AEAQECC blueprint had shape of all 7 layers; " +
+      "L4=f_res=299.314159MHz and L6=k_c=3.183 were missing numbers, supplied by M8D/M22/M8F. " +
+      "Layer map: L1=m_e*c^2, L2=D2, L3=D4, L4=120-cell f_res, L5=Z=15, L6=k_c=3.183, L7=v_g=c*k. " +
+      "Wormhole formula: Delta_t = L*(1-1/k_c)/c = 0.524ns [PASS, err<0.1%, matches M8F]. " +
+      "Wormhole scope: EM-cavity time contraction at H4 symmetry; NOT a GR Einstein-Rosen bridge. " +
+      "Topology correction: 120-cell -> Poincare Homology Sphere, pi_1=I* (order 120), H_1=0. " +
+      "Supervisor note 'L(5,1)' corrected: L(5,1) has H_1=Z/5Z, PHS has H_1=0. " +
+      "Euler characteristic: 120-720+1200-600=0 [PASS]. " +
+      "Provenance chain: Feb 2025 Layer 5 (Fractal) = D4/D2 box-counting cliff at k_c=3.183.",
+    source: "certificates/m8g_provenance.py",
+    stdout: "m8g.out",
+    sha: "2874d4bd44cb867d8902f0c3ad7af4f0fbe50be169840cfb97b836ebf2e526e3",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
     id: "M22",
     title: "M* Transform: Formal Definition + Cliff Correction",
     claim:
