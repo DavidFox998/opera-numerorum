@@ -1,0 +1,49 @@
+=======================================================
+ CERTIFIED SHA REFERENCE — Battle Plan v1.6
+ David Fox | May 21-22, 2026
+ All values locked. Do not alter any SHA below.
+=======================================================
+
+MODULE | STDOUT SHA-256
+-------+----------------------------------------------------------------
+M1     | 63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291
+M2     | 3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83
+M3     | e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044
+M4     | b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed
+M5     | 9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13
+M6     | ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb
+M7     | 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
+M8     | e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002
+
+SOURCE FILE SHA-256
+-------+----------------------------------------------------------------
+alpha0.py         | 8175b0e904084156c249ccc185420aa98db982976320247a54f082442b6d1d49
+print_kappa.c     | d9a638794b092f55c06f0ef099cf076f4bf85743b8e5e6c211ead4013640cf92
+cf_pi10.py        | 5ac750a4013027495d76ddd22fc76842f408ef716ba1498437d29414da8169b2
+print_S14.c       | 36025d56f76b0f87cb73b1da14e46ceed79d1c359ab17dfb5ea624fab4ce4ee0
+arb_bost.py       | d8257be4e3f673c7834f1cc1d3aa3db95ac885dcd615a5934e3694a243ce263b
+x0_143.py         | 87cf78f0362e4d27c9ea8b40ce6fb5eb61e803d82057b7985f04e980ece2cbe6
+verify_all.sh     | 39c0170455e40b30c7a7aeb6a2801b50d8e9554bb3d7bc746164d22b71174565
+
+CERTIFIED NUMERICAL VALUES
+--------------------------
+alpha0     = 299 + pi/10  (5000 dps, mpmath 1.3.0)
+kappa      = 4.8433014197780389
+Q_5        = 226, a_6 = 733, bound = 82829
+|S_14|     = 14, p_5 = 3993746143633
+C(S_4)     = 11.4221086289384231878  [formula: log(p)*p/(p-1)]
+genus      = 13, h(-143) = 10 (NOT 1)
+M7 master  = SHA256(cat m1.out..m6.out)
+
+FACTS FIXED BY AUDIT (must not reappear in any document)
+---------------------------------------------------------
+- Q_5 = 1296 is WRONG. Correct: Q_5 = 226.
+- bound = 474984 is WRONG. Correct: 82829.
+- h(-143) = 1 is WRONG. Correct: h(-143) = 10.
+- C(S_4) = 1.434 uses WRONG formula log(p)/(p-1). Correct: 11.422.
+- 143.2.a.a is NOT CM. is_cm = False (LMFDB certified).
+- Hecke traces on H_1(J_0(143)): a_2=-1, a_3=0, a_19=0, a_191=28.
+
+RULE: Any SHA not matching this table is fabricated and will be rejected.
+RULE: Any script whose SHA cannot be reproduced by running it is rejected.
+=======================================================
