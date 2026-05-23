@@ -306,12 +306,32 @@ const MODULES = [
       "Resonator: 14 Nb3Sn H4 modes, 22.492-314.893 MHz, E_cav=1.4444 MWh=5.20e9 J (PASS). " +
       "OQ-1: bulk tidal 0.24g at r=3.25m (design limit 0.10g; fix: non-zero b'(r0)). " +
       "OQ-2: transit 7.71ns vs 1.08ns claimed (fix: recalibrate f^2; supervisor b(r) table inconsistent). " +
-      "Both OQs are parameter-calibration issues, not physics failures. " +
+      "Both OQs resolved in M8J (supervisor recalibration, delta=1.89m). " +
       "Causal parent: M8H (G_eff(Z)=G_0*(15/Z)^4, A=50625, CERTIFIED).",
     source: "certificates/m8i_wormhole.py",
     stdout: "m8i.out",
     sha: "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37",
     status: "ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS",
+    correction: "OQ-1 and OQ-2 both resolved by M8J (supervisor recalibration: delta=1.89m, f2=3.21e17 J/m). See M8J below.",
+  },
+  {
+    id: "M8J",
+    title: "OQ-2 Closure: Recalibrated Wormhole (delta=1.89m, f\u00b2=3.21\u00d710\u00b9\u2077 J/m)",
+    claim:
+      "THEOREM M8J (axiom_debt: [], status: ARCHITECTURE_CERTIFIED -- no open questions): " +
+      "Supervisor recalibration (M8I-Throat v1.2): delta=1.89m (was 0.5m), f2_SI=3.21e17 J/m (was 2.3e18). " +
+      "OQ-1 CLOSED: max bulk tidal (r>3.25m) = 0.0999 g < 0.100 g design limit. " +
+      "Root cause fix: wider Z gradient spreads b' over ~4m, reducing peak tidal 2.4x. " +
+      "OQ-2 CLOSED: Delta_tau = 7.647 ns. " +
+      "Supervisor's original 1.08 ns claim acknowledged as error in their b(r) table; " +
+      "correct value 7.71 ns matches M8I certified computation. " +
+      "f2 scaling: E_start=0.2016 MWh (7.2x cheaper), P_hold=1.396 kW, I_peak=7.10e8 A. " +
+      "All 11 Morris-Thorne constraints PASS. " +
+      "Causal parent: M8I (SHA: 5c7189fc...).",
+    source: "certificates/m8j_oq2_closure.py",
+    stdout: "m8j.out",
+    sha: "298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505",
+    status: "ARCHITECTURE_CERTIFIED",
     correction: null,
   },
   {

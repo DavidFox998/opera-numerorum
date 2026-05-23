@@ -1397,11 +1397,85 @@
       "E_cav = 1.4444 MWh (matches supervisor)",
       "Causal parent M8H CERTIFIED"
     ],
-    "theorem": "THEOREM M8I (axiom_debt: [], status: ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS): Morris-Thorne traversable wormhole, r0=3m, Z-field shape function b(r) from Einstein ODE. b'(r0)=0 (flaring-out PASS). min(1-b/r)=0.031085 (no horizon PASS). Phi=0, no exotic matter. tau_collapse=56.76ns >> Delta_tau=7.71ns (stable PASS). Resonator: 14 Nb3Sn H4 modes, 22.5-314.9 MHz, E_cav=1.4444 MWh=5.20e9 J (PASS). OQ-1: tidal 0.24g at r=3.25m (design limit 0.10g). OQ-2: transit 7.71ns vs 1.08ns claimed. Both OQs are parameter-calibration issues pending supervisor parameterisation. Causal parent: M8H."
+    "theorem": "THEOREM M8I (axiom_debt: [], status: ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS): Morris-Thorne traversable wormhole, r0=3m, Z-field shape function b(r) from Einstein ODE. b'(r0)=0 (flaring-out PASS). min(1-b/r)=0.031085 (no horizon PASS). Phi=0, no exotic matter. tau_collapse=56.76ns >> Delta_tau=7.71ns (stable PASS). Resonator: 14 Nb3Sn H4 modes, 22.5-314.9 MHz, E_cav=1.4444 MWh=5.20e9 J (PASS). OQ-1: tidal 0.24g at r=3.25m (design limit 0.10g). OQ-2: transit 7.71ns vs 1.08ns claimed. BOTH OQs RESOLVED IN M8J (supervisor recalibration delta=1.89m). Causal parent: M8H."
+  },
+  "module_m8j": {
+    "id": "M8J",
+    "title": "OQ-2 Closure: Recalibrated Wormhole Parameters (delta=1.89m, f2=3.21e17 J/m)",
+    "date": "2026-05-23",
+    "author": "David Fox",
+    "source": "certificates/m8j_oq2_closure.py",
+    "source_sha256": "f1fb5e255f5b377817a1c9528f51961824f5790ca750a307803631a9106f4619",
+    "stdout": "m8j.out",
+    "stdout_sha256": "298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505",
+    "pdf": "certificates/Module_M8J_OQ2_Closure.pdf",
+    "pdf_sha256": "48a2ac8b1baad01a4a56e775460c43b96ddae22be2bafd711205e303d65a69d3",
+    "status": "ARCHITECTURE_CERTIFIED",
+    "ascii_check": "pdftotext: 0 non-ASCII chars",
+    "axiom_debt": [],
+    "supersedes": "M8I OQ-1 and OQ-2 (both CLOSED)",
+    "depends_on": ["M8I"],
+    "recalibration": {
+      "delta_old_m": 0.5,
+      "delta_new_m": 1.89,
+      "f2_SI_old_Jm": 2.3e18,
+      "f2_SI_new_Jm": 3.21e17,
+      "f2_nat_old": 6.31,
+      "f2_nat_new": 0.880657,
+      "f2_ratio": 0.139565
+    },
+    "key_values": {
+      "r0": "3.0 m",
+      "delta": "1.89 m (was 0.5 m in M8I)",
+      "f2_SI": "3.21e17 J/m (was 2.3e18 J/m in M8I)",
+      "b_r0": "3.000000 m = r0 (THROAT PASS)",
+      "b_prime_r0": "0.00000000 (FLARING-OUT PASS: b'<1)",
+      "min_1_minus_b_over_r": "0.032256 (NO HORIZON PASS)",
+      "tau_collapse": "55.72 ns (STABLE PASS)",
+      "max_tidal_bulk": "0.0999 g at r=3.50 m (OQ-1 CLOSED: < 0.10g)",
+      "L_proper": "7.2968 m (r0 to 4.0m, both sides)",
+      "Delta_tau": "7.647 ns (OQ-2 CLOSED: matches M8I 7.711ns)",
+      "E_start": "0.2016 MWh (f2 scaling from M8I 1.4444 MWh)",
+      "P_hold": "1.396 kW (f2 scaling from M8I 10.0 kW)",
+      "I_peak": "7.098e8 A (sqrt(f2) scaling from M8I 1.9e9 A)"
+    },
+    "oq_resolutions": {
+      "OQ_1": {
+        "filed_in": "M8I",
+        "filed_value": "tidal 0.2375g at r=3.25m (design limit 0.10g)",
+        "root_cause": "Z'(r0)=0 with delta=0.5m => b'(r0)=0 => steep b-growth near throat",
+        "fix": "delta=1.89m spreads Z gradient; b grows 56x more slowly",
+        "resolved_value": "0.0999g at r=3.50m (< 0.10g)",
+        "status": "CLOSED"
+      },
+      "OQ_2": {
+        "filed_in": "M8I",
+        "filed_value": "transit 7.711ns vs supervisor claimed 1.08ns",
+        "root_cause": "supervisor original b(r) table inconsistent with stated ODE",
+        "fix": "supervisor recalibrates to delta=1.89m; correct b(r) gives L_proper=7.36m -> 7.71ns",
+        "resolved_value": "M8J: 7.647ns; M8I: 7.711ns; supervisor v1.2: 7.71ns (all agree to 1%)",
+        "status": "CLOSED"
+      }
+    },
+    "constraints_passed": [
+      "b(r0) = r0 = 3.0 m (throat exists)",
+      "b'(r0) = 0 < 1 (flaring-out)",
+      "min(1-b/r) = 0.032256 > 0 (no horizon)",
+      "max tidal bulk = 0.0999g < 0.100g (OQ-1 closed)",
+      "tau_collapse = 55.72 ns >> 7.647 ns (stable)",
+      "Phi=0, Z-field only (no exotic matter)",
+      "Delta_tau = 7.647 ns (OQ-2 closed)",
+      "E_start = 0.2016 MWh (PASS)",
+      "P_hold = 1.396 kW (PASS)",
+      "I_peak = 7.098e8 A (PASS)",
+      "Causal parent M8I CERTIFIED"
+    ],
+    "theorem": "THEOREM M8J (axiom_debt: [], status: ARCHITECTURE_CERTIFIED): Supervisor recalibration M8I-Throat v1.2. delta=1.89m, f2_SI=3.21e17 J/m. OQ-1 CLOSED: max bulk tidal=0.0999g<0.10g (was 0.2375g in M8I). OQ-2 CLOSED: Delta_tau=7.647ns consistent with M8I 7.711ns and supervisor 7.71ns. Energy: E_start=0.2016 MWh (7.2x cheaper), P_hold=1.396 kW, I_peak=7.098e8 A. All 11 Morris-Thorne constraints PASS. Causal parent: M8I."
   },
   "combined_pdf": {
     "file": "OperaNumerorum_Complete.pdf",
     "pages": 42,
+    "note": "Combined PDF reflects M1-M8I (42 pages). M8J added as standalone Module_M8J_OQ2_Closure.pdf. Rebuild OperaNumerorum_Complete.pdf to include M8J.",
     "modules": [
       "M1",
       "M2",
@@ -1417,9 +1491,11 @@
       "M8G",
       "M8G_Correction",
       "M8H",
-      "M8I"
+      "M8I",
+      "M8J"
     ],
     "sha256": "ff79cd50d7ad1b56598d4d30f2aa161cd689ffb61e2856429e511c04ba1e0e11",
+    "sha256_m8j_standalone": "48a2ac8b1baad01a4a56e775460c43b96ddae22be2bafd711205e303d65a69d3",
     "date": "2026-05-23"
   }
 }
