@@ -48,3 +48,21 @@ id = "e7kPLNS5tXfqHW9V_WELi"
 uri = "file://certificates/Module_8_Certificate.pdf"
 type = "pdf"
 title = "Module 8 Certificate — Revised (algebraic ω, scope corrected)"
+
+[[outputs]]
+id = "cYUuCzdwjsX22_Io0kmtv"
+uri = "file://143_traces.csv"
+type = "table"
+title = "M8.1 Certified Hecke Traces (143_traces.csv)"
+
+[[outputs]]
+id = "RoMqo8fx9sVWpADflAGnX"
+uri = "file://certified_sha_reference.txt"
+type = "text"
+title = "Certified SHA Reference Card"
+
+[[outputs]]
+id = "mYo3HamVEiLA_M099rnI8"
+uri = "file://lmfdb_api.log"
+type = "unspecified"
+title = "LMFDB API Log (raw fetch record)"
