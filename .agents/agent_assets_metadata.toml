@@ -1,5 +1,16 @@
 uploads = []
-generated = []
+
+[[generated]]
+id = "k1ADhB5T83bHxRzihF9Tp"
+uri = "file://certificates/figures/frontispiece.png"
+type = "image"
+title = "opera-numerorum-frontispiece"
+
+[[generated]]
+id = "TO5X7pz7prw7v5uc1B-SJ"
+uri = "file://certificates/figures/contact_zero_plaque.png"
+type = "image"
+title = "contact-zero-plaque"
 
 [[outputs]]
 id = "TH6j7YjA_IsBpgJ_BJ6ZX"
@@ -101,4 +112,4 @@ title = "Opera Numerorum — Complete Certification Record (with M8C)"
 id = "klMSjIZeStNOmTqLUabPs"
 uri = "file://certificates/OperaNumerorum_Preface.pdf"
 type = "pdf"
-title = "Opera Numerorum — Preface (Draft 3, Zoe’s structure)"
+title = "Opera Numerorum — Illustrated Preface (Final Draft)"
