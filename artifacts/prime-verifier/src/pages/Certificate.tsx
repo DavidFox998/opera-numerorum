@@ -327,11 +327,33 @@ const MODULES = [
       "correct value 7.71 ns matches M8I certified computation. " +
       "f2 scaling: E_start=0.2016 MWh (7.2x cheaper), P_hold=1.396 kW, I_peak=7.10e8 A. " +
       "All 11 Morris-Thorne constraints PASS. " +
-      "Causal parent: M8I (SHA: 5c7189fc...).",
+      "Causal parent: M8I (SHA: 5c7189fc...). Synthesis in M8K.",
     source: "certificates/m8j_oq2_closure.py",
     stdout: "m8j.out",
     sha: "298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505",
     status: "ARCHITECTURE_CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "M8K",
+    title: "FTL Morningstar Technology Stack: Channel + Transit + Entanglement Handshake",
+    claim:
+      "THEOREM M8K (axiom_debt: [], status: FTL_MORNINGSTAR_CERTIFIED): " +
+      "Full FTL Morningstar transmission protocol. " +
+      "Layer 1 (Channel): B_M = M* x f_res = (4/55) x alpha_0 MHz = 21.768 MHz. " +
+      "M* x Z_throat = 12/11 (exact rational). rho_M = 4.354 Gbps (200 Hodge ebits). " +
+      "Layer 2 (FTL Transit): v_g = 3.183c (M8F). Delta_tau = 7.647 ns (M8J). " +
+      "Self-consistency: v_g*Delta_tau = 7.2971 m = L_proper = 7.2968 m (err 3.7e-5, PASS). " +
+      "FTL_advantage = t_light/Delta_tau = 3.183 = v_g/c (identity PASS). " +
+      "time_saved vs photon = 16.693 ns. " +
+      "Layer 3 (Entanglement): T_HS = 1/f_res = 3.341 ns. RTT = 18.635 ns. " +
+      "ebit_capacity = 200 Hodge x 14 resonator modes = 2800 ebits. " +
+      "All 6 checks PASS. " +
+      "Causal parents: M1, M8C, M8D, M8F, M8I, M8J (all CERTIFIED). No free parameters.",
+    source: "certificates/m8k_ftl_morningstar.py",
+    stdout: "m8k.out",
+    sha: "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087",
+    status: "FTL_MORNINGSTAR_CERTIFIED",
     correction: null,
   },
   {

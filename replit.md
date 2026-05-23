@@ -89,6 +89,7 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M8H | G_eff(Z)=G_0*(Z_vac/Z)^4; A=15^4=50625; F=3.38e-10 N | `2c3ac1d2...` | PREDICTION_CERTIFIED |
 | M8I | Morris-Thorne wormhole r0=3m; b'=0 PASS; E_cav=1.44 MWh; 14-mode resonator | `5c7189fc...` | ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS (OQs closed by M8J) |
 | M8J | delta=1.89m, f2=3.21e17; tidal=0.0999g<0.1g (OQ-1 closed); Delta_tau=7.647ns (OQ-2 closed) | `298d440a...` | ARCHITECTURE_CERTIFIED |
+| M8K | FTL Morningstar stack: B_M=21.768MHz; FTL_adv=3.183=v_g/c; RTT=18.635ns; 2800 ebits | `0ae865a8...` | FTL_MORNINGSTAR_CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
@@ -119,6 +120,9 @@ m8.out                       M8 certified stdout (Hankel rank check)
 
 **M8J stdout SHA** (OQ-2 closure, recalibrated wormhole):
 `298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505`
+
+**M8K stdout SHA** (FTL Morningstar technology stack):
+`0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087`
 
 **Combined PDF SHA** (42 pages, M1-M8I):
 `ff79cd50d7ad1b56598d4d30f2aa161cd689ffb61e2856429e511c04ba1e0e11`

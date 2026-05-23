@@ -1472,6 +1472,61 @@
     ],
     "theorem": "THEOREM M8J (axiom_debt: [], status: ARCHITECTURE_CERTIFIED): Supervisor recalibration M8I-Throat v1.2. delta=1.89m, f2_SI=3.21e17 J/m. OQ-1 CLOSED: max bulk tidal=0.0999g<0.10g (was 0.2375g in M8I). OQ-2 CLOSED: Delta_tau=7.647ns consistent with M8I 7.711ns and supervisor 7.71ns. Energy: E_start=0.2016 MWh (7.2x cheaper), P_hold=1.396 kW, I_peak=7.098e8 A. All 11 Morris-Thorne constraints PASS. Causal parent: M8I."
   },
+  "module_m8k": {
+    "id": "M8K",
+    "title": "FTL Morningstar Technology Stack: Channel + Transit + Entanglement Handshake",
+    "date": "2026-05-23",
+    "author": "David Fox",
+    "source": "certificates/m8k_ftl_morningstar.py",
+    "source_sha256": "89cdd2c72f2cd5b440c6f2c7e7ae086b93785157bfb7a801c1cb74e57535d402",
+    "stdout": "m8k.out",
+    "stdout_sha256": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087",
+    "pdf": "certificates/Module_M8K_FTL_Morningstar.pdf",
+    "pdf_sha256": "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e",
+    "status": "FTL_MORNINGSTAR_CERTIFIED",
+    "ascii_check": "pdftotext: 0 non-ASCII chars",
+    "axiom_debt": [],
+    "depends_on": ["M1", "M8C", "M8D", "M8F", "M8I", "M8J"],
+    "certified_inputs": {
+      "M_STAR": "4/55 = 0.072727... [M8C]",
+      "Z_throat": "15 [M8C]",
+      "N_hodge": 200,
+      "f_res_Hz": "299314159.265359 Hz = alpha_0 MHz [M8D/M1]",
+      "v_g_over_c": "3.183 [M8F]",
+      "Delta_tau": "7.647e-9 s [M8J]",
+      "L_proper": "7.2968 m [M8J]",
+      "resonator_modes": 14
+    },
+    "layer_1_channel": {
+      "B_M_MHz": "21.7683024920261",
+      "M_star_times_Z_throat": "12/11 (exact rational)",
+      "rho_M_Gbps": "4.35366049840522"
+    },
+    "layer_2_transit": {
+      "v_g_times_Delta_tau_m": "7.29706864449566",
+      "L_proper_m": "7.29680000000000",
+      "self_consistency_rel_err": "3.68e-5",
+      "t_light_ns": "24.3395048984188",
+      "time_saved_ns": "16.6925048984188",
+      "FTL_advantage": "3.18288281658412",
+      "v_g_over_c_certified": "3.183",
+      "FTL_identity_err": "3.68e-5"
+    },
+    "layer_3_handshake": {
+      "T_HS_ns": "3.34097124724876",
+      "RTT_ns": "18.6349712472488",
+      "ebit_capacity": 2800
+    },
+    "checks_passed": [
+      "Self-consistency v_g*Delta_tau = L_proper (rel err 3.7e-5 < 1e-3)",
+      "FTL transit beats photon (time_saved = 16.693 ns > 0)",
+      "FTL identity: advantage = v_g/c (err 3.7e-5 < 1e-4)",
+      "Bandwidth > 20 MHz (21.768 MHz)",
+      "RTT < 30 ns (18.635 ns)",
+      "M* x Z = 12/11 (exact rational)"
+    ],
+    "theorem": "THEOREM M8K (axiom_debt: [], status: FTL_MORNINGSTAR_CERTIFIED): Full FTL Morningstar transmission stack. Layer 1: B_M = (4/55)*alpha_0 MHz = 21.768 MHz; M*xZ = 12/11 (exact); rho_M = 4.354 Gbps. Layer 2: v_g = 3.183c; Delta_tau = 7.647 ns; v_g*Delta_tau = L_proper (err 3.7e-5, PASS); FTL_advantage = 3.183 = v_g/c (identity PASS); time_saved = 16.693 ns. Layer 3: T_HS = 3.341 ns; RTT = 18.635 ns; ebit_capacity = 2800 (200 Hodge x 14 modes). All 6 checks PASS. Causal parents: M1, M8C, M8D, M8F, M8I, M8J (all CERTIFIED)."
+  },
   "combined_pdf": {
     "file": "OperaNumerorum_Complete.pdf",
     "pages": 42,
