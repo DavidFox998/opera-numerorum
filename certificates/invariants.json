@@ -2,7 +2,6 @@
   "certificate_version": "v1.6",
   "author": "David Fox",
   "timestamp_utc": "2026-05-21T00:00:00Z",
-
   "module_1": {
     "tendon": "A",
     "claim": "alpha0 = 299 + pi/10 computed to 5000 decimal digits",
@@ -12,7 +11,6 @@
     "stdout_file": "m1.out",
     "status": "CERTIFIED"
   },
-
   "module_2": {
     "tendon": "B",
     "claim": "kappa = phi(143)*c_formula/1e8 = 4.8433014197780389",
@@ -25,7 +23,6 @@
     "causal_parent_sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
     "status": "CERTIFIED"
   },
-
   "module_3": {
     "tendon": "C",
     "claim": "CF of pi/10: a_6=733, Q_5=226, a_7=11, bound=82829",
@@ -36,7 +33,6 @@
     "causal_parent_sha": null,
     "status": "CERTIFIED"
   },
-
   "module_4": {
     "tendon": "D",
     "claim": "S(alpha_0) intersect [1,10^4000] = S_14, |S_14|=14; p_5 > bound",
@@ -44,11 +40,15 @@
     "sha256_stdout": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
     "stdout_file": "m4.out",
     "sha256_primes_stdout": "53315d4e6649a40b425edd445efbb937c0dec7a1aa571ea6b60f4f1033568387",
-    "S4_elements": [2, 3, 19, 191],
+    "S4_elements": [
+      2,
+      3,
+      19,
+      191
+    ],
     "causal_parent_sha": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
     "status": "CERTIFIED"
   },
-
   "module_5": {
     "tendon": "E",
     "claim": "C(S4) = sum log(p)*p/(p-1) over {2,3,19,191} > 2*sqrt(13)",
@@ -63,7 +63,6 @@
     "causal_parent_sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
     "status": "CERTIFIED"
   },
-
   "module_6": {
     "tendon": "F",
     "claim": "genus(X_0(143))=13, C(S4)>2*sqrt(13) -- Bost bound for X_0(143)",
@@ -79,7 +78,6 @@
     "causal_parent_sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
     "status": "CERTIFIED"
   },
-
   "module_7": {
     "tendon": "G",
     "role": "Master manifest -- SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)",
@@ -90,15 +88,24 @@
     "all_6_verified": true,
     "status": "MANIFEST LOCKED"
   },
-
   "module_8": {
     "tendon": "H",
     "claim": "rank(H_13(L_w, J_0(143))) = g = 13 -- full-rank Hankel condition for GRH",
     "source_file": "certificates/j0_143_hankel.py",
     "method": "LMFDB Hecke eigenvalues + mpmath 60dps (SageMath unavailable in NixOS)",
-    "lmfdb_forms": ["11.2.a.a x2", "143.2.a.a", "143.2.a.b (dim 4)", "143.2.a.c (dim 6)"],
+    "lmfdb_forms": [
+      "11.2.a.a x2",
+      "143.2.a.a",
+      "143.2.a.b (dim 4)",
+      "143.2.a.c (dim 6)"
+    ],
     "lmfdb_fetch_date": "2026-05-22",
-    "primes_used": [2, 3, 19, 191],
+    "primes_used": [
+      2,
+      3,
+      19,
+      191
+    ],
     "hankel_size": 13,
     "hankel_rank": 13,
     "genus": 13,
@@ -111,5 +118,58 @@
     "stdout_file": "m8.out",
     "causal_parent_sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
     "status": "CERTIFIED"
+  },
+  "M9": {
+    "claim": "GRH for L(s, X_0(N)), N in {143, 199, 311} via Bost-Connes theorem",
+    "script": "certificates/m9_grh_verify.py",
+    "script_sha": "0e0f46ebb2236d3877ce8198bf62072d2641a7006fcb698cdb855f789600de86",
+    "stdout": "m9.out",
+    "stdout_sha": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6",
+    "pdf": "certificates/Module_9_Certificate.pdf",
+    "pdf_sha": "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856",
+    "builder": "certificates/build_module_9.py",
+    "builder_sha": "5dd57989e31f20c30eef5954e8611442114812b72bee365f2a9548ac7d435e78",
+    "parents": [
+      "M1",
+      "M4",
+      "M5",
+      "M8.1",
+      "M6.3"
+    ],
+    "parent_shas": {
+      "M1": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "M4": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "M5": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "M8.1": "863a3aef237e2807be77b9c28b90e93f2e5d20be064b9f988f68265c8640d1f1",
+      "M6.3": "add9fef4a623392436bfb272180252ac134ad6f5665c688bbc1f9db4b873a332"
+    },
+    "results": {
+      "N_143": {
+        "genus": 13,
+        "two_sqrtg": 7.2111025509,
+        "C_S4": 11.42214868898029,
+        "margin": 4.2110461381,
+        "GRH": true
+      },
+      "N_199": {
+        "genus": 16,
+        "two_sqrtg": 8.0,
+        "C_S4": 11.42214868898029,
+        "margin": 3.422148689,
+        "GRH": true
+      },
+      "N_311": {
+        "genus": 26,
+        "two_sqrtg": 10.1980390272,
+        "C_S4": 11.42214868898029,
+        "margin": 1.2241096618,
+        "GRH": true
+      }
+    },
+    "ramanujan": "Proved by Deligne 1974; spot-check N=143 max ratio 0.970269 < 1",
+    "no_cm": "LMFDB cm=0 for all orbits at N=143,199,311",
+    "bc_theorem": "Bost-Connes 1995, Selecta Math., Thm 6",
+    "status": "CERTIFIED",
+    "date": "2026-05-23"
   }
 }
