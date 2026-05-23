@@ -119,3 +119,9 @@ id = "px9rnQN6qFsKBuqG84dwj"
 uri = "file://certificates/OperaNumerorum_AllCertificates.zip"
 type = "unspecified"
 title = "Opera Numerorum — Complete Archive (36 PDFs, 3.4 MB)"
+
+[[outputs]]
+id = "W90T7YAwZynQkWP5EtbLn"
+uri = "file://OperaNumerorum_CompleteArchive.zip"
+type = "unspecified"
+title = "Opera Numerorum — Complete Submission Archive (46 files, 4.0 MB)"
