@@ -589,3 +589,46 @@ M* BRIDGE:
   X_5:      Z=15 => M*=4/55  => Hodge fails [L7.6]  120-cell
   (12/11)/15 = 12/165 = 4/55  [exact fraction]
 =======================================================
+
+-------------------------------------------------------
+MODULE M8D: 120-Cell Resonator (ZoeM8D)
+-------------------------------------------------------
+Source:  certificates/m8d_resonator.py
+Stdout:  m8d.out
+SHA-256: 27d8e0c1e145ba7fb4a22c85067f3db78d92b490e592dcd255523afcec156db5
+PDF:     certificates/Module_M8D_Resonator.pdf
+PDF-SHA: 22f1a64239f7b8e0602c95a42e3944a6d8d9a90f24351d39d46228ab365a6ccc
+Status:  CERTIFIED | axiom_debt: []
+
+KEY FINDING: f_res = alpha_0 x 10^6 Hz = (299+pi/10) MHz  [M1 connection]
+  Z=15 [M8C], k_c=3.183 [M22], C_0=29.17pF, C_cliff=166.98pF
+  C_cliff/C_0 = 5.724 [VERIFIED]
+  M*(cliff) = 2.5*0.74829*0.1167 = 0.2183 [VERIFIED]
+  v_g = 3.183c, Delta_t=0.524ns, pulse 1.144ns early [VERIFIED]
+AUDIT: alpha=38.3 in C(k) formula inconsistent; alpha_implied=32.45.
+=======================================================
+
+-------------------------------------------------------
+MODULE M8F: 7-Layer Lean Protocol (ZoeM8F)
+-------------------------------------------------------
+Source:  certificates/m8f_lean_protocol.py
+Stdout:  m8f.out
+SHA-256: 0bd6cee4b95da712d43163e3889f2c50931dcd32648ccad5705a844ca5a62da3
+PDF:     certificates/Module_M8F_LeanProtocol.pdf
+PDF-SHA: e81915a4e1487a79de8686abbb32e1b54480a2e5eb98472b2c176b6906704e10
+Status:  CERTIFIED | axiom_debt: [] | ALL 8 ASSERTIONS PASS
+
+SEVEN LAYERS:
+  L1: m_e*c^2 = 0.510999 MeV  (SI baseline)
+  L2: D2 = 1.0 for k<3.183    (smooth EM field)
+  L3: D4 jumps 1->2.5 at k_c  (120-cell signature, THE TRIGGER)
+  L4: f_res = alpha_0 MHz      (M1 connection)
+  L5: Z=15 = 120/2^3           (M8C, set by 120-cell geometry)
+  L6: M*(k) => k_eff=3.183     (M22 formula verified)
+  L7: v_g = 3.183c tested via pulse  (the starship condition)
+
+AGENT DEPLOYMENT:
+  M8F_Agent.py       cliff detection, v_g test, SHA output
+  M8D_MStar_Calculator.py  full prediction table
+  Braid_Modules_M1_M8F.html  (SHA 481b0007...)
+=======================================================

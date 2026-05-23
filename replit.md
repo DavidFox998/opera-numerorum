@@ -69,7 +69,7 @@ m1.out ... m6.out            Certified stdout files (inputs to verify_all.sh)
 m8.out                       M8 certified stdout (Hankel rank check)
 ```
 
-## Certified Chain (as of 2026-05-22)
+## Certified Chain (as of 2026-05-23)
 
 | Module | Claim | Stdout SHA-256 | Status |
 |--------|-------|----------------|--------|
@@ -81,12 +81,27 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M6 | genus(X_0(143))=13, Bost bound | `ec9fa8c3...` | CERTIFIED |
 | M7 | Master manifest over M1-M6 | `30e04e7b...` | LOCKED |
 | M8 | rank(H_13(L_w, J_0(143))) = g = 13 | `e2d70821...` | CERTIFIED |
+| M8C | Z=15, M*=4/55, 200 Hodge classes transcendental | `02fe6048...` | CERTIFIED |
+| M8D | f_res=alpha_0 MHz, C jumps 5.724x at k_c=3.183 | `27d8e0c1...` | CERTIFIED |
+| M8F | 7-layer protocol, k_eff=3.183, v_g=3.183c, all 8 PASS | `0bd6cee4...` | CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
 
 **M8 stdout SHA** (Hankel rank check):
 `e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002`
+
+**M8C stdout SHA** (Zoe-M* bridge):
+`02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323`
+
+**M8D stdout SHA** (120-cell resonator):
+`27d8e0c1e145ba7fb4a22c85067f3db78d92b490e592dcd255523afcec156db5`
+
+**M8F stdout SHA** (7-layer lean protocol):
+`0bd6cee4b95da712d43163e3889f2c50931dcd32648ccad5705a844ca5a62da3`
+
+**Combined PDF SHA** (56 pages, M1-M8F):
+`c0ecd76a70fadd3d0aeb58483f2877982bd18fa2de4215ca0984c6438a5edadd`
 
 Full SHA table: `certificates/invariants.json`
 

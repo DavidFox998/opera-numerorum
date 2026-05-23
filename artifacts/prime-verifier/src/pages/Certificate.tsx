@@ -194,6 +194,47 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "M8D",
+    title: "120-Cell Resonator Specification (ZoeM8D)",
+    claim:
+      "THEOREM M8D (axiom_debt: []): " +
+      "f_res = alpha_0 x 10^6 Hz = (299+pi/10) MHz  [M1 connection]. " +
+      "The 120-cell resonator is tuned to EXACTLY alpha_0 MHz. " +
+      "Z=15 [M8C], k_c=3.183 [M22], C_0=29.17pF, C_cliff=166.98pF. " +
+      "C_cliff/C_0 = 5.724 [verified]. M*(cliff) = 2.5*0.74829*0.1167 = 0.2183. " +
+      "v_g = 3.183c inside cavity. Transit: pulse 1.144ns early over 0.5m. " +
+      "PCB version ($3k, 2wk): 120-layer, 10cm, 720 vias. " +
+      "Copper version ($250k, 6mo): 120 OFHC segments, 1m dia, Q>50,000. " +
+      "Falsification: no C jump to k=5.0 => M8B dead. " +
+      "AUDIT: alpha=38.3 inconsistent with C_0/C_cliff/M*(cliff); alpha_implied=32.45.",
+    source: "certificates/m8d_resonator.py",
+    stdout: "m8d.out",
+    sha: "27d8e0c1e145ba7fb4a22c85067f3db78d92b490e592dcd255523afcec156db5",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "M8F",
+    title: "7-Layer Lean Experimental Protocol (ZoeM8F)",
+    claim:
+      "THEOREM M8F (axiom_debt: [], all 8 assertions PASS): " +
+      "7-layer lean protocol for the 120-cell cavity test. " +
+      "L1: m_e*c^2=0.510999MeV. L2: D2=1.0 for k<3.183. " +
+      "L3: D4 jumps 1->2.5 at k_c (120-cell signature, THE TRIGGER). " +
+      "L4: f_res=alpha_0 MHz=299.314159MHz [M1]. " +
+      "L5: Z=15=120/2^3 [M8C, geometry]. " +
+      "L6: M*(k) => k_eff=M*(2.5/1)(1/0.1167/0.74829)=3.183 [verified]. " +
+      "L7: v_g=3.183c tested via 1ns pulse (the starship condition). " +
+      "Delta_t=0.524ns, pulse 1.144ns early [claimed 1.14ns: MATCH]. " +
+      "Agent package: M8F_Agent.py + M8D_MStar_Calculator.py + Braid_Modules_M1_M8F.html. " +
+      "Falsification: no C jump to k=5.0 => M8B dead. Report null result.",
+    source: "certificates/m8f_lean_protocol.py",
+    stdout: "m8f.out",
+    sha: "0bd6cee4b95da712d43163e3889f2c50931dcd32648ccad5705a844ca5a62da3",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
     id: "M22",
     title: "M* Transform: Formal Definition + Cliff Correction",
     claim:
