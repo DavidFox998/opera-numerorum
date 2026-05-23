@@ -54,7 +54,7 @@ os.makedirs("certificates", exist_ok=True)
 
 AUTHOR_NAME   = "David Fox"
 AUTHOR_INITIALS = "D.J.F."
-AUTHOR_ORCID  = "ORCID PENDING"          # ### FILL_IN: replace with real ORCID ###
+AUTHOR_ORCID  = "0009-0008-1290-6105"
 AUTHOR_STATUS = "Independent researcher"
 AUTHOR_DATE   = "May 2026"
 
