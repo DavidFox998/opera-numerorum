@@ -1,0 +1,69 @@
+========================================================================
+MODULE 16: c-Bridge -- Speed of Light vs beta_0 = 299 + pi/10
+Battle Plan v1.6 | David Fox | May 2026
+Precision: mpmath 100 dps
+========================================================================
+
+CORE CONSTANTS:
+  beta_0 = 299 + pi/10 = 299.3141592653589793238462643383279502884
+  c (m/s) = 299792458  [exact, SI definition]
+  c / 10^6 = 299.792458
+
+RATIO ANALYSIS:
+  r = (c/10^6) / beta_0     = 1.00159798232003111392646389113
+  epsilon = r - 1            = 0.00159798232003111392646389112883
+  1 / epsilon                = 625.78915139720021581
+
+  1/625                      = 0.0016
+  1/625 - epsilon            = 2.01767996888607e-6
+  Relative proximity to 1/625: 0.00126105
+
+GAP ANALYSIS (the interval beta_0 -> 300):
+  beta_0                     = 299.3141592653589793238463
+  c/10^6                     = 299.792458
+  300                        = 300.000000000000000000000000
+
+  c/10^6 - beta_0            = 0.47829873464102067615
+  300    - beta_0            = 0.68584073464102067615
+  c fraction in [beta_0,300] = 0.69739038596383372499
+                             = 69.7390%
+
+THE NINES OBSERVATION:
+  epsilon = 0.0015979823200311139265
+  1/625   = 0.0016 = 0.001599999... (repeating)
+  Difference: epsilon - 1/625 = -2.01767996889e-6
+  epsilon / (1/625)           = 0.998738950019
+
+  Repunit identity: 0.0016 = 0.001599999... (base-10 repeating expansion)
+  625 = 5^4 = 625. 1/625 terminates in decimal (factors 2^4 * 5^4 = 10^4).
+  The error epsilon ~ 1/625.789 is close to 1/625 to within 0.13%.
+
+CONTEXT: WHY beta_0 = 299 + pi/10?
+  alpha_0 = 299 + pi/10 (M1, certified SHA 63ef870a...)
+  S_4 = {2,3,19,191} defined via ||p*pi/10|| < 1/p (M4, certified SHA b810a7a3...)
+  c/10^6 = 299.792458 is 69.74% of the way from beta_0 to 300
+  Both gaps (c-gap, 300-gap) are in [0.48, 0.69] -- 'near-integer' regime
+
+========================================================================
+CERTIFIED VALUES (100 dps):
+  beta_0          = 299.31415926535897932384626433832795
+  c/10^6          = 299.792458
+  r = c/10^6/beta0 = 1.0015979823200311139264638911288261
+  epsilon = r-1   = 0.0015979823200311139264638911288260833
+  1/epsilon       = 625.78915139720021581
+  1/625           = 0.0016
+  gap_c           = 0.47829873464102067615
+  gap_300         = 0.68584073464102067615
+  c fraction      = 0.69739038596383372499
+
+OBSERVATION: epsilon = (c/10^6)/beta_0 - 1 = 0.001597982...
+  Close to 1/625 = 0.0016 = 0.001599999... (within 0.13%)
+  1/epsilon = 625.789... (near 625 = 5^4)
+  Qualitative: c/10^6 and beta_0 agree to better than 1 part in 625
+
+NOTE: This is a certified numerical observation, not a theorem.
+  No causal claim between c and pi is made.
+  The proximity is documented for the record.
+========================================================================
+CERTIFIED.
+========================================================================

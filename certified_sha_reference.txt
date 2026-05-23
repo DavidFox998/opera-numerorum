@@ -259,3 +259,29 @@ CERTIFIED CORRECT VALUES:
   S_4 = {2,3,19,191}  [CORRECT]
   p_5 = 3993746143633 [CORRECT, certified M4]
 =======================================================
+=======================================================
+
+MODULE 16 -- c-Bridge Certificate (added 2026-05-23)
+Observation: c/10^6 vs beta_0 = 299 + pi/10
+-------+----------------------------------------------------------------
+Script  m16_c_bridge.py           | 7940bda05307a37985033beabb1e51ede05770f3082c976bc27689c2afa9f674
+Builder build_module_16.py        | a12f6b1c043b662ca2022cc747a8ad6ec28a5aed6736295752df6278f9283b08
+Stdout  m16.out                    | e1c042ba8df33a3b89046ca72c332c832f313eee2409b12963dac34f4196158e
+PDF     Module_16_c_Bridge.pdf     | 77a005d529387b35525046931ac20b69a444fb2cea187adb89f8d731cca97f3e
+
+Parents: M1 (alpha_0 = 299 + pi/10), M4 (S_4)
+
+CERTIFIED VALUES (100 dps):
+  beta_0 = 299 + pi/10 = 299.31415926535897932384626433832795...
+  c/10^6 = 299.792458  [exact, SI definition]
+  r = c/10^6 / beta_0  = 1.001597982320031113926463891128826083...
+  epsilon = r - 1       = 0.001597982320031113926463891128826083...
+  1/epsilon             = 625.78915139720021581...
+  1/625                 = 0.0016 = 0.001599999... (repeating)
+  gap: c/10^6 - beta_0  = 0.47829873464102067615...
+  gap: 300 - beta_0     = 0.68584073464102067615...
+  c fraction [beta_0,300] = 0.697390... = 69.74%
+
+OBSERVATION: epsilon ~ 1/625.789, close to 1/625 = 0.001599999... (within 0.13%)
+NOTE: Numerical observation only -- no causal/physical claim made.
+=======================================================
