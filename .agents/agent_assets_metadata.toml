@@ -124,10 +124,16 @@ title = "Opera Numerorum — Complete Archive (36 PDFs, 3.4 MB)"
 id = "W90T7YAwZynQkWP5EtbLn"
 uri = "file://OperaNumerorum_CompleteArchive.zip"
 type = "unspecified"
-title = "Opera Numerorum — Complete Archive (now 47 files)"
+title = "Opera Numerorum — Complete Archive (48 files, numbered in order)"
 
 [[outputs]]
 id = "QEVQhn42_uKG2fnFGQXLW"
 uri = "file://certificates/MorningStar_Engineering_Summary.pdf"
 type = "pdf"
 title = "Morning Star Engineering Series — Summary PDF"
+
+[[outputs]]
+id = "aNGZ6WPt8N41d_P5TOySj"
+uri = "file://certificates/OperaNumerorum_ArchiveMap.pdf"
+type = "pdf"
+title = "Opera Numerorum — Archive Map (Reading Order Guide)"
