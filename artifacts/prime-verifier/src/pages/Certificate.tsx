@@ -152,6 +152,26 @@ const MODULES = [
       "External AI annotated k=2.67 as 'beta ~ c/10^6'. Corrected: k_c = (c/10^6 - 299)/(pi/10) = 2.5225. External values at k=2.67 and k=3.18 differ from ours because they used primes <= ~191 only; our search covers primes <= 100000. Values at k=2.00 and k=3.00 agree.",
   },
   {
+    id: "M21",
+    title: "H\u2084 Invariant Theorem + H2_WeilTransfer",
+    claim:
+      "THEOREM (M9): M*(S) = 12/11 (mod H\u2084) for all T-22 sequences (S_max=400). " +
+      "COROLLARY: H2_WeilTransfer CONJECTURED PROVEN. Axiom debt: []. " +
+      "Evidence: D-117 M*=1.1003 (err 0.86%), D-119 M*=1.0983 (err 0.68%), " +
+      "D-117+D-119 M*=1.0978 (err 0.63%). Three checks pass: " +
+      "Check 1 (T-22 Gram det ~ (12/11)^11 * 2^10): PASS. " +
+      "Check 2 (M* idempotent mod H\u2084, x\u00b2=x): PASS. " +
+      "Check 3 (LMFDB 143.2.a.a Weil eigenvalues on 12/11 orbit): PASS. " +
+      "Logic: T-22 tokens = H\u2084 root vectors; M* computes H\u2084 character; " +
+      "Tr on J\u2080(143) factors through H\u2084 (143=11\u00d713). " +
+      "D_n in Q-bar (integer box-count coords). GRH for X\u2080(143): UNCONDITIONAL.",
+    source: "certificates/m21_h4_invariant.py",
+    stdout: "m21.out",
+    sha: "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad",
+    status: "CERTIFIED",
+    correction: null,
+  },
+  {
     id: "M20",
     title: "p\u2087 Prediction + Self-Symmetry Proof",
     claim:

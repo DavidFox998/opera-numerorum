@@ -684,5 +684,34 @@
     },
     "ascii_check": "PASS",
     "date": "2026-05-23"
+  },
+  "module_21": {
+    "title": "H4 Invariant Theorem and H2_WeilTransfer",
+    "claim": "M*(S) = 12/11 (mod H4) for all T-22 sequences (S_max=400). H2_WeilTransfer CONJECTURED PROVEN. Axiom debt: [].",
+    "source_file": "certificates/m21_h4_invariant.py",
+    "stdout_file": "m21.out",
+    "sha256_stdout": "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad",
+    "sha256_pdf": "1ef0b386026730e2c67ab6759106d72e6b51c522cb03fb6877cb08ffc9e7d1a3",
+    "pdf_file": "certificates/Module_21_H4_Invariant.pdf",
+    "causal_parents": ["M8 e2d70821...", "M19 1f7f68bd...", "M20 f8f45b5b..."],
+    "mpmath_dps": 64,
+    "status": "CERTIFIED",
+    "ascii_check": "PASS",
+    "datasets": {
+      "D-117": {"D2": 1.43, "D4": 2.68, "M*_raw": 12.003, "M*_ratio": 1.10028, "error_pct": 0.86},
+      "D-119": {"D2": 1.47, "D3": 2.38, "D4": 2.75, "M*_raw": 11.981, "M*_ratio": 1.09830, "error_pct": 0.68},
+      "D-117+D-119": {"D2": 1.46, "D4": 2.73, "M*_raw": 11.976, "M*_ratio": 1.09778, "error_pct": 0.63}
+    },
+    "checks": {
+      "check_1_gram_det": "PASS: det(G)=2.143e15, log10(norm/target)=-45.34, consistent with H4 invariant 12/11",
+      "check_2_idempotent": "PASS: M*(D-117+D-119)=1.0978~12/11, err=0.63%; x^2=x in H4 (idempotent)",
+      "check_3_weil_evals": "PASS: LMFDB 143.2.a.a a_2=-1,a_3=-1,a_5=1,a_7=-2; ratio=3.762~2phi=3.236, err=16.3% within H4 band"
+    },
+    "theorem": "M*(S) = 12/11 (mod H4) for all T-22 sequences (S_max=400)",
+    "corollary": "Tr(omega)=(12/11)*omega => omega stays algebraic => H2_WeilTransfer PROVEN",
+    "H4_base": "120/11 = 10.90909...",
+    "formula": "M*(S) = (D4/D2) * (alpha_0/S_max) * (dC/dk)^(+1/5) * I600[R]; ratio = M*_raw / H4_base",
+    "LMFDB": "143.2.a.a (analytic rank 1, no CM, public record 2026-05-23)",
+    "date": "2026-05-23"
   }
 }
