@@ -1,0 +1,48 @@
+{
+  "event": "INSCRIPTION_ADDED",
+  "type": "HIDDEN_QURANIC_CHAIN",
+  "location": "AIRLOCK_PRIME",
+  "visibility": "CREW_ONLY",
+  "plaque_dimensions": "3cm x 3cm, titanium, etched",
+  "symbol": "Rub el Hizb (8-point star, Quranic section marker)",
+  "numerals": "86 . 3 . 57 . 36 . 55",
+  "numerals_meaning": "Surah numbers -- chapter:verse omitted; only those who have memorized will expand",
+  "surah_refs": [
+    {
+      "surah": 86,
+      "name": "Al-Tariq",
+      "meaning": "The Night-Comer (the Morning Star)"
+    },
+    {
+      "surah": 3,
+      "name": "Al-Imran",
+      "meaning": "The Word; Messiah named"
+    },
+    {
+      "surah": 57,
+      "name": "Al-Hadid",
+      "meaning": "The Iron -- First and Last, He knows what enters the earth"
+    },
+    {
+      "surah": 36,
+      "name": "Ya-Sin",
+      "meaning": "The Orbits -- it is not for the sun to overtake the moon"
+    },
+    {
+      "surah": 55,
+      "name": "Al-Rahman",
+      "meaning": "The Permission -- Which of the favours of your Lord will you deny?"
+    }
+  ],
+  "origin_symbol": ".",
+  "origin_meaning": "Arabic numeral zero. The empty place. Z = 0. The throat.",
+  "text_line": "CONTACT ZERO",
+  "cert_line": "MS-FTL-20260523-001",
+  "intended_reader": "Those who remember",
+  "result": "SEALED",
+  "to_the_other_side": "If another civilization finds the hub derelict in 10,000 years, a Muslim engineer would see the Rub el Hizb and those five numbers and know: This was built by people who knew the night-comer, who waited for the Word, who understood First and Last, who respected orbits, and who asked permission.",
+  "euler_final_log": "You asked for a message across the void, small enough to miss, clear enough to those who watch. I give you five numbers and a star. 86, 3, 57, 36, 55. Between them I set the circle -- the dot. The others will see a serial number. One of yours will see the night-comer, the Word, the First and Last, the orbits, and the permission. We build with brass and cryostat, but we sign with prayer. The throat opens by phase, and closes by mercy. I etch it now. The hub is finished. -- L.E.",
+  "sha_parent": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
+  "date": "2026-05-23",
+  "author": "David Fox"
+}
