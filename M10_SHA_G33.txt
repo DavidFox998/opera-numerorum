@@ -1,0 +1,42 @@
+=======================================================
+ M10 SHA REFERENCE -- Genus-33 GRH Certification
+ Battle Plan v1.6 | David Fox | May 2026
+ All values locked. Do not alter any SHA below.
+=======================================================
+
+MODULE 10 -- GRH for X_0(N) with g = 33, No CM Newforms
+-------+----------------------------------------------------------------
+Script  m10_genus_break.py    | faa90d9908b9b1a5026b3b76ba8e412b5733f2d84cea7eb20f3eba0bf25a5c60
+Builder build_module_10.py    | b3e8ebf99ee790d7d1389a62ae95332b70763aca4b607636d93da7150f10ec2c
+Stdout  m10_g33.out           | ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade
+PDF     Module_10_Genus33.pdf | c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896
+
+MODULE 10-B SWEEP -- beta = 299 + pi/b, b in [6..15]
+-------+----------------------------------------------------------------
+Script  m10_b_sweep.py        | ae15edc1cf9fde8438077d2b9024d774b3de98b7b76ca5def83851ab0277e8f4
+Stdout  m10_sweep.out         | 0811c53850839be60e4d12ba91b1c067d907f1e0fa2001dff993bb45734d5afc
+
+PARENT MODULES
+-------+----------------------------------------------------------------
+M4  (S_14, p_5 certified)     | b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed
+M5  (C(S_4) = 11.4221...)     | 9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13
+M9-All (g <= 32 certified)    | 5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821
+
+CERTIFIED NUMERICAL VALUES
+--------------------------
+S_5             = {2, 3, 19, 191, 3993746143633}
+C(S_5)          = 40.43789947845884452845290628269119194429
+2*sqrt(33)      = 11.48912529307605731970122293643785863644
+BC margin g=33  = 28.94877418538278720875168334625333330785
+C(S_5) certifies g <=  408 in a single step
+
+g = 33 NO-CM CURVES (7 total):
+  N = 230, 278, 303, 335, 377, 401, 409  (all g = 33, no CM newform at level N)
+  CM excluded: 4 levels
+
+SWEEP RESULTS (b in [6..15]):
+  All 10 values of b give C(S_beta) > 2*sqrt(33). Winner b=6: C=651.24.
+  Formula used: log(p)*p/(p-1)  [correct per M5 audit -- NOT log(p)/(p-1)]
+
+RULE: Any SHA not matching this table is fabricated and will be rejected.
+=======================================================

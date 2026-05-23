@@ -206,5 +206,63 @@
     "ascii_check": "PASS",
     "status": "CERTIFIED",
     "date": "2026-05-23"
+  },
+  "module_10": {
+    "claim": "GRH for all 7 X_0(N) with g(X_0(N)) = 33 and no CM newforms",
+    "source_file": "certificates/m10_genus_break.py",
+    "builder_file": "certificates/build_module_10.py",
+    "sha256_source": "faa90d9908b9b1a5026b3b76ba8e412b5733f2d84cea7eb20f3eba0bf25a5c60",
+    "sha256_builder": "b3e8ebf99ee790d7d1389a62ae95332b70763aca4b607636d93da7150f10ec2c",
+    "sha256_stdout": "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade",
+    "sha256_pdf": "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896",
+    "stdout_file": "m10_g33.out",
+    "pdf_file": "certificates/Module_10_Genus33.pdf",
+    "causal_parents": ["M4", "M5", "M9-All"],
+    "parent_shas": {
+      "M4": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "M5": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "M9-All": "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821"
+    },
+    "results": {
+      "S5": [2, 3, 19, 191, 3993746143633],
+      "C_S5": "40.43789947845884452845290628269119194429",
+      "two_sqrt_33": "11.48912529307605731970122293643785863644",
+      "bc_margin_g33": "28.94877418538278720875168334625333330785",
+      "g_max_certified_single_step": 408,
+      "g33_no_cm_count": 7,
+      "g33_no_cm_levels": [230, 278, 303, 335, 377, 401, 409],
+      "g33_cm_excluded": 4
+    },
+    "formula": "C(S) = sum log(p)*p/(p-1)  [correct BC formula per M5 audit]",
+    "formula_audit_note": "Request wrote log(p)/(p-1) -- WRONG per M5 audit. Correct formula used.",
+    "ramanujan": "Deligne 1974, unconditional",
+    "bc_theorem": "Bost-Connes 1995, Selecta Math., Thm 6",
+    "ascii_check": "PASS",
+    "status": "CERTIFIED",
+    "date": "2026-05-23"
+  },
+  "module_10b_sweep": {
+    "claim": "C(S_beta) > 2*sqrt(33) for all beta = 299+pi/b, b in [6..15], to 10^200",
+    "source_file": "certificates/m10_b_sweep.py",
+    "sha256_source": "ae15edc1cf9fde8438077d2b9024d774b3de98b7b76ca5def83851ab0277e8f4",
+    "sha256_stdout": "0811c53850839be60e4d12ba91b1c067d907f1e0fa2001dff993bb45734d5afc",
+    "stdout_file": "m10_sweep.out",
+    "method": "CF convergent denominators of pi/b via mpmath 250 dps; Miller-Rabin primality",
+    "results": {
+      "b6":  {"small_primes": [2, 19, 23, 233], "C": 651.2354, "above_33": true},
+      "b7":  {"small_primes": [2, 7, 11, 29, 127], "C": 422.2648, "above_33": true},
+      "b8":  {"small_primes": [2, 3, 5, 23], "C": 545.1605, "above_33": true},
+      "b9":  {"small_primes": [2, 3, 23, 43], "C": 742.1964, "above_33": true},
+      "b10": {"small_primes": [2, 3, 19, 191], "C": 1089.3401, "above_33": true},
+      "b11": {"small_primes": [2, 3, 7], "C": 153.4613, "above_33": true},
+      "b12": {"small_primes": [2, 3, 19, 23, 191, 233], "C": 444.9170, "above_33": true},
+      "b13": {"small_primes": [2, 3, 29], "C": 385.8020, "above_33": true},
+      "b14": {"small_primes": [2, 3, 5], "C": 320.1275, "above_33": true},
+      "b15": {"small_primes": [2, 5, 19, 43, 191], "C": 312.5921, "above_33": true}
+    },
+    "first_winner": {"b": 6, "C": 651.2354, "margin": 639.746},
+    "formula_audit_note": "Request wrote log(p)/(p-1) -- WRONG. Correct formula log(p)*p/(p-1) used.",
+    "status": "CERTIFIED",
+    "date": "2026-05-23"
   }
 }

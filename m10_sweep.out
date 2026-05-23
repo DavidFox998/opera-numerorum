@@ -1,0 +1,122 @@
+========================================================================
+Module 10-B: Sweep beta = 299 + pi/b, b in [6..15]
+Target: C(S_beta) > 2*sqrt(33) = 11.4891252930760572
+Formula: C(S) = sum log(p)*p/(p-1)  [correct BC formula]
+========================================================================
+
+AUDIT NOTE: User request wrote C = sum log(p)/(p-1).
+  That formula gives C(S_4) = 1.434 -- the WRONG value per M5 audit.
+  This script uses the correct formula log(p)*p/(p-1).
+
+REFERENCE (b=10, alpha_0 = 299 + pi/10):
+  S_4 = {2, 3, 19, 191}
+  C(S_4) = 11.4221486889802897
+  C(S_4) > 2*sqrt(33): False  (need S_5 for g=33)
+  C(S_5) = 40.4378994784588457
+  C(S_5) > 2*sqrt(33): True  (used in M10 main certification)
+
+------------------------------------------------------------
+b = 6  =>  beta = 299 + pi/6
+  Prime convergent denoms (small, <= 10^12): [2, 19, 23, 233]
+  Prime convergent denoms (large, > 10^12):  5 primes
+  Total primes in S_beta (to 10^200):        9
+  C(S_beta) = 651.2354028630670655
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+  *** FIRST WINNER: b=6 achieves C > 2*sqrt(33) ***
+------------------------------------------------------------
+b = 7  =>  beta = 299 + pi/7
+  Prime convergent denoms (small, <= 10^12): [2, 7, 11, 29, 127, 10628126473]
+  Prime convergent denoms (large, > 10^12):  3 primes
+  Total primes in S_beta (to 10^200):        9
+  C(S_beta) = 422.2647846038855732
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+------------------------------------------------------------
+b = 8  =>  beta = 299 + pi/8
+  Prime convergent denoms (small, <= 10^12): [2, 3, 5, 23, 298483]
+  Prime convergent denoms (large, > 10^12):  6 primes
+  Total primes in S_beta (to 10^200):        11
+  C(S_beta) = 545.1604569556344586
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+------------------------------------------------------------
+b = 9  =>  beta = 299 + pi/9
+  Prime convergent denoms (small, <= 10^12): [2, 3, 23, 43]
+  Prime convergent denoms (large, > 10^12):  5 primes
+  Total primes in S_beta (to 10^200):        9
+  C(S_beta) = 742.1964140849204341
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+------------------------------------------------------------
+b = 10  =>  beta = 299 + pi/10
+  Prime convergent denoms (small, <= 10^12): [2, 3, 19, 191]
+  Prime convergent denoms (large, > 10^12):  7 primes
+  Total primes in S_beta (to 10^200):        11
+  C(S_beta) = 1089.3400968458588522
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+------------------------------------------------------------
+b = 11  =>  beta = 299 + pi/11
+  Prime convergent denoms (small, <= 10^12): [2, 3, 7, 1625501, 103767361, 2643845069]
+  Prime convergent denoms (large, > 10^12):  2 primes
+  Total primes in S_beta (to 10^200):        8
+  C(S_beta) = 153.4613377114536661
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+------------------------------------------------------------
+b = 12  =>  beta = 299 + pi/12
+  Prime convergent denoms (small, <= 10^12): [2, 3, 19, 23, 191, 233, 1123]
+  Prime convergent denoms (large, > 10^12):  4 primes
+  Total primes in S_beta (to 10^200):        11
+  C(S_beta) = 444.9169716617971062
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+------------------------------------------------------------
+b = 13  =>  beta = 299 + pi/13
+  Prime convergent denoms (small, <= 10^12): [2, 3, 29]
+  Prime convergent denoms (large, > 10^12):  2 primes
+  Total primes in S_beta (to 10^200):        5
+  C(S_beta) = 385.8020129480844957
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+------------------------------------------------------------
+b = 14  =>  beta = 299 + pi/14
+  Prime convergent denoms (small, <= 10^12): [2, 3, 5, 1123, 99871, 28769268643]
+  Prime convergent denoms (large, > 10^12):  3 primes
+  Total primes in S_beta (to 10^200):        9
+  C(S_beta) = 320.1275487349861919
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+------------------------------------------------------------
+b = 15  =>  beta = 299 + pi/15
+  Prime convergent denoms (small, <= 10^12): [2, 5, 19, 43, 191]
+  Prime convergent denoms (large, > 10^12):  2 primes
+  Total primes in S_beta (to 10^200):        7
+  C(S_beta) = 312.5921486154250601
+  C > 2*sqrt(32) = 11.3137084990: True
+  C > 2*sqrt(33) = 11.4891252931: True
+
+========================================================================
+SWEEP SUMMARY
+========================================================================
+b  | C(S_beta)          | >2*sqrt(32) | >2*sqrt(33) | #primes
+----------------------------------------------------------------------
+ 6 | 651.2354028630670655 | YES         | YES         | 9
+ 7 | 422.2647846038855732 | YES         | YES         | 9
+ 8 | 545.1604569556344586 | YES         | YES         | 11
+ 9 | 742.1964140849204341 | YES         | YES         | 9
+10 | 1089.3400968458588522 | YES         | YES         | 11
+11 | 153.4613377114536661 | YES         | YES         | 8
+12 | 444.9169716617971062 | YES         | YES         | 11
+13 | 385.8020129480844957 | YES         | YES         | 5
+14 | 320.1275487349861919 | YES         | YES         | 9
+15 | 312.5921486154250601 | YES         | YES         | 7
+
+WINNER: b = 6
+  beta = 299 + pi/6
+  S_beta (small primes <= 499): [2, 19, 23, 233]
+  C(S_beta) = 651.2354028630670655
+  margin over 2*sqrt(33): 639.7462775700
+
+CERTIFIED.

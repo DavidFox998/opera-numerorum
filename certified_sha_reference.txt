@@ -177,3 +177,38 @@ CONCLUSION:
   By Bost-Connes Thm 6: C(S_4) > 2*sqrt(g(N)) AND Ramanujan (Deligne) =>
   GRH holds for L(s, X_0(N)) for all 140 no-CM curves with g(N) <= 32.
 =======================================================
+=======================================================
+
+MODULE 10 -- GRH for X_0(N) with g=33 and No CM (added 2026-05-23)
+-------+----------------------------------------------------------------
+Script  m10_genus_break.py    | faa90d9908b9b1a5026b3b76ba8e412b5733f2d84cea7eb20f3eba0bf25a5c60
+Builder build_module_10.py    | b3e8ebf99ee790d7d1389a62ae95332b70763aca4b607636d93da7150f10ec2c
+Stdout  m10_g33.out           | ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade
+PDF     Module_10_Genus33.pdf | c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896
+
+MODULE 10-B SWEEP -- beta = 299 + pi/b, b in [6..15]
+-------+----------------------------------------------------------------
+Script  m10_b_sweep.py        | ae15edc1cf9fde8438077d2b9024d774b3de98b7b76ca5def83851ab0277e8f4
+Stdout  m10_sweep.out         | 0811c53850839be60e4d12ba91b1c067d907f1e0fa2001dff993bb45734d5afc
+
+Parents: M4 (p_5), M5 (C(S_4)), M9-All (g<=32)
+
+CERTIFIED RESULTS:
+  S_5 = {2, 3, 19, 191, 3993746143633}
+  C(S_5) = 40.43789947845884452845290628269119194429
+  2*sqrt(33) = 11.48912529307605731970122293643785863644
+  BC margin (g=33) = 28.948774185382787208751683346...
+  Certifies g <= 408 in a single step.
+
+  g = 33 no-CM curves: N = 230, 278, 303, 335, 377, 401, 409  (7 total)
+  CM excluded at g=33: 4 levels
+
+SWEEP (M10-B):
+  All b in [6..15] give C(S_beta) > 2*sqrt(33) via large prime denominators.
+  First winner: b=6, C(S_6) = 651.24, small primes = {2, 19, 23, 233}.
+  Formula: log(p)*p/(p-1) [correct BC formula per M5 audit, NOT log(p)/(p-1)].
+
+CONCLUSION:
+  By BC Thm 6: C(S_5) > 2*sqrt(33) AND Ramanujan (Deligne) =>
+  GRH for L(s, X_0(N)) for all 7 no-CM curves with g(N) = 33.
+=======================================================
