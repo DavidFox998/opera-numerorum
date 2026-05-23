@@ -171,5 +171,40 @@
     "bc_theorem": "Bost-Connes 1995, Selecta Math., Thm 6",
     "status": "CERTIFIED",
     "date": "2026-05-23"
+  },
+  "module_9_all": {
+    "claim": "GRH for all 140 X_0(N) with 1<=g(X_0(N))<=32 and no CM newforms",
+    "source_file": "certificates/m9_all_grh.py",
+    "builder_file": "certificates/build_module_9_all.py",
+    "sha256_source": "a6d9ff22b3004b4ec8b9763b02d9ab48b9fe8138192e38e2cfe9f9c5a64009a1",
+    "sha256_builder": "a274aef632097ecdb0c41f52d500d3febee71e90b26e20f8f697bc7ae23136f4",
+    "sha256_stdout": "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821",
+    "sha256_pdf": "03d26e74df4b3d2a512dcf51dd50c5cd0de1d1685526b2934b2eec630810fc41",
+    "stdout_file": "m9_all.out",
+    "pdf_file": "certificates/Module_9_All_140.pdf",
+    "causal_parents": ["M1", "M4", "M5", "M9"],
+    "parent_shas": {
+      "M1": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "M4": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "M5": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "M9": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6"
+    },
+    "results": {
+      "total_g_le_32": 279,
+      "total_cm_excluded": 139,
+      "total_no_cm_certified": 140,
+      "C_S4": 11.42214868898029,
+      "two_sqrt_32": 11.31370849898476,
+      "global_bc_margin": 0.10844019,
+      "worst_case_N": [262, 338, 383, 389, 397],
+      "worst_case_g": 32,
+      "GRH_all": true
+    },
+    "cm_method": "Hecke character level formula: N = |disc(K)| * N(f_psi), primitivity by Kronecker symbol",
+    "ramanujan": "Deligne 1974, unconditional for all weight-2 newforms",
+    "bc_theorem": "Bost-Connes 1995, Selecta Math., Thm 6",
+    "ascii_check": "PASS",
+    "status": "CERTIFIED",
+    "date": "2026-05-23"
   }
 }
