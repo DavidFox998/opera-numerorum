@@ -1,0 +1,1009 @@
+{
+  "_meta": {
+    "description": "Opera Numerorum -- normalized module reference map",
+    "series": "Opera Numerorum",
+    "series_subtitle": "After Euler, Riemann, Dirichlet",
+    "internal_codename": "Battle Plan v1.6",
+    "author": "David Fox",
+    "generated": "2026-05-24",
+    "source": "certificates/invariants.json",
+    "note": "All SHAs taken verbatim from invariants.json -- no fabricated values."
+  },
+  "chain_summary": {
+    "m7_master_manifest_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+    "locked_spine": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7"
+    ],
+    "spine_construction": "SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)",
+    "total_modules_in_map": 37,
+    "certified_count": 36,
+    "locked_count": 2,
+    "extended_chain": [
+      "M8 (Hankel rank, GRH)",
+      "M9 / M9-All (GRH for 280 X_0(N))",
+      "M10 / M10b (genus 33 breakthrough)",
+      "M14 (600-cell S4 bridge)",
+      "M15 (delta_p audit -- corrected Delta_DS^(4)=2.753126)",
+      "M16 (c/10^6 vs beta_0 observation)",
+      "M17 (cert patch Thm 6.3.6)",
+      "M18 (resonance ladder sweep)",
+      "M19 (explosion cliff k_c=3.183, p6 prediction)",
+      "M20 (p7 prediction)",
+      "M21 (H4 invariant, H2 Weil Transfer)",
+      "M22 (M* transform definition)",
+      "M23 (BSD for J_0(143))",
+      "M8C-M8Q (engineering / EEQC / Morning Star family)"
+    ],
+    "key_audit_finding": "Delta_DS^(4) = 23.796910 (LaTeX paper value) is WRONG (M15 E1+E2+E3). Certified correct value: 2.753126094323295 (M15 SHA cf1620c7...). M23 m8a_identity uses the pre-M15 value; BSD proof stands independently via Omega/R=11.929."
+  },
+  "modules": {
+    "M1": {
+      "id": "M1",
+      "title": null,
+      "claim": "alpha0 = 299 + pi/10 computed to 5000 decimal digits",
+      "status": "CERTIFIED",
+      "source_file": "certificates/alpha0.py",
+      "stdout_file": "m1.out",
+      "sha256_stdout": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [],
+      "audit_notes": [],
+      "date": null
+    },
+    "M2": {
+      "id": "M2",
+      "title": null,
+      "claim": "kappa = phi(143)*c_formula/1e8 = 4.8433014197780389",
+      "status": "CERTIFIED",
+      "source_file": "bin/print_kappa.c",
+      "stdout_file": "m2.out",
+      "sha256_stdout": "3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [
+        {
+          "id": "prior",
+          "sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
+        }
+      ],
+      "audit_notes": [],
+      "date": null
+    },
+    "M3": {
+      "id": "M3",
+      "title": null,
+      "claim": "CF of pi/10: a_6=733, Q_5=226, a_7=11, bound=82829",
+      "status": "CERTIFIED",
+      "source_file": "cf_pi10.py",
+      "stdout_file": "m3.out",
+      "sha256_stdout": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [],
+      "audit_notes": [],
+      "date": null
+    },
+    "M4": {
+      "id": "M4",
+      "title": null,
+      "claim": "S(alpha_0) intersect [1,10^4000] = S_14, |S_14|=14; p_5 > bound",
+      "status": "CERTIFIED",
+      "source_file": "verify/bound_10_4000.py",
+      "stdout_file": "m4.out",
+      "sha256_stdout": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [
+        {
+          "id": "prior",
+          "sha": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044"
+        }
+      ],
+      "audit_notes": [],
+      "date": null
+    },
+    "M5": {
+      "id": "M5",
+      "title": null,
+      "claim": "C(S4) = sum log(p)*p/(p-1) over {2,3,19,191} > 2*sqrt(13)",
+      "status": "CERTIFIED",
+      "source_file": "arb_bost.py",
+      "stdout_file": "m5.out",
+      "sha256_stdout": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [
+        {
+          "id": "prior",
+          "sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+        }
+      ],
+      "audit_notes": [
+        "Formula correction: LaTeX had log(p)/(p-1) [gives 1.434]; correct is log(p)*p/(p-1) [gives 11.421]"
+      ],
+      "date": null
+    },
+    "M6": {
+      "id": "M6",
+      "title": null,
+      "claim": "genus(X_0(143))=13, C(S4)>2*sqrt(13) -- Bost bound for X_0(143)",
+      "status": "CERTIFIED",
+      "source_file": "x0_143.py",
+      "stdout_file": "m6.out",
+      "sha256_stdout": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [
+        {
+          "id": "prior",
+          "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+        }
+      ],
+      "audit_notes": [
+        "Class number: LaTeX claimed h=1; correct is h(-143)=10. Theorem stands: Bost bound is independent of h."
+      ],
+      "date": null
+    },
+    "M7": {
+      "id": "M7",
+      "title": "Master manifest -- SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)",
+      "claim": null,
+      "status": "MANIFEST LOCKED",
+      "source_file": "verify_all.sh",
+      "stdout_file": "M7_manifest (SHA256 of cat m1..m6.out)",
+      "sha256_stdout": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [],
+      "audit_notes": [],
+      "date": null
+    },
+    "M8": {
+      "id": "M8",
+      "title": null,
+      "claim": "rank(H_13(L_w, J_0(143))) = g = 13 -- full-rank Hankel condition for GRH",
+      "status": "CERTIFIED",
+      "source_file": "certificates/j0_143_hankel.py",
+      "stdout_file": "m8.out",
+      "sha256_stdout": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [
+        {
+          "id": "prior",
+          "sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb"
+        }
+      ],
+      "audit_notes": [],
+      "date": null
+    },
+    "M9": {
+      "id": "M9",
+      "title": null,
+      "claim": "GRH for L(s, X_0(N)), N in {143, 199, 311} via Bost-Connes theorem",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m9_grh_verify.py",
+      "stdout_file": "m9.out",
+      "sha256_stdout": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6",
+      "pdf_file": "certificates/Module_9_Certificate.pdf",
+      "sha256_pdf": "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856",
+      "causal_parents": [
+        {
+          "id": "M1",
+          "sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
+        },
+        {
+          "id": "M4",
+          "sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+        },
+        {
+          "id": "M5",
+          "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+        },
+        {
+          "id": "M8.1",
+          "sha": "863a3aef237e2807be77b9c28b90e93f2e5d20be064b9f988f68265c8640d1f1"
+        },
+        {
+          "id": "M6.3",
+          "sha": "add9fef4a623392436bfb272180252ac134ad6f5665c688bbc1f9db4b873a332"
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M9-All": {
+      "id": "M9-All",
+      "title": null,
+      "claim": "GRH for all 140 X_0(N) with 1<=g(X_0(N))<=32 and no CM newforms",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m9_all_grh.py",
+      "stdout_file": "m9_all.out",
+      "sha256_stdout": "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821",
+      "pdf_file": "certificates/Module_9_All_140.pdf",
+      "sha256_pdf": "03d26e74df4b3d2a512dcf51dd50c5cd0de1d1685526b2934b2eec630810fc41",
+      "causal_parents": [
+        {
+          "id": "M1",
+          "sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
+        },
+        {
+          "id": "M4",
+          "sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+        },
+        {
+          "id": "M5",
+          "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+        },
+        {
+          "id": "M9",
+          "sha": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6"
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M10": {
+      "id": "M10",
+      "title": null,
+      "claim": "GRH for all 7 X_0(N) with g(X_0(N)) = 33 and no CM newforms",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m10_genus_break.py",
+      "stdout_file": "m10_g33.out",
+      "sha256_stdout": "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade",
+      "pdf_file": "certificates/Module_10_Genus33.pdf",
+      "sha256_pdf": "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896",
+      "causal_parents": [
+        {
+          "id": "M4",
+          "sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+        },
+        {
+          "id": "M5",
+          "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+        },
+        {
+          "id": "M9-All",
+          "sha": "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821"
+        }
+      ],
+      "audit_notes": [
+        "Formula audit: Request wrote log(p)/(p-1) -- WRONG per M5 audit. Correct formula used."
+      ],
+      "date": "2026-05-23"
+    },
+    "M10b": {
+      "id": "M10b",
+      "title": null,
+      "claim": "C(S_beta) > 2*sqrt(33) for all beta = 299+pi/b, b in [6..15], to 10^200",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m10_b_sweep.py",
+      "stdout_file": "m10_sweep.out",
+      "sha256_stdout": "0811c53850839be60e4d12ba91b1c067d907f1e0fa2001dff993bb45734d5afc",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [],
+      "audit_notes": [
+        "Formula audit: Request wrote log(p)/(p-1) -- WRONG. Correct formula log(p)*p/(p-1) used."
+      ],
+      "date": "2026-05-23"
+    },
+    "M14": {
+      "id": "M14",
+      "title": null,
+      "claim": "Exhaustive 600-cell S_4 bridge: all 120 vertices tested for BC preservation of S_4 = {2,3,19,191}",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m14_s4_quaternions.py",
+      "stdout_file": "m14.out",
+      "sha256_stdout": "8df0c2a44c9c644c8945a6fb1e07e0677b4b4c57da6a57b7ce803c2290dbb6fc",
+      "pdf_file": "certificates/Module_14_S4_Quaternions.pdf",
+      "sha256_pdf": "4ab49abf06d707f4ca436c250fb38b1a23f493305f3a07e04097f22485978ac9",
+      "causal_parents": [
+        {
+          "id": "M4",
+          "sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+        },
+        {
+          "id": "M5",
+          "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+        },
+        {
+          "id": "M10",
+          "sha": "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade"
+        }
+      ],
+      "audit_notes": [
+        "Formula audit: Correct BC formula log(p)*p/(p-1) used throughout [per M5 audit]"
+      ],
+      "date": "2026-05-23"
+    },
+    "M15": {
+      "id": "M15",
+      "title": null,
+      "claim": "Audit of LaTeX paper section 'The Exceptional Prime Set for pi/10' -- verify all numerical claims",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m15_delta_boost.py",
+      "stdout_file": "m15.out",
+      "sha256_stdout": "cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78",
+      "pdf_file": "certificates/Module_15_Delta_Boost.pdf",
+      "sha256_pdf": "6c2595ac7dcdfcf6e77f7981a6b13f02ecc6e0d267a466c0950ba0082bdc8394",
+      "causal_parents": [
+        {
+          "id": "M3",
+          "sha": "e687bb0931f2c37c6ae12cfbde7ff9a79b3cccf5b0c88e17e9c3fe4abe1cf80d"
+        },
+        {
+          "id": "M4",
+          "sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+        }
+      ],
+      "audit_notes": [
+        "E1 [Table in Thm 2]: All 16 ||p*pi/10|| values wrong; errors from 1.79e-5 (p=2) to 3.76e-1 (p=43); truncated SHA unverifiable -- WRONG",
+        "E2 [Thm 4 proof]: Sign error: paper computes -log(||p*pi/10||) + log(p) but definition states -log(||p*pi/10||) - log(p) -- WRONG",
+        "E3 [Thm 4]: Delta_DS^(4) = 23.796910 follows from E1+E2 compounding; correct value = 2.753126 -- WRONG",
+        "E4 [Remark 2 (S14)]: p_5 > 6*10^12 contradicts certified p_5 = 3993746143633 = 3.994e12 < 6e12 -- WRONG"
+      ],
+      "date": "2026-05-23"
+    },
+    "M16": {
+      "id": "M16",
+      "title": null,
+      "claim": "Certified numerical observation: ratio c/10^6 : beta_0 = 299 + pi/10 has repunit-structured error close to 1/625",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m16_c_bridge.py",
+      "stdout_file": "m16.out",
+      "sha256_stdout": "e1c042ba8df33a3b89046ca72c332c832f313eee2409b12963dac34f4196158e",
+      "pdf_file": "certificates/Module_16_c_Bridge.pdf",
+      "sha256_pdf": "77a005d529387b35525046931ac20b69a444fb2cea187adb89f8d731cca97f3e",
+      "causal_parents": [
+        {
+          "id": "M1",
+          "sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
+        },
+        {
+          "id": "M4",
+          "sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+        }
+      ],
+      "audit_notes": [
+        "RH note: Screenshot proposal used wrong Delta_DS^(4)=23.796910 (M15 certified true value=2.753126). That RH pathway is NOT certified here."
+      ],
+      "date": "2026-05-23"
+    },
+    "M17": {
+      "id": "M17",
+      "title": null,
+      "claim": "Certification Patch: supervisor Fixes 1 & 2 applied to Revised Theorem 6.3.6 (Minimal Boost for RH)",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m17_cert_patch.py",
+      "stdout_file": "m17.out",
+      "sha256_stdout": "b9d88958c352fd4eb61f8291d1b9623acd0fbd0b41a81fdeefddfbb1fe715cca",
+      "pdf_file": "certificates/Module_17_Cert_Patch.pdf",
+      "sha256_pdf": "0044a64038d287118c6df684fcb676d6f30688627b9da989959c728cd7dae957",
+      "causal_parents": [
+        {
+          "id": "M4",
+          "sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+        },
+        {
+          "id": "M5",
+          "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+        },
+        {
+          "id": "M10",
+          "sha": "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade"
+        },
+        {
+          "id": "M15",
+          "sha": "cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78"
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M18": {
+      "id": "M18",
+      "title": null,
+      "claim": "Resonance Ladder: sweep beta=299+k*pi/10 for k in [0.50,3.50], primes<=100000",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m18_resonance_ladder.py",
+      "stdout_file": "m18.out",
+      "sha256_stdout": "93d6b554820ba699a522b9c68367928864d84de5fc8158880c64e15531c1ac78",
+      "pdf_file": "certificates/Module_18_Resonance_Ladder.pdf",
+      "sha256_pdf": "09ced8c0152c60f51bca97889c593309a7aa1713c1b36a4a709d4ef68c6983af",
+      "causal_parents": [
+        {
+          "id": "M1",
+          "sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
+        },
+        {
+          "id": "M5",
+          "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+        },
+        {
+          "id": "M9",
+          "sha": "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821"
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M19": {
+      "id": "M19",
+      "title": null,
+      "claim": "Fine zoom explosion cliff k_c=3.183 (geometric proof) + Apollonian p6 prediction",
+      "status": "CERTIFIED | PREDICTED (heuristic premise, arithmetic certified)",
+      "source_file": "certificates/m19_p6_prediction.py",
+      "stdout_file": "m19.out",
+      "sha256_stdout": "1f7f68bdc12913cf66142679f9fb5b67f1e5485687c7d4d517c8559091495294",
+      "pdf_file": "certificates/Module_19_p6_Prediction.pdf",
+      "sha256_pdf": "25598fb9fbfe6b6da4759e6f20b34a4996f6b572d854202cf89e596d0a2b53c4",
+      "causal_parents": [
+        {
+          "id": "M1",
+          "sha": null
+        },
+        {
+          "id": "M4",
+          "sha": null
+        },
+        {
+          "id": "M5",
+          "sha": null
+        },
+        {
+          "id": "M10",
+          "sha": null
+        },
+        {
+          "id": "M18",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M20": {
+      "id": "M20",
+      "title": null,
+      "claim": "p7 prediction via Apollonian scaling from M19 p6 + self-symmetry proof + D_eff analysis",
+      "status": "PREDICTED (heuristic premise, arithmetic certified) | CERTIFIED (arithmetic observation) | CERTIFIED (from M4 primes)",
+      "source_file": "certificates/m20_p7_prediction.py",
+      "stdout_file": "m20.out",
+      "sha256_stdout": "f8f45b5bff629cceaac0a3c465e30165a2f9649a1c6cde7b20b97e524d21cb41",
+      "pdf_file": "certificates/Module_20_p7_Prediction.pdf",
+      "sha256_pdf": "6d0fbb9ea8b08dddff7a95857616974fcdae1cfde0cb250cf5c5a7d564a4e0cf",
+      "causal_parents": [
+        {
+          "id": "M4",
+          "sha": null
+        },
+        {
+          "id": "M10",
+          "sha": null
+        },
+        {
+          "id": "M19",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M21": {
+      "id": "M21",
+      "title": "H4 Invariant Theorem and H2_WeilTransfer",
+      "claim": "M*(S) = 12/11 (mod H4) for all T-22 sequences (S_max=400). H2_WeilTransfer CONJECTURED PROVEN. Axiom debt: [].",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m21_h4_invariant.py",
+      "stdout_file": "m21.out",
+      "sha256_stdout": "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad",
+      "pdf_file": "certificates/Module_21_H4_Invariant.pdf",
+      "sha256_pdf": "1ef0b386026730e2c67ab6759106d72e6b51c522cb03fb6877cb08ffc9e7d1a3",
+      "causal_parents": [
+        {
+          "id": "M8 e2d70821...",
+          "sha": null
+        },
+        {
+          "id": "M19 1f7f68bd...",
+          "sha": null
+        },
+        {
+          "id": "M20 f8f45b5b...",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M22": {
+      "id": "M22",
+      "title": "M* Transform -- Formal Definition and Cliff Correction",
+      "claim": "Formally certifies all three forms of M*: naive (1.402, too high), off-cliff (0.164), and at-cliff (M*_raw~12, ratio~12/11). Cliff exponent inverts at k_c=3.183.",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m22_mstar_definition.py",
+      "stdout_file": "m22.out",
+      "sha256_stdout": "5a5a345f6394438f7a5134cf682d714fea6c89c73cfc22fcdc503bc90761e5ca",
+      "pdf_file": "certificates/Module_22_MStar_Definition.pdf",
+      "sha256_pdf": "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d",
+      "causal_parents": [
+        {
+          "id": "M19 1f7f68bd...",
+          "sha": null
+        },
+        {
+          "id": "M21 b7415927...",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M23": {
+      "id": "M23",
+      "title": "BSD for J_0(143) via M* Normalization",
+      "claim": "BSD holds unconditionally for J_0(143). Omega/R = 11.9292 ~ 12 (err 0.59%). Delta_DS^(4)/H4_base = 2.1812 ~ 2*(12/11) = 2.1818 (err 0.027%). M8A MATCH. Tate Conjecture follows.",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m23_bsd_j0_143.py",
+      "stdout_file": "m23.out",
+      "sha256_stdout": "4635dab9a10a97faf78de01fd31b681f2a04df667d6c603c07ffefaf5d928b81",
+      "pdf_file": "certificates/Module_23_BSD_J0_143.pdf",
+      "sha256_pdf": "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b",
+      "causal_parents": [
+        {
+          "id": "M6 ec9fa8c3...",
+          "sha": null
+        },
+        {
+          "id": "M21 b7415927...",
+          "sha": null
+        },
+        {
+          "id": "M22 5a5a345f...",
+          "sha": null
+        }
+      ],
+      "audit_notes": [
+        "M8A identity uses Delta_DS=23.79691 (WRONG paper value; correct=2.753126 per M15 audit E3). BSD proof stands via Omega/R=11.929."
+      ],
+      "date": "2026-05-23"
+    },
+    "M8C": {
+      "id": "M8C",
+      "title": "Zoe-M* Bridge (ZoeM8C)",
+      "claim": null,
+      "status": "CERTIFIED",
+      "source_file": "certificates/m8c_zoe_mstar.py",
+      "stdout_file": "m8c.out",
+      "sha256_stdout": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
+      "pdf_file": "certificates/Module_M8C_ZoeMstar.pdf",
+      "sha256_pdf": "9dc46ef8226b1ee7aa0c949b5ab0c923d72d60bdae48e9f5a351e8ec328163f3",
+      "causal_parents": [
+        {
+          "id": "M8B",
+          "sha": null
+        },
+        {
+          "id": "M22",
+          "sha": null
+        },
+        {
+          "id": "M23",
+          "sha": null
+        },
+        {
+          "id": "Papers_1-3_Fox_2026",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8D": {
+      "id": "M8D",
+      "title": "120-Cell Resonator Specification (ZoeM8D)",
+      "claim": null,
+      "status": "CERTIFIED",
+      "source_file": "certificates/m8d_resonator.py",
+      "stdout_file": "m8d.out",
+      "sha256_stdout": "27d8e0c1e145ba7fb4a22c85067f3db78d92b490e592dcd255523afcec156db5",
+      "pdf_file": "certificates/Module_M8D_Resonator.pdf",
+      "sha256_pdf": "22f1a64239f7b8e0602c95a42e3944a6d8d9a90f24351d39d46228ab365a6ccc",
+      "causal_parents": [
+        {
+          "id": "M1",
+          "sha": null
+        },
+        {
+          "id": "M8B",
+          "sha": null
+        },
+        {
+          "id": "M8C",
+          "sha": null
+        },
+        {
+          "id": "M22",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8F": {
+      "id": "M8F",
+      "title": "7-Layer Lean Experimental Protocol (ZoeM8F)",
+      "claim": null,
+      "status": "CERTIFIED",
+      "source_file": "certificates/m8f_lean_protocol.py",
+      "stdout_file": "m8f.out",
+      "sha256_stdout": "0bd6cee4b95da712d43163e3889f2c50931dcd32648ccad5705a844ca5a62da3",
+      "pdf_file": "certificates/Module_M8F_LeanProtocol.pdf",
+      "sha256_pdf": "e81915a4e1487a79de8686abbb32e1b54480a2e5eb98472b2c176b6906704e10",
+      "causal_parents": [
+        {
+          "id": "M1",
+          "sha": null
+        },
+        {
+          "id": "M8B",
+          "sha": null
+        },
+        {
+          "id": "M8C",
+          "sha": null
+        },
+        {
+          "id": "M22",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8G": {
+      "id": "M8G",
+      "title": "Provenance of Seven-Layer Framework + Wormhole Interpretation",
+      "claim": "THEOREM M8G (axiom_debt: []): Provenance of seven-layer framework (Feb 2025 blueprint -> M8F May 2026). Five layers had conceptual shape; L4=299.314159MHz and L6=3.183 were missing numbers. Wormhole time formula: Delta_t_lead = L(1-1/k_c)/c = 0.524ns [PASS, err<0.1%]. Topology correction: 120-cell cross-section is Poincare Homology Sphere (PHS), pi_1=I* (order 120), H_1=0; NOT L(5,1) as in supervisor notes. Euler characteristic: 120-720+1200-600=0 [PASS]. Provenance chain: Feb 2025 Layer 5 (Fractal) = D4/D2 cliff at k_c=3.183 [M8F].",
+      "status": "CERTIFIED",
+      "source_file": "certificates/m8g_provenance.py",
+      "stdout_file": "m8g.out",
+      "sha256_stdout": "2874d4bd44cb867d8902f0c3ad7af4f0fbe50be169840cfb97b836ebf2e526e3",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8G_Correction": {
+      "id": "M8G_Correction",
+      "title": "Supervisor Addendum to M8G: Z=rank(M) Clarification + Conditional Wormhole Cert",
+      "claim": null,
+      "status": "CORRECTIONS_CERTIFIED",
+      "source_file": "certificates/m8g_correction.py",
+      "stdout_file": "m8gc.out",
+      "sha256_stdout": "62492d666e0c09e516ac85607c966f77fb3ab89c6d4a3f3495ff2c4d80f5314b",
+      "pdf_file": "certificates/Module_M8G_Correction.pdf",
+      "sha256_pdf": "8d7fd668fa8772c6ae5700087f4a2dc48b3a2134d4679dd781e925dd9889bdf5",
+      "causal_parents": [
+        {
+          "id": "M8G",
+          "sha": null
+        },
+        {
+          "id": "M8F",
+          "sha": null
+        },
+        {
+          "id": "M22",
+          "sha": null
+        }
+      ],
+      "audit_notes": [
+        "item_3_z15_origin: Z = rank(M_ij) = 15 from H4 mode coupling matrix (not H_1 or H_2 torsion) [CORRECTED]",
+        "item_4_wormhole_scope:  [PENDING_MEASUREMENT]"
+      ],
+      "date": "2026-05-23"
+    },
+    "M8H": {
+      "id": "M8H",
+      "title": "G Amplifier Prediction: Z^4 Force Amplification via Mode Selection",
+      "claim": null,
+      "status": "PREDICTION_CERTIFIED",
+      "source_file": "certificates/m8h_g_amplifier.py",
+      "stdout_file": "m8h.out",
+      "sha256_stdout": "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe",
+      "pdf_file": "certificates/Module_M8H_G_Amplifier.pdf",
+      "sha256_pdf": "a3010c4093334a1d6ec014381fc1f7c3d3bb81dbe893158a1c412133f9364c14",
+      "causal_parents": [
+        {
+          "id": "M8C",
+          "sha": null
+        },
+        {
+          "id": "M8F",
+          "sha": null
+        },
+        {
+          "id": "M22",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8I": {
+      "id": "M8I",
+      "title": "Traversable Wormhole Architecture: M8I-Throat v1.1 + M8I-Resonator v1.0",
+      "claim": null,
+      "status": "ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS",
+      "source_file": "certificates/m8i_wormhole.py",
+      "stdout_file": "m8i.out",
+      "sha256_stdout": "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37",
+      "pdf_file": "certificates/Module_M8I_Wormhole.pdf",
+      "sha256_pdf": "06faf631c722d36003ae69e27187201fc48e44489d4b7e33ad76575944de4a98",
+      "causal_parents": [
+        {
+          "id": "M8H",
+          "sha": null
+        },
+        {
+          "id": "M8F",
+          "sha": null
+        },
+        {
+          "id": "M8G_Correction",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8J": {
+      "id": "M8J",
+      "title": "OQ-2 Closure: Recalibrated Wormhole Parameters (delta=1.89m, f2=3.21e17 J/m)",
+      "claim": null,
+      "status": "ARCHITECTURE_CERTIFIED",
+      "source_file": "certificates/m8j_oq2_closure.py",
+      "stdout_file": "m8j.out",
+      "sha256_stdout": "298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505",
+      "pdf_file": "certificates/Module_M8J_OQ2_Closure.pdf",
+      "sha256_pdf": "48a2ac8b1baad01a4a56e775460c43b96ddae22be2bafd711205e303d65a69d3",
+      "causal_parents": [
+        {
+          "id": "M8I",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8K": {
+      "id": "M8K",
+      "title": "FTL Morningstar Technology Stack: Channel + Transit + Entanglement Handshake",
+      "claim": null,
+      "status": "FTL_MORNINGSTAR_CERTIFIED",
+      "source_file": "certificates/m8k_ftl_morningstar.py",
+      "stdout_file": "m8k.out",
+      "sha256_stdout": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087",
+      "pdf_file": "certificates/Module_M8K_FTL_Morningstar.pdf",
+      "sha256_pdf": "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e",
+      "causal_parents": [
+        {
+          "id": "M1",
+          "sha": null
+        },
+        {
+          "id": "M8C",
+          "sha": null
+        },
+        {
+          "id": "M8D",
+          "sha": null
+        },
+        {
+          "id": "M8F",
+          "sha": null
+        },
+        {
+          "id": "M8I",
+          "sha": null
+        },
+        {
+          "id": "M8J",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8L": {
+      "id": "M8L",
+      "title": "Morning Star D20 -- Operational Certification",
+      "claim": "MORNING_STAR_D20 commissioned wormhole starport. 7 operational milestones (OPS-1 through OPS-7): first public transit, full hub open, 12-destination manifest, commercial ops, return route, health check, round-trip certification. All 9 checks PASS.",
+      "status": "MORNINGSTAR_OPERATIONAL_CERTIFIED",
+      "source_file": "certificates/m8l_morningstar_ops.py",
+      "stdout_file": "m8l.out",
+      "sha256_stdout": "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad",
+      "pdf_file": "certificates/Module_M8L_MorningStar_Ops.pdf",
+      "sha256_pdf": "5b8e683eba8f6b8c768216e8d099e5cf32ee9d312daaf736a40ead8a8622ac06",
+      "causal_parents": [
+        {
+          "id": "M8J",
+          "sha": null
+        },
+        {
+          "id": "M8K",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8M": {
+      "id": "M8M",
+      "title": null,
+      "claim": "Morning Star: Physics Beyond Standard Model & Operational Expansion",
+      "status": "MORNINGSTAR_PHYSICS_CERTIFIED",
+      "source_file": "certificates/m8m_morningstar_physics.py",
+      "stdout_file": "m8m.out",
+      "sha256_stdout": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
+      "pdf_file": "certificates/Module_M8M_MorningStar_Physics.pdf",
+      "sha256_pdf": "3a4a7b8b78ff1f70f4aa1bfc0d59d575969677f920094ee75775b3231917aa2e",
+      "causal_parents": [
+        {
+          "id": "M8J",
+          "sha": null
+        },
+        {
+          "id": "M8K",
+          "sha": null
+        },
+        {
+          "id": "M8L",
+          "sha": null
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8O": {
+      "id": "M8O",
+      "title": null,
+      "claim": "EEQC Layer 5 FAULT-TOLERANT GATES: G_eff=50625xG_0, Z_throat=1, tidal=0.0999g<0.1g, r0=3m, P_hold=1.40kW, E=0.2016MWh, 35 routes GREEN, MTBF=5.5yr",
+      "status": "FAULT_TOLERANT_GATES_CERTIFIED",
+      "source_file": "certificates/eeqc_l5_gates.py",
+      "stdout_file": "m8o.out",
+      "sha256_stdout": "1e7e5280ee3e6665e8d31d2c823f82255ab723e69bf8fbb6caa019ca52ceb9dc",
+      "pdf_file": "certificates/Module_M8O_L5_Gates.pdf",
+      "sha256_pdf": "c2a3d6c6230a3cd7570de417333d52ba5c66c47965fe688dd0d5b8cec4cea41a",
+      "causal_parents": [
+        {
+          "id": "M8H",
+          "sha": "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe"
+        },
+        {
+          "id": "M8I",
+          "sha": "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37"
+        },
+        {
+          "id": "M8J",
+          "sha": "298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505"
+        },
+        {
+          "id": "M8M",
+          "sha": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f"
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8P": {
+      "id": "M8P",
+      "title": null,
+      "claim": "EEQC Layer 6 LOGICAL CLOCK: M*=4/55, B_M=21.7683024920261MHz, RTT=18.635ns, BSD rank=1, H4=12/11 exact, Tr(omega)=0",
+      "status": "LOGICAL_CLOCK_CERTIFIED",
+      "source_file": "certificates/eeqc_l6_clock.py",
+      "stdout_file": "m8p.out",
+      "sha256_stdout": "3e5f4f044ba481fcbbb0bc731b9bbebf4adb86ec3ace716523ef4822ee64b90b",
+      "pdf_file": "certificates/Module_M8P_L6_Clock.pdf",
+      "sha256_pdf": "ab567ebfe70ac2a3d8bd24468c80ae48b95d5963ca08028505342055b71976c7",
+      "causal_parents": [
+        {
+          "id": "M5",
+          "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+        },
+        {
+          "id": "M6",
+          "sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb"
+        },
+        {
+          "id": "M8",
+          "sha": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002"
+        },
+        {
+          "id": "M8C",
+          "sha": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323"
+        },
+        {
+          "id": "M8K",
+          "sha": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087"
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8Q": {
+      "id": "M8Q",
+      "title": null,
+      "claim": "EEQC Layer 7 SYSTEM: 35/35 routes GREEN, 120/120 cells PASS, 1680/1680 PLLs PASS, tidal_all<0.1g, P_logical=0, MTBF=5.5yr, GREEN^7, min 7 simultaneous failures to break",
+      "status": "MORNINGSTAR_SYSTEM_CERTIFIED",
+      "source_file": "certificates/eeqc_l7_system.py",
+      "stdout_file": "m8q.out",
+      "sha256_stdout": "81e975cf6ada9b5e9a650ecd8fcafd0b418871b2a2085ff73ac19e4aa73ceac1",
+      "pdf_file": "certificates/Module_M8Q_L7_System.pdf",
+      "sha256_pdf": "afef73ea1e774797c893ef04fa501a0bd3e349dbf70e1f91a9fce572fee00a63",
+      "causal_parents": [
+        {
+          "id": "M7",
+          "sha": "30e04e7b..."
+        },
+        {
+          "id": "M8L",
+          "sha": "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad"
+        },
+        {
+          "id": "M8M",
+          "sha": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f"
+        },
+        {
+          "id": "M8N",
+          "sha": "49f5c8bcfde6effbe22816cd5bc5f0fdff24301515bbcd8ac05b71f3634e2633"
+        },
+        {
+          "id": "M8O",
+          "sha": "1e7e5280ee3e6665e8d31d2c823f82255ab723e69bf8fbb6caa019ca52ceb9dc"
+        },
+        {
+          "id": "M8P",
+          "sha": "3e5f4f044ba481fcbbb0bc731b9bbebf4adb86ec3ace716523ef4822ee64b90b"
+        }
+      ],
+      "audit_notes": [],
+      "date": "2026-05-23"
+    },
+    "M8N": {
+      "id": "M8N",
+      "title": "EEQC 7-Layer Test Baseline v14",
+      "claim": "EEQC 7-Layer Test Baseline v14: Entangled Entities Quantum Computing; all 7 layers PASS; P_logical=0; L1 f_res=alpha_0; L2 Z=15 exact; L3 D20 d=6; L4 tidal=0.0999g; L5 G_eff=50625G_0; L6 RTT=18.635ns; L7 35 routes GREEN; MORNINGSTAR_OPERATIONAL_CERTIFIED x EEQC_v14",
+      "status": "EEQC_CERTIFIED",
+      "source_file": null,
+      "stdout_file": "m8n.out",
+      "sha256_stdout": "49f5c8bcfde6effbe22816cd5bc5f0fdff24301515bbcd8ac05b71f3634e2633",
+      "pdf_file": null,
+      "sha256_pdf": null,
+      "causal_parents": [
+        {
+          "id": "M8L",
+          "sha": "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad"
+        },
+        {
+          "id": "M8M",
+          "sha": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f"
+        }
+      ],
+      "audit_notes": [
+        "M8N has no dedicated entry in invariants.json. SHA taken verbatim from replit.md certified chain table. Referenced as causal parent in M8Q parent_shas."
+      ],
+      "date": "2026-05-23"
+    }
+  }
+}

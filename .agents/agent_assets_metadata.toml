@@ -215,3 +215,9 @@ id = "QKe_i6tqltEmmYqVcfCez"
 uri = "file://certificates/m9_all_grh.zip"
 type = "unspecified"
 title = "M9-All GRH — LaTeX + CSV (280 rows, 11KB zipped)"
+
+[[outputs]]
+id = "VfA55UICGF_PK3UGzJYEf"
+uri = "file://certificates/opera_numerorum_map.json"
+type = "unspecified"
+title = "Opera Numerorum — Full Module Map (37 modules, 34 KB)"
