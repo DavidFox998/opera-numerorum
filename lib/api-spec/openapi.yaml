@@ -161,6 +161,23 @@ paths:
         "503":
           description: Rebuilds are disabled (LEAN_REBUILD_TOKEN not configured)
 
+  /lean/verify/history:
+    get:
+      operationId: getLeanRebuildHistory
+      tags: [lean]
+      summary: Recent Lean rebuild attempts (audit trail)
+      description: |
+        Returns the most recent ~20 in-memory rebuild attempts (timestamp,
+        duration, exit code, ok, error). Cleared on server restart. No auth
+        required — results are not sensitive.
+      responses:
+        "200":
+          description: Rebuild history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeanRebuildHistory"
+
   /lean/verify/rebuild/stream:
     post:
       operationId: rebuildLeanVerificationStream
@@ -363,6 +380,43 @@ components:
             - $ref: "#/components/schemas/LeanVerification"
             - type: "null"
           description: Re-parsed verification log after a successful rebuild
+
+    LeanRebuildHistoryEntry:
+      type: object
+      required: [timestamp, durationMs, exitCode, ok, streamed]
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp of when the rebuild finished
+        durationMs:
+          type: integer
+          description: Wall-clock duration of the rebuild in milliseconds
+        exitCode:
+          type: integer
+          description: Exit code of the rebuild script (or -1 if it could not be spawned)
+        ok:
+          type: boolean
+          description: True iff the rebuild exited 0 and VERIFY.txt was refreshed
+        error:
+          type: ["string", "null"]
+          description: High-level error message when the rebuild failed
+        streamed:
+          type: boolean
+          description: True if this attempt was made via the streaming SSE endpoint
+
+    LeanRebuildHistory:
+      type: object
+      required: [entries, capacity]
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeanRebuildHistoryEntry"
+          description: Most recent attempts first
+        capacity:
+          type: integer
+          description: Maximum number of attempts retained in memory
 
     LeanRebuildCancelResult:
       type: object

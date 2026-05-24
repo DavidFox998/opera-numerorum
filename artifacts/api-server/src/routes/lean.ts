@@ -26,6 +26,25 @@ const REBUILD_COOLDOWN_MS = 60 * 1000;
 
 let lastRebuildFinishedAt = 0;
 
+interface RebuildHistoryEntry {
+  timestamp: string;
+  durationMs: number;
+  exitCode: number;
+  ok: boolean;
+  error: string | null;
+  streamed: boolean;
+}
+
+const REBUILD_HISTORY_CAPACITY = 20;
+const rebuildHistory: RebuildHistoryEntry[] = [];
+
+function recordRebuildAttempt(entry: RebuildHistoryEntry): void {
+  rebuildHistory.unshift(entry);
+  if (rebuildHistory.length > REBUILD_HISTORY_CAPACITY) {
+    rebuildHistory.length = REBUILD_HISTORY_CAPACITY;
+  }
+}
+
 function checkRebuildCooldown(): { ok: true } | { ok: false; retryAfterMs: number } {
   const elapsed = Date.now() - lastRebuildFinishedAt;
   if (lastRebuildFinishedAt > 0 && elapsed < REBUILD_COOLDOWN_MS) {
@@ -90,6 +109,13 @@ function invalidateCache(): void {
   cached = null;
   cachedError = null;
 }
+
+router.get("/lean/verify/history", (_req, res) => {
+  res.json({
+    entries: rebuildHistory.slice(),
+    capacity: REBUILD_HISTORY_CAPACITY,
+  });
+});
 
 router.get("/lean/verify", (req, res) => {
   const parsed = load();
@@ -410,6 +436,15 @@ router.post("/lean/verify/rebuild/stream", (req, res) => {
       "Lean rebuild attempted",
     );
 
+    recordRebuildAttempt({
+      timestamp: new Date().toISOString(),
+      durationMs,
+      exitCode: payload.exitCode,
+      ok: payload.ok,
+      error: payload.error,
+      streamed: true,
+    });
+
     sendEvent("result", {
       ok: payload.ok,
       exitCode: payload.exitCode,
@@ -627,6 +662,15 @@ router.post("/lean/verify/rebuild", (req, res) => {
       },
       "Lean rebuild attempted",
     );
+
+    recordRebuildAttempt({
+      timestamp: new Date().toISOString(),
+      durationMs,
+      exitCode: payload.exitCode,
+      ok: payload.ok,
+      error: payload.error,
+      streamed: false,
+    });
 
     res.status(200).json({
       ok: payload.ok,

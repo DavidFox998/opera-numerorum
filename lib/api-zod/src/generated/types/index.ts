@@ -12,6 +12,8 @@ export * from './certificateSummary';
 export * from './certificateUpdate';
 export * from './healthStatus';
 export * from './leanRebuildCancelResult';
+export * from './leanRebuildHistory';
+export * from './leanRebuildHistoryEntry';
 export * from './leanRebuildResult';
 export * from './leanVerification';
 export * from './uploadUrlRequest';

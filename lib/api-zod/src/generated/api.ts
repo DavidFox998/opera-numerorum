@@ -164,6 +164,26 @@ export const CancelLeanVerificationRebuildResponse = zod.object({
 
 
 /**
+ * Returns the most recent ~20 in-memory rebuild attempts (timestamp,
+duration, exit code, ok, error). Cleared on server restart. No auth
+required — results are not sensitive.
+
+ * @summary Recent Lean rebuild attempts (audit trail)
+ */
+export const GetLeanRebuildHistoryResponse = zod.object({
+  "entries": zod.array(zod.object({
+  "timestamp": zod.coerce.date().describe('ISO-8601 timestamp of when the rebuild finished'),
+  "durationMs": zod.number().describe('Wall-clock duration of the rebuild in milliseconds'),
+  "exitCode": zod.number().describe('Exit code of the rebuild script (or -1 if it could not be spawned)'),
+  "ok": zod.boolean().describe('True iff the rebuild exited 0 and VERIFY.txt was refreshed'),
+  "error": zod.string().nullish().describe('High-level error message when the rebuild failed'),
+  "streamed": zod.boolean().describe('True if this attempt was made via the streaming SSE endpoint')
+})).describe('Most recent attempts first'),
+  "capacity": zod.number().describe('Maximum number of attempts retained in memory')
+})
+
+
+/**
  * @summary Request a presigned upload URL for a PDF
  */
 export const RequestUploadUrlBody = zod.object({

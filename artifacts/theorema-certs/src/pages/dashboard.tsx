@@ -2,7 +2,9 @@ import {
   useGetCertificateSummary,
   useListCertificates,
   useGetLeanVerification,
+  useGetLeanRebuildHistory,
   getGetLeanVerificationQueryKey,
+  getGetLeanRebuildHistoryQueryKey,
 } from "@workspace/api-client-react";
 import { ShaChip } from "@/components/sha-chip";
 import { StatusBadge } from "@/components/status-badge";
@@ -167,6 +169,7 @@ export default function DashboardPage() {
   const { data: summary, isLoading: isSummaryLoading } = useGetCertificateSummary();
   const { data: certificates, isLoading: isCertsLoading } = useListCertificates();
   const { data: leanVerify } = useGetLeanVerification();
+  const { data: rebuildHistory } = useGetLeanRebuildHistory();
   const queryClient = useQueryClient();
   const [rebuildOutcome, setRebuildOutcome] = useState<RebuildOutcome | null>(null);
   const [rebuildToken, setRebuildToken] = useState<string>("");
@@ -226,7 +229,10 @@ export default function DashboardPage() {
           durationMs: r.durationMs,
           exitCode: r.exitCode,
         });
-        await queryClient.invalidateQueries({ queryKey: getGetLeanVerificationQueryKey() });
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: getGetLeanVerificationQueryKey() }),
+          queryClient.invalidateQueries({ queryKey: getGetLeanRebuildHistoryQueryKey() }),
+        ]);
       } else {
         setRebuildOutcome({
           ok: false,
@@ -605,6 +611,74 @@ export default function DashboardPage() {
                     <code className="mx-1">LEAN_REBUILD_TOKEN</code>
                     set for rebuilds to be accepted.
                   </p>
+                </div>
+              ) : null}
+
+              {rebuildHistory && rebuildHistory.entries.length > 0 ? (
+                <div
+                  className="border border-border bg-muted/20"
+                  data-testid="panel-rebuild-history"
+                >
+                  <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-muted/30">
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                      Recent rebuild attempts
+                    </span>
+                    <span
+                      className="font-mono text-[11px] text-muted-foreground"
+                      data-testid="text-rebuild-history-count"
+                    >
+                      {rebuildHistory.entries.length} of last {rebuildHistory.capacity}
+                    </span>
+                  </div>
+                  <ul className="divide-y divide-border">
+                    {rebuildHistory.entries.map((entry, i) => (
+                      <li
+                        key={`${entry.timestamp}-${i}`}
+                        className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 px-3 py-2 font-mono text-[11px]"
+                        data-testid={`row-rebuild-history-${i}`}
+                      >
+                        <span
+                          className={`inline-flex items-center gap-1 font-bold w-20 ${
+                            entry.ok
+                              ? "text-green-700 dark:text-green-400"
+                              : "text-red-700 dark:text-red-400"
+                          }`}
+                          data-testid={`text-rebuild-history-status-${i}`}
+                        >
+                          {entry.ok ? (
+                            <CheckCircle2 className="w-3 h-3" />
+                          ) : (
+                            <XCircle className="w-3 h-3" />
+                          )}
+                          {entry.ok ? "OK" : "FAIL"}
+                        </span>
+                        <span
+                          className="text-muted-foreground md:w-48"
+                          title={entry.timestamp}
+                          data-testid={`text-rebuild-history-timestamp-${i}`}
+                        >
+                          {formatTimestamp(entry.timestamp)}
+                        </span>
+                        <span className="text-muted-foreground md:w-20">
+                          {(entry.durationMs / 1000).toFixed(1)}s
+                        </span>
+                        <span className="text-muted-foreground md:w-20">
+                          exit {entry.exitCode}
+                        </span>
+                        <span className="text-muted-foreground md:w-16">
+                          {entry.streamed ? "stream" : "sync"}
+                        </span>
+                        {entry.error ? (
+                          <span
+                            className="text-red-700 dark:text-red-400 flex-1 truncate"
+                            title={entry.error}
+                          >
+                            {entry.error}
+                          </span>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ) : null}
 

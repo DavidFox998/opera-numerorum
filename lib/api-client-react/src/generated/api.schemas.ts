@@ -104,6 +104,31 @@ export interface LeanRebuildResult {
   verification?: LeanVerification | null;
 }
 
+export interface LeanRebuildHistoryEntry {
+  /** ISO-8601 timestamp of when the rebuild finished */
+  timestamp: string;
+  /** Wall-clock duration of the rebuild in milliseconds */
+  durationMs: number;
+  /** Exit code of the rebuild script (or -1 if it could not be spawned) */
+  exitCode: number;
+  /** True iff the rebuild exited 0 and VERIFY.txt was refreshed */
+  ok: boolean;
+  /**
+     * High-level error message when the rebuild failed
+     * @nullable
+     */
+  error?: string | null;
+  /** True if this attempt was made via the streaming SSE endpoint */
+  streamed: boolean;
+}
+
+export interface LeanRebuildHistory {
+  /** Most recent attempts first */
+  entries: LeanRebuildHistoryEntry[];
+  /** Maximum number of attempts retained in memory */
+  capacity: number;
+}
+
 export interface LeanRebuildCancelResult {
   /** True when a cancellation signal was successfully sent. */
   ok: boolean;

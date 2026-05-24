@@ -25,6 +25,7 @@ import type {
   CertificateUpdate,
   HealthStatus,
   LeanRebuildCancelResult,
+  LeanRebuildHistory,
   LeanRebuildResult,
   LeanVerification,
   UploadUrlRequest,
@@ -651,6 +652,87 @@ export const useCancelLeanVerificationRebuild = <TError = ErrorType<void>,
       > => {
       return useMutation(getCancelLeanVerificationRebuildMutationOptions(options));
     }
+
+export const getGetLeanRebuildHistoryUrl = () => {
+
+
+
+
+  return `/api/lean/verify/history`
+}
+
+/**
+ * Returns the most recent ~20 in-memory rebuild attempts (timestamp,
+duration, exit code, ok, error). Cleared on server restart. No auth
+required — results are not sensitive.
+
+ * @summary Recent Lean rebuild attempts (audit trail)
+ */
+export const getLeanRebuildHistory = async ( options?: RequestInit): Promise<LeanRebuildHistory> => {
+
+  return customFetch<LeanRebuildHistory>(getGetLeanRebuildHistoryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLeanRebuildHistoryQueryKey = () => {
+    return [
+    `/api/lean/verify/history`
+    ] as const;
+    }
+
+
+export const getGetLeanRebuildHistoryQueryOptions = <TData = Awaited<ReturnType<typeof getLeanRebuildHistory>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeanRebuildHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLeanRebuildHistoryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLeanRebuildHistory>>> = ({ signal }) => getLeanRebuildHistory({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLeanRebuildHistory>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLeanRebuildHistoryQueryResult = NonNullable<Awaited<ReturnType<typeof getLeanRebuildHistory>>>
+export type GetLeanRebuildHistoryQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Recent Lean rebuild attempts (audit trail)
+ */
+
+export function useGetLeanRebuildHistory<TData = Awaited<ReturnType<typeof getLeanRebuildHistory>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeanRebuildHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLeanRebuildHistoryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getRebuildLeanVerificationStreamUrl = () => {
 
