@@ -8,6 +8,8 @@ Author: David Fox / Opera Numerorum v1.6
 Date: 2026-05-24
 """
 
+import csv
+import hashlib
 import json
 import sys
 from datetime import datetime
@@ -70,10 +72,13 @@ def get_audit_notes(d):
     ae = pick(d, "audit_errors")
     if isinstance(ae, dict):
         for code, info in ae.items():
-            loc = info.get("location", "")
-            desc = info.get("description", "")
-            verdict = info.get("verdict", "")
-            notes.append(f"{code} [{loc}]: {desc} -- {verdict}")
+            if isinstance(info, dict):
+                loc = info.get("location", "")
+                desc = info.get("description", "")
+                verdict = info.get("verdict", "")
+                notes.append(f"{code} [{loc}]: {desc} -- {verdict}")
+            else:
+                notes.append(f"{code}: {info}")
     ac = pick(d, "annotation_corrections")
     if isinstance(ac, dict):
         for key, info in ac.items():
@@ -245,6 +250,45 @@ for rk in raw:
             entry = norm_module(rk, d)
             modules[rk] = entry
             print(f"INFO: captured extra module: {rk}", file=sys.stderr)
+
+# Embed M9-All VALOR table excerpt: 10 worst-case curves (smallest margin)
+M9_ALL_CSV = "certificates/m9_all_grh.csv"
+try:
+    with open(M9_ALL_CSV, "rb") as _fcsv:
+        _csv_sha = hashlib.sha256(_fcsv.read()).hexdigest()
+    _csv_rows = []
+    with open(M9_ALL_CSV, newline="") as _fcsv:
+        _reader = csv.DictReader(_fcsv)
+        for _row in _reader:
+            if _row.get("margin") and _row["margin"].strip():
+                try:
+                    float(_row["margin"])
+                    _csv_rows.append(_row)
+                except ValueError:
+                    pass
+    _csv_rows_sorted = sorted(_csv_rows, key=lambda r: float(r["margin"]))
+    _excerpt = []
+    for _row in _csv_rows_sorted[:10]:
+        _excerpt.append({
+            "N": int(_row["N"]),
+            "g": int(_row["g"]),
+            "two_sqrtg": _row["two_sqrt_g"],
+            "margin": _row["margin"],
+            "VALOR": int(_row["VALOR"]),
+            "PASS": "PASS" if int(_row["VALOR"]) > 0 else "FAIL",
+        })
+    if "M9-All" in modules:
+        modules["M9-All"]["valor_table_excerpt"] = {
+            "description": (
+                "10 worst-case X_0(N) by smallest GRH margin (C_S4 - 2*sqrt(g)). "
+                "Full 280-curve table: certificates/m9_all_grh.csv"
+            ),
+            "csv_sha256": _csv_sha,
+            "total_curves": len(_csv_rows),
+            "rows": _excerpt,
+        }
+except Exception as _e:
+    print(f"WARNING: could not embed valor_table_excerpt: {_e}", file=sys.stderr)
 
 # Count certified
 n_certified = sum(

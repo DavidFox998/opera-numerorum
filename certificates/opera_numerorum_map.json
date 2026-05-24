@@ -21,8 +21,8 @@
       "M7"
     ],
     "spine_construction": "SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)",
-    "total_modules_in_map": 37,
-    "certified_count": 36,
+    "total_modules_in_map": 38,
+    "certified_count": 37,
     "locked_count": 2,
     "extended_chain": [
       "M8 (Hankel rank, GRH)",
@@ -248,7 +248,94 @@
         }
       ],
       "audit_notes": [],
-      "date": "2026-05-23"
+      "date": "2026-05-23",
+      "valor_table_excerpt": {
+        "description": "10 worst-case X_0(N) by smallest GRH margin (C_S4 - 2*sqrt(g)). Full 280-curve table: certificates/m9_all_grh.csv",
+        "csv_sha256": "1c4ed15424fe5b920be74e1933c918b1ae4da4b6225956d44bf96160f41beb06",
+        "total_curves": 280,
+        "rows": [
+          {
+            "N": 262,
+            "g": 32,
+            "two_sqrtg": "11.31370850",
+            "margin": "0.10844019",
+            "VALOR": 1084,
+            "PASS": "PASS"
+          },
+          {
+            "N": 268,
+            "g": 32,
+            "two_sqrtg": "11.31370850",
+            "margin": "0.10844019",
+            "VALOR": 1084,
+            "PASS": "PASS"
+          },
+          {
+            "N": 338,
+            "g": 32,
+            "two_sqrtg": "11.31370850",
+            "margin": "0.10844019",
+            "VALOR": 1084,
+            "PASS": "PASS"
+          },
+          {
+            "N": 383,
+            "g": 32,
+            "two_sqrtg": "11.31370850",
+            "margin": "0.10844019",
+            "VALOR": 1084,
+            "PASS": "PASS"
+          },
+          {
+            "N": 389,
+            "g": 32,
+            "two_sqrtg": "11.31370850",
+            "margin": "0.10844019",
+            "VALOR": 1084,
+            "PASS": "PASS"
+          },
+          {
+            "N": 397,
+            "g": 32,
+            "two_sqrtg": "11.31370850",
+            "margin": "0.10844019",
+            "VALOR": 1084,
+            "PASS": "PASS"
+          },
+          {
+            "N": 204,
+            "g": 31,
+            "two_sqrtg": "11.13552873",
+            "margin": "0.28661996",
+            "VALOR": 2866,
+            "PASS": "PASS"
+          },
+          {
+            "N": 220,
+            "g": 31,
+            "two_sqrtg": "11.13552873",
+            "margin": "0.28661996",
+            "VALOR": 2866,
+            "PASS": "PASS"
+          },
+          {
+            "N": 254,
+            "g": 31,
+            "two_sqrtg": "11.13552873",
+            "margin": "0.28661996",
+            "VALOR": 2866,
+            "PASS": "PASS"
+          },
+          {
+            "N": 272,
+            "g": 31,
+            "two_sqrtg": "11.13552873",
+            "margin": "0.28661996",
+            "VALOR": 2866,
+            "PASS": "PASS"
+          }
+        ]
+      }
     },
     "M10": {
       "id": "M10",
@@ -1004,6 +1091,25 @@
         "M8N has no dedicated entry in invariants.json. SHA taken verbatim from replit.md certified chain table. Referenced as causal parent in M8Q parent_shas."
       ],
       "date": "2026-05-23"
+    },
+    "module_m8a": {
+      "id": "module_m8a",
+      "title": "M8A: Delta_DS^(4) Audit Certificate and Lambda_p Bounds",
+      "claim": "Delta_DS^(4) = 23.796910 in LaTeX paper is WRONG (errors E1+E2). Correct certified value: Delta_DS^(4) = 2.753126094323295100690126. 280/280 X_0(N) lambda_p bounds PASS under corrected delta. M9->M21 H2 Weil Transfer causal binding sealed. BSD for J_0(143) CERTIFIED independently via Omega/R = 11.929 ~ 12.",
+      "status": "AUDIT_CERTIFIED",
+      "source_file": null,
+      "stdout_file": null,
+      "sha256_stdout": null,
+      "pdf_file": "certificates/Module_M8A_Audit.pdf",
+      "sha256_pdf": "3567279c610e037d7815afcd7239992ace92fdbbe323272a487e566b4911caec",
+      "causal_parents": [],
+      "audit_notes": [
+        "E1: All 16 ||p*pi/10|| table values in paper are wrong (errors 1.79e-5 to 3.76e-1)",
+        "E2: Sign error: paper uses -log(||.||)+log(p); definition requires -log(||.||)-log(p)",
+        "E3: Delta_DS^(4)=23.796910 follows from E1+E2; correct=2.753126094323295",
+        "E4: p_5>6e12 wrong; certified p_5=3993746143633 (M4)"
+      ],
+      "date": "2026-05-24"
     }
   }
 }
