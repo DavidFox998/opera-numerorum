@@ -1,6 +1,6 @@
-import { Check, Clock, Lock } from "lucide-react";
+import { Check, Clock, Lock, ShieldCheck } from "lucide-react";
 
-type CertificateStatus = "CERTIFIED" | "AWAITING" | "LOCKED";
+type CertificateStatus = "CERTIFIED" | "AWAITING" | "LOCKED" | "DISCHARGED";
 
 interface StatusBadgeProps {
   status: CertificateStatus;
@@ -26,6 +26,13 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       return (
         <div className="inline-flex items-center gap-1.5 px-2 py-0.5 border border-muted-foreground/30 bg-muted text-muted-foreground font-mono text-xs uppercase tracking-wider font-semibold" data-testid={`status-${status}`}>
           <Lock className="w-3 h-3" />
+          {status}
+        </div>
+      );
+    case "DISCHARGED":
+      return (
+        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 border border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-mono text-xs uppercase tracking-wider font-semibold" data-testid={`status-${status}`}>
+          <ShieldCheck className="w-3 h-3" />
           {status}
         </div>
       );

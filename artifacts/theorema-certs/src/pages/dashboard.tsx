@@ -73,6 +73,9 @@ export default function DashboardPage() {
             <p className="text-xs font-mono text-muted-foreground mt-1">
               main_theorem axiom debt: [] (zero axioms)
             </p>
+            <p className="text-xs font-mono text-muted-foreground mt-1">
+              H2_WeilTransfer is now a theorem (M9). #print axioms TheoremaAureum → [].
+            </p>
           </div>
           <Link href="/walkthrough" data-testid="link-walkthrough-banner">
             <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-primary hover:underline">

@@ -168,7 +168,7 @@ components:
           description: One-sentence summary of what this module certifies
         status:
           type: string
-          enum: [CERTIFIED, AWAITING, LOCKED]
+          enum: [CERTIFIED, AWAITING, LOCKED, DISCHARGED]
         sourceFile:
           type: ["string", "null"]
         sourceSha:

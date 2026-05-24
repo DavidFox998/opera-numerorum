@@ -13,4 +13,5 @@ export const CertificateStatus = {
   CERTIFIED: 'CERTIFIED',
   AWAITING: 'AWAITING',
   LOCKED: 'LOCKED',
+  DISCHARGED: 'DISCHARGED',
 } as const;
