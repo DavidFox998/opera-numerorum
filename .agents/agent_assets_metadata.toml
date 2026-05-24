@@ -203,3 +203,9 @@ id = "zoSzTkW3UW1MXtjxkO-Lk"
 uri = "file://certificates/Module_M8N_EEQC_v14.pdf"
 type = "pdf"
 title = "Module M8N — EEQC 7-Layer Test Baseline v14 (CERTIFIED)"
+
+[[outputs]]
+id = "2ezpRg_L7v7dGlvKm8IfG"
+uri = "file://certificates/Module_M8Q_L7_System.pdf"
+type = "pdf"
+title = "Module M8Q — EEQC Layer 7: Morning Star System Certificate"
