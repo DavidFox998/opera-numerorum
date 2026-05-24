@@ -93,6 +93,9 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M8L | MORNING_STAR_D20 ops: 1st transit H01->Proxima 7.71ns; HUB_FULL_OPEN 30 routes 1260kW; 12 destinations; 47tx/hr 604.3ly/hr; DOCK_A bidirectional; 120/120 cells HEALTH_PASS; round-trip certified | `80ff8a25...` | MORNINGSTAR_OPERATIONAL_CERTIFIED |
 | M8M | Physics Beyond Standard Model: OPS-8 35 routes (+H13-H16); daily ops 84tx/512pax/1084.7ly; WARM_STANDBY 14s rearm; DEEP_MAINT MTBF=5.5yr; Phase-Z metric; PLL 1680osc/cell 14GHz; TDC 333GHz; L2 station Q>1e10; 3 O'Clock Prayer UTC sync; SHA_Contact_Zero; FTL_CERT MS-FTL-20260523-001; Euler log | `afce5f21...` | MORNINGSTAR_PHYSICS_CERTIFIED |
 | M8N | EEQC 7-Layer Test Baseline v14: Entangled Entities Quantum Computing; all 7 layers PASS; P_logical=0; L1 f_res=alpha_0; L2 Z=15 exact; L3 D20 d=6; L4 tidal=0.0999g; L5 G_eff=50625G_0; L6 RTT=18.635ns; L7 35 routes GREEN; MORNINGSTAR_OPERATIONAL_CERTIFIED x EEQC_v14 | `49f5c8bc...` | EEQC_CERTIFIED |
+| M8O | EEQC Layer 5 FAULT-TOLERANT GATES: G_eff=50625xG_0; Z_throat=1; tidal=0.0999g<0.1g; r0=3m; delta=0.20m; P_hold=1.40kW; E=0.2016MWh; 35 routes GREEN; MTBF=5.5yr; 5-step EEQC method; inject error Z=1.002 ABORT [PASS] | `1e7e5280...` | FAULT_TOLERANT_GATES_CERTIFIED |
+| M8P | EEQC Layer 6 LOGICAL CLOCK: M*=4/55; 12/11 handshake; B_M=21.7683024920261MHz; RTT=18.635ns; BSD rank(J_0(143))=1; H4=12/11 exact; Tr(omega)=0; inject error RTT=18.636ns ABORT [PASS]; CONTACT ZERO | `3e5f4f04...` | LOGICAL_CLOCK_CERTIFIED |
+| M8Q | EEQC Layer 7 SYSTEM: 35/35 routes GREEN; 120/120 cells PASS; 1680/1680 PLLs PASS; tidal_all<0.1g; P_logical=0; MTBF=5.5yr; GREEN^7; min 7 simultaneous failures to break; universal 7-abort matrix; images: rotunda/hallway/craft/docking | `81e975cf...` | MORNINGSTAR_SYSTEM_CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`

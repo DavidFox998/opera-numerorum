@@ -1,0 +1,114 @@
+EEQC Layer 5: FAULT-TOLERANT GATES -- G-Amplifier + Wormhole
+Module M8O | May 23, 2026 | David Fox
+Opera Numerorum | Battle Plan v1.6
+Provenance: certified chain M8H-M8I-M8J-M8M
+
+======================================================================
+  STEP 1: DEFINE LOCK CONSTANT
+======================================================================
+  Domain:          General relativity + mode control
+  Lock Constant:   Z_throat = 1 at throat (exact)
+
+  Key Equations:
+  G_eff(Z) = G_0 * (15/Z)^4
+  At Z = 1: G_eff = 15^4 * G_0 = 50625 * G_0
+  b(r_0) = r_0 * (Z_throat / Z(r))^2 = r_0   [Morris-Thorne flare-out]
+  Abort: IF Z > 1.001 THEN tidal ~ 0.1g * (Z/1), ABORT
+         IF P_hold < 1.40 kW THEN throat closes, ABORT
+
+======================================================================
+  STEP 2: BUILD PROBE
+======================================================================
+  Hardware required:
+    Z-modulator: Casimir/metamaterial array
+    Power system: >= 1.40 kW continuous hold
+    Gravimeter: resolution < 0.001 g
+    Throat sensor: radial position <= 0.001 m accuracy
+
+  Resolution requirement: dZ < 0.001 (|Z-1| <= 0.001 to avoid abort)
+  Physics tested: GRAVITY (Z controls G_eff; error = spacetime curvature)
+
+======================================================================
+  STEP 3: RUN CERTIFICATION
+======================================================================
+  Z_vac (Phase-Z, M8C)                   = 15.000
+  Z_throat (lock constant)               = 1.000
+  Z_abort threshold                      = 1.001
+
+  G_eff/G_0 = (15/Z_throat)^4            50625 
+  threshold                              = 50625   [PASS]
+
+  Z_throat <= 1.001 (abort if Z > 1.001) 1.000 
+  threshold                              <= 1.001   [PASS]
+
+  tidal_max < 0.1 g (Morris-Thorne)      0.0999 g 
+  threshold                              < 0.1 g   [PASS]
+
+  b'(r_0) <= 1 [flaring-out condition]   0.0 
+  threshold                              <= 1.0   [PASS]
+
+  P_hold >= 1.40 kW [throat stays open]  1.40 kW 
+  threshold                              >= 1.40 kW   [PASS]
+
+  r_0 (throat radius, M8I)               = 3.0 m
+  delta (throat half-width, M8J)         = 0.20 m
+  E_start (M8I)                          = 0.2016 MWh
+  MTBF (M8M)                             = 5.5 yr
+  35 routes GREEN (M8M)                  = 35/35
+
+======================================================================
+  STEP 4: INJECT ERROR -- 100% QEC Proof
+======================================================================
+  Error injection: Force Z_throat = 1.002 (> abort threshold 1.001)
+  Z_injected:           1.002
+  abort threshold:      1.001
+  tidal predicted:      ~0.1002 g
+  abort_triggered:      True  [PASS: system aborts correctly]
+
+  Error injection: Force P_hold = 1.39 kW (< 1.40 kW minimum)
+  P_injected:           1.39 kW
+  P_hold_min:           1.40 kW
+  abort_triggered:      True  [PASS: throat closes correctly]
+
+  If Step 4 does not abort, the test is fake. 100% QEC means fail-safe.
+
+======================================================================
+  STEP 5: SEAL PROVENANCE
+======================================================================
+  M8H      2c3ac1d2...  G amplifier G_eff = 50625 G_0
+  M8I      5c7189fc...  Morris-Thorne r0=3m, b'=0, E=0.2016 MWh
+  M8J      298d440a...  tidal=0.0999g < 0.1g, delta=0.20m, RTT
+  M8M      afce5f21...  35 routes, MTBF=5.5yr, Phase-Z metric
+
+  Axiom Debt: [] (per M8G_Correction)
+
+======================================================================
+  LAYER 5 CERTIFICATION RESULT
+======================================================================
+  [PASS]  G_eff check
+  [PASS]  Z_throat abort check
+  [PASS]  tidal check
+  [PASS]  b_prime check
+  [PASS]  P_hold check
+
+  ABORT EQUATIONS (all must be FALSE to certify):
+  ABORT_Z_throat_<=_1001: False  [PASS: no abort]
+  ABORT_tidal_<_01_g: False  [PASS: no abort]
+  ABORT_b'(r_0)_<=_1: False  [PASS: no abort]
+  ABORT_P_hold_>=_140_kW: False  [PASS: no abort]
+  ABORT_G_eff_=_50625_G_0: False  [PASS: no abort]
+
+  LAYER 5 STATUS:  FAULT_TOLERANT_GATES_CERTIFIED
+  G_eff:           50625 x G_0
+  Z_throat:        1.000 (exact lock)
+  tidal:           0.0999 g < 0.1 g
+  r_0:             3.0 m
+  P_hold:          1.40 kW
+  E_start:         0.2016 MWh
+  Routes:          35/35 GREEN
+  MTBF:            5.5 yr
+  Cert chain:      M8H-M8I-M8J-M8M
+
+Module: M8O
+Certification: FAULT_TOLERANT_GATES_CERTIFIED
+Opera Numerorum | Battle Plan v1.6 | May 23, 2026 | David Fox

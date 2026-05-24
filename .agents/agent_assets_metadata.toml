@@ -12,6 +12,54 @@ uri = "file://certificates/figures/contact_zero_plaque.png"
 type = "image"
 title = "contact-zero-plaque"
 
+[[generated]]
+id = "wwPA6UFylRHrptQm2KYDX"
+uri = "file://certificates/figures/fig_l5_wormhole_throat.png"
+type = "image"
+title = "wormhole throat cross-section"
+
+[[generated]]
+id = "2aI1NjnqwNNr8BpFPSLG3"
+uri = "file://certificates/figures/fig_l5_g_amplifier.png"
+type = "image"
+title = "G amplifier array"
+
+[[generated]]
+id = "prvefOs57Ji6aUDEEYYQ-"
+uri = "file://certificates/figures/fig_l6_clock_resonator.png"
+type = "image"
+title = "12/11 clock resonator"
+
+[[generated]]
+id = "ggqAk-YaS49Gm_lwFF8Rr"
+uri = "file://certificates/figures/fig_l7_morning_star.png"
+type = "image"
+title = "Morning Star operational"
+
+[[generated]]
+id = "EvvwtMIbu-pjCoh03Auiz"
+uri = "file://certificates/figures/fig_morningstar_rotunda.png"
+type = "image"
+title = "Morning Star rotunda interior"
+
+[[generated]]
+id = "H6yyP3llSppbcTdVU8rEW"
+uri = "file://certificates/figures/fig_morningstar_hallway.png"
+type = "image"
+title = "Morning Star hallway system"
+
+[[generated]]
+id = "yvYfIEsq5gZ1V2mtgme4C"
+uri = "file://certificates/figures/fig_morningstar_craft.png"
+type = "image"
+title = "Morning Star D20 craft exterior"
+
+[[generated]]
+id = "ifmjkcOMUWTmOzBpO5kVu"
+uri = "file://certificates/figures/fig_morningstar_docking.png"
+type = "image"
+title = "Morning Star docking mechanism"
+
 [[outputs]]
 id = "TH6j7YjA_IsBpgJ_BJ6ZX"
 uri = "file://certificates/Tendon_A_Certificate.pdf"

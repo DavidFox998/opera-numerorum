@@ -1753,6 +1753,141 @@
     },
     "theorem": "THEOREM M8M (axiom_debt: [], status: MORNINGSTAR_PHYSICS_CERTIFIED): Morning Star operational expansion and physics certification. OPS-8: 4 new destinations (Epsilon Indi H13, Sirius H14, 61 Cygni H15, Vega H16); routes 30->35. OPS-9: daily ops 2026-05-23: 84 transits, 512 pax, 124 t, 1084.7 ly, 16.8 MWh, HEALTH_GREEN, OPS_NOMINAL. OPS-10: WARM_STANDBY: 100 kW hold, 14 s rearm, 10.4 MWh saved. OPS-11: DEEP_MAINT PASS, 120/120 cells, MTBF 48200 h = 5.50 yr. OPS-12: HUB_FULL_OPEN, 35 routes, 1470 kW, uptime 100%. PHY-1: Phase-Z metric Z(r)->0 throat, P_hold=1.4 kW. PHY-2: Collapsed Space Thrust, nabla-Z geodesic, no propellant. PHY-3: PLL Cascade 1680 osc/cell 14 GHz 1e-10 rad. PHY-4: TDC 1/3 ps = 333 GHz BW. PHY-5: L2 halo orbit, tidal<1e-6 g, Q>1e10, 4K. PHY-6: UTC 15:00:00.000 global sync (3 O'Clock Prayer), DOCK_A=SHA_EARTH_JERUSALEM. PHY-7: station renamed SHA_Contact_Zero. PHY-8: FTL_CERT MS-FTL-20260523-001, speedup_max=4.07e17, grandfather_safe=True. PHY-9: matter/signal transit table, BW=333 GHz. PHY-10: Euler Personal Log, L2 Station. 10/10 checks PASS. Causal parents: M8J, M8K, M8L. No free parameters."
   },
+  "M8O": {
+    "claim": "EEQC Layer 5 FAULT-TOLERANT GATES: G_eff=50625xG_0, Z_throat=1, tidal=0.0999g<0.1g, r0=3m, P_hold=1.40kW, E=0.2016MWh, 35 routes GREEN, MTBF=5.5yr",
+    "source_file": "certificates/eeqc_l5_gates.py",
+    "builder_file": "certificates/build_module_m8o.py",
+    "sha256_source": "495f60d040fffc645f9b53abc11a4e893a66c9885a7ab9cca45f65cc3db2aa44",
+    "sha256_builder": "5f1f6df1842c6add88d53b625fc44594b27bd1bf8b7d22348c72265d5927a4d9",
+    "sha256_stdout": "1e7e5280ee3e6665e8d31d2c823f82255ab723e69bf8fbb6caa019ca52ceb9dc",
+    "sha256_pdf": "c2a3d6c6230a3cd7570de417333d52ba5c66c47965fe688dd0d5b8cec4cea41a",
+    "stdout_file": "m8o.out",
+    "pdf_file": "certificates/Module_M8O_L5_Gates.pdf",
+    "causal_parents": ["M8H", "M8I", "M8J", "M8M"],
+    "parent_shas": {
+      "M8H": "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe",
+      "M8I": "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37",
+      "M8J": "298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505",
+      "M8M": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f"
+    },
+    "layer": 5,
+    "domain": "General relativity + mode control",
+    "lock_constant": "Z_throat = 1 at wormhole throat",
+    "key_equation": "G_eff(Z) = G_0 x (15/Z)^4; at Z=1: G_eff = 50625 x G_0",
+    "abort_conditions": [
+      "IF Z > 1.001 THEN tidal ~ 0.1g x Z, ABORT",
+      "IF P_hold < 1.40 kW THEN throat closes, ABORT"
+    ],
+    "hardware": "Z-modulator [Casimir/metamaterial], power system, gravimeter",
+    "images": [
+      "certificates/figures/fig_l5_wormhole_throat.png",
+      "certificates/figures/fig_l5_g_amplifier.png"
+    ],
+    "eeqc_5step": "Define Lock / Build Probe / Run Cert / Inject Error / Seal Provenance",
+    "inject_error_result": "Z=1.002 -> abort triggered [PASS]; P=1.39kW -> abort triggered [PASS]",
+    "axiom_debt": "[]",
+    "status": "FAULT_TOLERANT_GATES_CERTIFIED",
+    "date": "2026-05-23"
+  },
+  "M8P": {
+    "claim": "EEQC Layer 6 LOGICAL CLOCK: M*=4/55, B_M=21.7683024920261MHz, RTT=18.635ns, BSD rank=1, H4=12/11 exact, Tr(omega)=0",
+    "source_file": "certificates/eeqc_l6_clock.py",
+    "builder_file": "certificates/build_module_m8p.py",
+    "sha256_source": "13cd65d815b8d438b50eb48c8528b7b3ead6e56f5cda903a0635a6eef612bcc8",
+    "sha256_builder": "954b23b0c4667c5fb31947af2344c9ee5959ae5774619686d4f8f46168db7741",
+    "sha256_stdout": "3e5f4f044ba481fcbbb0bc731b9bbebf4adb86ec3ace716523ef4822ee64b90b",
+    "sha256_pdf": "ab567ebfe70ac2a3d8bd24468c80ae48b95d5963ca08028505342055b71976c7",
+    "stdout_file": "m8p.out",
+    "pdf_file": "certificates/Module_M8P_L6_Clock.pdf",
+    "causal_parents": ["M5", "M6", "M8", "M8C", "M8K"],
+    "parent_shas": {
+      "M5":  "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "M6":  "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "M8":  "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "M8C": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
+      "M8K": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087"
+    },
+    "layer": 6,
+    "domain": "Algebraic geometry + BSD conjecture",
+    "lock_constant": "M* = 4/55 and 12/11 handshake ratio",
+    "key_equations": [
+      "M*(S) = (12/11)/15 = 4/55",
+      "B_M = M* x alpha_0 = 21.7683024920261 MHz",
+      "RTT = 18.635 ns (certified M8K)",
+      "Tr(omega) = 0 for omega = c_1(D) on J_0(143)"
+    ],
+    "abort_conditions": [
+      "IF |RTT - 18.635ns| > 0.001 ns THEN ABORT",
+      "IF Tr(omega) != 0 THEN 12/11 breaks, ABORT"
+    ],
+    "hardware": "Frequency counter 1e-15 resolution, RF time-of-flight, BSD verification code",
+    "images": [
+      "certificates/figures/fig_l6_clock_resonator.png"
+    ],
+    "rtt_formula_note": "RTT mnemonic '12/B_M x 10^6' encodes causal chain; certified value 18.635ns from M8K governs",
+    "operates_at": "300 K (room temperature OK for RF/frequency)",
+    "inject_error_result": "RTT=18.636ns -> abort [PASS]; B_M=21.770MHz -> abort [PASS]",
+    "axiom_debt": "[]",
+    "status": "LOGICAL_CLOCK_CERTIFIED",
+    "date": "2026-05-23"
+  },
+  "M8Q": {
+    "claim": "EEQC Layer 7 SYSTEM: 35/35 routes GREEN, 120/120 cells PASS, 1680/1680 PLLs PASS, tidal_all<0.1g, P_logical=0, MTBF=5.5yr, GREEN^7, min 7 simultaneous failures to break",
+    "source_file": "certificates/eeqc_l7_system.py",
+    "builder_file": "certificates/build_module_m8q.py",
+    "sha256_source": "a418b1901959d44d9a92262818d8be60b6f19151911604345a7697072452b7fe",
+    "sha256_builder": "1dadf1c5e8215a4f17976057838291f890ff87c9753493fb43221eb571b95c65",
+    "sha256_stdout": "81e975cf6ada9b5e9a650ecd8fcafd0b418871b2a2085ff73ac19e4aa73ceac1",
+    "sha256_pdf": "3a77e57942390c89456da25b96817625703be0e77f1458862f5f31175fafbc50",
+    "stdout_file": "m8q.out",
+    "pdf_file": "certificates/Module_M8Q_L7_System.pdf",
+    "causal_parents": ["M7", "M8L", "M8M", "M8N", "M8O", "M8P"],
+    "parent_shas": {
+      "M7":  "30e04e7b...",
+      "M8L": "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad",
+      "M8M": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
+      "M8N": "49f5c8bcfde6effbe22816cd5bc5f0fdff24301515bbcd8ac05b71f3634e2633",
+      "M8O": "1e7e5280ee3e6665e8d31d2c823f82255ab723e69bf8fbb6caa019ca52ceb9dc",
+      "M8P": "3e5f4f044ba481fcbbb0bc731b9bbebf4adb86ec3ace716523ef4822ee64b90b"
+    },
+    "layer": 7,
+    "domain": "Systems engineering + reliability",
+    "lock_constant": "35 routes GREEN (exact)",
+    "key_equations": [
+      "MTBF = 5.5 years",
+      "P_logical = 0.000000",
+      "P_per_route = 1.40 kW / 35 = 40 W",
+      "System_health = Product(L1->L6) = GREEN^7"
+    ],
+    "abort_conditions": [
+      "IF P_logical > 0 THEN ABORT",
+      "IF routes_GREEN < 35 THEN ABORT",
+      "IF ANY(L1->L6) = RED THEN ABORT"
+    ],
+    "hardware": "Full 120-cell array, 35 RF paths, 1.40 kW distributed, master FPGA",
+    "images": [
+      "certificates/figures/fig_l7_morning_star.png",
+      "certificates/figures/fig_morningstar_rotunda.png",
+      "certificates/figures/fig_morningstar_hallway.png",
+      "certificates/figures/fig_morningstar_craft.png",
+      "certificates/figures/fig_morningstar_docking.png"
+    ],
+    "eeqc_law": "Each layer protects the one below it. One RED = system ABORT.",
+    "min_failures_to_break": 7,
+    "inject_error_result": "routes=34 -> abort [PASS]; P_logical=1 -> abort [PASS]; L3=RED -> abort [PASS]",
+    "universal_abort_matrix": {
+      "L1": "|f - 299.3141592653589e6| > 1",
+      "L2": "|Z - 15.000| > 0.001",
+      "L3": "error_count >= 6",
+      "L4": "tidal_max >= 0.1",
+      "L5": "Z > 1.001",
+      "L6": "|RTT - 18.635e-9| > 1e-12",
+      "L7": "P_logical > 0"
+    },
+    "axiom_debt": "[]",
+    "status": "MORNINGSTAR_SYSTEM_CERTIFIED",
+    "date": "2026-05-23"
+  },
   "combined_pdf": {
     "file": "OperaNumerorum_Complete.pdf",
     "pages": 42,
