@@ -11,6 +11,26 @@ env = { "CI" = "true" }
 [workflows]
 runButton = "Project"
 
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "lean-proof"
+
+[[workflows.workflow]]
+name = "lean-proof"
+author = "agent"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "STRICT_LEAN_CHECK=1 ./scripts/check-lean-proof.sh"
+
 [agent]
 stack = "PNPM_WORKSPACE"
 expertMode = true

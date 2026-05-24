@@ -89,6 +89,12 @@ $ lake env lean Verify.lean
 
 **Regenerating VERIFY.txt:** run `./lean-proof/regenerate.sh` to rebuild `lean-proof/VERIFY.txt` from a fresh `lake build` + `lake env lean Verify.lean`. The script fails loudly (and leaves VERIFY.txt unchanged) if any of `main_theorem`, `H2_WeilTransfer`, or `M9_WeilTransfer_All` no longer report "does not depend on any axioms", so the dashboard's "axiom debt = []" claim is self-checking. Requires `lake` on PATH.
 
+**Automated drift guard:** `scripts/check-lean-proof.sh` wraps `regenerate.sh` and fails if the Lean axiom-debt check no longer passes (i.e. the proof has drifted). It is wired up two ways so a broken proof can't silently ship:
+- registered as the `lean-proof` validation command/workflow (run via the validation skill / CI-style checks). The validation workflow runs with `STRICT_LEAN_CHECK=1`, so it fails closed if `lake` is missing — the dashboard's "axiom debt = []" claim is never allowed through unverified in CI.
+- invoked from `scripts/post-merge.sh`, so every merge re-verifies the proof. The post-merge invocation runs in non-strict (default) mode: if `lake` isn't installed locally it prints a clearly visible warning to stderr and exits 0 so merges aren't blocked, but the warning still surfaces in the post-merge log.
+
+Set `STRICT_LEAN_CHECK=1` when invoking the script manually to require an actual `lake` run.
+
 **Axiom debt = [] (zero axioms).** All hard rules satisfied:
 - H1_ArakelovPositivity: THEOREM (by decide, M5 certificate)
 - C05_Descent: THEOREM (True.intro, M6 certificate)

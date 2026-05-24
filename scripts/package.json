@@ -9,6 +9,7 @@
     "attach-m8-m9-pdfs": "tsx ./src/attach-m8-m9-pdfs.ts",
     "seed-zero-axiom": "tsx ./src/seed-zero-axiom.ts",
     "seed-cards-v17": "tsx ./src/seed-cards-v17.ts",
+    "check-lean-proof": "bash ./check-lean-proof.sh",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
