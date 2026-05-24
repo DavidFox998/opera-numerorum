@@ -176,6 +176,9 @@ export default function DashboardPage() {
   const [showTokenInput, setShowTokenInput] = useState(false);
   const [isRebuilding, setIsRebuilding] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
+  const [rebuildStartedAt, setRebuildStartedAt] = useState<number | null>(null);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [cancelConfirmElapsedMs, setCancelConfirmElapsedMs] = useState(0);
   const [rebuildLogLines, setRebuildLogLines] = useState<RebuildLogLine[]>([]);
   const logPanelRef = useRef<HTMLPreElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -191,6 +194,14 @@ export default function DashboardPage() {
       abortRef.current?.abort();
     };
   }, []);
+
+  useEffect(() => {
+    if (!showCancelConfirm || rebuildStartedAt == null) return;
+    const id = window.setInterval(() => {
+      setCancelConfirmElapsedMs(Date.now() - rebuildStartedAt);
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [showCancelConfirm, rebuildStartedAt]);
 
   const startRebuild = async () => {
     if (!rebuildToken) {
@@ -208,6 +219,8 @@ export default function DashboardPage() {
     setRebuildOutcome(null);
     setRebuildLogLines([]);
     setIsRebuilding(true);
+    setRebuildStartedAt(Date.now());
+    setShowCancelConfirm(false);
     const controller = new AbortController();
     abortRef.current = controller;
     try {
@@ -246,12 +259,27 @@ export default function DashboardPage() {
     } finally {
       setIsRebuilding(false);
       setIsCancelling(false);
+      setRebuildStartedAt(null);
+      setShowCancelConfirm(false);
       abortRef.current = null;
     }
   };
 
+  const requestCancelRebuild = () => {
+    if (!isRebuilding || !rebuildToken) return;
+    setCancelConfirmElapsedMs(
+      rebuildStartedAt ? Date.now() - rebuildStartedAt : 0,
+    );
+    setShowCancelConfirm(true);
+  };
+
+  const dismissCancelConfirm = () => {
+    setShowCancelConfirm(false);
+  };
+
   const cancelRebuild = async () => {
     if (!isRebuilding || !rebuildToken) return;
+    setShowCancelConfirm(false);
     setIsCancelling(true);
     try {
       const res = await fetch(REBUILD_CANCEL_URL, {
@@ -505,7 +533,8 @@ export default function DashboardPage() {
                   <button
                     type="button"
                     onClick={() => {
-                      void cancelRebuild();
+                      if (isCancelling) return;
+                      requestCancelRebuild();
                     }}
                     disabled={isCancelling || !rebuildToken}
                     className="inline-flex items-center gap-2 px-3 py-1.5 border border-red-500/50 bg-red-500/10 font-mono text-xs uppercase tracking-wider text-red-700 dark:text-red-400 hover:bg-red-500/20 disabled:opacity-60 disabled:cursor-not-allowed"
@@ -562,6 +591,48 @@ export default function DashboardPage() {
                           .map((l) => (l.stream === "stderr" ? `! ${l.line}` : l.line))
                           .join("\n")}
                   </pre>
+                </div>
+              ) : null}
+
+              {showCancelConfirm && isRebuilding ? (
+                <div
+                  role="alertdialog"
+                  aria-label="Confirm cancel rebuild"
+                  className="flex flex-wrap items-center gap-3 border border-red-500/50 bg-red-500/10 p-3"
+                  data-testid="panel-cancel-rebuild-confirm"
+                >
+                  <span
+                    className="font-mono text-xs text-red-700 dark:text-red-300"
+                    data-testid="text-cancel-rebuild-confirm"
+                  >
+                    Are you sure? You'll lose ~
+                    <span data-testid="text-cancel-rebuild-elapsed">
+                      {Math.max(1, Math.round(cancelConfirmElapsedMs / 1000))}s
+                    </span>{" "}
+                    of progress.
+                  </span>
+                  <div className="flex items-center gap-2 ml-auto">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        void cancelRebuild();
+                      }}
+                      disabled={isCancelling}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 border border-red-500/60 bg-red-500/20 font-mono text-xs uppercase tracking-wider text-red-700 dark:text-red-300 hover:bg-red-500/30 disabled:opacity-60 disabled:cursor-not-allowed"
+                      data-testid="button-confirm-cancel-rebuild"
+                    >
+                      <XCircle className="w-3 h-3" />
+                      Yes, cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={dismissCancelConfirm}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 border border-border bg-background font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground"
+                      data-testid="button-dismiss-cancel-rebuild"
+                    >
+                      Keep rebuilding
+                    </button>
+                  </div>
                 </div>
               ) : null}
 
