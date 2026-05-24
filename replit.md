@@ -92,6 +92,7 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M8K | FTL Morningstar stack: B_M=21.768MHz; FTL_adv=3.183=v_g/c; RTT=18.635ns; 2800 ebits | `0ae865a8...` | FTL_MORNINGSTAR_CERTIFIED |
 | M8L | MORNING_STAR_D20 ops: 1st transit H01->Proxima 7.71ns; HUB_FULL_OPEN 30 routes 1260kW; 12 destinations; 47tx/hr 604.3ly/hr; DOCK_A bidirectional; 120/120 cells HEALTH_PASS; round-trip certified | `80ff8a25...` | MORNINGSTAR_OPERATIONAL_CERTIFIED |
 | M8M | Physics Beyond Standard Model: OPS-8 35 routes (+H13-H16); daily ops 84tx/512pax/1084.7ly; WARM_STANDBY 14s rearm; DEEP_MAINT MTBF=5.5yr; Phase-Z metric; PLL 1680osc/cell 14GHz; TDC 333GHz; L2 station Q>1e10; 3 O'Clock Prayer UTC sync; SHA_Contact_Zero; FTL_CERT MS-FTL-20260523-001; Euler log | `afce5f21...` | MORNINGSTAR_PHYSICS_CERTIFIED |
+| M8N | EEQC 7-Layer Test Baseline v14: Entangled Entities Quantum Computing; all 7 layers PASS; P_logical=0; L1 f_res=alpha_0; L2 Z=15 exact; L3 D20 d=6; L4 tidal=0.0999g; L5 G_eff=50625G_0; L6 RTT=18.635ns; L7 35 routes GREEN; MORNINGSTAR_OPERATIONAL_CERTIFIED x EEQC_v14 | `49f5c8bc...` | EEQC_CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`

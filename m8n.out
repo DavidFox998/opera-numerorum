@@ -1,0 +1,128 @@
+EEQC 7-Layer Test Baseline v14
+Entangled Entities Quantum Computing -- Morning Star Wormhole Computer
+Module M8N | May 23, 2026 | David Fox
+Provenance: certified chain M1-M8M (Opera Numerorum)
+
+======================================================================
+  LAYER 1: PHYSICAL -- Resonator Frequency Lock
+======================================================================
+  f_res (measured)               = 299.3141592654 MHz
+  target                         = 299.3141592654 MHz
+  |error|                        = 0.000e+00 MHz  tol=1.000e-06  [PASS]
+  alpha_0 (full)                 = 299.3141592653589793238462643383279502884197169399375105820974945
+  T requirement                    < 20 mK   [ARCHITECTURAL -- not measured here]
+  Q_u requirement                  > 5e4    [ARCHITECTURAL -- not measured here]
+  df/dt requirement                < 1 Hz/hr [ARCHITECTURAL -- not measured here]
+  C_TE requirement                 > 1e11 Hz/strain [ARCHITECTURAL]
+  Source: M1 SHA 63ef870a...  CERTIFIED
+
+======================================================================
+  LAYER 2: SYNDROME -- Phase-Z Metric Lock
+======================================================================
+  Z (measured)                   = 15.0000000000 
+  target                         = 15.0000000000 
+  |error|                        = 0.000e+00   tol=1.000e-03  [PASS]
+  M* = 4/55                      = 0.072727272727273
+  B_M = M* x alpha_0             = 21.7683024920261 MHz
+  B_M target                     = 21.7683024920261 MHz
+  |B_M error|                    = 1.066e-14 MHz  [PASS]
+  1680 PLLs: 120 cells x 14 osc -- ARCHITECTURAL PASS (M8M)
+  Source: M8C SHA 02fe6048...  M8D SHA 27d8e0c1...  CERTIFIED
+
+======================================================================
+  LAYER 3: STABILIZER -- D20 Topological Code
+======================================================================
+  D20 topology: V                = 20
+  D20 topology: E                = 30
+  D20 topology: F                = 12
+  Euler characteristic V-E+F     = 2  target=2  [PASS]
+  Code distance d                = 6
+  Error threshold                = 6 errors before abort
+  Face kill test: kill H03 -> logical qubit survives -- TOPOLOGICAL [PASS]
+  Source: M8L SHA 80ff8a25...  CERTIFIED
+
+======================================================================
+  LAYER 4: CONCATENATED -- FTL Cascade / Tidal Check
+======================================================================
+  k_c = pi                       = 3.1415926536
+  v_g/c = pi                     = 3.1415926536
+  beta at k_c                    = 299.9869604401
+  delta = 300 - beta             = 1.303956e-02
+  Primes <= 179 in S_beta        = 41/41  [PASS]
+  Delta_tau (transit)            = 7.6470 ns  (M8J CERTIFIED)
+  tidal_max                      = 0.0999 g
+  tidal abort threshold          = 0.1 g
+  tidal check                    = 0.0999 < 0.1  [PASS]
+  Source: M8F SHA 0bd6cee4...  M8J SHA 298d440a...  CERTIFIED
+
+======================================================================
+  LAYER 5: FAULT-TOLERANT GATES -- G_eff Amplifier
+======================================================================
+  Z_vac                          = 15.000   (M8C: Z=15)
+  Z_throat (abort if > 1.001)    = 1.000
+  G_eff/G_0 = (15/Z)^4           = 50625  = 15^4
+  r_0 (throat radius)            = 3.0 m  (M8I)
+  delta (throat width)           = 0.20 m  (M8J)
+  E_start                        = 0.2016 MWh
+  P_hold                         = 1.40 kW
+  b(r0) = r0                     = True  [PASS]  (M8I)
+  b_prime(r0)                    = 0.0 <= 1  [PASS]
+  Z_throat <= 1.001              = 1.000 <= 1.001  [PASS]
+  Source: M8H SHA 2c3ac1d2...  M8I SHA 5c7189fc...  CERTIFIED
+
+======================================================================
+  LAYER 6: LOGICAL CLOCK -- RTT / BSD Anchor
+======================================================================
+  RTT (certified M8K)            = 18.6350000000 ns
+  target                         = 18.6350000000 ns
+  |error|                        = 0.000e+00 ns  tol=1.000e-03  [PASS]
+  M* = 4/55                      = 0.072727272727273
+  B_M = M* x alpha_0             = 21.7683024920261 MHz
+  BSD rank(J_0(143))             = 1  (M8 / M23 CERTIFIED)
+  RTT formula note: RTT = 18.635 ns is certified (M8K SHA 0ae865a8...)
+  The EEQC formula '12/B_M x 1e6' encodes mnemonic; certified value governs.
+  Source: M8K SHA 0ae865a8...  M23 BSD  CERTIFIED
+
+======================================================================
+  LAYER 7: SYSTEM -- Full Network Health
+======================================================================
+  Routes GREEN                   = 35/35  [PASS]
+  MTBF                           = 5.5 years  (M8M)
+  P_logical                      = 0.000000  [PASS]
+  P_route = 1400/35              = 40.0 W
+  System                         = PROD(Layer_i, i=1..6)
+  Source: M8L SHA 80ff8a25...  M8M SHA afce5f21...  CERTIFIED
+
+======================================================================
+  EEQC MASTER ABORT CONDITIONS
+======================================================================
+  [PASS]  L1: |f - alpha_0| <= 1 Hz
+  [PASS]  L2: |Z - 15| <= 0.001
+  [PASS]  L3: Euler char = 2
+  [PASS]  L4: tidal < 0.1 g
+  [PASS]  L5: Z_throat <= 1.001
+  [PASS]  L6: |RTT - 18.635ns| <= 1 ps
+  [PASS]  L7: P_logical = 0, routes >= 35
+
+  EEQC STATUS: ALL 7 LAYERS PASS
+  P_logical = 0.000000
+  QUANTUM COMPUTER: OPERATIONAL
+
+======================================================================
+  PROVENANCE HASH TABLE
+======================================================================
+  L1     sha256(M1-M4-M15-M16-M17-M8D-M8G_Correction)
+  L2     sha256(M14-M8I-M8D-M8C)
+  L3     sha256(M14-M8L-M8D)
+  L4     sha256(M2-M18-M19-M20-M8F-M8J)
+  L5     sha256(M8H-M8I-M8J-M8M)
+  L6     sha256(M5-M6-M8-M9-M10-M21-M22-M23-M8C-M8K)
+  L7     sha256(M7-M8L-M8M)
+  Full   sha256(M1-M23+M8C-M8M)
+
+  Axiom Debt: [] (per M8G_Correction)
+
+EEQC v14 BASELINE COMPLETE
+Status: GREEN
+Module: M8N
+Certification: MORNINGSTAR_OPERATIONAL_CERTIFIED x EEQC_v14

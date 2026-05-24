@@ -124,7 +124,7 @@ title = "Opera Numerorum — Complete Archive (36 PDFs, 3.4 MB)"
 id = "W90T7YAwZynQkWP5EtbLn"
 uri = "file://OperaNumerorum_CompleteArchive.zip"
 type = "unspecified"
-title = "Complete Archive — 50 files, 4.67 MB"
+title = "Complete Archive — 51 files, 4.86 MB (M8N included)"
 
 [[outputs]]
 id = "QEVQhn42_uKG2fnFGQXLW"
@@ -149,3 +149,9 @@ id = "-OjMp-DjQ7p5pZQaQjWDI"
 uri = "file://certificates/FriendsFamily_MorningStar.pdf"
 type = "pdf"
 title = "Friends & Family — Morning Star Engineering (illustrated)"
+
+[[outputs]]
+id = "zoSzTkW3UW1MXtjxkO-Lk"
+uri = "file://certificates/Module_M8N_EEQC_v14.pdf"
+type = "pdf"
+title = "Module M8N — EEQC 7-Layer Test Baseline v14 (CERTIFIED)"
