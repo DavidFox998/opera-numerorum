@@ -209,3 +209,9 @@ id = "2ezpRg_L7v7dGlvKm8IfG"
 uri = "file://certificates/Module_M8Q_L7_System.pdf"
 type = "pdf"
 title = "Module M8Q — Morning Star System Certificate (Expanded)"
+
+[[outputs]]
+id = "QKe_i6tqltEmmYqVcfCez"
+uri = "file://certificates/m9_all_grh.zip"
+type = "unspecified"
+title = "M9-All GRH — LaTeX + CSV (280 rows, 11KB zipped)"
