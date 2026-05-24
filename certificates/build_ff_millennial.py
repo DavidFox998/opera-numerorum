@@ -5,13 +5,34 @@ May 23, 2026
 """
 
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
-                                 Table, TableStyle, HRFlowable)
+                                 Table, TableStyle, HRFlowable, Image)
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 import hashlib
+
+FIGS = "certificates/figures"
+_ASPECTS = {
+    "fig_alpha0_bridge.png":    916/1742,
+    "fig_curvature.png":        720/1742,
+    "fig_d20_destinations.png": 1380/1323,
+    "fig_phase_z.png":          698/1421,
+    "fig_wormhole_embedding.png": 783/1194,
+}
+def fig(name, width=5.8*inch):
+    path = f"{FIGS}/{name}"
+    aspect = _ASPECTS.get(name, 0.55)
+    img = Image(path, width=width, height=width*aspect)
+    img.hAlign = "CENTER"
+    return img
+
+def fig_caption(text):
+    cap_sty = ParagraphStyle("CAP", fontName="Helvetica-Oblique",
+                             fontSize=8.5, leading=12, alignment=TA_CENTER,
+                             textColor=colors.HexColor("#555555"), spaceAfter=10)
+    return Paragraph(text, cap_sty)
 
 OUT = "certificates/FriendsFamily_MillennialMath.pdf"
 
@@ -165,6 +186,13 @@ story += [
         body_sty),
     ref_box("Document 12", "Module_1_Certificate.pdf -- alpha_0 computed to 5000 decimal places. "
             "SHA-256: 63ef870a...  Run: python3 certificates/alpha0.py"),
+    sp(8),
+    fig("fig_alpha0_bridge.png", width=6.0*inch),
+    fig_caption(
+        "The alpha_0 bridge. Left: the constant 299 + pi/10 as it appears in the theory of "
+        "exceptional primes -- pure number theory. Right: the same number appearing as the "
+        "resonance frequency of the 120-cell wormhole resonator -- pure physics. "
+        "The two domains know nothing of each other. The number arrived on its own."),
     sp(6),
 ]
 

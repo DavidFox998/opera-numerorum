@@ -5,13 +5,34 @@ May 23, 2026
 """
 
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
-                                 Table, TableStyle, HRFlowable)
+                                 Table, TableStyle, HRFlowable, Image)
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 import hashlib
+
+FIGS = "certificates/figures"
+_ASPECTS = {
+    "fig_alpha0_bridge.png":    916/1742,
+    "fig_curvature.png":        720/1742,
+    "fig_d20_destinations.png": 1380/1323,
+    "fig_phase_z.png":          698/1421,
+    "fig_wormhole_embedding.png": 783/1194,
+}
+def fig(name, width=5.8*inch):
+    path = f"{FIGS}/{name}"
+    aspect = _ASPECTS.get(name, 0.55)
+    img = Image(path, width=width, height=width*aspect)
+    img.hAlign = "CENTER"
+    return img
+
+def fig_caption(text):
+    cap_sty = ParagraphStyle("CAP2", fontName="Helvetica-Oblique",
+                             fontSize=8.5, leading=12, alignment=TA_CENTER,
+                             textColor=colors.HexColor("#555555"), spaceAfter=10)
+    return Paragraph(text, cap_sty)
 
 OUT = "certificates/FriendsFamily_MorningStar.pdf"
 
@@ -138,6 +159,13 @@ story += [
         "David did not force this connection. He followed it. "
         "And the Morning Star Engineering series is what he found when he did.",
         body_sty),
+    sp(6),
+    fig("fig_alpha0_bridge.png", width=6.0*inch),
+    fig_caption(
+        "The alpha_0 bridge. Left: the constant 299 + pi/10 in the theory of exceptional "
+        "primes for pi/10 -- pure number theory (Module 1, certified). "
+        "Right: the resonance frequency of the wormhole resonator -- pure physics (Module M8D, certified). "
+        "The number arrived in the second domain without being placed there."),
     sp(4),
 ]
 
@@ -179,6 +207,22 @@ story += [
         "forward by geometry alone. No fire, no smoke.\n"
         'Only the permission of God written in tensors."  -- L.E.',
         euler_sty),
+    sp(6),
+    fig("fig_phase_z.png", width=6.0*inch),
+    fig_caption(
+        "Phase-Z throat profile. Z(r) is the metric function that describes the shape of "
+        "space at the wormhole entrance. It approaches zero at the throat (r = 3 m) -- "
+        "not a singularity, but a boundary condition. In front of the craft, Z decreases "
+        "(space contracts, pulling the ship forward). Behind it, Z increases (space expands). "
+        "No fuel. No exhaust. The ship falls forward by geometry alone."),
+    sp(6),
+    fig("fig_wormhole_embedding.png", width=5.9*inch),
+    fig_caption(
+        "Wormhole embedding diagram. The classic cross-section: two asymptotically flat sheets "
+        "(Universe A containing Sol and Earth, Universe B containing Proxima and the stars) "
+        "connected at a throat of radius r_0 = 3 m and proper length L = 7.297 m. "
+        "Transit time: 7.71 nanoseconds. Conventional travel: 6,500 years. "
+        "[Computed from certified data: M8I, M8J]"),
     ref_box("Doc 40", "Module_M8I_Wormhole.pdf -- Morris-Thorne conditions, throat geometry"),
     sp(6),
 ]
@@ -242,6 +286,14 @@ tbl = Table(rows, colWidths=[0.55*inch, 1.25*inch, 4.0*inch])
 tbl.setStyle(ts)
 story += [tbl, sp(6)]
 story += [
+    fig("fig_curvature.png", width=6.0*inch),
+    fig_caption(
+        "Left: Gaussian curvature K(r) of the wormhole embedding surface -- negative near "
+        "the throat (exotic geometry required), decaying rapidly with distance. "
+        "Right: tidal acceleration on a 10-metre object passing through. "
+        "Open Question OQ-1 (Module M8I) required this to be under 0.1 g. "
+        "Certified result: 0.0999 g. PASS. [M8J SHA: 298d440a...]"),
+    sp(4),
     ref_box("Doc 44", "00_MorningStar_Summary.pdf -- full causal chain with all values"),
     sp(6),
 ]
@@ -310,6 +362,13 @@ story += [
         "(Parker Solar Probe) would take roughly 6,500 years to reach "
         "Proxima Centauri. The Morning Star transit takes 7.71 nanoseconds.",
         note_sty),
+    sp(6),
+    fig("fig_d20_destinations.png", width=5.5*inch),
+    fig_caption(
+        "The Morning Star D20 hub destination map. Sol (Earth) at centre. "
+        "All 12 certified destinations shown in polar coordinates. "
+        "Distances on a logarithmic scale. Every transit: under 100 nanoseconds. "
+        "[Computed from certified data: M8L MORNINGSTAR_OPERATIONAL_CERTIFIED]"),
     sp(4),
     Paragraph(
         "By Module M8M, the network has expanded to 35 routes, adding "

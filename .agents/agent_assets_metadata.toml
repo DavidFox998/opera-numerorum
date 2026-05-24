@@ -124,7 +124,7 @@ title = "Opera Numerorum — Complete Archive (36 PDFs, 3.4 MB)"
 id = "W90T7YAwZynQkWP5EtbLn"
 uri = "file://OperaNumerorum_CompleteArchive.zip"
 type = "unspecified"
-title = "Opera Numerorum — Complete Archive (50 files, both guides included)"
+title = "Complete Archive — 50 files, 4.67 MB"
 
 [[outputs]]
 id = "QEVQhn42_uKG2fnFGQXLW"
@@ -142,10 +142,10 @@ title = "Opera Numerorum — Archive Map (Reading Order Guide)"
 id = "eW8CVLc25dArJ30WUEgMn"
 uri = "file://certificates/FriendsFamily_MillennialMath.pdf"
 type = "pdf"
-title = "Friends & Family Guide — Millennial Mathematics"
+title = "Friends & Family — Millennial Mathematics (illustrated)"
 
 [[outputs]]
 id = "-OjMp-DjQ7p5pZQaQjWDI"
 uri = "file://certificates/FriendsFamily_MorningStar.pdf"
 type = "pdf"
-title = "Friends & Family Guide — Morning Star Engineering"
+title = "Friends & Family — Morning Star Engineering (illustrated)"
