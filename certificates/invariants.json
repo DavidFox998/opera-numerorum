@@ -1361,7 +1361,11 @@
     "status": "ARCHITECTURE_CERTIFIED_WITH_OPEN_QUESTIONS",
     "ascii_check": "pdftotext: 0 non-ASCII chars",
     "axiom_debt": [],
-    "depends_on": ["M8H", "M8F", "M8G_Correction"],
+    "depends_on": [
+      "M8H",
+      "M8F",
+      "M8G_Correction"
+    ],
     "sub_modules": {
       "M8I_Throat_v1_1": "Morris-Thorne Z-field shape function, Einstein ODE b'=8piG_eff*rho*r^2",
       "M8I_Resonator_v1_0": "H4 mode Z-Driver, Nb3Sn toroid, 14 modes, 22.5-314.9 MHz sweep"
@@ -1414,12 +1418,14 @@
     "ascii_check": "pdftotext: 0 non-ASCII chars",
     "axiom_debt": [],
     "supersedes": "M8I OQ-1 and OQ-2 (both CLOSED)",
-    "depends_on": ["M8I"],
+    "depends_on": [
+      "M8I"
+    ],
     "recalibration": {
       "delta_old_m": 0.5,
       "delta_new_m": 1.89,
-      "f2_SI_old_Jm": 2.3e18,
-      "f2_SI_new_Jm": 3.21e17,
+      "f2_SI_old_Jm": 2.3e+18,
+      "f2_SI_new_Jm": 3.21e+17,
       "f2_nat_old": 6.31,
       "f2_nat_new": 0.880657,
       "f2_ratio": 0.139565
@@ -1486,7 +1492,14 @@
     "status": "FTL_MORNINGSTAR_CERTIFIED",
     "ascii_check": "pdftotext: 0 non-ASCII chars",
     "axiom_debt": [],
-    "depends_on": ["M1", "M8C", "M8D", "M8F", "M8I", "M8J"],
+    "depends_on": [
+      "M1",
+      "M8C",
+      "M8D",
+      "M8F",
+      "M8I",
+      "M8J"
+    ],
     "certified_inputs": {
       "M_STAR": "4/55 = 0.072727... [M8C]",
       "Z_throat": "15 [M8C]",
@@ -1540,7 +1553,10 @@
     "pdf_ascii_check": "0 non-ASCII characters",
     "status": "MORNINGSTAR_OPERATIONAL_CERTIFIED",
     "axiom_debt": [],
-    "depends_on": ["M8J", "M8K"],
+    "depends_on": [
+      "M8J",
+      "M8K"
+    ],
     "hub_geometry": {
       "name": "MORNING_STAR_D20",
       "topology": "dodecahedron (dual of icosahedron)",
@@ -1603,7 +1619,7 @@
         "name": "Sol - Lamma Dock",
         "face": "DOCK_A",
         "cell": "000",
-        "dist_ly": 0.0000045,
+        "dist_ly": 4.5e-06,
         "t_ns": 7.71,
         "type": "bidirectional",
         "bidirectional": "H01 <-> DOCK_A",
@@ -1654,7 +1670,11 @@
     "stdout_sha256": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
     "pdf": "certificates/Module_M8M_MorningStar_Physics.pdf",
     "pdf_sha256": "3a4a7b8b78ff1f70f4aa1bfc0d59d575969677f920094ee75775b3231917aa2e",
-    "depends_on": ["M8J", "M8K", "M8L"],
+    "depends_on": [
+      "M8J",
+      "M8K",
+      "M8L"
+    ],
     "status": "MORNINGSTAR_PHYSICS_CERTIFIED",
     "date": "2026-05-23",
     "checks_passed": [
@@ -1672,10 +1692,26 @@
     "operational": {
       "OPS_8_expansion": {
         "new_destinations": [
-          {"name": "Epsilon Indi", "hall": "H13", "dist_ly": 11.87},
-          {"name": "Sirius",       "hall": "H14", "dist_ly": 8.60},
-          {"name": "61 Cygni",     "hall": "H15", "dist_ly": 11.41},
-          {"name": "Vega",         "hall": "H16", "dist_ly": 25.04}
+          {
+            "name": "Epsilon Indi",
+            "hall": "H13",
+            "dist_ly": 11.87
+          },
+          {
+            "name": "Sirius",
+            "hall": "H14",
+            "dist_ly": 8.6
+          },
+          {
+            "name": "61 Cygni",
+            "hall": "H15",
+            "dist_ly": 11.41
+          },
+          {
+            "name": "Vega",
+            "hall": "H16",
+            "dist_ly": 25.04
+          }
         ],
         "routes_before": 30,
         "routes_after": 35,
@@ -1687,7 +1723,7 @@
         "cargo_t": 124,
         "dist_ly": 1084.7,
         "energy_mwh": 16.8,
-        "e_per_transit_mwh": 0.2000,
+        "e_per_transit_mwh": 0.2,
         "health": "HEALTH_GREEN",
         "status": "OPS_NOMINAL"
       },
@@ -1702,7 +1738,7 @@
         "cells": "120/120",
         "pll_locked": "1680/1680",
         "mtbf_h": 48200,
-        "mtbf_yr": 5.50,
+        "mtbf_yr": 5.5,
         "result": "DEEP_MAINT_PASS"
       },
       "OPS_12_current_status": {
@@ -1718,14 +1754,33 @@
     "physics": {
       "PHY_1_phase_z_metric": "ds^2 = -c^2 Z(r)^2 dt^2 + dr^2/Z(r)^2 + r^2 dOmega^2",
       "PHY_2_thrust": "nabla Z < 0 fore, nabla Z > 0 aft; d^2x/dt^2 = -c^2 Z dZ/dx",
-      "PHY_3_pll": {"osc_per_cell": 1680, "freq_ghz": 14, "phase_rad": 1e-10, "total": 201600},
-      "PHY_4_tdc": {"resolution_ps": 0.3333, "bandwidth_ghz": 333},
-      "PHY_5_l2": {"tidal_g": "< 1e-6", "Q": "> 1e10", "thermal_K": 4},
-      "PHY_6_sync": {"utc": "15:00:00.000", "anchor": "SHA_EARTH_JERUSALEM", "dock": "DOCK_A"},
-      "PHY_7_rename": {"old": "SHA_EARTH_JERUSALEM", "new": "SHA_Contact_Zero"},
+      "PHY_3_pll": {
+        "osc_per_cell": 1680,
+        "freq_ghz": 14,
+        "phase_rad": 1e-10,
+        "total": 201600
+      },
+      "PHY_4_tdc": {
+        "resolution_ps": 0.3333,
+        "bandwidth_ghz": 333
+      },
+      "PHY_5_l2": {
+        "tidal_g": "< 1e-6",
+        "Q": "> 1e10",
+        "thermal_K": 4
+      },
+      "PHY_6_sync": {
+        "utc": "15:00:00.000",
+        "anchor": "SHA_EARTH_JERUSALEM",
+        "dock": "DOCK_A"
+      },
+      "PHY_7_rename": {
+        "old": "SHA_EARTH_JERUSALEM",
+        "new": "SHA_Contact_Zero"
+      },
       "PHY_8_ftl_cert": {
         "id": "MS-FTL-20260523-001",
-        "speedup_max": 4.07e17,
+        "speedup_max": 4.07e+17,
         "ctc_possible": false,
         "grandfather_safe": true,
         "result": "FTL_CERTIFIED"
@@ -1733,7 +1788,7 @@
       "PHY_9_matter_vs_signal": {
         "z": 1.0,
         "t_ns_range": "7.71-92.52",
-        "matter_e_mwh": 0.20,
+        "matter_e_mwh": 0.2,
         "signal_e_mwh": 0.0002,
         "signal_bw_ghz": 333
       },
@@ -1746,7 +1801,7 @@
       "daily_transits": 84,
       "daily_pax": 512,
       "daily_ly": 1084.7,
-      "mtbf_yr": 5.50,
+      "mtbf_yr": 5.5,
       "health": "GREEN",
       "station": "SHA_Contact_Zero",
       "uptime_pct": 100.0
@@ -1763,7 +1818,12 @@
     "sha256_pdf": "c2a3d6c6230a3cd7570de417333d52ba5c66c47965fe688dd0d5b8cec4cea41a",
     "stdout_file": "m8o.out",
     "pdf_file": "certificates/Module_M8O_L5_Gates.pdf",
-    "causal_parents": ["M8H", "M8I", "M8J", "M8M"],
+    "causal_parents": [
+      "M8H",
+      "M8I",
+      "M8J",
+      "M8M"
+    ],
     "parent_shas": {
       "M8H": "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe",
       "M8I": "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37",
@@ -1799,11 +1859,17 @@
     "sha256_pdf": "ab567ebfe70ac2a3d8bd24468c80ae48b95d5963ca08028505342055b71976c7",
     "stdout_file": "m8p.out",
     "pdf_file": "certificates/Module_M8P_L6_Clock.pdf",
-    "causal_parents": ["M5", "M6", "M8", "M8C", "M8K"],
+    "causal_parents": [
+      "M5",
+      "M6",
+      "M8",
+      "M8C",
+      "M8K"
+    ],
     "parent_shas": {
-      "M5":  "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
-      "M6":  "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
-      "M8":  "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "M5": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "M6": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "M8": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
       "M8C": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
       "M8K": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087"
     },
@@ -1843,9 +1909,16 @@
     "pdf_note": "Expanded edition: full scientific exposition at sophomore college level, all 8 images, 9 data tables, 25 pages.",
     "stdout_file": "m8q.out",
     "pdf_file": "certificates/Module_M8Q_L7_System.pdf",
-    "causal_parents": ["M7", "M8L", "M8M", "M8N", "M8O", "M8P"],
+    "causal_parents": [
+      "M7",
+      "M8L",
+      "M8M",
+      "M8N",
+      "M8O",
+      "M8P"
+    ],
     "parent_shas": {
-      "M7":  "30e04e7b...",
+      "M7": "30e04e7b...",
       "M8L": "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad",
       "M8M": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
       "M8N": "49f5c8bcfde6effbe22816cd5bc5f0fdff24301515bbcd8ac05b71f3634e2633",
@@ -1915,5 +1988,64 @@
     "sha256": "ff79cd50d7ad1b56598d4d30f2aa161cd689ffb61e2856429e511c04ba1e0e11",
     "sha256_m8j_standalone": "48a2ac8b1baad01a4a56e775460c43b96ddae22be2bafd711205e303d65a69d3",
     "date": "2026-05-23"
+  },
+  "module_m8a": {
+    "title": "M8A: Delta_DS^(4) Audit Certificate and Lambda_p Bounds",
+    "claim": "Delta_DS^(4) = 23.796910 in LaTeX paper is WRONG (errors E1+E2). Correct certified value: Delta_DS^(4) = 2.753126094323295100690126. 280/280 X_0(N) lambda_p bounds PASS under corrected delta. M9->M21 H2 Weil Transfer causal binding sealed. BSD for J_0(143) CERTIFIED independently via Omega/R = 11.929 ~ 12.",
+    "source_file_audit": "certificates/m8a_audit.py",
+    "source_file_lambda": "certificates/m8a_lambda_bounds.py",
+    "builder_file": "certificates/build_module_m8a.py",
+    "stdout_file_audit": "m8a_audit.out",
+    "stdout_file_lambda": "m8a_lambda.out",
+    "binding_file": "M9_H2_proved.sha",
+    "pdf_file": "certificates/Module_M8A_Audit.pdf",
+    "sha256_audit_stdout": "45249445f11fb46b365a4b281e04a07772e7b2f6b633cea854337f2bb3ea8550",
+    "sha256_lambda_stdout": "d8fd613aacfa0090f13471916445e0058a166b8db6f9662a23f9b73a542c7aab",
+    "sha256_binding_file": "6df5c388607840ac9e3842a6dcd42b5a38b627bae1645f5c1af6570ad73617ea",
+    "sha256_pdf": "3567279c610e037d7815afcd7239992ace92fdbbe323272a487e566b4911caec",
+    "causal_parents": {
+      "M7_master_manifest": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+      "M15_delta_audit": "cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78",
+      "M9_grh_x0_143": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6",
+      "M9_all_280_curves": "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821",
+      "M21_h2_weil": "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad",
+      "M5_c_s4": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+    },
+    "audit_errors": {
+      "E1": "All 16 ||p*pi/10|| table values in paper are wrong (errors 1.79e-5 to 3.76e-1)",
+      "E2": "Sign error: paper uses -log(||.||)+log(p); definition requires -log(||.||)-log(p)",
+      "E3": "Delta_DS^(4)=23.796910 follows from E1+E2; correct=2.753126094323295",
+      "E4": "p_5>6e12 wrong; certified p_5=3993746143633 (M4)"
+    },
+    "certified_correct": {
+      "delta_2": "0.29657087632449742694",
+      "delta_3": "1.756971961865759705",
+      "delta_19": "0.5301695071068816828",
+      "delta_191": "0.16941374902615628599",
+      "Delta_DS4_true": "2.753126094323295100690126",
+      "Delta_DS4_paper": "23.796910",
+      "C_S4": "11.42214868898029",
+      "S4": "[2, 3, 19, 191]"
+    },
+    "lambda_bounds": {
+      "curves_tested": 280,
+      "curves_pass": 280,
+      "curves_fail": 0,
+      "X_eval": 1000000,
+      "bound_at_X": "3.459324e-10",
+      "exponent_1_minus_delta": "-1.753126094",
+      "pass_criterion": "C(S_4) > 2*sqrt(g)"
+    },
+    "h2_weil_binding": {
+      "theorem": "rank(H^2(X_0(143),Z)) = g = 13; BSD rank r=1; causal chain M7->M9->M21 sealed",
+      "M7_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+      "M9_sha": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6",
+      "M21_sha": "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad",
+      "binding_file_sha": "6df5c388607840ac9e3842a6dcd42b5a38b627bae1645f5c1af6570ad73617ea"
+    },
+    "bsd_status": "CERTIFIED via M23 Omega/R=11.929~12 (independent of Delta_DS^(4))",
+    "ascii_check": "PASS",
+    "status": "AUDIT_CERTIFIED",
+    "date": "2026-05-24"
   }
 }

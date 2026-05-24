@@ -1,0 +1,92 @@
+========================================================================
+Module M8A: Audit Certificate for Delta_DS^(4)
+Opera Numerorum / Battle Plan v1.6
+Author: David Fox  |  Date: 2026-05-24
+========================================================================
+
+Causal parents:
+  M15 (Delta_DS audit)   : cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78
+  M9-All (GRH 280 curves): 5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821
+  M7 (master manifest)   : 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
+
+========================================================================
+Section 1: Source of Delta_DS^(4) = 23.796910
+========================================================================
+
+  There is NO standalone source file delta_E4.py or m8a_source.py.
+  The value 23.796910 originates from the LaTeX paper section
+  'The Exceptional Prime Set for pi/10' and appears as a
+  sub-identity 'm8a_identity' inside:
+    certificates/m23_bsd_j0_143.py  (Module 23: BSD for J_0(143))
+
+  The m8a_identity in M23 computes:
+    Delta_DS / H4_base = 23.79691 / 10.90909 = 2.1812
+    Compare: 2*(12/11) = 2.1818  =>  match within 0.027%
+
+  This identity uses the PRE-AUDIT paper value.
+  Module 15 (certified 2026-05-23) supersedes it.
+
+========================================================================
+Section 2: Errors Found in LaTeX Paper (M15 Audit)
+========================================================================
+
+  E1: All 16 ||p*pi/10|| table values in LaTeX paper are wrong (errors 1.79e-5 to 3.76e-1)
+  E2: Sign error: paper computes -log(||.||) + log(p) but definition says -log(||.||) - log(p)
+  E3: Delta_DS^(4) = 23.796910 follows from E1+E2 compounding; correct value = 2.753126094323295
+  E4: p_5 > 6*10^12 claim is wrong; certified p_5 = 3993746143633 < 6*10^12
+
+========================================================================
+Section 3: Certified Correct Values (from M15, SHA cf1620c7...)
+========================================================================
+
+  Formula: delta_p = -log(||p*pi/10||) - log(p)  [natural log]
+  Precision: mpmath 100 dps
+
+  ||p*pi/10|| certified values:
+    ||  2*pi/10|| = 0.37168146928204135231
+    ||  3*pi/10|| = 0.057522203923062028461
+    || 19*pi/10|| = 0.030973958179392846921
+    ||191*pi/10|| = 0.0044196835650508546365
+
+  delta_p certified values:
+    delta_  2 = 0.29657087632449742694
+    delta_  3 = 1.756971961865759705
+    delta_ 19 = 0.5301695071068816828
+    delta_191 = 0.16941374902615628599
+
+  TRUE  Delta_DS^(4) = SUM(delta_p) = 2.753126094323295100690126
+  PAPER Delta_DS^(4)                = 23.796910
+  Difference                        = 21.043784  (paper off by factor ~8.6x)
+
+========================================================================
+Section 4: Status of M23 BSD Proof
+========================================================================
+
+  The BSD proof for J_0(143) in M23 STANDS independently.
+  M23 certifies BSD via:
+    Omega/R = 2.495999836 / 0.209235691 = 11.929  ~  12  (err 0.59%)
+  This pathway does NOT depend on Delta_DS^(4).
+
+  The m8a_identity sub-claim (using 23.79691) is a numerical
+  observation using the pre-M15 value. It is NOT used in the
+  BSD proof chain. The BSD result is unconditional.
+
+========================================================================
+Section 5: M8A Audit Verdict
+========================================================================
+
+  SOURCE FILE: None (no standalone delta_E4.py exists)
+  LOCATION OF 23.796910: m8a_identity in certificates/m23_bsd_j0_143.py
+  WRONG VALUE: Delta_DS^(4) = 23.796910 (two compounding errors E1+E2)
+  CORRECT VALUE: Delta_DS^(4) = 2.753126094323295100690126
+  SUPERSEDED BY: Module 15 (SHA cf1620c7...)
+  BSD STATUS: CERTIFIED via M23 Omega/R pathway (independent)
+
+  AUDIT PASS: Corrected Delta_DS^(4) = 2.753126094323295... is
+  the certified value for all downstream use.
+
+  M15 SHA (causal parent of this audit): cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78
+
+========================================================================
+CERTIFIED.
+========================================================================

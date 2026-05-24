@@ -221,3 +221,9 @@ id = "VfA55UICGF_PK3UGzJYEf"
 uri = "file://certificates/opera_numerorum_map.json"
 type = "unspecified"
 title = "Opera Numerorum — Full Module Map (37 modules, 34 KB)"
+
+[[outputs]]
+id = "SgGSvHPXssV1hflA9nOoh"
+uri = "file://certificates/Module_M8A_Audit.pdf"
+type = "pdf"
+title = "Module M8A Audit Certificate — Delta_DS^(4) Correction + 280-Curve Lambda Bounds"
