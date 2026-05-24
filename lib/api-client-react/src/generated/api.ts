@@ -24,6 +24,9 @@ import type {
   CertificateSummary,
   CertificateUpdate,
   HealthStatus,
+  LeanLockoutClearRequest,
+  LeanLockoutClearResult,
+  LeanLockoutsResponse,
   LeanRebuildCancelResult,
   LeanRebuildHistory,
   LeanRebuildResult,
@@ -813,6 +816,166 @@ export const useRebuildLeanVerificationStream = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getRebuildLeanVerificationStreamMutationOptions(options));
+    }
+
+export const getGetLeanLockoutsUrl = () => {
+
+
+
+
+  return `/api/lean/lockouts`
+}
+
+/**
+ * Returns the per-IP brute-force-protection state for the rebuild
+endpoints: IPs currently locked out (with when the lockout expires)
+and IPs that have recent failed attempts but aren't yet locked.
+
+Requires `Authorization: Bearer <LEAN_REBUILD_TOKEN>`. The per-IP
+lockout check is intentionally skipped on this endpoint so an
+operator on a shared/locked IP can still investigate.
+
+ * @summary List active rebuild-token brute-force lockouts
+ */
+export const getLeanLockouts = async ( options?: RequestInit): Promise<LeanLockoutsResponse> => {
+
+  return customFetch<LeanLockoutsResponse>(getGetLeanLockoutsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLeanLockoutsQueryKey = () => {
+    return [
+    `/api/lean/lockouts`
+    ] as const;
+    }
+
+
+export const getGetLeanLockoutsQueryOptions = <TData = Awaited<ReturnType<typeof getLeanLockouts>>, TError = ErrorType<void>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeanLockouts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLeanLockoutsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLeanLockouts>>> = ({ signal }) => getLeanLockouts({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLeanLockouts>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLeanLockoutsQueryResult = NonNullable<Awaited<ReturnType<typeof getLeanLockouts>>>
+export type GetLeanLockoutsQueryError = ErrorType<void>
+
+
+/**
+ * @summary List active rebuild-token brute-force lockouts
+ */
+
+export function useGetLeanLockouts<TData = Awaited<ReturnType<typeof getLeanLockouts>>, TError = ErrorType<void>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeanLockouts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLeanLockoutsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getClearLeanLockoutUrl = () => {
+
+
+
+
+  return `/api/lean/lockouts/clear`
+}
+
+/**
+ * Removes the failure record for a single IP, immediately unblocking
+further rebuild-token attempts from it. Requires the same
+`Authorization: Bearer <LEAN_REBUILD_TOKEN>` header.
+
+ * @summary Clear a per-IP rebuild-token lockout
+ */
+export const clearLeanLockout = async (leanLockoutClearRequest: LeanLockoutClearRequest, options?: RequestInit): Promise<LeanLockoutClearResult> => {
+
+  return customFetch<LeanLockoutClearResult>(getClearLeanLockoutUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      leanLockoutClearRequest,)
+  }
+);}
+
+
+
+
+export const getClearLeanLockoutMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof clearLeanLockout>>, TError,{data: BodyType<LeanLockoutClearRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof clearLeanLockout>>, TError,{data: BodyType<LeanLockoutClearRequest>}, TContext> => {
+
+const mutationKey = ['clearLeanLockout'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof clearLeanLockout>>, {data: BodyType<LeanLockoutClearRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  clearLeanLockout(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ClearLeanLockoutMutationResult = NonNullable<Awaited<ReturnType<typeof clearLeanLockout>>>
+    export type ClearLeanLockoutMutationBody = BodyType<LeanLockoutClearRequest>
+    export type ClearLeanLockoutMutationError = ErrorType<void>
+
+    /**
+ * @summary Clear a per-IP rebuild-token lockout
+ */
+export const useClearLeanLockout = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof clearLeanLockout>>, TError,{data: BodyType<LeanLockoutClearRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof clearLeanLockout>>,
+        TError,
+        {data: BodyType<LeanLockoutClearRequest>},
+        TContext
+      > => {
+      return useMutation(getClearLeanLockoutMutationOptions(options));
     }
 
 export const getRequestUploadUrlUrl = () => {

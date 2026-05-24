@@ -202,6 +202,60 @@ paths:
               schema:
                 type: string
 
+  /lean/lockouts:
+    get:
+      operationId: getLeanLockouts
+      tags: [lean]
+      summary: List active rebuild-token brute-force lockouts
+      description: |
+        Returns the per-IP brute-force-protection state for the rebuild
+        endpoints: IPs currently locked out (with when the lockout expires)
+        and IPs that have recent failed attempts but aren't yet locked.
+
+        Requires `Authorization: Bearer <LEAN_REBUILD_TOKEN>`. The per-IP
+        lockout check is intentionally skipped on this endpoint so an
+        operator on a shared/locked IP can still investigate.
+      responses:
+        "200":
+          description: Lockout snapshot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeanLockoutsResponse"
+        "401":
+          description: Missing or invalid referee rebuild token
+        "503":
+          description: Rebuilds are disabled (LEAN_REBUILD_TOKEN not configured)
+
+  /lean/lockouts/clear:
+    post:
+      operationId: clearLeanLockout
+      tags: [lean]
+      summary: Clear a per-IP rebuild-token lockout
+      description: |
+        Removes the failure record for a single IP, immediately unblocking
+        further rebuild-token attempts from it. Requires the same
+        `Authorization: Bearer <LEAN_REBUILD_TOKEN>` header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeanLockoutClearRequest"
+      responses:
+        "200":
+          description: Lockout cleared (or no record found)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeanLockoutClearResult"
+        "400":
+          description: Missing or invalid `ip`
+        "401":
+          description: Missing or invalid referee rebuild token
+        "503":
+          description: Rebuilds are disabled (LEAN_REBUILD_TOKEN not configured)
+
   /storage/uploads/request-url:
     post:
       operationId: requestUploadUrl
@@ -425,6 +479,88 @@ components:
         ok:
           type: boolean
           description: True when a cancellation signal was successfully sent.
+        message:
+          type: string
+        error:
+          type: string
+
+    LeanLockout:
+      type: object
+      required: [ip, failedAttempts, lockedSince, lockedUntil, retryAfterMs]
+      properties:
+        ip:
+          type: string
+          description: The locked-out client IP
+        failedAttempts:
+          type: integer
+          description: Number of bad-token attempts that triggered the lockout
+        lockedSince:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp of when the lockout began
+        lockedUntil:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp of when the lockout will expire
+        retryAfterMs:
+          type: integer
+          description: Milliseconds remaining until the lockout expires
+
+    LeanFailingIp:
+      type: object
+      required: [ip, failedAttempts, firstFailureAt, windowExpiresAt]
+      properties:
+        ip:
+          type: string
+          description: A client IP with recent failed attempts but not yet locked
+        failedAttempts:
+          type: integer
+        firstFailureAt:
+          type: string
+          format: date-time
+        windowExpiresAt:
+          type: string
+          format: date-time
+          description: When the failure-counting window expires (record drops off)
+
+    LeanLockoutsResponse:
+      type: object
+      required: [activeLockouts, failingIps, maxFailedAttempts, lockoutMs, failureWindowMs]
+      properties:
+        activeLockouts:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeanLockout"
+        failingIps:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeanFailingIp"
+        maxFailedAttempts:
+          type: integer
+          description: How many failed attempts trigger a lockout
+        lockoutMs:
+          type: integer
+          description: Lockout duration in milliseconds
+        failureWindowMs:
+          type: integer
+          description: Sliding window in milliseconds over which failures are counted
+
+    LeanLockoutClearRequest:
+      type: object
+      required: [ip]
+      properties:
+        ip:
+          type: string
+
+    LeanLockoutClearResult:
+      type: object
+      required: [ok]
+      properties:
+        ok:
+          type: boolean
+        cleared:
+          type: boolean
+          description: True if an active failure/lockout record was actually removed
         message:
           type: string
         error:

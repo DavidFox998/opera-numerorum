@@ -13,6 +13,17 @@ Volume I: **Theorema Aureum 143 — Certificate Ledger.** A machine-proof certif
 - Required env: `DEFAULT_OBJECT_STORAGE_BUCKET_ID`, `PUBLIC_OBJECT_SEARCH_PATHS`, `PRIVATE_OBJECT_DIR` — object storage (auto-set by Replit)
 - Optional env: `LEAN_REBUILD_TOKEN` — shared secret enabling the dashboard's "Rebuild Lean log" button. When unset, `POST /api/lean/verify/rebuild` returns 503 (rebuilds disabled). When set, callers must send `Authorization: Bearer <token>`; only one rebuild runs at a time (others get 409). Referees paste the token into the dashboard's "Set token" panel (stored in their browser's localStorage only).
 
+### Brute-force lockout monitoring
+
+The rebuild endpoints have a per-IP brute-force limiter: 5 bad-token attempts within 15 minutes lock that IP out for 15 minutes (`failuresByIp` in `artifacts/api-server/src/routes/lean.ts`). The dashboard surfaces this so a real attack is visible to operators without having to grep server logs:
+
+- `GET /api/lean/lockouts` — returns active lockouts (IP, failed-attempt count, when the lockout expires) and any IPs with recent failed attempts that haven't crossed the threshold yet. Requires the rebuild token, with the **same** per-IP brute-force enforcement as the rebuild endpoints (bad-token attempts count toward the lockout; a locked IP gets 429 here too). Operators on a shared/locked IP must wait out the 15-minute lockout like everyone else — the limiter is deliberately not weakened for admin convenience.
+- `POST /api/lean/lockouts/clear` — body `{ "ip": "..." }`, requires the rebuild token (same enforcement), removes that IP's failure record. Used by the dashboard's per-row "Clear" button.
+
+Dashboard surface: the **Lean 4 Verification** card now contains a "Brute-force lockouts" panel that appears once a referee token is set (`panel-lean-lockouts`). It polls `/api/lean/lockouts` every 15s and lists active lockouts in red and pre-lockout failing IPs in amber, each with a Clear/Reset button. If no token is set, the panel is hidden and operators must use the `Set token` action first. The server still emits a `warn` log line on lockout and on manual clear (`"Referee lockout cleared by operator"`), so the audit trail in server logs is unchanged.
+
+This is intentionally an in-memory surface only — like the rebuild history, it resets on server restart. There is no email/webhook out of the box; if you need paging, scrape `/api/lean/lockouts` from your alerting tool of choice using the rebuild token.
+
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9

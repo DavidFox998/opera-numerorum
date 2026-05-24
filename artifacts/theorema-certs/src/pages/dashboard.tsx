@@ -3,8 +3,11 @@ import {
   useListCertificates,
   useGetLeanVerification,
   useGetLeanRebuildHistory,
+  useGetLeanLockouts,
+  useClearLeanLockout,
   getGetLeanVerificationQueryKey,
   getGetLeanRebuildHistoryQueryKey,
+  getGetLeanLockoutsQueryKey,
 } from "@workspace/api-client-react";
 import { ShaChip } from "@/components/sha-chip";
 import { StatusBadge } from "@/components/status-badge";
@@ -20,6 +23,8 @@ import {
   Clock,
   RefreshCw,
   XCircle,
+  ShieldAlert,
+  Ban,
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
@@ -171,8 +176,30 @@ export default function DashboardPage() {
   const { data: leanVerify } = useGetLeanVerification();
   const { data: rebuildHistory } = useGetLeanRebuildHistory();
   const queryClient = useQueryClient();
-  const [rebuildOutcome, setRebuildOutcome] = useState<RebuildOutcome | null>(null);
   const [rebuildToken, setRebuildToken] = useState<string>("");
+  const lockoutsAuthHeader = rebuildToken
+    ? { Authorization: `Bearer ${rebuildToken}` }
+    : undefined;
+  const {
+    data: lockoutsData,
+    error: lockoutsError,
+    refetch: refetchLockouts,
+  } = useGetLeanLockouts({
+    query: {
+      queryKey: getGetLeanLockoutsQueryKey(),
+      enabled: Boolean(rebuildToken),
+      refetchInterval: rebuildToken ? 15000 : false,
+      refetchIntervalInBackground: false,
+      retry: false,
+    },
+    request: lockoutsAuthHeader ? { headers: lockoutsAuthHeader } : undefined,
+  });
+  const clearLockoutMutation = useClearLeanLockout({
+    request: lockoutsAuthHeader ? { headers: lockoutsAuthHeader } : undefined,
+  });
+  const [lockoutClearError, setLockoutClearError] = useState<string | null>(null);
+  const [pendingClearIp, setPendingClearIp] = useState<string | null>(null);
+  const [rebuildOutcome, setRebuildOutcome] = useState<RebuildOutcome | null>(null);
   const [showTokenInput, setShowTokenInput] = useState(false);
   const [isRebuilding, setIsRebuilding] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
@@ -329,6 +356,26 @@ export default function DashboardPage() {
       // ignore (private mode, etc.)
     }
   }, []);
+
+  const handleClearLockout = async (ip: string) => {
+    if (!rebuildToken) return;
+    setLockoutClearError(null);
+    setPendingClearIp(ip);
+    try {
+      await clearLockoutMutation.mutateAsync({ data: { ip } });
+      await queryClient.invalidateQueries({ queryKey: getGetLeanLockoutsQueryKey() });
+      await refetchLockouts();
+    } catch (err) {
+      setLockoutClearError(
+        err instanceof Error ? err.message : `Failed to clear lockout for ${ip}.`,
+      );
+    } finally {
+      setPendingClearIp(null);
+    }
+  };
+
+  const lockoutsErrorMessage =
+    lockoutsError instanceof Error ? lockoutsError.message : null;
 
   const isLoading = isSummaryLoading || isCertsLoading;
 
@@ -750,6 +797,155 @@ export default function DashboardPage() {
                       </li>
                     ))}
                   </ul>
+                </div>
+              ) : null}
+
+              {rebuildToken ? (
+                <div
+                  className="border border-border bg-muted/20"
+                  data-testid="panel-lean-lockouts"
+                >
+                  <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-muted/30">
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                      <ShieldAlert className="w-3 h-3" />
+                      Brute-force lockouts
+                    </span>
+                    <span
+                      className="font-mono text-[11px] text-muted-foreground"
+                      data-testid="text-lean-lockouts-count"
+                    >
+                      {lockoutsData
+                        ? `${lockoutsData.activeLockouts.length} locked · ${lockoutsData.failingIps.length} failing`
+                        : "loading…"}
+                    </span>
+                  </div>
+                  {lockoutsErrorMessage ? (
+                    <p
+                      className="px-3 py-2 font-mono text-[11px] text-red-700 dark:text-red-400"
+                      data-testid="text-lean-lockouts-error"
+                    >
+                      {lockoutsErrorMessage}
+                    </p>
+                  ) : lockoutsData &&
+                    lockoutsData.activeLockouts.length === 0 &&
+                    lockoutsData.failingIps.length === 0 ? (
+                    <p
+                      className="px-3 py-2 font-mono text-[11px] text-muted-foreground"
+                      data-testid="text-lean-lockouts-empty"
+                    >
+                      No active lockouts or recent bad-token attempts. Threshold:
+                      {" "}
+                      {lockoutsData.maxFailedAttempts} failed attempts within
+                      {" "}
+                      {Math.round(lockoutsData.failureWindowMs / 60000)}m triggers a
+                      {" "}
+                      {Math.round(lockoutsData.lockoutMs / 60000)}m lockout.
+                    </p>
+                  ) : null}
+
+                  {lockoutsData && lockoutsData.activeLockouts.length > 0 ? (
+                    <ul className="divide-y divide-border">
+                      {lockoutsData.activeLockouts.map((lo, i) => (
+                        <li
+                          key={`active-${lo.ip}-${i}`}
+                          className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 px-3 py-2 font-mono text-[11px]"
+                          data-testid={`row-lean-lockout-active-${i}`}
+                        >
+                          <span
+                            className="inline-flex items-center gap-1 font-bold text-red-700 dark:text-red-400 w-20"
+                          >
+                            <Ban className="w-3 h-3" /> LOCKED
+                          </span>
+                          <span
+                            className="text-foreground md:w-40 truncate"
+                            data-testid={`text-lean-lockout-ip-${i}`}
+                            title={lo.ip}
+                          >
+                            {lo.ip}
+                          </span>
+                          <span className="text-muted-foreground md:w-32">
+                            {lo.failedAttempts} attempts
+                          </span>
+                          <span
+                            className="text-muted-foreground md:w-48"
+                            title={lo.lockedUntil}
+                          >
+                            expires {formatTimestamp(lo.lockedUntil)}
+                          </span>
+                          <span
+                            className="text-muted-foreground md:w-24"
+                            data-testid={`text-lean-lockout-remaining-${i}`}
+                          >
+                            ~{Math.max(1, Math.round(lo.retryAfterMs / 60000))}m left
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              void handleClearLockout(lo.ip);
+                            }}
+                            disabled={pendingClearIp === lo.ip}
+                            className="ml-auto inline-flex items-center gap-1 px-2 py-1 border border-red-500/50 bg-red-500/10 font-mono text-[11px] uppercase tracking-wider text-red-700 dark:text-red-400 hover:bg-red-500/20 disabled:opacity-60 disabled:cursor-not-allowed"
+                            data-testid={`button-clear-lean-lockout-${i}`}
+                          >
+                            {pendingClearIp === lo.ip ? "Clearing…" : "Clear"}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+
+                  {lockoutsData && lockoutsData.failingIps.length > 0 ? (
+                    <ul className="divide-y divide-border border-t border-border">
+                      {lockoutsData.failingIps.map((f, i) => (
+                        <li
+                          key={`failing-${f.ip}-${i}`}
+                          className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 px-3 py-2 font-mono text-[11px]"
+                          data-testid={`row-lean-lockout-failing-${i}`}
+                        >
+                          <span className="inline-flex items-center gap-1 font-bold text-amber-700 dark:text-amber-400 w-20">
+                            <AlertTriangle className="w-3 h-3" /> FAILING
+                          </span>
+                          <span
+                            className="text-foreground md:w-40 truncate"
+                            title={f.ip}
+                          >
+                            {f.ip}
+                          </span>
+                          <span className="text-muted-foreground md:w-32">
+                            {f.failedAttempts} /
+                            {" "}
+                            {lockoutsData.maxFailedAttempts} before lockout
+                          </span>
+                          <span
+                            className="text-muted-foreground md:w-48"
+                            title={f.firstFailureAt}
+                          >
+                            since {formatTimestamp(f.firstFailureAt)}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              void handleClearLockout(f.ip);
+                            }}
+                            disabled={pendingClearIp === f.ip}
+                            className="ml-auto inline-flex items-center gap-1 px-2 py-1 border border-border bg-background font-mono text-[11px] uppercase tracking-wider text-muted-foreground hover:text-foreground disabled:opacity-60 disabled:cursor-not-allowed"
+                            data-testid={`button-clear-lean-failing-${i}`}
+                          >
+                            {pendingClearIp === f.ip ? "Clearing…" : "Reset"}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+
+                  {lockoutClearError ? (
+                    <p
+                      className="px-3 py-2 border-t border-border font-mono text-[11px] text-red-700 dark:text-red-400"
+                      data-testid="text-lean-lockout-clear-error"
+                    >
+                      {lockoutClearError}
+                    </p>
+                  ) : null}
                 </div>
               ) : null}
 

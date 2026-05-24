@@ -136,6 +136,51 @@ export interface LeanRebuildCancelResult {
   error?: string;
 }
 
+export interface LeanLockout {
+  /** The locked-out client IP */
+  ip: string;
+  /** Number of bad-token attempts that triggered the lockout */
+  failedAttempts: number;
+  /** ISO-8601 timestamp of when the lockout began */
+  lockedSince: string;
+  /** ISO-8601 timestamp of when the lockout will expire */
+  lockedUntil: string;
+  /** Milliseconds remaining until the lockout expires */
+  retryAfterMs: number;
+}
+
+export interface LeanFailingIp {
+  /** A client IP with recent failed attempts but not yet locked */
+  ip: string;
+  failedAttempts: number;
+  firstFailureAt: string;
+  /** When the failure-counting window expires (record drops off) */
+  windowExpiresAt: string;
+}
+
+export interface LeanLockoutsResponse {
+  activeLockouts: LeanLockout[];
+  failingIps: LeanFailingIp[];
+  /** How many failed attempts trigger a lockout */
+  maxFailedAttempts: number;
+  /** Lockout duration in milliseconds */
+  lockoutMs: number;
+  /** Sliding window in milliseconds over which failures are counted */
+  failureWindowMs: number;
+}
+
+export interface LeanLockoutClearRequest {
+  ip: string;
+}
+
+export interface LeanLockoutClearResult {
+  ok: boolean;
+  /** True if an active failure/lockout record was actually removed */
+  cleared?: boolean;
+  message?: string;
+  error?: string;
+}
+
 export interface UploadUrlRequest {
   name: string;
   size: number;

@@ -277,6 +277,100 @@ function applyAuthFailureHeaders(
   }
 }
 
+interface ActiveLockoutView {
+  ip: string;
+  failedAttempts: number;
+  lockedSince: string;
+  lockedUntil: string;
+  retryAfterMs: number;
+}
+
+interface FailingIpView {
+  ip: string;
+  failedAttempts: number;
+  firstFailureAt: string;
+  windowExpiresAt: string;
+}
+
+function snapshotLockouts(): {
+  activeLockouts: ActiveLockoutView[];
+  failingIps: FailingIpView[];
+} {
+  const now = Date.now();
+  evictExpiredFailures(now);
+  const activeLockouts: ActiveLockoutView[] = [];
+  const failingIps: FailingIpView[] = [];
+  for (const [ip, rec] of failuresByIp) {
+    if (rec.lockedUntil > now) {
+      activeLockouts.push({
+        ip,
+        failedAttempts: rec.count,
+        lockedSince: new Date(rec.lockedUntil - LOCKOUT_MS).toISOString(),
+        lockedUntil: new Date(rec.lockedUntil).toISOString(),
+        retryAfterMs: rec.lockedUntil - now,
+      });
+    } else if (rec.lockedUntil === 0) {
+      failingIps.push({
+        ip,
+        failedAttempts: rec.count,
+        firstFailureAt: new Date(rec.firstFailureAt).toISOString(),
+        windowExpiresAt: new Date(rec.firstFailureAt + FAILURE_WINDOW_MS).toISOString(),
+      });
+    }
+  }
+  activeLockouts.sort((a, b) => b.retryAfterMs - a.retryAfterMs);
+  failingIps.sort((a, b) => b.failedAttempts - a.failedAttempts);
+  return { activeLockouts, failingIps };
+}
+
+router.get("/lean/lockouts", (req, res) => {
+  // Token-gated, with the same brute-force enforcement as the rebuild
+  // endpoints (bad-token attempts here count toward the per-IP lockout,
+  // and a locked IP gets 429 here too). Operators on a shared/locked IP
+  // must wait out the 15-minute lockout like everyone else — we will not
+  // weaken the limiter to make admin access more convenient.
+  const auth = checkRebuildAuth(req);
+  if (!auth.ok) {
+    applyAuthFailureHeaders(res, auth);
+    res.status(auth.status).json({ error: auth.error });
+    return;
+  }
+  const snap = snapshotLockouts();
+  res.json({
+    ...snap,
+    maxFailedAttempts: MAX_FAILED_ATTEMPTS,
+    lockoutMs: LOCKOUT_MS,
+    failureWindowMs: FAILURE_WINDOW_MS,
+  });
+});
+
+router.post("/lean/lockouts/clear", (req, res) => {
+  const auth = checkRebuildAuth(req);
+  if (!auth.ok) {
+    applyAuthFailureHeaders(res, auth);
+    res.status(auth.status).json({ ok: false, error: auth.error });
+    return;
+  }
+  const body = (req.body ?? {}) as { ip?: unknown };
+  const ip = typeof body.ip === "string" ? body.ip.trim() : "";
+  if (!ip) {
+    res.status(400).json({ ok: false, error: "Missing required field `ip`." });
+    return;
+  }
+  const existed = failuresByIp.delete(ip);
+  req.log.warn(
+    { clearedIp: ip, existed, clearedBy: getClientIp(req) },
+    "Referee lockout cleared by operator",
+  );
+  res.json({
+    ok: true,
+    cleared: existed,
+    message: existed
+      ? `Cleared lockout/failure record for ${ip}.`
+      : `No active lockout or failure record found for ${ip}.`,
+  });
+});
+
 router.post("/lean/verify/rebuild/stream", (req, res) => {
   const start = Date.now();
 

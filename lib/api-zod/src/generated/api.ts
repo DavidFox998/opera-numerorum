@@ -184,6 +184,56 @@ export const GetLeanRebuildHistoryResponse = zod.object({
 
 
 /**
+ * Returns the per-IP brute-force-protection state for the rebuild
+endpoints: IPs currently locked out (with when the lockout expires)
+and IPs that have recent failed attempts but aren't yet locked.
+
+Requires `Authorization: Bearer <LEAN_REBUILD_TOKEN>`. The per-IP
+lockout check is intentionally skipped on this endpoint so an
+operator on a shared/locked IP can still investigate.
+
+ * @summary List active rebuild-token brute-force lockouts
+ */
+export const GetLeanLockoutsResponse = zod.object({
+  "activeLockouts": zod.array(zod.object({
+  "ip": zod.string().describe('The locked-out client IP'),
+  "failedAttempts": zod.number().describe('Number of bad-token attempts that triggered the lockout'),
+  "lockedSince": zod.coerce.date().describe('ISO-8601 timestamp of when the lockout began'),
+  "lockedUntil": zod.coerce.date().describe('ISO-8601 timestamp of when the lockout will expire'),
+  "retryAfterMs": zod.number().describe('Milliseconds remaining until the lockout expires')
+})),
+  "failingIps": zod.array(zod.object({
+  "ip": zod.string().describe('A client IP with recent failed attempts but not yet locked'),
+  "failedAttempts": zod.number(),
+  "firstFailureAt": zod.coerce.date(),
+  "windowExpiresAt": zod.coerce.date().describe('When the failure-counting window expires (record drops off)')
+})),
+  "maxFailedAttempts": zod.number().describe('How many failed attempts trigger a lockout'),
+  "lockoutMs": zod.number().describe('Lockout duration in milliseconds'),
+  "failureWindowMs": zod.number().describe('Sliding window in milliseconds over which failures are counted')
+})
+
+
+/**
+ * Removes the failure record for a single IP, immediately unblocking
+further rebuild-token attempts from it. Requires the same
+`Authorization: Bearer <LEAN_REBUILD_TOKEN>` header.
+
+ * @summary Clear a per-IP rebuild-token lockout
+ */
+export const ClearLeanLockoutBody = zod.object({
+  "ip": zod.string()
+})
+
+export const ClearLeanLockoutResponse = zod.object({
+  "ok": zod.boolean(),
+  "cleared": zod.boolean().optional().describe('True if an active failure\/lockout record was actually removed'),
+  "message": zod.string().optional(),
+  "error": zod.string().optional()
+})
+
+
+/**
  * @summary Request a presigned upload URL for a PDF
  */
 export const RequestUploadUrlBody = zod.object({
