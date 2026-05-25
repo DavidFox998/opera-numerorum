@@ -950,3 +950,13 @@ router.post("/lean/verify/rebuild", (req, res) => {
 });
 
 export default router;
+
+export const __testing = {
+  checkRebuildAuth,
+  sanitizeRefereeName,
+  getNamedTokens,
+  resetAuthState(): void {
+    failuresByIp.clear();
+    namedTokensCache = { raw: undefined, tokens: [] };
+  },
+};
