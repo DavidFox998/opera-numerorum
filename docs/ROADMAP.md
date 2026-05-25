@@ -71,16 +71,36 @@ Status legend:
 
 ## 3. Navier-Stokes global regularity
 
-**Status: Open.**
+**Status: Open — first brick formalized (divergence-linearity in Lean; axiom footprint = subset of mathlib's classical core {propext, Classical.choice, Quot.sound}, no research-grade axioms).**
 
 - Conjectural scaffolding in this repo: "Arakelov descent from
   `X_0(397)`" is a label for a proposed bridge from heights on a
   modular curve to PDE energy estimates.
+- First honest formal brick: `lean-proof-towers/Towers/NS/Divergence.lean`
+  defines a minimal `divergence` operator on smooth vector fields
+  `V → V` (where `V = EuclideanSpace ℝ (Fin 3)`) as the sum of the
+  Fréchet-derivative-based directional derivatives along the three
+  coordinate axes, and proves the trivial linearity-under-addition
+  brick `divergence_add` (for `Differentiable ℝ` fields `v, w`) by
+  delegating to mathlib's `fderiv_add` and `Finset.sum_add_distrib`.
+  Axiom footprint contained in mathlib's classical core
+  `{propext, Classical.choice, Quot.sound}` (no `sorryAx`, no
+  user-declared axioms in the brick). Alongside, it pins
+  `NavierStokes_globalRegularity_statement : Prop` as a *statement
+  schema* (with four explicitly named placeholder axioms `IsSmooth`,
+  `IsDivergenceFree`, `HasFiniteEnergy`, and
+  `IsGlobalSmoothSolutionOfNS` — honest stand-ins because mathlib
+  v4.12.0 lacks Sobolev spaces and the Navier-Stokes operator).
+  Statement-only, no `True.intro`. Built by
+  `scripts/check-towers.sh` / the `towers-build` workflow.
 - Honest note: there is no derivation in this repo (or, to our
   knowledge, in the literature) from `X_0(397)` to a Leray-Hopf
   weak-strong uniqueness statement or to the Beale-Kato-Majda
   blow-up criterion for 3D incompressible Navier-Stokes. Treat
-  the phrase as a research direction, not as a proof token.
+  the phrase as a research direction, not as a proof token. The
+  divergence-linearity brick above does not advance global
+  regularity past `Open` — it is the first elementary calculus
+  brick on the way there.
 
 ## 4. 280-curve cohort (M9 Weil-transfer discharge) — and BSD
 
