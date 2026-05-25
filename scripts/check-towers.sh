@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # check-towers.sh — Build the opt-in Towers Lean library (mathlib-backed
-# first bricks for RH / Yang-Mills / Navier-Stokes) and verify the
-# axiom debt of `N_monotone_in_sigma` is empty.
+# first bricks for the open towers: RH, BSD, Navier-Stokes,
+# Yang-Mills) and verify each named brick's axiom debt is either
+# empty or a subset of mathlib's classical core
+# {propext, Classical.choice, Quot.sound}.
 #
 # This script targets the SIBLING package at `lean-proof-towers/`. The
 # main spine package `lean-proof/` is deliberately untouched: it stays
@@ -24,6 +26,12 @@
 # offline sandbox): exits non-zero with a clear message. There is no
 # "soft skip" mode — the towers-build workflow is the canonical place
 # to surface mathlib-availability problems.
+#
+# Adding a new brick:
+#   1. Add a `lean_lib` root in `lean-proof-towers/lakefile.lean`.
+#   2. Append a pair `"<Towers module>|<fully-qualified theorem>"` to
+#      the BRICKS array below. The script will build a tiny verifier
+#      file per pair and run the axiom-footprint check.
 
 set -euo pipefail
 
@@ -46,44 +54,70 @@ lake exe cache get
 echo ">> lake build Towers" >&2
 lake build Towers
 
-echo ">> axiom-debt check: TheoremaAureum.Towers.RH.N_monotone_in_sigma" >&2
+# ------------------------------------------------------------------
+# Per-brick axiom-footprint check.
+#
+# Each entry is "<lean import path>|<fully qualified theorem name>".
+# The lean import path is the dot-separated module name that mathlib's
+# Lean elaborator expects in `import <...>` (e.g. `Towers.RH.ZeroDensity`).
+# The theorem name is what `#print axioms` will receive.
+#
+# Acceptable axiom footprint per brick:
+#   (a) truly no axioms ("does not depend on any axioms"), OR
+#   (b) a subset of mathlib's classical core
+#       {propext, Classical.choice, Quot.sound}.
+# Any other axiom name — `sorryAx`, a user-declared `axiom`, etc. —
+# is rejected and the script exits non-zero on the first failure.
+# ------------------------------------------------------------------
+BRICKS=(
+  "Towers.RH.ZeroDensity|TheoremaAureum.Towers.RH.N_monotone_in_sigma"
+  "Towers.BSD.MordellWeil|TheoremaAureum.Towers.BSD.MordellWeilGroup.add_comm"
+)
+
 VERIFIER_DIR="$(mktemp -d)"
-VERIFIER="$VERIFIER_DIR/VerifyTowers.lean"
 AXIOM_LOG="$(mktemp)"
 trap 'rm -f "$AXIOM_LOG"; rm -rf "$VERIFIER_DIR"' EXIT
 
-cat > "$VERIFIER" <<'EOF'
-import Towers.RH.ZeroDensity
-#print axioms TheoremaAureum.Towers.RH.N_monotone_in_sigma
+check_brick() {
+  local module="$1"
+  local thm="$2"
+  local thm_escaped
+  thm_escaped="$(printf '%s' "$thm" | sed 's/[.]/\\./g')"
+
+  local verifier="$VERIFIER_DIR/Verify_${thm//./_}.lean"
+  cat > "$verifier" <<EOF
+import $module
+#print axioms $thm
 EOF
 
-if ! lake env lean "$VERIFIER" 2>&1 | tee "$AXIOM_LOG"; then
-  echo "error: lake env lean on Towers verifier failed." >&2
-  exit 1
-fi
+  echo ">> axiom-debt check: $thm" >&2
+  if ! lake env lean "$verifier" 2>&1 | tee "$AXIOM_LOG" >&2; then
+    echo "error: lake env lean on verifier for $thm failed." >&2
+    return 1
+  fi
 
-# Acceptable axiom footprint: either truly zero axioms (no mathlib lemmas
-# touched the proof term — unusual for a mathlib-backed lemma) OR the
-# canonical mathlib classical trio {propext, Classical.choice, Quot.sound}
-# and nothing else. These three are mathlib's foundational core; relying
-# on them is NOT a research-grade debt. We refuse any other axiom name —
-# in particular `sorryAx` (an unfinished proof), `Classical.em` if used
-# directly outside the trio, or any user-declared `axiom`.
-ZERO_LINE="'TheoremaAureum.Towers.RH.N_monotone_in_sigma' does not depend on any axioms"
-TRIO_RE="^'TheoremaAureum\.Towers\.RH\.N_monotone_in_sigma' depends on axioms: \[((propext|Classical\.choice|Quot\.sound)(, (propext|Classical\.choice|Quot\.sound)){0,2})\]$"
+  local zero_line="'$thm' does not depend on any axioms"
+  local trio_re="^'${thm_escaped}' depends on axioms: \[((propext|Classical\.choice|Quot\.sound)(, (propext|Classical\.choice|Quot\.sound)){0,2})\]\$"
 
-if grep -qF "$ZERO_LINE" "$AXIOM_LOG"; then
-  echo "ok: N_monotone_in_sigma has axiom debt = [] (no axioms used at all)." >&2
-elif grep -qE "$TRIO_RE" "$AXIOM_LOG"; then
-  echo "ok: N_monotone_in_sigma axiom footprint = subset of mathlib's classical trio" >&2
-  echo "    {propext, Classical.choice, Quot.sound}. No research-grade axioms." >&2
-else
-  echo "error: axiom-debt check failed for N_monotone_in_sigma." >&2
-  echo "       Allowed: (a) no axioms at all, or" >&2
-  echo "                (b) a subset of {propext, Classical.choice, Quot.sound}." >&2
-  echo "       Got:" >&2
-  cat "$AXIOM_LOG" >&2
-  exit 2
-fi
+  if grep -qF "$zero_line" "$AXIOM_LOG"; then
+    echo "ok: $thm has axiom debt = [] (no axioms used at all)." >&2
+  elif grep -qE "$trio_re" "$AXIOM_LOG"; then
+    echo "ok: $thm axiom footprint = subset of mathlib's classical trio" >&2
+    echo "    {propext, Classical.choice, Quot.sound}. No research-grade axioms." >&2
+  else
+    echo "error: axiom-debt check failed for $thm." >&2
+    echo "       Allowed: (a) no axioms at all, or" >&2
+    echo "                (b) a subset of {propext, Classical.choice, Quot.sound}." >&2
+    echo "       Got:" >&2
+    cat "$AXIOM_LOG" >&2
+    return 2
+  fi
+}
 
-echo "ok: Towers library built; N_monotone_in_sigma axiom footprint accepted." >&2
+for entry in "${BRICKS[@]}"; do
+  module="${entry%%|*}"
+  thm="${entry#*|}"
+  check_brick "$module" "$thm"
+done
+
+echo "ok: Towers library built; all ${#BRICKS[@]} brick(s) passed the axiom-footprint check." >&2

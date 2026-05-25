@@ -82,9 +82,9 @@ Status legend:
   blow-up criterion for 3D incompressible Navier-Stokes. Treat
   the phrase as a research direction, not as a proof token.
 
-## 4. 280-curve cohort (M9 Weil-transfer discharge)
+## 4. 280-curve cohort (M9 Weil-transfer discharge) — and BSD
 
-**Status: Certified for `N = 397`. General statement Open.**
+**Status: Certified for `N = 397`. General statement Open — first general-statement brick formalized (Mordell-Weil commutativity in Lean; axiom footprint = subset of mathlib's classical core {propext, Classical.choice, Quot.sound}, no research-grade axioms).**
 
 - What is genuinely closed: for the specific elliptic conductor
   `N = 397` (the case that appears in `m9.out`), the Lean theorem
@@ -93,9 +93,27 @@ Status legend:
   `VALOR_min = 1084` invariant are recorded in the ledger.
 - Open: the statement for general conductors. The 280-curve cohort
   beyond `N = 397` is not discharged here.
+- First honest general-statement brick toward the
+  Birch–Swinnerton-Dyer side of this tower:
+  `lean-proof-towers/Towers/BSD/MordellWeil.lean` defines
+  `MordellWeilGroup E` as a thin alias for mathlib's
+  `WeierstrassCurve.Affine.Point` (inheriting the full
+  `AddCommGroup` instance) and proves the trivial commutativity
+  brick `MordellWeilGroup.add_comm` by delegating to mathlib's
+  `_root_.add_comm`. Axiom footprint contained in mathlib's
+  classical core `{propext, Classical.choice, Quot.sound}` (no
+  `sorryAx`, no user-declared axioms). Alongside, it pins
+  `BSD_rank_statement : Prop` as a *statement schema* (honestly
+  flagged: the L-function `L(E, s)` is not in mathlib v4.12.0, so
+  the schema quantifies over a placeholder `IsLFunctionOf`
+  predicate that future plans must replace). Statement-only, no
+  `True.intro`. Built by `scripts/check-towers.sh` / the
+  `towers-build` workflow.
 - Honest note: "M9.OUT SHA + VALOR_min = 1084" certifies *bytes*
   (the discharge file is reproducible) and *one combinatorial
-  invariant*; it does not certify a theorem about all conductors.
+  invariant*; it does not certify a theorem about all conductors,
+  and the commutativity brick above does not advance the
+  general-conductor status past `Open`.
 
 ## 5. Bost-Connes Core
 
