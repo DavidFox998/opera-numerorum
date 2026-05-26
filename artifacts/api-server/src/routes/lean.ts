@@ -155,7 +155,7 @@ function invalidateCache(): void {
   cachedError = null;
 }
 
-const ALERTS_LOG_PATH = path.join(REPO_ROOT, "data", "ledger-alerts.jsonl");
+let ALERTS_LOG_PATH = path.join(REPO_ROOT, "data", "ledger-alerts.jsonl");
 const ALERTS_ACK_PATH = path.join(REPO_ROOT, "data", "ledger-alerts.ack.json");
 const ALERTS_DEFAULT_LIMIT = 20;
 const ALERTS_MAX_LIMIT = 200;
@@ -1226,4 +1226,8 @@ export const __testing = {
     cached = null;
     cachedError = null;
   },
+  setAlertsLogPath(p: string | null): void {
+    ALERTS_LOG_PATH = p ?? path.join(REPO_ROOT, "data", "ledger-alerts.jsonl");
+  },
+  normalizeAlertEntry,
 };

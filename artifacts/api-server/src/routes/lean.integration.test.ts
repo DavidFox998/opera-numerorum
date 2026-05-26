@@ -11,6 +11,9 @@ import {
 import { EventEmitter } from "node:events";
 import http from "node:http";
 import type { AddressInfo } from "node:net";
+import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
 
 const insertedRows: Array<Record<string, unknown>> = [];
 let selectOffsetResult: Array<{ id: number }> = [];
@@ -775,5 +778,120 @@ describe("rebuild cooldown surfaces Retry-After (429) even with a valid token", 
 
     // No history row was inserted for the rejected second attempt.
     expect(insertedRows).toHaveLength(1);
+  });
+});
+
+describe("GET /api/lean/ledger-alerts — corrupt log resilience", () => {
+  let tmpDir: string;
+  let fixturePath: string;
+
+  beforeEach(() => {
+    tmpDir = mkdtempSync(path.join(tmpdir(), "ledger-alerts-test-"));
+    fixturePath = path.join(tmpDir, "ledger-alerts.jsonl");
+  });
+
+  afterEach(() => {
+    __testing.setAlertsLogPath(null);
+    rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  it("returns 200 with logExists=false when the file is missing", async () => {
+    __testing.setAlertsLogPath(fixturePath); // file not written
+    const r = await call({ path: "/api/lean/ledger-alerts" });
+    expect(r.status).toBe(200);
+    expect(r.json.alerts).toEqual([]);
+    expect(r.json.logExists).toBe(false);
+    expect(r.json.totalReturned).toBe(0);
+  });
+
+  it("returns 200 with only the valid entry when the log mixes valid, half-written, and non-object lines", async () => {
+    const validEntry = {
+      timestamp: "2026-05-26T12:00:00Z",
+      message: "ledger checkpoint drift detected",
+      workflow: "zeta-burst-101-10000",
+      failure_mode: "truncation",
+      recovery: "restore from snapshot",
+      hits_path: "data/hits.txt",
+      checkpoint_path: "data/.hits.checkpoint",
+      expected_size: 20964,
+      actual_size: 20963,
+      expected_sha: "eecbcd9a875f",
+      source: "kernel._verify_checkpoint",
+      delivery: {
+        webhook: { status: "ok", error: null },
+        email: { status: "not_configured", error: null },
+      },
+    };
+    const halfWritten = '{"timestamp":"2026-05-26T12:01:00Z","message":"part';
+    const nonObject = '"just a bare string"';
+    const numberLine = "42";
+    const nullLine = "null";
+    const contents = [
+      JSON.stringify(validEntry),
+      halfWritten,
+      nonObject,
+      numberLine,
+      nullLine,
+      "",
+    ].join("\n");
+    writeFileSync(fixturePath, contents);
+    __testing.setAlertsLogPath(fixturePath);
+
+    const r = await call({ path: "/api/lean/ledger-alerts" });
+    expect(r.status).toBe(200);
+    expect(r.json.logExists).toBe(true);
+    expect(r.json.totalReturned).toBe(1);
+    expect(r.json.alerts).toHaveLength(1);
+    expect(r.json.alerts[0]).toMatchObject({
+      timestamp: validEntry.timestamp,
+      message: validEntry.message,
+      workflow: validEntry.workflow,
+      failureMode: "truncation",
+      expectedSize: 20964,
+      actualSize: 20963,
+      delivery: {
+        webhook: { status: "ok", error: null },
+        email: { status: "not_configured", error: null },
+      },
+    });
+    expect(typeof r.json.alerts[0].id).toBe("string");
+    expect(r.json.alerts[0].id.length).toBeGreaterThan(0);
+    expect(r.json.alerts[0].acknowledgedAt).toBeNull();
+  });
+
+  it("round-trips legacy entries missing failure_mode and expected_size through the normalizer", async () => {
+    const legacyEntry = {
+      timestamp: "2026-05-20T09:30:00Z",
+      message: "old-format alert without failure_mode/expected_size",
+      workflow: "zeta-sieve-14159-100000",
+    };
+    writeFileSync(fixturePath, JSON.stringify(legacyEntry) + "\n");
+    __testing.setAlertsLogPath(fixturePath);
+
+    const r = await call({ path: "/api/lean/ledger-alerts" });
+    expect(r.status).toBe(200);
+    expect(r.json.alerts).toHaveLength(1);
+    const a = r.json.alerts[0];
+    expect(a.timestamp).toBe(legacyEntry.timestamp);
+    expect(a.message).toBe(legacyEntry.message);
+    expect(a.workflow).toBe(legacyEntry.workflow);
+    expect(a.failureMode).toBeNull();
+    expect(a.expectedSize).toBeNull();
+    expect(a.actualSize).toBeNull();
+    expect(a.recovery).toBeNull();
+    expect(a.hitsPath).toBeNull();
+    expect(a.checkpointPath).toBeNull();
+    expect(a.expectedSha).toBeNull();
+    expect(a.source).toBeNull();
+    expect(a.delivery).toEqual({
+      webhook: { status: "not_configured", error: null },
+      email: { status: "not_configured", error: null },
+    });
+
+    // Also verify the exported normalizer directly to pin its shape.
+    const normalized = __testing.normalizeAlertEntry(legacyEntry);
+    expect(normalized).not.toBeNull();
+    expect(normalized!.failureMode).toBeNull();
+    expect(normalized!.expectedSize).toBeNull();
   });
 });
