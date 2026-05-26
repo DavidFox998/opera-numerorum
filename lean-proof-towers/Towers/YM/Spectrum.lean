@@ -786,6 +786,113 @@ Clay claim — Δ > 0 for SU(3) 4D is NOT proven in this file. -/
 def MassGap_YM4_proven : Prop :=
   clustering_for_YM3 → ∃ Δ : ℝ, 0 < Δ ∧ MassGapV2 Δ
 
+/-! ### Batch 15 (2026-05-26) — Track 3: prove clustering
+
+Five bricks on the **transfer-matrix → spectral-radius → exponential
+clustering → 4D-YM mass-gap** track. Names verbatim per the Batch 15
+directive: `transfer_matrix_norm_less_one`, `spectral_radius_transfer`,
+`correlation_decay_exponential`, `clustering_property_YM3`,
+`MassGap_YM4_Clay`.
+
+Honest scope: two real combinators (a trivial-extraction
+`transfer_matrix_norm_less_one → ∃ r ∈ [0,1)` spectral-radius
+witness, and a `MassGapV2 Δ → ∃ C m > 0` correlation-decay
+packaging) AND **three schemas**. Directive Track-3 tripwire
+honored: `transfer_matrix_norm_less_one` (the explicitly-hardest
+brick — existence of a transfer matrix `T` with `‖T‖ < 1` for the
+YM functional integral at `g > 0` is the Glimm-Jaffe-Spencer-style
+constructive QFT open step) stays a SCHEMA, AND per the tripwire
+`MassGap_YM4_Clay` (the **Clay-YM 4D mass-gap headline**) ALSO
+stays a SCHEMA. `clustering_property_YM3` is the named
+"`⟨O_x O_y⟩ ≤ C exp(-m|x-y|)` clustering" Prop, also a schema.
+YM tower stays Status: Open. No Clay claim — `Δ = m > 0` for
+SU(3) 4D is NOT proven anywhere in this file. -/
+
+/-- **Schema (`transfer_matrix_norm_less_one`).** Named Prop
+predicate for the **transfer-matrix norm bound** (hardest brick of
+this track): `∃ T : SU3Connection → SU3Connection → ℝ, ∃ N : ℝ,
+N < 1 ∧ ∀ A B, |T A B| ≤ N`. Stand-in for the Glimm-Jaffe-Spencer
+`‖T‖ < 1` (at positive coupling `g > 0`) that would give a
+mass-gap `m = -log ‖T‖` via the spectral-radius formula. Real
+Prop; **NOT proved here** — directive Track-3 tripwire: existence
+of a transfer matrix with operator norm strictly below `1` is the
+genuine Clay-YM constructive step (the placeholder
+`YMHamiltonian : SU3Connection → ℝ` has no associated transfer
+matrix). YM tower stays Open. -/
+def transfer_matrix_norm_less_one : Prop :=
+  ∃ T : SU3Connection → SU3Connection → ℝ, ∃ N : ℝ,
+    N < 1 ∧ ∀ A B : SU3Connection, |T A B| ≤ N
+
+/-- **Brick (`spectral_radius_transfer`).** Real combinator: from
+`transfer_matrix_norm_less_one` (existence of `T, N` with `N < 1`
+and `|T A B| ≤ N` everywhere), extract a **spectral-radius witness**
+`∃ r ∈ [0, 1)`. The `T`-existential is consumed; the witness for
+`r` is `r := |T A₀ B₀|` for a chosen pair (we use `vacuum_connection`
+twice), which is sandwiched by `0 ≤ |T vac vac|` and the hypothesis
+`|T vac vac| ≤ N < 1`. Honest scope: this names the
+"spectral-radius bound `r(T) ≤ ‖T‖ < 1`" shape at the
+single-matrix-element level — NOT a real spectral-radius proof
+(which would need the Gelfand formula and a real operator-norm
+calculation on a real Banach algebra). The mass-gap shape
+`r(T) = e^{-mL}` is NOT extracted; only `0 ≤ r < 1`. -/
+theorem spectral_radius_transfer (h : transfer_matrix_norm_less_one) :
+    ∃ r : ℝ, 0 ≤ r ∧ r < 1 := by
+  obtain ⟨T, N, hN, hT⟩ := h
+  refine ⟨|T vacuum_connection vacuum_connection|, abs_nonneg _, ?_⟩
+  exact lt_of_le_of_lt (hT vacuum_connection vacuum_connection) hN
+
+/-- **Brick (`correlation_decay_exponential`).** Real combinator:
+from a `MassGapV2 Δ` hypothesis (Batch 9/10's gap-above-vacuum
+predicate), produce a **packaged exponential-decay witness** `∃ C m,
+0 < C ∧ 0 < m`. The mass-gap hypothesis is **consumed** for its
+positive `Δ` (used as `m := Δ`); the prefactor is witnessed by
+`C := 1`. Honest scope: companion to Batch 14's
+`correlation_decay_from_gap` (which also packages
+`Exponential_clustering_schema` as a redundant input). Here the
+combinator is **single-hypothesis** — only `MassGapV2 Δ` is
+required, matching the Batch 15 spec wording
+"`⟨O_x O_y⟩ ≤ C e^{-m|x-y|}`" where `C = 1` and `m = Δ`. NOT a
+real correlation-decay proof — the placeholder `YMHamiltonian` has
+no `x, y` separation argument. -/
+theorem correlation_decay_exponential (Δ : ℝ) (h : MassGapV2 Δ) :
+    ∃ C m : ℝ, 0 < C ∧ 0 < m := by
+  exact ⟨1, Δ, one_pos, h.1⟩
+
+/-- **Schema (`clustering_property_YM3`).** Named Prop predicate for
+the **`⟨O_x O_y⟩ ≤ C exp(-m|x-y|)` clustering** target: there exist
+`C, m > 0` such that for every pair of connections `A, B` and every
+separation `r ≥ 0`, the **two-point-function decay bound**
+`|YMHamiltonian A * YMHamiltonian B| ≤ C * exp(-m * r)` holds.
+Distinct from Batch 13's `Exponential_clustering_schema` and Batch
+14's `clustering_for_YM3` (which both bound the *residual*
+`|⟨O_A O_B⟩ - ⟨O⟩²|`); this schema bounds the **bare product**
+`|⟨O_A O_B⟩|`, matching the Batch 15 spec wording
+"`⟨O_x O_y⟩ ≤ C exp(-m|x-y|)`". Real Prop; **NOT proved here** —
+FALSE in general on the placeholder (`A = B = vacuum_connection`
+gives `|12 * 12| = 144`, independent of `r`, NOT bounded by
+`C * exp(-m * r)` as `r → ∞`). YM tower stays Open. -/
+def clustering_property_YM3 : Prop :=
+  ∃ C m : ℝ, 0 < C ∧ 0 < m ∧
+    ∀ A B : SU3Connection, ∀ r : ℝ, 0 ≤ r →
+      |YMHamiltonian A * YMHamiltonian B| ≤ C * Real.exp (-m * r)
+
+/-- **Schema (`MassGap_YM4_Clay`).** Named Prop predicate for the
+**Clay-YM 4D mass-gap headline** — the implication
+`transfer_matrix_norm_less_one → ∃ Δ > 0, MassGapV2 Δ`. Real Prop;
+**NOT proved here** — directive Track-3 tripwire: since
+`transfer_matrix_norm_less_one` stays a schema (the hardest brick),
+`MassGap_YM4_Clay` must also stay a schema. Names the shape the
+**Clay-YM 4D theorem** would have (transfer-matrix `‖T‖ < 1` ⇒ a
+positive mass gap via `Δ = -log ‖T‖`), without supplying a witness.
+YM tower stays Open. No Clay claim — `Δ = m > 0` for SU(3) 4D is
+NOT proven in this file; this is the placeholder-named Prop, not a
+discharged theorem. Companion to Batch 14's `MassGap_YM4_proven`
+(which uses `clustering_for_YM3` as the antecedent); this brick
+uses the **transfer-matrix antecedent** per the Batch 15 spec. -/
+def MassGap_YM4_Clay : Prop :=
+  transfer_matrix_norm_less_one →
+    ∃ Δ : ℝ, 0 < Δ ∧ MassGapV2 Δ
+
 end Spectrum
 end YM
 end Towers

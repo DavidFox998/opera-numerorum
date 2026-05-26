@@ -766,6 +766,100 @@ def spectrum_discrete_below_2Δ : Prop :=
     ∀ Δ : ℝ, 0 < Δ → ∀ μ : ℝ, 0 ≤ μ → μ < 2 * Δ →
       μ = 0 ∨ μ = Δ
 
+/-! ### Batch 15 (2026-05-26) — Track 1: remove the cutoff
+
+Five bricks on the **explicit-δ₀ IR bound → continuum-limit → YM
+operator mass-gap** track. Names verbatim per the Batch 15 directive:
+`IR_gap_lower_bound_explicit`, `strong_resolvent_convergence`,
+`gap_stability_under_limit`, `MassGap_YM_operator`,
+`spectrum_above_gap_continuous`.
+
+Honest scope: two real theorems (the trivial `H_Λ = H` resolvent
+collapse on the placeholder where both sides unfold to `fun _ => 0`,
+and a trivial extraction of `∃ δ₀ > 0` from the explicit-δ₀ schema)
+AND **three schemas**. Directive Track-1 tripwire honored:
+`IR_gap_lower_bound_explicit` (the explicitly-hardest brick) is
+FALSE on the placeholder (Batch 13's `MassGap_IR` gives `Δ_Λ = Λ`,
+so for `Λ → 0⁺` no positive `δ₀` lower-bounds `Δ_Λ`), therefore
+stays a SCHEMA, AND per the tripwire `MassGap_YM_operator` (the
+Clay-shaped continuum-mass-gap claim) ALSO stays a SCHEMA.
+`spectrum_above_gap_continuous` is the named "discrete spectrum
+in `(0, 2Δ)` collapses to `{Δ}`" Prop, also a schema. Spectral
+tower stays Status: Open. No Clay claim — `Δ > 0` for the physical
+Hamiltonian is NOT proven anywhere in this file. -/
+
+/-- **Schema (`IR_gap_lower_bound_explicit`).** Named Prop predicate
+for the **explicit-`δ₀` uniform IR-gap lower bound** (hardest brick
+of this track): `∃ δ₀ > 0, ∀ Λ > 0, ∃ Δ ≥ δ₀, MassGap
+(Hamiltonian_IR_regularized 0 Λ) Δ`. Companion to Batch 14's
+`Hamiltonian_IR_gap_uniform` (which uses the variable name `C`),
+named separately to mark the **explicit-δ₀** shape per the Batch 15
+spec. Real Prop; **NOT proved here** — directive Track-1 tripwire:
+on the placeholder Batch 13's `MassGap_IR` gives `Δ_Λ = Λ`, so for
+`Λ` ranging over all positive reals there is no uniform positive
+lower bound (take `Λ < δ₀`). Spectral tower stays Open. -/
+def IR_gap_lower_bound_explicit : Prop :=
+  ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ Λ : ℝ, InfraredCutoff_Λ Λ →
+    ∃ Δ : ℝ, δ₀ ≤ Δ ∧ MassGap (Hamiltonian_IR_regularized 0 Λ) Δ
+
+/-- **Brick (`strong_resolvent_convergence`).** Real theorem: the
+IR-regularized Hamiltonian **equals** the unregularized one at every
+dimension, i.e. `∀ n Λ, Hamiltonian_IR_regularized n Λ =
+Hamiltonian_operator n`. Closes by `rfl` since both sides unfold to
+`fun _ => 0`. Honest scope: this is the **trivial strong-resolvent
+collapse** on the placeholder — both operators are zero, so their
+resolvents `(z - H)⁻¹` are equal for every `z` not in the spectrum.
+NOT a real strong-resolvent convergence theorem (which would
+require an actual `Λ`-dependence, a Stone-style limit on the
+resolvent family, and a genuine essentially self-adjoint operator
+on a real Hilbert space — none in scope on the placeholder). -/
+theorem strong_resolvent_convergence (n : ℕ) (Λ : ℝ) :
+    Hamiltonian_IR_regularized n Λ = Hamiltonian_operator n :=
+  rfl
+
+/-- **Brick (`gap_stability_under_limit`).** Real combinator: from
+`IR_gap_lower_bound_explicit` (the schema asserting an explicit-`δ₀`
+uniform lower bound on the regularized gaps), extract the bare
+existential witness `∃ δ₀ > 0`. The schema's `∀ Λ, ∃ Δ ≥ δ₀, …`
+content is **consumed** (not used); only the `0 < δ₀` projection is
+returned. Honest scope: this names the **stability of the `δ₀` lower
+bound under the cutoff-removal limit** at the trivial-extraction
+level — if a uniform `δ₀` exists at the regularized level, it still
+exists as a positive real. NOT a proof that `δ₀` survives as a
+genuine spectral gap of the continuum-limit Hamiltonian (that is the
+SCHEMA `MassGap_YM_operator` below, which stays unproved per the
+Track-1 tripwire). -/
+theorem gap_stability_under_limit (h : IR_gap_lower_bound_explicit) :
+    ∃ δ₀ : ℝ, 0 < δ₀ := by
+  obtain ⟨δ₀, hδ₀, _⟩ := h
+  exact ⟨δ₀, hδ₀⟩
+
+/-- **Schema (`MassGap_YM_operator`).** Named Prop predicate for the
+**continuum-Hamiltonian mass-gap conclusion** — the implication
+`IR_gap_lower_bound_explicit → ∃ Δ > 0, MassGap (Hamiltonian_operator
+0) Δ`. Real Prop; **NOT proved here** — directive Track-1 tripwire:
+since `IR_gap_lower_bound_explicit` stays a schema (no uniform `δ₀`
+on the placeholder), `MassGap_YM_operator` must also stay a schema.
+Names the shape the **Clay-shaped continuum mass-gap theorem** would
+have (uniform regularized gap ⇒ continuum gap), without supplying a
+witness. Spectral tower stays Open. No Clay claim. -/
+def MassGap_YM_operator : Prop :=
+  IR_gap_lower_bound_explicit →
+    ∃ Δ : ℝ, 0 < Δ ∧ MassGap (Hamiltonian_operator 0) Δ
+
+/-- **Schema (`spectrum_above_gap_continuous`).** Named Prop
+predicate for the **spectrum-in-`(0, 2Δ)`-collapses-to-`{Δ}`**
+statement: for every `Δ > 0` and every `μ` with `0 < μ < 2 * Δ`,
+if `Δ` is a mass gap of `Hamiltonian_operator 0` then `μ = Δ`. Real
+Prop; **NOT proved here** — the placeholder zero operator has no
+real spectral theory (every vector is a `0`-eigenvector), so the
+schema is vacuously content-free. Names the shape of the
+"first-excited-state singleton spectrum below the second gap"
+target without supplying the witness. Spectral tower stays Open. -/
+def spectrum_above_gap_continuous : Prop :=
+  ∀ Δ : ℝ, 0 < Δ → MassGap (Hamiltonian_operator 0) Δ →
+    ∀ μ : ℝ, 0 < μ → μ < 2 * Δ → μ = Δ
+
 end OperatorV2
 end Spectral
 end Towers

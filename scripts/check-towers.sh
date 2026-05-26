@@ -919,6 +919,40 @@ BRICKS=(
   "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.correlation_decay_from_gap"
   "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.clustering_for_YM3"
   "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.MassGap_YM4_proven"
+  # ---- Batch 15 (2026-05-26) — +15 bricks across 3 same files, zero
+  # cross-imports. Track 1: remove the cutoff on
+  # Spectral/OperatorV2.lean (`IR_gap_lower_bound_explicit` is the
+  # explicitly-hardest schema; `MassGap_YM_operator` stays schema per
+  # tripwire; `strong_resolvent_convergence` + `gap_stability_under_
+  # limit` real; `spectrum_above_gap_continuous` schema). Track 2:
+  # kill conditionality on NS/EnergyV2.lean
+  # (`enstrophy_differential_inequality` is the explicitly-hardest
+  # schema; `NavierStokes_global_regular` stays schema per tripwire;
+  # `L3_critical_bound_bootstrap` + `blowup_excluded` real on zero;
+  # `enstrophy_bound_from_Ladyzhenskaya` schema). Track 3: prove
+  # clustering on YM/Spectrum.lean (`transfer_matrix_norm_less_one`
+  # is the explicitly-hardest schema; `MassGap_YM4_Clay` stays
+  # schema per tripwire; `spectral_radius_transfer` +
+  # `correlation_decay_exponential` real combinators;
+  # `clustering_property_YM3` schema). All three towers stay
+  # Status: Open. No Clay claim — neither the YM operator mass-gap,
+  # the all-data NS global regularity, nor the SU(3) 4D mass-gap
+  # `Δ = m > 0` are proven in any of these files.
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.IR_gap_lower_bound_explicit"
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.strong_resolvent_convergence"
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.gap_stability_under_limit"
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.MassGap_YM_operator"
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.spectrum_above_gap_continuous"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.enstrophy_differential_inequality"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.L3_critical_bound_bootstrap"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.enstrophy_bound_from_Ladyzhenskaya"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.blowup_excluded"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.NavierStokes_global_regular"
+  "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.transfer_matrix_norm_less_one"
+  "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.spectral_radius_transfer"
+  "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.correlation_decay_exponential"
+  "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.clustering_property_YM3"
+  "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.MassGap_YM4_Clay"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

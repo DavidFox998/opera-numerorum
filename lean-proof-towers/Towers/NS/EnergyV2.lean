@@ -758,6 +758,109 @@ def Global_regularity_proven : Prop :=
   (∀ u₀ : VelocityField, Enstrophy_bound_unconditional u₀) →
     Global_scheme_for_all_data
 
+/-! ### Batch 15 (2026-05-26) — Track 2: kill conditionality
+
+Five bricks on the **enstrophy-differential-inequality → blowup-
+exclusion → all-data global regularity** track. Names verbatim per
+the Batch 15 directive: `enstrophy_differential_inequality`,
+`L3_critical_bound_bootstrap`, `enstrophy_bound_from_Ladyzhenskaya`,
+`blowup_excluded`, `NavierStokes_global_regular`.
+
+Honest scope: two real theorems (a small-`L³`-bootstrap-on-zero
+combinator and an unconditional zero-field blowup-exclusion via
+`H1Norm_zero`) AND **three schemas**. Directive Track-2 tripwire
+honored: `enstrophy_differential_inequality` (the explicitly-hardest
+brick — the dissipation `d/dt E₁ ≤ -c E₁^{5/3}` shape that, if
+discharged unconditionally, would close 3D NS) stays a SCHEMA, AND
+per the tripwire `NavierStokes_global_regular` (the Clay-NS
+headline) ALSO stays a SCHEMA.
+`enstrophy_bound_from_Ladyzhenskaya` is the named unconditional-
+H¹-bound Prop (different shape from Batch 14's
+`Enstrophy_bound_unconditional` — no `EnergyMonotone` premise),
+also a schema. NS tower stays Status: Open. No Clay claim —
+`T_max = ∞` for arbitrary data is NOT proven anywhere in this file.
+Batch 8 `Dissipation = 0` tripwire untouched. -/
+
+/-- **Schema (`enstrophy_differential_inequality`).** Named Prop
+predicate for the **enstrophy differential inequality** (hardest
+brick of this track): `∃ c > 0, ∀ u : VelocityField, ∀ t,
+c * Enstrophy u t ≤ Enstrophy u 0`. Placeholder integrated form of
+the dissipative ODE `d/dt E₁ ≤ -c E₁^{5/3} + forcing` — the real
+inequality would be a pointwise-in-`t` differential bound; here we
+record only its **enstrophy-non-amplification** consequence (the
+ratio `E₁(t) / E₁(0)` stays bounded by a uniform `1/c`). Real Prop;
+**NOT proved here** — directive Track-2 tripwire: this is precisely
+the unconditional 3D NS enstrophy control that, if available, would
+close the Clay problem. NS tower stays Open. -/
+def enstrophy_differential_inequality : Prop :=
+  ∃ c : ℝ, 0 < c ∧ ∀ u : VelocityField, ∀ t : ℝ,
+    c * Enstrophy u t ≤ Enstrophy u 0
+
+/-- **Brick (`L3_critical_bound_bootstrap`).** Real combinator on
+the **zero velocity field**: given a small-`L³` hypothesis at `t = 0`
+(`H1Norm 0 0 ≤ ε`, the placeholder's stand-in for `‖u(0)‖_{L³} ≤ ε`)
+and any `ε > 0`, conclude the uniform-in-`t` bound `∀ t,
+H1Norm 0 t ≤ ε`. The hypothesis is **consumed**; the witness comes
+from `H1Norm_zero` (the zero field has zero H¹ norm at every time,
+so the bound holds at any positive `ε`). Honest scope: real on
+**zero only** — NOT a real critical-norm bootstrap (which would
+need genuine small-data Fujita-Kato + a regularity propagation
+argument). -/
+theorem L3_critical_bound_bootstrap (ε : ℝ) (hε : 0 < ε)
+    (_h_small : H1Norm (0 : VelocityField) 0 ≤ ε) :
+    ∀ t : ℝ, H1Norm (0 : VelocityField) t ≤ ε := by
+  intro t
+  rw [H1Norm_zero t]
+  exact le_of_lt hε
+
+/-- **Schema (`enstrophy_bound_from_Ladyzhenskaya`).** Named Prop
+predicate for the **unconditional H¹-bound-from-Ladyzhenskaya**
+target: `∀ u : VelocityField, ∃ M ≥ 0, ∀ t, Enstrophy u t ≤ M`.
+Distinct from Batch 14's `Enstrophy_bound_unconditional` (which
+takes a fixed `u₀` and quantifies over energy-monotone solutions)
+— here the predicate is per-`u`, parameterized only by the
+velocity field itself, and the Ladyzhenskaya inequality
+`‖u‖_{L⁴}^4 ≤ C ‖u‖_{L²}^2 ‖∇u‖_{L²}^2` would be the analytic
+ingredient. Real Prop; **NOT proved here** — would require a real
+Ladyzhenskaya `L⁴`-interpolation + Grönwall, neither in scope on
+the placeholder. NS tower stays Open. -/
+def enstrophy_bound_from_Ladyzhenskaya : Prop :=
+  ∀ u : VelocityField, ∃ M : ℝ, 0 ≤ M ∧ ∀ t : ℝ, Enstrophy u t ≤ M
+
+/-- **Brick (`blowup_excluded`).** Real theorem on the **zero
+velocity field**: `∀ t, Enstrophy 0 t ≤ 0` — unconditionally, with
+NO `T` cap. The zero field has zero H¹ norm at every real time
+(via `H1Norm_zero`), so its enstrophy is `(1/2) * 0 * 0 = 0` for
+all `t ∈ ℝ` (positive AND negative). Honest scope: real, but ONLY
+on the zero target — the absence of a `T` bound is the placeholder's
+stand-in for `T_max = ∞`. NOT a real blowup-exclusion theorem for
+3D NS (which would need to exclude finite-time singularity formation
+for arbitrary initial data — the open Clay problem). Companion to
+`Blowup_exclusion_small_target` above (which keeps the `T` bound);
+this brick drops the `T` per the Batch 15 spec wording
+"`T_max = ∞`". -/
+theorem blowup_excluded :
+    ∀ t : ℝ, Enstrophy (0 : VelocityField) t ≤ 0 := by
+  intro t
+  unfold Enstrophy
+  rw [H1Norm_zero t]
+  linarith
+
+/-- **Schema (`NavierStokes_global_regular`).** Named Prop predicate
+for the **conditional Clay-NS conclusion** — the implication
+`enstrophy_differential_inequality → Global_scheme_for_all_data`.
+Real Prop; **NOT proved here** — directive Track-2 tripwire: since
+`enstrophy_differential_inequality` stays a schema (the hardest
+brick), `NavierStokes_global_regular` must also stay a schema. The
+implication itself is the open Clay-NS step (an unconditional
+enstrophy differential inequality is *expected* to suffice for
+global regularity via Grönwall, but the proof of the implication is
+non-trivial AND the antecedent is itself unproved on the
+placeholder). NS tower stays Open. No Clay claim — `T_max = ∞` for
+arbitrary data is NOT proven in this file. -/
+def NavierStokes_global_regular : Prop :=
+  enstrophy_differential_inequality → Global_scheme_for_all_data
+
 end EnergyV2
 end NS
 end Towers
