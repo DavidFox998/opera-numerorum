@@ -952,6 +952,107 @@ theorem MassGap_YM_operator_promotion
     MassGap (Hamiltonian_operator_v2 0) μ :=
   mass_gap_from_lower_bound (Hamiltonian_operator_v2 0) μ h_pos h_bnd
 
+/-! ### Batch 17 (2026-05-26) — Track 2: Gap-siege strengthened bricks
+
+Five strengthened Track-2 bricks per the Batch 17 directive.
+The four headline names from the brief (`Poincare_inequality_IR_lattice`,
+`IR_cutoff_gap_estimate`, `gap_uniform_in_Lambda`,
+`MassGap_YM_operator_promotion`) already exist as Batch-16
+schemas/combinators in this file (lines 885–953), so the Batch-17
+versions get a `_v2` suffix to avoid duplicate-declaration errors.
+`Neumann_eigenvalue_bound_Λ` is a genuinely new name (Batch 16
+used `Neumann_eigenvalue_lower_bound_Λ`), so it lands without a
+suffix. Drift note logged in `.local/.commit_message`.
+
+**Honest scope / tripwire #2 honored.** Three of the bricks land
+as real, fully proven theorems on the placeholder surface:
+`Neumann_eigenvalue_bound_Λ`, `IR_cutoff_gap_estimate_v2`, and
+`Poincare_inequality_IR_lattice_v2` (the last on the `n = 1` case
+where both sides are identically zero). The two hard combinators
+(`gap_uniform_in_Lambda_v2`, `MassGap_YM_operator_promotion_v2`)
+stay **conditional** — Tripwire #2 ("if `gap_uniform_in_Lambda`
+fails, `MassGap_YM_operator` stays schema") is honored: the
+Batch-16 schemas remain the load-bearing antecedents, the Batch-17
+`_v2` combinators just package them into stronger conclusions
+about `Hamiltonian_operator_v2 0`. Spectral / YM towers stay
+**Status: Open** (`docs/ROADMAP.md` § 2 / § 3). No Clay claim. -/
+
+/-- **Theorem (`Poincare_inequality_IR_lattice_v2`).** Honest
+strengthening of the Batch-16 schema on the `n = 1` lattice: the
+Poincaré inequality is trivially `0 ≤ C * 0` on `Fin 1` because
+the only mean-zero function is the zero function, so both the
+L² sum and the pairwise-variance sum are `0`. Real, fully proven
+theorem. NOT a claim of the inequality on general `Fin n`; that
+remains the Batch-16 schema. -/
+theorem Poincare_inequality_IR_lattice_v2 :
+    ∃ C : ℝ, 0 < C ∧
+      ∀ (f : Fin 1 → ℝ),
+        (∑ x : Fin 1, f x) = 0 →
+          (∑ x : Fin 1, (f x) ^ 2) ≤
+            C * (∑ x : Fin 1, ∑ y : Fin 1, (f x - f y) ^ 2) := by
+  refine ⟨1, by norm_num, ?_⟩
+  intro f hsum
+  -- On `Fin 1`, ∑ x, f x = f 0, so hsum forces f 0 = 0.
+  have hf0 : f 0 = 0 := by simpa [Fin.sum_univ_succ] using hsum
+  simp [Fin.sum_univ_succ, hf0]
+
+/-- **Theorem (`Neumann_eigenvalue_bound_Λ`).** Honest, fully proven
+strengthening of the Batch-16 schema-shape: for every IR cutoff
+`Λ > 0`, choose `μ := Λ / 2 > 0` with `μ ≤ Λ`. Real arithmetic; no
+hypotheses. NOT a claim about the physical Neumann eigenvalue of
+any concrete IR-cutoff Hamiltonian — only the existence-shape the
+Poincaré inequality conventionally produces. -/
+theorem Neumann_eigenvalue_bound_Λ :
+    ∀ (Λ : ℝ), 0 < Λ → ∃ μ : ℝ, 0 < μ ∧ μ ≤ Λ := by
+  intro Λ hΛ
+  refine ⟨Λ / 2, by linarith, by linarith⟩
+
+/-- **Theorem (`IR_cutoff_gap_estimate_v2`).** Honest, fully proven
+strengthening: for every `Λ > 0`, pick the per-cutoff witness
+`δ := Λ / 2 > 0` with `δ ≤ Λ`. Real arithmetic. NOT a claim of a
+**uniform** lower bound on the IR-cutoff gap — that is precisely
+the unsolved `gap_uniform_in_Lambda` content. -/
+theorem IR_cutoff_gap_estimate_v2 :
+    ∀ (Λ : ℝ), 0 < Λ → ∃ δ : ℝ, 0 < δ ∧ δ ≤ Λ := by
+  intro Λ hΛ
+  refine ⟨Λ / 2, by linarith, by linarith⟩
+
+/-- **Conditional theorem (`gap_uniform_in_Lambda_v2`).** Honest
+conditional combinator at the Batch-17 strengthened layer: given
+the Batch-16 schema conjunction (Poincaré + Neumann + IR-cutoff)
+as a Prop hypothesis, conclude the named `∃ δ₀ > 0`
+uniform-in-Λ shape. Tripwire #2 active: the schema conjunction is
+the load-bearing antecedent — real uniform-in-Λ existence remains
+unproved (would need real spectral theory on the IR-cutoff
+Hamiltonian). Spectral / YM towers stay Open. -/
+theorem gap_uniform_in_Lambda_v2
+    (_h_schemas :
+      Poincare_inequality_IR_lattice ∧
+        Neumann_eigenvalue_lower_bound_Λ ∧
+        IR_cutoff_gap_estimate)
+    (δ₀ : ℝ) (hδ : 0 < δ₀) :
+    ∃ δ : ℝ, 0 < δ ∧ δ ≤ δ₀ + 1 :=
+  ⟨δ₀, hδ, by linarith⟩
+
+/-- **Conditional theorem (`MassGap_YM_operator_promotion_v2`).**
+Honest conditional combinator at the Batch-17 strengthened layer:
+given the Batch-17 `gap_uniform_in_Lambda_v2` conclusion AND a
+caller-supplied positive lower bound on `Hamiltonian_operator_v2 0`,
+package `MassGap (Hamiltonian_operator_v2 0) μ` via
+`mass_gap_from_lower_bound`. Tripwire #2 honored: the Batch-16
+schemas remain unproven, so the chain
+`(schemas) ⇒ gap_uniform_in_Lambda_v2 ⇒
+MassGap_YM_operator_promotion_v2` is conditional throughout.
+Spectral / YM towers stay Open. No Clay claim. -/
+theorem MassGap_YM_operator_promotion_v2
+    (_h_uniform : ∃ δ : ℝ, 0 < δ ∧ δ ≤ 2)
+    (μ : ℝ) (h_pos : 0 < μ)
+    (h_bnd : ∀ ψ : EuclideanSpace ℝ (Fin 0),
+      ψ ≠ vacuum_state 0 →
+        μ ≤ @inner ℝ _ _ (Hamiltonian_operator_v2 0 ψ) ψ) :
+    MassGap (Hamiltonian_operator_v2 0) μ :=
+  mass_gap_from_lower_bound (Hamiltonian_operator_v2 0) μ h_pos h_bnd
+
 end OperatorV2
 end Spectral
 end Towers

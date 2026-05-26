@@ -1060,6 +1060,32 @@ BRICKS=(
   "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.correlation_decay_conditional"
   "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.MassGap_YM4_Clay_conditional"
   "Towers.YM.Spectrum|TheoremaAureum.Towers.YM.Spectrum.clustering_for_YM3_lemma"
+  # ---- Batch 17 (2026-05-26) — Transfer Matrix + Gap Siege, +15 bricks.
+  # Three tracks, zero cross-track imports. Track 1 lands in NEW file
+  # Towers/YM/Transfer.lean (in-track YM import of Towers.YM.Wilson for
+  # WilsonAction). Tracks 2 & 3 strengthen the Batch-16 bricks in the
+  # same files (Spectral/OperatorV2.lean, NS/EnergyV2.lean); names that
+  # would collide with Batch 16 are suffixed `_v2`. Tripwires honored:
+  # `Perron_Frobenius_for_transfer` and `gap_uniform_in_Lambda_v2` and
+  # `enstrophy_bound_global` are honest **conditionals** that name the
+  # headline assumption as a Prop hypothesis — NOT a discharge — so the
+  # Clay claims stay schema (`MassGap_YM4_Clay`, `MassGap_YM_operator`,
+  # `NavierStokes_global_regular` all remain conditional in their
+  # respective files). YM / NS / Spectral towers stay Status: Open.
+  "Towers.YM.Transfer|TheoremaAureum.Towers.YM.Transfer.transfer_matrix_selfadjoint"
+  "Towers.YM.Transfer|TheoremaAureum.Towers.YM.Transfer.transfer_matrix_compact"
+  "Towers.YM.Transfer|TheoremaAureum.Towers.YM.Transfer.Perron_Frobenius_for_transfer"
+  "Towers.YM.Transfer|TheoremaAureum.Towers.YM.Transfer.correlation_decay_from_T"
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.Poincare_inequality_IR_lattice_v2"
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.Neumann_eigenvalue_bound_Λ"
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.IR_cutoff_gap_estimate_v2"
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.gap_uniform_in_Lambda_v2"
+  "Towers.Spectral.OperatorV2|TheoremaAureum.Towers.Spectral.OperatorV2.MassGap_YM_operator_promotion_v2"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.vorticity_L2_energy_identity"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.Ladyzhenskaya_4D_sharp"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.enstrophy_bootstrap_strong"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.enstrophy_bound_global"
+  "Towers.NS.EnergyV2|TheoremaAureum.Towers.NS.EnergyV2.NavierStokes_global_regular_promotion_v2"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

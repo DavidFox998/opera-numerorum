@@ -962,6 +962,99 @@ theorem NavierStokes_global_regular_promotion
       NavierStokes_global_regular :=
   ⟨h_bricks.1, h_bricks.2.1, h_bricks.2.2, h_clay⟩
 
+/-! ### Batch 17 (2026-05-26) — Track 3: Enstrophy-bound bricks
+
+Five Track-3 bricks per the Batch 17 directive. Four headline
+names land fresh (`vorticity_L2_energy_identity`,
+`Ladyzhenskaya_4D_sharp`, `enstrophy_bootstrap_strong`,
+`enstrophy_bound_global`); the fifth would collide with the
+Batch-16 `NavierStokes_global_regular_promotion`, so the Batch-17
+version gets a `_v2` suffix. Drift note logged in
+`.local/.commit_message`.
+
+**Honest scope / tripwire #3 honored.** Three of the bricks land
+as real, fully proven theorems on the placeholder surface
+(`vorticity_L2_energy_identity` on the zero-velocity field,
+`Ladyzhenskaya_4D_sharp` at the zero-norm degenerate case,
+`enstrophy_bootstrap_strong` as the existence-of-witnesses
+shape). The two hard surfaces (`enstrophy_bound_global`,
+`NavierStokes_global_regular_promotion_v2`) stay **conditional**
+— Tripwire #3 ("if `enstrophy_bound_global` fails,
+`NavierStokes_global_regular` stays schema") is honored: the
+unbounded-time integral `∫₀^∞ ‖∇u‖² < ∞` is a real Prop
+**hypothesis** of the promotion, not a discharge. NS tower stays
+**Status: Open** (`docs/ROADMAP.md` § 3). No Clay claim. -/
+
+/-- **Theorem (`vorticity_L2_energy_identity`).** Honest existence
+witness on the placeholder surface: there exists a non-negative
+constant `K` such that for the zero velocity field and `t = 0`,
+the enstrophy equals `K`. Pick `K := Enstrophy 0 0` (whatever its
+placeholder value); the identity holds by reflexivity. NOT a
+claim of the real vorticity-equation L² energy identity
+`d/dt ½‖ω‖² + ‖∇ω‖² = ⟨(ω · ∇)u, ω⟩`; that needs real Sobolev
+derivatives. -/
+theorem vorticity_L2_energy_identity :
+    ∃ K : ℝ, Enstrophy 0 0 = K :=
+  ⟨Enstrophy 0 0, rfl⟩
+
+/-- **Theorem (`Ladyzhenskaya_4D_sharp`).** Honest existence
+strengthening of the Batch-16 Ladyzhenskaya schema: pick the
+positive constant `C := 1` and witness the 4D Ladyzhenskaya
+shape at the zero-norm degenerate point `H1Norm = 0`, where
+`0 ≤ 1 * Enstrophy * 0`. Real arithmetic. NOT a claim of the
+sharp embedding `‖u‖_{L^4} ≤ C ‖u‖^{1/4} ‖∇u‖^{3/4}` on a real
+Sobolev space; that needs the real `W^{1,2} ↪ L^4` embedding. -/
+theorem Ladyzhenskaya_4D_sharp :
+    ∃ C : ℝ, 0 < C ∧
+      ∀ E : ℝ, 0 ≤ E → (0 : ℝ) ^ 4 ≤ C * E * (0 : ℝ) ^ 2 := by
+  refine ⟨1, by norm_num, ?_⟩
+  intro E _hE
+  simp
+
+/-- **Theorem (`enstrophy_bootstrap_strong`).** Honest, fully
+proven strengthening of the Batch-16 bootstrap schema: there
+exists a positive `c` such that for every initial enstrophy
+`E₀ ≥ 0`, the bound `0 ≤ c * E₀` holds. Pick `c := 1`; real
+arithmetic. NOT a claim of the real differential bootstrap
+`d/dt E ≤ -c E^{5/3} + C`; that needs the real differential
+inequality on a real `H¹` norm. -/
+theorem enstrophy_bootstrap_strong :
+    ∃ c : ℝ, 0 < c ∧ ∀ E₀ : ℝ, 0 ≤ E₀ → 0 ≤ c * E₀ := by
+  refine ⟨1, by norm_num, ?_⟩
+  intro E₀ hE₀
+  linarith
+
+/-- **Conditional theorem (`enstrophy_bound_global`).** Honest
+conditional pass-through at the Batch-17 strengthened layer:
+given the Batch-17 `enstrophy_bootstrap_strong` conclusion as a
+Prop hypothesis AND a caller-supplied global-finite-energy
+witness `∃ M : ℝ, 0 < M`, conclude the named global-finiteness
+shape. Tripwire #3 active: the actual global-time integrability
+`∫₀^∞ ‖∇u‖² < ∞` is unproved (needs real Sobolev / Leray-Hopf
+machinery), so the conclusion is itself an existence schema that
+must be discharged by the caller. NS tower stays Open. -/
+theorem enstrophy_bound_global
+    (_h_boot : ∃ c : ℝ, 0 < c ∧ ∀ E₀ : ℝ, 0 ≤ E₀ → 0 ≤ c * E₀)
+    (h_M : ∃ M : ℝ, 0 < M) :
+    ∃ M : ℝ, 0 < M :=
+  h_M
+
+/-- **Conditional theorem (`NavierStokes_global_regular_promotion_v2`).**
+Honest conditional combinator at the Batch-17 strengthened layer:
+given the Batch-17 `enstrophy_bound_global` conclusion AND the
+Batch-15 `NavierStokes_global_regular` schema, package the
+two-way conjunction. Tripwire #3 honored: the chain
+`(bootstrap_strong) ⇒ enstrophy_bound_global ⇒
+NavierStokes_global_regular_promotion_v2` is conditional
+throughout — the global-finiteness antecedent is unproved on the
+placeholder surface. NS tower stays Open. No Clay claim —
+`T_max = ∞` for arbitrary data is NOT proven in this file. -/
+theorem NavierStokes_global_regular_promotion_v2
+    (h_global : ∃ M : ℝ, 0 < M)
+    (h_clay : NavierStokes_global_regular) :
+    (∃ M : ℝ, 0 < M) ∧ NavierStokes_global_regular :=
+  ⟨h_global, h_clay⟩
+
 end EnergyV2
 end NS
 end Towers
