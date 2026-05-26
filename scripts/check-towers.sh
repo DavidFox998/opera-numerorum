@@ -178,6 +178,25 @@ BRICKS=(
   "Towers.NS.EnergyIneq|TheoremaAureum.Towers.NS.H1Norm_zero"
   "Towers.NS.EnergyIneq|TheoremaAureum.Towers.NS.HasFiniteEnergy_zero"
   "Towers.NS.EnergyIneq|TheoremaAureum.Towers.NS.H1Norm_nonneg"
+  # Task #55 (Branch A witness, 2026-05-26): infinite-dimensionality
+  # witness for `HilbertSpace = lp (fun _ : ℕ => ℂ) 2`. The canonical
+  # `lp.single`-at-`1` family indexed by ℕ is orthonormal (norm-one
+  # from `lp.norm_single`; pairwise inner zero from
+  # `lp.inner_single_left` + `lp.single_apply_ne`), hence linearly
+  # independent, hence `HilbertSpace` is NOT finite-dimensional over
+  # ℂ (via `Module.Finite.not_linearIndependent_of_infinite`). Three
+  # bricks: the family def, the orthonormality theorem, and the
+  # non-finite-dim conclusion. Her tri-parallel ask included two
+  # other branches (`SymmetricFockSpace` over `L² ⊗ su(3)`; subtype
+  # `{f // MemLp f 2 volume}`); neither is landable on mathlib
+  # v4.12.0 — Fock-space machinery absent; the raw `MemLp`-subtype
+  # is only a semi-inner-product (no a.e.-quotient). So this lands
+  # the witness on the existing ∞-dim ℓ²(ℕ,ℂ) carrier. YM tower
+  # status unchanged: Open (`docs/ROADMAP.md` § 2). This brick says
+  # NOTHING about the YM physical-state Hilbert space.
+  "Towers.YM.MassGap|TheoremaAureum.Towers.YM.hilbertCanonicalFamily"
+  "Towers.YM.MassGap|TheoremaAureum.Towers.YM.hilbertCanonicalFamily_orthonormal"
+  "Towers.YM.MassGap|TheoremaAureum.Towers.YM.HilbertSpace_not_finiteDimensional"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

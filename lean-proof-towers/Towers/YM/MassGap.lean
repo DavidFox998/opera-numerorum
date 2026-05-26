@@ -735,6 +735,74 @@ theorem YMHamiltonian_not_isEigenstate_zero :
   rw [YMHamiltonian_one_eq_twelve, norm_zero, mul_zero, mul_zero] at h1
   norm_num at h1
 
+/-! ### Infinite-dimensionality witness for `HilbertSpace`
+
+    Task #55 upgraded `HilbertSpace` from a finite-dim placeholder
+    to `lp (fun _ : ℕ => ℂ) 2`. The three bricks below witness
+    that the upgrade is real: the canonical `lp.single` family
+    indexed by `ℕ` is orthonormal in `HilbertSpace`, hence linearly
+    independent, hence `HilbertSpace` is NOT finite-dimensional
+    over `ℂ`.
+
+    This is the "prove infinite_dim" half of Task #55 (Branch A) /
+    Her's tri-parallel HilbertSpace ask. The other two branches
+    Her proposed (`SymmetricFockSpace` over `L² ⊗ su(3)`; subtype
+    `{f // MemLp f 2 volume}`) are not landable on mathlib v4.12.0
+    — Fock-space machinery is absent from mathlib at this version,
+    and the raw `MemLp`-subtype is not a Hilbert space (no
+    a.e.-quotient ⇒ only a semi-inner-product). Branch A's
+    full `Lp ℝ³ → su(3)` carrier requires a `NormedSpace ℝ` on
+    `↥su3_submodule` that is not yet built (next batch, per the
+    Step 2.5 architect note). So this turn lands the witness on
+    the existing canonical ∞-dim ℓ²(ℕ,ℂ) carrier, which is the
+    most that can be claimed honestly today.
+
+    Tower status unchanged: **Open**. Real `Module ℂ`-rank of the
+    YM physical-state space is not in scope. -/
+
+/-- The canonical `lp.single` family at value `1 : ℂ`, indexed by
+    `ℕ`. Used to witness that `HilbertSpace = lp (fun _ => ℂ) 2`
+    is infinite-dimensional. -/
+noncomputable def hilbertCanonicalFamily : ℕ → HilbertSpace :=
+  fun n => lp.single 2 n (1 : ℂ)
+
+/-- The canonical `lp.single`-at-`1` family is orthonormal in
+    `HilbertSpace`. Norm-one from `lp.norm_single`; pairwise inner
+    zero from `lp.inner_single_left` and `lp.single_apply_ne`. -/
+theorem hilbertCanonicalFamily_orthonormal :
+    Orthonormal ℂ hilbertCanonicalFamily := by
+  rw [orthonormal_iff_ite]
+  intro i j
+  simp only [hilbertCanonicalFamily, lp.inner_single_left, lp.single_apply]
+  by_cases h : i = j
+  · subst h
+    simp
+  · rw [dif_neg h]
+    simp [h]
+
+/-- **`HilbertSpace` is infinite-dimensional over `ℂ`.**
+
+    Witness: the canonical orthonormal family
+    `hilbertCanonicalFamily : ℕ → HilbertSpace` is linearly
+    independent (from `Orthonormal.linearIndependent`), and any
+    finite-dimensional space cannot host a linearly independent
+    family indexed by an infinite type
+    (`Module.Finite.not_linearIndependent_of_infinite`).
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}`.
+
+    **Honest scoping reminder.** This brick proves the *carrier*
+    `lp (fun _ : ℕ => ℂ) 2` is genuinely infinite-dimensional. It
+    does **not** prove anything about the Yang-Mills physical-state
+    Hilbert space, which is still an open research surface
+    (Wightman / Osterwalder–Schrader reconstruction not in
+    mathlib v4.12.0). Tower status: **Open**. -/
+theorem HilbertSpace_not_finiteDimensional :
+    ¬ FiniteDimensional ℂ HilbertSpace := fun _ =>
+  Module.Finite.not_linearIndependent_of_infinite hilbertCanonicalFamily
+    hilbertCanonicalFamily_orthonormal.linearIndependent
+
 end YM
 end Towers
 end TheoremaAureum
