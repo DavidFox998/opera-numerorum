@@ -1,12 +1,38 @@
 import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
-import { mkdtempSync, writeFileSync, rmSync, unlinkSync } from "node:fs";
+import { mkdtempSync, writeFileSync, readFileSync, rmSync, unlinkSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { createHash } from "node:crypto";
+import { createHash, createHmac } from "node:crypto";
 import http from "node:http";
 import type { AddressInfo } from "node:net";
 import express from "express";
 import { createLedgerRouter } from "./ledger.js";
+
+/**
+ * Mirrors the canonicalize() + HMAC scheme in ledger.ts so tests can
+ * legitimately seed the sidecar (e.g. with an old lastOkAt) or
+ * simulate a forged sidecar that the server should REJECT.
+ */
+function sealSidecar(
+  secretHex: string,
+  payload: {
+    lastOkAt: string | null;
+    lastCheckedAt: string | null;
+    boundCheckpointSize: number | null;
+    boundCheckpointSha: string | null;
+  },
+): string {
+  const canonical = JSON.stringify({
+    lastOkAt: payload.lastOkAt,
+    lastCheckedAt: payload.lastCheckedAt,
+    boundCheckpointSize: payload.boundCheckpointSize,
+    boundCheckpointSha: payload.boundCheckpointSha,
+  });
+  const mac = createHmac("sha256", Buffer.from(secretHex, "hex"))
+    .update(canonical)
+    .digest("hex");
+  return JSON.stringify({ ...payload, mac }) + "\n";
+}
 
 let tmpDir: string;
 let hitsPath: string;
@@ -259,14 +285,23 @@ describe("GET /api/ledger/integrity", () => {
     const { size, sha } = writeHits(sealed);
     writeCheckpoint(size, sha);
 
-    // Pre-seed a very-old lastOkAt sidecar, then build a router with a
-    // 1-second threshold. The router will read the sidecar on construction
-    // and the very next /integrity call should flag it stale even though
-    // the live ledger is healthy.
+    // Pre-seed a very-old lastOkAt sidecar with a VALID HMAC (using the
+    // same secret the router will use on construction). The router will
+    // read the sidecar on construction and the very next /integrity
+    // call should flag it stale even though the live ledger is healthy.
     const lastOkPath = path.join(tmpDir, "hits.txt.stale-test.lastok");
+    const secretPath = `${lastOkPath}.key`;
+    // Pre-seed a deterministic secret so we can MAC the sidecar.
+    const secretHex = "ab".repeat(32);
+    writeFileSync(secretPath, secretHex + "\n");
     writeFileSync(
       lastOkPath,
-      JSON.stringify({ lastOkAt: "2020-01-01T00:00:00.000Z" }) + "\n",
+      sealSidecar(secretHex, {
+        lastOkAt: "2020-01-01T00:00:00.000Z",
+        lastCheckedAt: "2020-01-01T00:00:00.000Z",
+        boundCheckpointSize: size,
+        boundCheckpointSha: sha,
+      }),
     );
 
     const app = express();
@@ -276,6 +311,7 @@ describe("GET /api/ledger/integrity", () => {
         hitsPath,
         checkpointPath,
         lastOkPath,
+        secretPath,
         staleThresholdSeconds: 1,
       }),
     );
@@ -314,6 +350,165 @@ describe("GET /api/ledger/integrity", () => {
     } catch {
       /* ignore */
     }
+  });
+
+  it("rejects a forged sidecar with a fake future lastOkAt (HMAC mismatch ⇒ discarded as null)", async () => {
+    // Healthy ledger so the integrity check itself succeeds. We're
+    // testing that a hand-edited sidecar — written by an attacker who
+    // has data-dir write access but does NOT have the per-deploy HMAC
+    // secret — cannot make the dashboard claim the ledger was
+    // verified moments ago.
+    const sealed = "line1\nline2\nline3\n";
+    const { size, sha } = writeHits(sealed);
+    writeCheckpoint(size, sha);
+
+    const lastOkPath = path.join(tmpDir, "hits.txt.forge.lastok");
+    const secretPath = `${lastOkPath}.key`;
+    try { unlinkSync(lastOkPath); } catch { /* ignore */ }
+    try { unlinkSync(secretPath); } catch { /* ignore */ }
+
+    // 1) Forge a sidecar with a future lastOkAt and NO mac — what a
+    //    naive attacker would write by hand-editing the JSON.
+    const forgedFuture = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+    writeFileSync(
+      lastOkPath,
+      JSON.stringify({
+        lastOkAt: forgedFuture,
+        lastCheckedAt: forgedFuture,
+      }) + "\n",
+    );
+
+    // 2) Construct a router pointing at a STILL-EMPTY secret file. The
+    //    router will auto-generate a fresh secret (so the forged
+    //    sidecar's missing mac will never verify) and then break the
+    //    ledger so the next check is mismatch — that way `lastOkAt`
+    //    only comes from the (forged) sidecar, not from a fresh ok.
+    //    The endpoint must surface lastOkAt=null, NOT the forged future.
+    const app1 = express();
+    app1.use("/api", createLedgerRouter({ hitsPath, checkpointPath, lastOkPath, secretPath }));
+    const srv1 = http.createServer(app1);
+    await new Promise<void>((resolve) => srv1.listen(0, "127.0.0.1", resolve));
+    const port1 = (srv1.address() as AddressInfo).port;
+    // Break the ledger BEFORE the first request so the integrity check
+    // returns mismatch and cannot legitimately mint a fresh lastOkAt.
+    writeFileSync(hitsPath, "X");
+    const r1 = await (await fetch(`http://127.0.0.1:${port1}/api/ledger/integrity`)).json() as any;
+    expect(r1.status).toBe("mismatch");
+    expect(r1.lastOkAt).toBeNull();
+    expect(r1.lastOkAgeSeconds).toBeNull();
+    await new Promise<void>((resolve, reject) =>
+      srv1.close((err) => (err ? reject(err) : resolve())),
+    );
+
+    // 3) Now simulate an attacker who ALSO knows the on-disk
+    //    checkpoint values and replays them in `boundCheckpointSize`/
+    //    `boundCheckpointSha` — still no mac ⇒ still rejected.
+    writeFileSync(hitsPath, sealed);
+    writeCheckpoint(size, sha);
+    writeFileSync(
+      lastOkPath,
+      JSON.stringify({
+        lastOkAt: forgedFuture,
+        lastCheckedAt: forgedFuture,
+        boundCheckpointSize: size,
+        boundCheckpointSha: sha,
+      }) + "\n",
+    );
+    // Break the ledger so any reported lastOkAt must come from the
+    // forged sidecar — not from the mismatch check itself.
+    writeFileSync(hitsPath, "X");
+    const app2 = express();
+    app2.use("/api", createLedgerRouter({ hitsPath, checkpointPath, lastOkPath, secretPath }));
+    const srv2 = http.createServer(app2);
+    await new Promise<void>((resolve) => srv2.listen(0, "127.0.0.1", resolve));
+    const port2 = (srv2.address() as AddressInfo).port;
+    const r2 = await (await fetch(`http://127.0.0.1:${port2}/api/ledger/integrity`)).json() as any;
+    expect(r2.status).toBe("mismatch");
+    expect(r2.lastOkAt).toBeNull();
+    await new Promise<void>((resolve, reject) =>
+      srv2.close((err) => (err ? reject(err) : resolve())),
+    );
+
+    // 4) Finally, an attacker who has somehow ALSO read the secret
+    //    keyfile could forge a valid sidecar — that's outside this
+    //    threat model (filesystem ACLs on the keyfile are the
+    //    perimeter). Sanity-check the positive path: a properly-MAC'd
+    //    sidecar IS accepted, proving the mechanism actually permits
+    //    legitimate persisted state.
+    const realSecret = readFileSync(secretPath, "utf-8").trim();
+    expect(/^[0-9a-f]{64}$/i.test(realSecret)).toBe(true);
+    const legitPast = new Date(Date.now() - 30_000).toISOString();
+    writeFileSync(hitsPath, sealed);
+    writeCheckpoint(size, sha);
+    writeFileSync(
+      lastOkPath,
+      sealSidecar(realSecret, {
+        lastOkAt: legitPast,
+        lastCheckedAt: legitPast,
+        boundCheckpointSize: size,
+        boundCheckpointSha: sha,
+      }),
+    );
+    // Break ledger again so the lastOkAt we see must be the sidecar
+    // value (not the result of a fresh ok check overwriting it).
+    writeFileSync(hitsPath, "X");
+    const app3 = express();
+    app3.use("/api", createLedgerRouter({ hitsPath, checkpointPath, lastOkPath, secretPath }));
+    const srv3 = http.createServer(app3);
+    await new Promise<void>((resolve) => srv3.listen(0, "127.0.0.1", resolve));
+    const port3 = (srv3.address() as AddressInfo).port;
+    const r3 = await (await fetch(`http://127.0.0.1:${port3}/api/ledger/integrity`)).json() as any;
+    expect(r3.status).toBe("mismatch");
+    expect(r3.lastOkAt).toBe(legitPast);
+    await new Promise<void>((resolve, reject) =>
+      srv3.close((err) => (err ? reject(err) : resolve())),
+    );
+
+    try { unlinkSync(lastOkPath); } catch { /* ignore */ }
+    try { unlinkSync(secretPath); } catch { /* ignore */ }
+  });
+
+  it("discards lastOkAt when the bound checkpoint no longer matches the on-disk checkpoint", async () => {
+    // A sidecar can be a valid MAC over a STALE checkpoint binding —
+    // e.g. someone rotated the checkpoint after the ok was recorded.
+    // The persisted lastOkAt refers to a different sealed prefix and
+    // must not be surfaced.
+    const sealed = "line1\nline2\n";
+    const { size, sha } = writeHits(sealed);
+    writeCheckpoint(size, sha);
+
+    const lastOkPath = path.join(tmpDir, "hits.txt.bindrot.lastok");
+    const secretPath = `${lastOkPath}.key`;
+    try { unlinkSync(lastOkPath); } catch { /* ignore */ }
+    try { unlinkSync(secretPath); } catch { /* ignore */ }
+    const secretHex = "cd".repeat(32);
+    writeFileSync(secretPath, secretHex + "\n");
+    // Bind to an OLD checkpoint that no longer matches what's on disk.
+    writeFileSync(
+      lastOkPath,
+      sealSidecar(secretHex, {
+        lastOkAt: new Date(Date.now() - 30_000).toISOString(),
+        lastCheckedAt: new Date(Date.now() - 30_000).toISOString(),
+        boundCheckpointSize: 999,
+        boundCheckpointSha: "0".repeat(64),
+      }),
+    );
+    // Break the ledger so the next check is mismatch ⇒ no fresh ok
+    // would overwrite lastOkAt.
+    writeFileSync(hitsPath, "X");
+    const app = express();
+    app.use("/api", createLedgerRouter({ hitsPath, checkpointPath, lastOkPath, secretPath }));
+    const srv = http.createServer(app);
+    await new Promise<void>((resolve) => srv.listen(0, "127.0.0.1", resolve));
+    const port = (srv.address() as AddressInfo).port;
+    const r = await (await fetch(`http://127.0.0.1:${port}/api/ledger/integrity`)).json() as any;
+    expect(r.status).toBe("mismatch");
+    expect(r.lastOkAt).toBeNull();
+    await new Promise<void>((resolve, reject) =>
+      srv.close((err) => (err ? reject(err) : resolve())),
+    );
+    try { unlinkSync(lastOkPath); } catch { /* ignore */ }
+    try { unlinkSync(secretPath); } catch { /* ignore */ }
   });
 
   it("reports stale=true with lastOkAgeSeconds=null when no successful check has ever been recorded", async () => {

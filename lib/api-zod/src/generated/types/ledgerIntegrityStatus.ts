@@ -74,15 +74,27 @@ export interface LedgerIntegrityStatus {
   checkpointPath: string;
   /**
      * ISO-8601 timestamp of the most recent `status: ok` integrity
-  check. Persisted to a `data/hits.txt.lastok` sidecar
-  (`{ "lastOkAt": "..." }`) so the value survives server
-  restarts; on boot the server reads it back so the dashboard
-  immediately shows the real age instead of "never". Null
-  only when no successful check has ever been recorded.
-  Sidecar writes are best-effort — a write failure does not
-  break the integrity endpoint. Lets operators tell if a
-  currently-amber/unreachable panel has been stuck for
-  seconds vs hours.
+  check. Persisted to a `data/hits.txt.lastok` sidecar so the
+  value survives server restarts; on boot the server reads it
+  back so the dashboard immediately shows the real age
+  instead of "never". Null when no successful check has ever
+  been recorded. Sidecar writes are best-effort — a write
+  failure does not break the integrity endpoint.
+
+  **Tamper resistance (task #95).** The sidecar payload is
+  HMAC-SHA256-signed with a per-deploy secret kept in
+  `data/hits.txt.lastok.key` (auto-generated 32 random bytes,
+  chmod 600) AND bound to the current
+  `data/hits.txt.checkpoint` size+sha. On read, the server
+  verifies both: a missing/invalid mac, OR a checkpoint
+  binding that no longer matches the on-disk checkpoint,
+  causes `lastOkAt` to be discarded as null (the dashboard
+  falls back to "never verified" rather than trusting a
+  forged fresh timestamp). Hand-editing the sidecar JSON to
+  backdate or post-date `lastOkAt` does not propagate to
+  this field. Lets operators tell if a currently-amber /
+  unreachable panel has been stuck for seconds vs hours
+  without an attacker being able to lie about the answer.
 
      * @nullable
      */

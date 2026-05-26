@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { createHash } from "node:crypto";
+import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import {
   existsSync,
   openSync,
@@ -9,6 +9,7 @@ import {
   readFileSync,
   writeFileSync,
   renameSync,
+  chmodSync,
 } from "node:fs";
 import path from "node:path";
 import type {
@@ -91,6 +92,15 @@ export interface LedgerRouterOptions {
   hitsPath: string;
   checkpointPath: string;
   lastOkPath?: string;
+  /**
+   * Path to the per-deploy HMAC secret used to authenticate the
+   * `lastOkPath` sidecar payload. Defaults to `${lastOkPath}.key`.
+   * The secret is auto-generated (32 random bytes, hex) on first use
+   * if the file is absent. Tamper detection: if an attacker writes a
+   * forged `{lastOkAt: <future>}` to the sidecar without the secret,
+   * the HMAC won't verify and the persisted value is dropped on read.
+   */
+  secretPath?: string;
   staleThresholdSeconds?: number;
 }
 
@@ -101,33 +111,202 @@ interface PersistedState {
   lastCheckedAt: string | null;
 }
 
-function readPersistedState(p: string): PersistedState {
+interface SidecarPayload {
+  lastOkAt: string | null;
+  lastCheckedAt: string | null;
+  /**
+   * Checkpoint binding — the size+sha of `data/hits.txt.checkpoint` at
+   * the time this sidecar was written. On read, if the current
+   * checkpoint differs, we don't trust the persisted `lastOkAt` (the
+   * verification was against a different sealed prefix). Belt-and-
+   * suspenders alongside the HMAC.
+   */
+  boundCheckpointSize: number | null;
+  boundCheckpointSha: string | null;
+}
+
+function loadOrCreateSecret(
+  secretPath: string,
+  logger?: { warn: (...args: unknown[]) => void },
+): Buffer {
+  try {
+    if (existsSync(secretPath)) {
+      const raw = readFileSync(secretPath, "utf-8").trim();
+      if (/^[0-9a-f]{64}$/i.test(raw)) {
+        return Buffer.from(raw, "hex");
+      }
+      logger?.warn?.(
+        { secretPath },
+        "ledger sidecar: secret file malformed; regenerating",
+      );
+    }
+  } catch (err) {
+    logger?.warn?.(
+      { err, secretPath },
+      "ledger sidecar: secret file unreadable; regenerating",
+    );
+  }
+  const secret = randomBytes(32);
+  try {
+    const tmp = `${secretPath}.tmp`;
+    writeFileSync(tmp, secret.toString("hex") + "\n");
+    try {
+      chmodSync(tmp, 0o600);
+    } catch {
+      /* best-effort */
+    }
+    renameSync(tmp, secretPath);
+  } catch (err) {
+    logger?.warn?.(
+      { err, secretPath },
+      "ledger sidecar: could not persist secret (using in-memory only; persistence disabled across restart)",
+    );
+  }
+  return secret;
+}
+
+function readCheckpointTuple(
+  checkpointPath: string,
+): { size: number; sha: string } | null {
+  try {
+    if (!existsSync(checkpointPath)) return null;
+    const raw = readFileSync(checkpointPath, "utf-8").trim();
+    const parts = raw.split(/\s+/);
+    if (parts.length !== 2) return null;
+    const size = Number.parseInt(parts[0], 10);
+    if (!Number.isFinite(size) || size < 0 || String(size) !== parts[0]) {
+      return null;
+    }
+    const sha = parts[1].toLowerCase();
+    if (!/^[0-9a-f]{64}$/.test(sha)) return null;
+    return { size, sha };
+  } catch {
+    return null;
+  }
+}
+
+function canonicalize(p: SidecarPayload): string {
+  // Stable key order — JSON.stringify with explicit ordering so the
+  // HMAC input is deterministic regardless of property iteration order.
+  return JSON.stringify({
+    lastOkAt: p.lastOkAt,
+    lastCheckedAt: p.lastCheckedAt,
+    boundCheckpointSize: p.boundCheckpointSize,
+    boundCheckpointSha: p.boundCheckpointSha,
+  });
+}
+
+function computeMac(secret: Buffer, payload: SidecarPayload): string {
+  return createHmac("sha256", secret)
+    .update(canonicalize(payload))
+    .digest("hex");
+}
+
+function verifyMac(secret: Buffer, payload: SidecarPayload, mac: string): boolean {
+  if (!/^[0-9a-f]{64}$/i.test(mac)) return false;
+  const expected = computeMac(secret, payload);
+  const a = Buffer.from(expected, "hex");
+  const b = Buffer.from(mac, "hex");
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
+}
+
+function readPersistedState(
+  sidecarPath: string,
+  secret: Buffer,
+  checkpointPath: string,
+  logger?: { warn: (...args: unknown[]) => void },
+): PersistedState {
   const empty: PersistedState = { lastOkAt: null, lastCheckedAt: null };
   try {
-    if (!existsSync(p)) return empty;
-    const raw = readFileSync(p, "utf-8");
+    if (!existsSync(sidecarPath)) return empty;
+    const raw = readFileSync(sidecarPath, "utf-8");
     const parsed = JSON.parse(raw) as unknown;
     if (!parsed || typeof parsed !== "object") return empty;
     const obj = parsed as Record<string, unknown>;
+    const mac = typeof obj["mac"] === "string" ? (obj["mac"] as string) : null;
+    if (!mac) {
+      logger?.warn?.(
+        { sidecarPath },
+        "ledger sidecar: missing mac — treating as forged, discarding",
+      );
+      return empty;
+    }
     function pickIso(key: string): string | null {
       const v = obj[key];
       if (typeof v !== "string") return null;
       return Number.isNaN(Date.parse(v)) ? null : v;
     }
-    return {
+    function pickInt(key: string): number | null {
+      const v = obj[key];
+      return typeof v === "number" && Number.isFinite(v) ? v : null;
+    }
+    function pickShaOrNull(key: string): string | null {
+      const v = obj[key];
+      if (typeof v !== "string") return null;
+      return /^[0-9a-f]{64}$/i.test(v) ? v.toLowerCase() : null;
+    }
+    const payload: SidecarPayload = {
       lastOkAt: pickIso("lastOkAt"),
       lastCheckedAt: pickIso("lastCheckedAt"),
+      boundCheckpointSize: pickInt("boundCheckpointSize"),
+      boundCheckpointSha: pickShaOrNull("boundCheckpointSha"),
+    };
+    if (!verifyMac(secret, payload, mac)) {
+      logger?.warn?.(
+        { sidecarPath },
+        "ledger sidecar: HMAC mismatch — treating as forged, discarding",
+      );
+      return empty;
+    }
+    // Checkpoint-binding check: if a bound checkpoint was recorded
+    // (i.e. lastOkAt was set), it must still match the on-disk
+    // checkpoint. A different checkpoint means the sealed prefix has
+    // moved on; the persisted lastOkAt refers to a stale verification.
+    if (payload.lastOkAt != null) {
+      const cur = readCheckpointTuple(checkpointPath);
+      if (
+        cur == null ||
+        cur.size !== payload.boundCheckpointSize ||
+        cur.sha !== payload.boundCheckpointSha
+      ) {
+        logger?.warn?.(
+          { sidecarPath },
+          "ledger sidecar: checkpoint binding stale — discarding lastOkAt",
+        );
+        return { lastOkAt: null, lastCheckedAt: payload.lastCheckedAt };
+      }
+    }
+    return {
+      lastOkAt: payload.lastOkAt,
+      lastCheckedAt: payload.lastCheckedAt,
     };
   } catch {
     return empty;
   }
 }
 
-function writePersistedState(p: string, state: PersistedState): void {
+function writePersistedState(
+  sidecarPath: string,
+  secret: Buffer,
+  checkpointPath: string,
+  state: PersistedState,
+): void {
   try {
-    const tmp = `${p}.tmp`;
-    writeFileSync(tmp, JSON.stringify(state) + "\n");
-    renameSync(tmp, p);
+    let bound: { size: number; sha: string } | null = null;
+    if (state.lastOkAt != null) {
+      bound = readCheckpointTuple(checkpointPath);
+    }
+    const payload: SidecarPayload = {
+      lastOkAt: state.lastOkAt,
+      lastCheckedAt: state.lastCheckedAt,
+      boundCheckpointSize: bound ? bound.size : null,
+      boundCheckpointSha: bound ? bound.sha : null,
+    };
+    const mac = computeMac(secret, payload);
+    const tmp = `${sidecarPath}.tmp`;
+    writeFileSync(tmp, JSON.stringify({ ...payload, mac }) + "\n");
+    renameSync(tmp, sidecarPath);
   } catch {
     // Best-effort: never let a sidecar write failure break the endpoint.
   }
@@ -144,11 +323,18 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
   const HITS = opts.hitsPath;
   const CHECKPOINT = opts.checkpointPath;
   const LAST_OK_PATH = opts.lastOkPath ?? `${opts.hitsPath}.lastok`;
+  const SECRET_PATH = opts.secretPath ?? `${LAST_OK_PATH}.key`;
   const STALE_THRESHOLD_SECONDS =
     opts.staleThresholdSeconds != null && Number.isFinite(opts.staleThresholdSeconds) && opts.staleThresholdSeconds > 0
       ? Math.floor(opts.staleThresholdSeconds)
       : resolveStaleThresholdSeconds(process.env.LEDGER_STALE_THRESHOLD_SECONDS);
-  const persisted = readPersistedState(LAST_OK_PATH);
+  const SIDECAR_SECRET = loadOrCreateSecret(SECRET_PATH, defaultLogger);
+  const persisted = readPersistedState(
+    LAST_OK_PATH,
+    SIDECAR_SECRET,
+    CHECKPOINT,
+    defaultLogger,
+  );
   let lastOkAt: string | null = persisted.lastOkAt;
   let lastCheckedAt: string | null = persisted.lastCheckedAt;
 
@@ -193,7 +379,7 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
 
     // Always update lastCheckedAt — we ran a check regardless of outcome.
     lastCheckedAt = checkedAt;
-    writePersistedState(LAST_OK_PATH, { lastOkAt, lastCheckedAt });
+    writePersistedState(LAST_OK_PATH, SIDECAR_SECRET, CHECKPOINT, { lastOkAt, lastCheckedAt });
     base.lastCheckedAt = lastCheckedAt;
 
     if (!existsSync(HITS)) {
@@ -331,7 +517,7 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
     }
 
     lastOkAt = checkedAt;
-    writePersistedState(LAST_OK_PATH, { lastOkAt, lastCheckedAt });
+    writePersistedState(LAST_OK_PATH, SIDECAR_SECRET, CHECKPOINT, { lastOkAt, lastCheckedAt });
     const freshStaleness = computeStaleness(checkedAt);
     return {
       ...base,
