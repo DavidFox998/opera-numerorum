@@ -345,6 +345,15 @@ BRICKS=(
   # (`docs/ROADMAP.md` § 2). Still a bound on the placeholder
   # sum-of-traces schema, NOT the YM field energy.
   "Towers.YM.MassGap|TheoremaAureum.Towers.YM.YMHamiltonian_abs_le_twelve"
+  # Task #67 (2026-05-26): tightness witness for the Task #61 bound.
+  # `|YMHamiltonian (fun _ => 1)| = 12` — the all-ones SU(3) connection
+  # saturates the `≤ 12` bound, so 12 is a genuine supremum of the
+  # schema, not merely an upper bound. One-line `rw` against
+  # `YMHamiltonian_one_eq_twelve` + `norm_num` for the `|12| = 12`
+  # absolute-value step. YM tower status unchanged: Open
+  # (`docs/ROADMAP.md` § 2). Still a tightness witness for the
+  # placeholder sum-of-traces schema, NOT the YM field energy.
+  "Towers.YM.MassGap|TheoremaAureum.Towers.YM.YMHamiltonian_abs_le_twelve_tight"
   # Task #56 Path B batch 2 v2 (2026-05-26): the explicit
   # `↥su3_submodule ≃ₗ[ℝ] (Fin 8 → ℝ)` equiv, the Gell-Mann basis
   # packaging via `Basis.ofEquivFun`, plus the linear-independence

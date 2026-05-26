@@ -884,6 +884,31 @@ theorem YMHamiltonian_abs_le_twelve (A : SU3Connection) :
             (Matrix.mem_specialUnitaryGroup_iff.mp (A i).2).1)
     _ = 12 := by simp; norm_num
 
+/-! ### Task #67: the Task #61 bound is tight — saturated at the all-ones connection
+
+    `YMHamiltonian_abs_le_twelve` proves `∀ A, |YMHamiltonian A| ≤ 12`.
+    `YMHamiltonian_one_eq_twelve` proves the all-ones SU(3) connection
+    evaluates to `12`. Combining the two: the bound is saturated, so
+    `12` is a genuine supremum on the schema, not merely an upper
+    bound. This brick states the tightness witness directly:
+    `|YMHamiltonian (fun _ => 1)| = 12`.
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}`.
+
+    **Honest scoping reminder.** Tightness of the placeholder
+    sum-of-traces bound, NOT of any Yang-Mills field-energy bound.
+    The saturating "connection" is the trivial SU(3)-all-ones map;
+    the saturating value `12 = 4 · 3` is `(spacetime-dim) ·
+    (SU(3)-fundamental-rep-dim)`, an artefact of the schema, not
+    a physical energy. YM tower status unchanged: **Open**
+    (`docs/ROADMAP.md` § 2). -/
+theorem YMHamiltonian_abs_le_twelve_tight :
+    |YMHamiltonian (fun _ : Fin 4 => (1 : Matrix.specialUnitaryGroup (Fin 3) ℂ))|
+      = 12 := by
+  rw [YMHamiltonian_one_eq_twelve]
+  norm_num
+
 end YM
 end Towers
 end TheoremaAureum
