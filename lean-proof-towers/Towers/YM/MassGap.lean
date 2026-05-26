@@ -159,6 +159,85 @@ theorem SU3Connection_one_mul (A : SU3Connection) (i : Fin 4) :
     (1 : Matrix.specialUnitaryGroup (Fin 3) ℂ) * A i = A i :=
   one_mul (A i)
 
+/-- **Each component of an SU(3) connection is unitary
+    (second real brick in `MassGap.lean`).**
+
+    For any `SU3Connection` `A` and any spacetime direction
+    `i : Fin 4`, the underlying `3×3` complex matrix of `A i`
+    satisfies the unitarity equation
+
+      `(A i).1 * star ((A i).1) = 1`
+
+    where `.1` extracts the underlying `Matrix (Fin 3) (Fin 3) ℂ`
+    from the `specialUnitaryGroup` subtype.
+
+    The proof unfolds membership through mathlib's
+    `Matrix.mem_specialUnitaryGroup_iff`
+    (`A ∈ specialUnitaryGroup n α ↔ A ∈ unitaryGroup n α ∧ A.det = 1`)
+    to extract the unitarity component, then unfolds that through
+    `Matrix.mem_unitaryGroup_iff`
+    (`A ∈ unitaryGroup n α ↔ A * star A = 1`).
+
+    Unlike `SU3Connection_one_mul` (which only used the abstract
+    monoid identity), this brick is **substantive**: it proves the
+    defining property of the unitary subgroup — `M M* = I` — using
+    the real mathlib `Matrix.unitaryGroup` API, instantiated at the
+    SU(3) connection components of our trivial-bundle schema.
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}` (verified by
+    `scripts/check-towers.sh`). No research-grade axioms.
+
+    **Honest scoping reminder.** This still does **not** advance the
+    YM tower past `Status: Open` (see `docs/ROADMAP.md` § 2). It
+    proves only that each constant SU(3)-matrix in the trivial-bundle
+    schema is in fact unitary — which it is by typing. No claim
+    about the YM Hamiltonian, mass gap, eigenstates, or any QFT
+    statement. The Hamiltonian, Hilbert space, and eigenstate
+    predicate are all still `sorry` in this file. -/
+theorem SU3Connection_component_unitary (A : SU3Connection) (i : Fin 4) :
+    (A i).1 * star (A i).1 = 1 := by
+  have h := Matrix.mem_specialUnitaryGroup_iff.mp (A i).2
+  exact Matrix.mem_unitaryGroup_iff.mp h.1
+
+/-- **Each component of an SU(3) connection has determinant 1
+    (third real brick in `MassGap.lean`).**
+
+    For any `SU3Connection` `A` and any spacetime direction
+    `i : Fin 4`, the underlying `3×3` complex matrix of `A i` has
+    determinant `1`:
+
+      `(A i).1.det = 1`.
+
+    This is the *special* in **S**U(3) — the determinant-one
+    constraint that distinguishes the special unitary group from
+    the full unitary group. The proof unfolds membership through
+    mathlib's `Matrix.mem_specialUnitaryGroup_iff`
+    (`A ∈ specialUnitaryGroup n α ↔ A ∈ unitaryGroup n α ∧ A.det = 1`)
+    and projects out the determinant component.
+
+    Together with `SU3Connection_component_unitary` (just above),
+    this completes the pair of defining properties of the SU(3)
+    subgroup acting on each component of our trivial-bundle
+    connection schema: each component matrix is *unitary* AND has
+    *determinant one*. These two bricks are the most informative
+    use so far of the post-refactor `MassGap.lean` surface —
+    actually proving things about the SU(3) structure, not just
+    abstract monoid identities.
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}` (verified by
+    `scripts/check-towers.sh`). No research-grade axioms.
+
+    **Honest scoping reminder.** This still does **not** advance the
+    YM tower past `Status: Open` (see `docs/ROADMAP.md` § 2). It
+    proves only that each constant SU(3)-matrix in the trivial-bundle
+    schema has det 1 — which it does by typing. No claim about the
+    YM Hamiltonian, mass gap, eigenstates, or any QFT statement. -/
+theorem SU3Connection_component_det_one (A : SU3Connection) (i : Fin 4) :
+    (A i).1.det = 1 :=
+  (Matrix.mem_specialUnitaryGroup_iff.mp (A i).2).2
+
 end YM
 end Towers
 end TheoremaAureum
