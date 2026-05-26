@@ -152,6 +152,34 @@ theorem divergence_smul (c : ℝ) (v : V → V)
   simp only [ContinuousLinearMap.smul_apply, PiLp.smul_apply, smul_eq_mul]
   rw [← Finset.mul_sum]
 
+/-- **Divergence of the zero vector field is zero (trivial third brick).**
+
+    For any point `x : V`,
+
+      `div (0 : V → V) (x) = 0`.
+
+    The proof is a one-line reduction to mathlib's `fderiv_const`
+    (the Fréchet derivative of a constant function is the zero map),
+    plus the fact that the zero continuous linear map evaluates to
+    zero on any input and a sum of zeros is zero. This lemma is
+    **not** new mathematics — it is the trivial degenerate case of
+    the divergence operator on the zero vector field, wrapped in a
+    divergence-flavoured name so future NS plans have a stable hook.
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}` (verified by
+    `scripts/check-towers.sh`). No research-grade axioms.
+
+    **Honest scoping reminder.** This still does **not** advance the
+    NS tower past `Status: Open` (see `docs/ROADMAP.md` § 3). It is
+    the third trio-clean divergence identity in Lean, nothing more.
+    No claim of any PDE result, regularity, or energy bound. -/
+theorem divergence_zero (x : V) : divergence (0 : V → V) x = 0 := by
+  simp only [divergence]
+  have h0 : (0 : V → V) = fun _ => (0 : V) := rfl
+  rw [h0]
+  simp [fderiv_const]
+
 end NS
 end Towers
 end TheoremaAureum

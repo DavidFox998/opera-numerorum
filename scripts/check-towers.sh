@@ -75,8 +75,10 @@ BRICKS=(
   "Towers.BSD.MordellWeil|TheoremaAureum.Towers.BSD.MordellWeilGroup.eq_zero_of_isRankZero"
   "Towers.NS.Divergence|TheoremaAureum.Towers.NS.divergence_add"
   "Towers.NS.Divergence|TheoremaAureum.Towers.NS.divergence_smul"
+  "Towers.NS.Divergence|TheoremaAureum.Towers.NS.divergence_zero"
   "Towers.YM.Gauge|TheoremaAureum.Towers.YM.gauge_action_one_smul"
   "Towers.YM.Gauge|TheoremaAureum.Towers.YM.gauge_action_mul_smul"
+  "Towers.YM.Gauge|TheoremaAureum.Towers.YM.gauge_action_inv_smul"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

@@ -146,6 +146,34 @@ theorem gauge_action_mul_smul {G : Type _} [Group G]
     (g * h) • A = g • (h • A) :=
   mul_smul g h A
 
+/-- **Inverse gauge transformation undoes the forward one (trivial third brick).**
+
+    For any group `G`, any gauge transformation `g : G`, and any
+    configuration `A : TrivialConfiguration G`, applying `g⁻¹` after
+    `g` returns to `A`:
+
+      `g⁻¹ • (g • A) = A`.
+
+    The proof is a one-line delegation to mathlib's
+    `_root_.inv_smul_smul` on the `MulAction` instance above. This
+    lemma is **not** new mathematics — it is the trivial
+    inverse-action identity of any group action, re-named in the
+    Yang-Mills context so future YM plans have a stable hook to
+    invoke instead of dropping into the raw `MulAction` API.
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}` (verified by
+    `scripts/check-towers.sh`). No research-grade axioms.
+
+    **Honest scoping reminder.** This still does **not** advance the
+    YM tower past `Status: Open` (see `docs/ROADMAP.md` § 2). It is
+    the third trio-clean gauge-action identity in Lean, nothing more.
+    No claim of any QFT result, mass gap, or energy bound. -/
+theorem gauge_action_inv_smul {G : Type _} [Group G]
+    (g : G) (A : TrivialConfiguration G) :
+    g⁻¹ • (g • A) = A :=
+  inv_smul_smul g A
+
 end YM
 end Towers
 end TheoremaAureum
