@@ -633,6 +633,34 @@ BRICKS=(
   "Towers.Spectral.Operator|TheoremaAureum.Towers.Spectral.vacuum_is_eigenstate"
   "Towers.Spectral.Operator|TheoremaAureum.Towers.Spectral.MassGap_def"
   "Towers.Spectral.Operator|TheoremaAureum.Towers.Spectral.mass_gap_pos_means_spectrum_gap"
+  # Task #77 (2026-05-26): close the conditional shape of Task #68's
+  # `MassGap_le_twelve_of_witness` by proving the placeholder
+  # `YMHamiltonian` admits no eigenstate at all. The
+  # uniform-scaling form `IsEigenstate H ψ := ∃ μ, ∀ A, H A = μ·‖ψ‖²`
+  # would force `YMHamiltonian` to be constant on `SU3Connection`,
+  # but the all-ones SU(3) connection evaluates to 12 (Task #55,
+  # `YMHamiltonian_one_eq_twelve`) while the all-`diag(-1,-1,1)` SU(3)
+  # connection evaluates to -4 (Task #77, the new
+  # `YMHamiltonian_diagNegOneOne_eq_neg_four`). Four trio-clean
+  # bricks: (1) `diagNegOneOneMat` — the SU(3) matrix `diag(-1,-1,1)`
+  # (det `(-1)·(-1)·1 = 1`, unitary because each diagonal entry has
+  # modulus 1); (2) the `-4` numerical witness; (3)
+  # `YMHamiltonian_no_eigenstate` — for every ψ, `¬ IsEigenstate
+  # YMHamiltonian ψ`, the strong form; (4) `YMHamiltonian_no_nonzero_
+  # eigenstate` — the task-headline `∀ ψ, IsEigenstate YMHamiltonian
+  # ψ → ψ = 0` (vacuously true via the strong form). And (5) the
+  # vacuous mass-gap follow-on: `MassGap_iff_pos : MassGap Δ ↔ 0 < Δ`
+  # — since no eigenstate exists, the universal clause of Task #68's
+  # `MassGap` predicate collapses, demonstrating the placeholder
+  # schema is content-free as Clay physics. Vacuity is *expected*
+  # — it confirms the schema is not the Clay surface, NOT that the
+  # Clay mass gap has been proved. YM tower status unchanged: Open
+  # (`docs/ROADMAP.md` § 2).
+  "Towers.YM.MassGap|TheoremaAureum.Towers.YM.diagNegOneOneMat"
+  "Towers.YM.MassGap|TheoremaAureum.Towers.YM.YMHamiltonian_diagNegOneOne_eq_neg_four"
+  "Towers.YM.MassGap|TheoremaAureum.Towers.YM.YMHamiltonian_no_eigenstate"
+  "Towers.YM.MassGap|TheoremaAureum.Towers.YM.YMHamiltonian_no_nonzero_eigenstate"
+  "Towers.YM.MassGap|TheoremaAureum.Towers.YM.MassGap_iff_pos"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

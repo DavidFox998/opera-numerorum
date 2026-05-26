@@ -117,6 +117,9 @@
 -/
 
 import Mathlib.LinearAlgebra.UnitaryGroup
+import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.Data.Matrix.Notation
 import Mathlib.Data.Complex.Basic
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.RCLike.Basic
@@ -1032,6 +1035,181 @@ theorem MassGap_le_twelve_of_witness {Δ : ℝ} (h : MassGap Δ)
   have h1 := h.2 ψ (fun _ : Fin 4 => (1 : Matrix.specialUnitaryGroup (Fin 3) ℂ))
     hψ hne
   rwa [YMHamiltonian_one_eq_twelve] at h1
+
+/-! ### Task #77: rule out every eigenstate of the placeholder YMHamiltonian
+
+    `MassGap_le_twelve_of_witness` (Task #68) is conditional on a
+    non-zero eigenstate witness, because none is known to exist in
+    the placeholder schema. The bricks below close that gap: the
+    placeholder `YMHamiltonian` admits *no* eigenstate at all, hence
+    in particular no non-zero one. The conditional Task #68 brick
+    therefore has a vacuously satisfied hypothesis, and the
+    universally-quantified clause of `MassGap` collapses to
+    `MassGap Δ ↔ 0 < Δ`.
+
+    The argument: `IsEigenstate YMHamiltonian ψ` unfolds to
+    `∃ μ : ℝ, ∀ A, YMHamiltonian A = μ * (‖ψ‖ * ‖ψ‖)`, which would
+    force `YMHamiltonian` to be a *constant* function on
+    `SU3Connection`. But the all-ones SU(3) connection evaluates to
+    `12` (`YMHamiltonian_one_eq_twelve`), while the all-`diag(-1,-1,1)`
+    SU(3) connection evaluates to `-4`
+    (`YMHamiltonian_diagNegOneOne_eq_neg_four`). Two distinct values
+    on the schema's input space ⇒ no eigenstate exists.
+
+    The second connection is built around the real SU(3) matrix
+    `diag(-1, -1, 1)`: determinant `(-1)·(-1)·1 = 1`, unitary because
+    every diagonal entry has modulus one. Its trace is `-1`, so the
+    sum over the four spacetime directions is `4·(-1) = -4`.
+
+    **Honest scoping.** Vacuity of the placeholder schema is
+    *expected* and is what this brick wave demonstrates. It confirms
+    the schema is **not** the Clay Yang-Mills surface (which would
+    have a real non-empty eigenspace and a non-zero spectral gap on
+    the OS-reconstructed physical Hilbert space); it does **NOT**
+    prove the Clay Yang-Mills mass gap. YM tower status unchanged:
+    **Open** (`docs/ROADMAP.md` § 2). -/
+
+/-- **The SU(3) matrix `diag(-1, -1, 1)`** — concrete second
+    connection-component used to witness that `YMHamiltonian` is not
+    constant on `SU3Connection`. Real diagonal, determinant
+    `(-1)·(-1)·1 = 1`, unitary because each diagonal entry has
+    modulus one (so `M * star M = diag(|-1|², |-1|², |1|²) = 1`).
+
+    Built via `Matrix.mem_specialUnitaryGroup_iff` + the
+    `ext + fin_cases + simp` matrix-literal pattern already used in
+    `Towers/YM/SU3Basis.lean` for the Gell-Mann generators. -/
+noncomputable def diagNegOneOneMat :
+    Matrix.specialUnitaryGroup (Fin 3) ℂ :=
+  ⟨!![(-1 : ℂ), 0, 0; 0, -1, 0; 0, 0, 1], by
+    rw [Matrix.mem_specialUnitaryGroup_iff]
+    refine ⟨?_, ?_⟩
+    · rw [Matrix.mem_unitaryGroup_iff]
+      ext i j
+      fin_cases i <;> fin_cases j <;>
+        simp [Matrix.mul_apply, Matrix.star_apply, Matrix.one_apply,
+              Fin.sum_univ_three, Matrix.cons_val', Matrix.cons_val_zero,
+              Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const,
+              Matrix.empty_val', Matrix.cons_val_fin_one,
+              Matrix.of_apply, star_neg, star_one, star_zero]
+    · rw [Matrix.det_fin_three]
+      simp [Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one,
+            Matrix.head_cons, Matrix.head_fin_const, Matrix.empty_val',
+            Matrix.cons_val_fin_one, Matrix.of_apply]⟩
+
+/-- **The all-`diag(-1,-1,1)` SU(3) connection has Hamiltonian value
+    `-4` (Task #77 numerical witness).**
+
+    For the constant connection `A = fun _ => diagNegOneOneMat`,
+    each component contributes `trace.re = -1 + -1 + 1 = -1`; summing
+    over the four spacetime directions gives `4 · (-1) = -4`.
+
+    Companion to `YMHamiltonian_one_eq_twelve` (which gives `12` on
+    the all-ones connection). The two values `12 ≠ -4` are exactly
+    what `YMHamiltonian_no_eigenstate` below exploits to rule out
+    every eigenstate of `YMHamiltonian` under the placeholder
+    scaling-form eigenstate predicate.
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}`.
+
+    **Honest scoping reminder.** A point-value calculation on the
+    placeholder sum-of-traces schema, not a Yang-Mills field-energy
+    computation. YM tower status unchanged: **Open**. -/
+theorem YMHamiltonian_diagNegOneOne_eq_neg_four :
+    YMHamiltonian (fun _ : Fin 4 => diagNegOneOneMat) = -4 := by
+  show (Finset.univ : Finset (Fin 4)).sum
+      (fun _ : Fin 4 =>
+        ((!![(-1 : ℂ), 0, 0; 0, -1, 0; 0, 0, 1] :
+            Matrix (Fin 3) (Fin 3) ℂ).trace).re) = -4
+  simp [Fin.sum_univ_four, Matrix.trace_fin_three,
+        Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.head_fin_const, Matrix.empty_val',
+        Matrix.cons_val_fin_one, Matrix.of_apply,
+        Complex.add_re, Complex.neg_re, Complex.one_re, Complex.zero_re]
+
+/-- **The placeholder `YMHamiltonian` admits no eigenstate
+    (Task #77 main brick).**
+
+    For every `ψ : HilbertSpace`, `¬ IsEigenstate YMHamiltonian ψ`.
+
+    Proof: an eigenstate would force `YMHamiltonian` to be constant
+    on `SU3Connection` (equal to `μ · ‖ψ‖²`), but
+    `YMHamiltonian_one_eq_twelve` gives `12` on the all-ones
+    connection and `YMHamiltonian_diagNegOneOne_eq_neg_four` gives
+    `-4` on the all-`diag(-1,-1,1)` connection. Transitivity yields
+    `(12 : ℝ) = -4`, closed by `norm_num`.
+
+    This strictly strengthens `YMHamiltonian_not_isEigenstate_zero`
+    (Task #55), which only ruled out `ψ = 0`. Here, *no* `ψ` —
+    zero or non-zero — is an eigenstate.
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}`.
+
+    **Honest scoping reminder.** A statement about the placeholder
+    schema's `IsEigenstate` (the uniform-scaling form
+    `∃ μ, ∀ A, H A = μ · ‖ψ‖²`), NOT the spectral-eigenvector
+    property of a self-adjoint operator on the YM physical Hilbert
+    space. The fact that the placeholder eigenset is empty is a
+    *vacuity* result confirming the schema is not the Clay
+    surface. YM tower status unchanged: **Open**. -/
+theorem YMHamiltonian_no_eigenstate (ψ : HilbertSpace) :
+    ¬ IsEigenstate YMHamiltonian ψ := by
+  rintro ⟨μ, h⟩
+  have h1 := h (fun _ : Fin 4 => (1 : Matrix.specialUnitaryGroup (Fin 3) ℂ))
+  have h2 := h (fun _ : Fin 4 => diagNegOneOneMat)
+  rw [YMHamiltonian_one_eq_twelve] at h1
+  rw [YMHamiltonian_diagNegOneOne_eq_neg_four] at h2
+  have hcontra : (12 : ℝ) = -4 := h1.trans h2.symm
+  norm_num at hcontra
+
+/-- **Every eigenstate of the placeholder `YMHamiltonian` is the
+    zero vector (Task #77, task-headline brick).**
+
+    `∀ ψ, IsEigenstate YMHamiltonian ψ → ψ = 0`. Vacuously true
+    because `YMHamiltonian_no_eigenstate` proves no eigenstate
+    exists at all; the conclusion `ψ = 0` is then `False.elim`-style.
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}`.
+
+    **Honest scoping reminder.** This is the placeholder schema's
+    eigenset being empty, NOT a Yang-Mills physics statement. See
+    the Task #77 section header above for the full honest-scope
+    argument. YM tower status unchanged: **Open**. -/
+theorem YMHamiltonian_no_nonzero_eigenstate (ψ : HilbertSpace)
+    (h : IsEigenstate YMHamiltonian ψ) : ψ = 0 :=
+  absurd h (YMHamiltonian_no_eigenstate ψ)
+
+/-- **Vacuous mass-gap theorem: `MassGap Δ ↔ 0 < Δ`
+    (Task #77 follow-on brick).**
+
+    The `MassGap` predicate quantifies over non-zero eigenstates of
+    `YMHamiltonian` (Task #68). Since
+    `YMHamiltonian_no_eigenstate` shows no such eigenstate exists,
+    the universal clause of `MassGap` is vacuously satisfied, and
+    `MassGap Δ` collapses to `0 < Δ` alone — any positive real
+    satisfies it.
+
+    Forward direction is `MassGap_pos`. Reverse direction packages
+    `0 < Δ` with the vacuous quantifier (the eigenstate hypothesis
+    is contradicted by `YMHamiltonian_no_eigenstate`).
+
+    Axiom footprint: subset of mathlib's classical core
+    `{propext, Classical.choice, Quot.sound}`.
+
+    **Honest scoping reminder.** This is the *expected* vacuity of
+    the placeholder `MassGap` predicate, NOT a proof of the Clay
+    Yang-Mills mass-gap conjecture. The placeholder eigenset is
+    empty (`YMHamiltonian_no_eigenstate`), so the placeholder gap
+    predicate is content-free — exactly the demonstration the
+    task description asks for: the placeholder schema cannot carry
+    a real Clay-flavoured mass-gap statement. YM tower status
+    unchanged: **Open** (`docs/ROADMAP.md` § 2). -/
+theorem MassGap_iff_pos {Δ : ℝ} : MassGap Δ ↔ 0 < Δ := by
+  refine ⟨fun h => h.1, fun hΔ => ⟨hΔ, ?_⟩⟩
+  intro ψ _ hψ _
+  exact absurd hψ (YMHamiltonian_no_eigenstate ψ)
 
 end YM
 end Towers
