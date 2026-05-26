@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
 import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { desc, lt } from "drizzle-orm";
 import { db, leanRebuildHistoryTable } from "@workspace/db";
@@ -155,8 +156,64 @@ function invalidateCache(): void {
 }
 
 const ALERTS_LOG_PATH = path.join(REPO_ROOT, "data", "ledger-alerts.jsonl");
+const ALERTS_ACK_PATH = path.join(REPO_ROOT, "data", "ledger-alerts.ack.json");
 const ALERTS_DEFAULT_LIMIT = 20;
 const ALERTS_MAX_LIMIT = 200;
+const ALERTS_ACK_MAX_ENTRIES = 1000;
+
+function computeAlertId(timestamp: string, message: string): string {
+  return createHash("sha256")
+    .update(timestamp + "\n" + message)
+    .digest("hex");
+}
+
+function readAckMap(log: import("pino").Logger): Record<string, string> {
+  if (!existsSync(ALERTS_ACK_PATH)) return {};
+  let raw: string;
+  try {
+    raw = readFileSync(ALERTS_ACK_PATH, "utf8");
+  } catch (err) {
+    log.warn({ err, path: ALERTS_ACK_PATH }, "Failed to read alert ack sidecar");
+    return {};
+  }
+  const trimmed = raw.trim();
+  if (!trimmed) return {};
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(trimmed);
+  } catch (err) {
+    log.warn({ err, path: ALERTS_ACK_PATH }, "Malformed alert ack sidecar; ignoring");
+    return {};
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
+    if (typeof k === "string" && /^[0-9a-f]{64}$/.test(k) && typeof v === "string") {
+      out[k] = v;
+    }
+  }
+  return out;
+}
+
+function writeAckMap(map: Record<string, string>, log: import("pino").Logger): void {
+  let trimmed = map;
+  const keys = Object.keys(map);
+  if (keys.length > ALERTS_ACK_MAX_ENTRIES) {
+    const sorted = keys
+      .map((k) => [k, map[k]] as const)
+      .sort((a, b) => (a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0))
+      .slice(0, ALERTS_ACK_MAX_ENTRIES);
+    trimmed = Object.fromEntries(sorted);
+  }
+  const tmp = ALERTS_ACK_PATH + ".tmp";
+  try {
+    writeFileSync(tmp, JSON.stringify(trimmed, null, 2) + "\n", { mode: 0o644 });
+    renameSync(tmp, ALERTS_ACK_PATH);
+  } catch (err) {
+    log.error({ err, path: ALERTS_ACK_PATH }, "Failed to persist alert ack sidecar");
+    throw err;
+  }
+}
 
 type AlertDeliveryStatus = "ok" | "failed" | "not_configured";
 
@@ -166,6 +223,8 @@ interface AlertDelivery {
 }
 
 interface LedgerAlertView {
+  id: string;
+  acknowledgedAt: string | null;
   timestamp: string;
   workflow: string;
   message: string;
@@ -215,6 +274,8 @@ function normalizeAlertEntry(raw: unknown): LedgerAlertView | null {
   const workflow = pickString(r["workflow"]) ?? "unknown";
   const delivery = (r["delivery"] ?? {}) as Record<string, unknown>;
   return {
+    id: computeAlertId(timestamp, message),
+    acknowledgedAt: null,
     timestamp,
     workflow,
     message,
@@ -242,6 +303,10 @@ router.get("/lean/ledger-alerts", (req, res) => {
       limit = Math.min(ALERTS_MAX_LIMIT, n);
     }
   }
+  const rawInclude = req.query["includeAcknowledged"];
+  const includeAcknowledged =
+    typeof rawInclude === "string" && /^(1|true|yes)$/i.test(rawInclude);
+  const ackMap = readAckMap(req.log);
   const logExists = existsSync(ALERTS_LOG_PATH);
   if (!logExists) {
     res.json({
@@ -275,7 +340,13 @@ router.get("/lean/ledger-alerts", (req, res) => {
     try {
       const parsed = JSON.parse(line) as unknown;
       const entry = normalizeAlertEntry(parsed);
-      if (entry) alerts.push(entry);
+      if (!entry) continue;
+      const ack = ackMap[entry.id];
+      if (ack) {
+        if (!includeAcknowledged) continue;
+        entry.acknowledgedAt = ack;
+      }
+      alerts.push(entry);
     } catch {
       // Malformed JSON line (e.g. partial write) — skip; informational
       // surface, not a correctness one.
@@ -287,6 +358,58 @@ router.get("/lean/ledger-alerts", (req, res) => {
     totalReturned: alerts.length,
     logPath: ALERTS_LOG_PATH,
     logExists: true,
+  });
+});
+
+router.post("/lean/ledger-alerts/ack", (req, res) => {
+  const auth = checkRebuildAuth(req);
+  if (!auth.ok) {
+    applyAuthFailureHeaders(res, auth);
+    res.status(auth.status).json({ ok: false, error: auth.error });
+    return;
+  }
+  const body = (req.body ?? {}) as { timestamp?: unknown; message?: unknown };
+  const timestamp = typeof body.timestamp === "string" ? body.timestamp : "";
+  const message = typeof body.message === "string" ? body.message : "";
+  if (!timestamp || !message) {
+    res.status(400).json({
+      ok: false,
+      error: "Missing required fields `timestamp` and/or `message`.",
+    });
+    return;
+  }
+  const id = computeAlertId(timestamp, message);
+  const ackMap = readAckMap(req.log);
+  const existing = ackMap[id];
+  if (existing) {
+    res.json({
+      ok: true,
+      id,
+      acknowledgedAt: existing,
+      alreadyAcknowledged: true,
+    });
+    return;
+  }
+  const acknowledgedAt = new Date().toISOString();
+  ackMap[id] = acknowledgedAt;
+  try {
+    writeAckMap(ackMap, req.log);
+  } catch (err) {
+    res.status(500).json({
+      ok: false,
+      error: `Failed to persist acknowledgement: ${err instanceof Error ? err.message : String(err)}`,
+    });
+    return;
+  }
+  req.log.info(
+    { alertId: id, ackedBy: getClientIp(req) },
+    "Ledger alert acknowledged by operator",
+  );
+  res.json({
+    ok: true,
+    id,
+    acknowledgedAt,
+    alreadyAcknowledged: false,
   });
 });
 

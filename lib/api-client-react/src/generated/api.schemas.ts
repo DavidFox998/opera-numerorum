@@ -213,6 +213,24 @@ export interface LedgerAlertDeliveryStatus {
   error?: string | null;
 }
 
+export interface LedgerAlertAckRequest {
+  /** The `timestamp` field of the alert entry to acknowledge (exact match). */
+  timestamp: string;
+  /** The `message` field of the alert entry to acknowledge (exact match). */
+  message: string;
+}
+
+export interface LedgerAlertAckResult {
+  ok: boolean;
+  /** Server-computed acknowledgement id (`sha256(timestamp + "\n" + message)` hex). */
+  id?: string;
+  /** ISO-8601 timestamp recorded on the sidecar */
+  acknowledgedAt?: string;
+  /** True if the alert was already acknowledged before this call (no-op) */
+  alreadyAcknowledged?: boolean;
+  error?: string;
+}
+
 /**
  * Per-transport delivery status at fire time
  */
@@ -229,6 +247,21 @@ check-ledger-integrity.py hard FATALs) may omit any of them.
 
  */
 export interface LedgerAlertEntry {
+  /** Server-computed acknowledgement id
+  (`sha256(timestamp + "\n" + message)` hex). Stable across
+  requests; clients pass this back into
+  `POST /lean/ledger-alerts/ack` to dismiss the entry.
+   */
+  id: string;
+  /**
+     * ISO-8601 timestamp recorded when an operator dismissed this
+  alert via `POST /lean/ledger-alerts/ack`. Null when the alert
+  is still actionable. Persisted in
+  `data/ledger-alerts.ack.json`.
+
+     * @nullable
+     */
+  acknowledgedAt?: string | null;
   /** ISO-8601 timestamp of when the alert fired */
   timestamp: string;
   /** Friendly tag of the workflow that fired the alert
@@ -526,6 +559,15 @@ export type GetLedgerAlertsParams = {
  * @maximum 200
  */
 limit?: number;
+/**
+ * When true, include entries that have been acknowledged via
+`POST /lean/ledger-alerts/ack`. Defaults to false so the panel
+only shows actionable (unhandled) alerts. Each entry always
+carries its `acknowledgedAt` field so the UI can render a
+"show acknowledged" toggle without a second round-trip.
+
+ */
+includeAcknowledged?: boolean;
 };
 
 export type GetMorningstarHitsParams = {

@@ -33,6 +33,8 @@ import type {
   LeanRebuildHistory,
   LeanRebuildResult,
   LeanVerification,
+  LedgerAlertAckRequest,
+  LedgerAlertAckResult,
   LedgerAlertsResponse,
   LedgerIntegrityStatus,
   MorningstarHits,
@@ -1072,6 +1074,90 @@ export function useGetLedgerAlerts<TData = Awaited<ReturnType<typeof getLedgerAl
 
 
 
+
+export const getAckLedgerAlertUrl = () => {
+
+
+
+
+  return `/api/lean/ledger-alerts/ack`
+}
+
+/**
+ * Records that an operator has investigated and dismissed a single
+alert from `data/ledger-alerts.jsonl`. The acknowledgement is
+keyed by `sha256(timestamp + "\n" + message)` and persisted to
+the sidecar `data/ledger-alerts.ack.json`, so the dismissal
+survives server restarts. Acknowledging an already-acknowledged
+alert is a no-op (idempotent). Acknowledging an alert that no
+longer exists in the log still succeeds — the sidecar will be
+garbage-collected the next time the log rolls.
+
+Requires the same `Authorization: Bearer <LEAN_REBUILD_TOKEN>`
+header as the lockouts admin endpoints, and is subject to the
+same per-IP brute-force limiter.
+
+ * @summary Acknowledge (dismiss) a ledger alert
+ */
+export const ackLedgerAlert = async (ledgerAlertAckRequest: LedgerAlertAckRequest, options?: RequestInit): Promise<LedgerAlertAckResult> => {
+
+  return customFetch<LedgerAlertAckResult>(getAckLedgerAlertUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      ledgerAlertAckRequest,)
+  }
+);}
+
+
+
+
+export const getAckLedgerAlertMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof ackLedgerAlert>>, TError,{data: BodyType<LedgerAlertAckRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof ackLedgerAlert>>, TError,{data: BodyType<LedgerAlertAckRequest>}, TContext> => {
+
+const mutationKey = ['ackLedgerAlert'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof ackLedgerAlert>>, {data: BodyType<LedgerAlertAckRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  ackLedgerAlert(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AckLedgerAlertMutationResult = NonNullable<Awaited<ReturnType<typeof ackLedgerAlert>>>
+    export type AckLedgerAlertMutationBody = BodyType<LedgerAlertAckRequest>
+    export type AckLedgerAlertMutationError = ErrorType<void>
+
+    /**
+ * @summary Acknowledge (dismiss) a ledger alert
+ */
+export const useAckLedgerAlert = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof ackLedgerAlert>>, TError,{data: BodyType<LedgerAlertAckRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof ackLedgerAlert>>,
+        TError,
+        {data: BodyType<LedgerAlertAckRequest>},
+        TContext
+      > => {
+      return useMutation(getAckLedgerAlertMutationOptions(options));
+    }
 
 export const getGetMorningstarHitsUrl = (params?: GetMorningstarHitsParams,) => {
   const normalizedParams = new URLSearchParams();

@@ -23,6 +23,8 @@ export * from './leanRebuildHistory';
 export * from './leanRebuildHistoryEntry';
 export * from './leanRebuildResult';
 export * from './leanVerification';
+export * from './ledgerAlertAckRequest';
+export * from './ledgerAlertAckResult';
 export * from './ledgerAlertDeliveryStatus';
 export * from './ledgerAlertDeliveryStatusStatus';
 export * from './ledgerAlertEntry';

@@ -15,6 +15,21 @@ check-ledger-integrity.py hard FATALs) may omit any of them.
 
  */
 export interface LedgerAlertEntry {
+  /** Server-computed acknowledgement id
+  (`sha256(timestamp + "\n" + message)` hex). Stable across
+  requests; clients pass this back into
+  `POST /lean/ledger-alerts/ack` to dismiss the entry.
+   */
+  id: string;
+  /**
+     * ISO-8601 timestamp recorded when an operator dismissed this
+  alert via `POST /lean/ledger-alerts/ack`. Null when the alert
+  is still actionable. Persisted in
+  `data/ledger-alerts.ack.json`.
+
+     * @nullable
+     */
+  acknowledgedAt?: string | null;
   /** ISO-8601 timestamp of when the alert fired */
   timestamp: string;
   /** Friendly tag of the workflow that fired the alert

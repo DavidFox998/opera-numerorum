@@ -13,4 +13,13 @@ export type GetLedgerAlertsParams = {
  * @maximum 200
  */
 limit?: number;
+/**
+ * When true, include entries that have been acknowledged via
+`POST /lean/ledger-alerts/ack`. Defaults to false so the panel
+only shows actionable (unhandled) alerts. Each entry always
+carries its `acknowledgedAt` field so the UI can render a
+"show acknowledged" toggle without a second round-trip.
+
+ */
+includeAcknowledged?: boolean;
 };

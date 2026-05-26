@@ -281,6 +281,18 @@ paths:
             minimum: 1
             maximum: 200
             default: 20
+        - name: includeAcknowledged
+          in: query
+          required: false
+          description: |
+            When true, include entries that have been acknowledged via
+            `POST /lean/ledger-alerts/ack`. Defaults to false so the panel
+            only shows actionable (unhandled) alerts. Each entry always
+            carries its `acknowledgedAt` field so the UI can render a
+            "show acknowledged" toggle without a second round-trip.
+          schema:
+            type: boolean
+            default: false
       responses:
         "200":
           description: Alert snapshot (newest first)
@@ -288,6 +300,46 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LedgerAlertsResponse"
+
+  /lean/ledger-alerts/ack:
+    post:
+      operationId: ackLedgerAlert
+      tags: [lean]
+      summary: Acknowledge (dismiss) a ledger alert
+      description: |
+        Records that an operator has investigated and dismissed a single
+        alert from `data/ledger-alerts.jsonl`. The acknowledgement is
+        keyed by `sha256(timestamp + "\n" + message)` and persisted to
+        the sidecar `data/ledger-alerts.ack.json`, so the dismissal
+        survives server restarts. Acknowledging an already-acknowledged
+        alert is a no-op (idempotent). Acknowledging an alert that no
+        longer exists in the log still succeeds — the sidecar will be
+        garbage-collected the next time the log rolls.
+
+        Requires the same `Authorization: Bearer <LEAN_REBUILD_TOKEN>`
+        header as the lockouts admin endpoints, and is subject to the
+        same per-IP brute-force limiter.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LedgerAlertAckRequest"
+      responses:
+        "200":
+          description: Alert acknowledged (or was already acknowledged)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LedgerAlertAckResult"
+        "400":
+          description: Missing or invalid `timestamp`/`message`
+        "401":
+          description: Missing or invalid referee rebuild token
+        "429":
+          description: Per-IP brute-force lockout in effect
+        "503":
+          description: Rebuilds are disabled (LEAN_REBUILD_TOKEN not configured)
 
   /morningstar/hits:
     get:
@@ -678,15 +730,58 @@ components:
           type: ["string", "null"]
           description: Best-effort delivery error string (present when status=failed)
 
+    LedgerAlertAckRequest:
+      type: object
+      required: [timestamp, message]
+      properties:
+        timestamp:
+          type: string
+          description: The `timestamp` field of the alert entry to acknowledge (exact match).
+        message:
+          type: string
+          description: The `message` field of the alert entry to acknowledge (exact match).
+
+    LedgerAlertAckResult:
+      type: object
+      required: [ok]
+      properties:
+        ok:
+          type: boolean
+        id:
+          type: string
+          description: Server-computed acknowledgement id (`sha256(timestamp + "\n" + message)` hex).
+        acknowledgedAt:
+          type: string
+          description: ISO-8601 timestamp recorded on the sidecar
+        alreadyAcknowledged:
+          type: boolean
+          description: True if the alert was already acknowledged before this call (no-op)
+        error:
+          type: string
+
     LedgerAlertEntry:
       type: object
-      required: [timestamp, workflow, message, delivery]
+      required: [id, timestamp, workflow, message, delivery]
       description: |
         One entry from the on-disk alert ring buffer
         `data/ledger-alerts.jsonl`. Each field other than the four
         required ones is best-effort: older entries (or
         check-ledger-integrity.py hard FATALs) may omit any of them.
       properties:
+        id:
+          type: string
+          description: |
+            Server-computed acknowledgement id
+            (`sha256(timestamp + "\n" + message)` hex). Stable across
+            requests; clients pass this back into
+            `POST /lean/ledger-alerts/ack` to dismiss the entry.
+        acknowledgedAt:
+          type: ["string", "null"]
+          description: |
+            ISO-8601 timestamp recorded when an operator dismissed this
+            alert via `POST /lean/ledger-alerts/ack`. Null when the alert
+            is still actionable. Persisted in
+            `data/ledger-alerts.ack.json`.
         timestamp:
           type: string
           description: ISO-8601 timestamp of when the alert fired

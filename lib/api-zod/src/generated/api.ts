@@ -246,14 +246,17 @@ log is missing or empty — the normal healthy state. Read-only.
 export const getLedgerAlertsQueryLimitDefault = 20;
 export const getLedgerAlertsQueryLimitMax = 200;
 
-
+export const getLedgerAlertsQueryIncludeAcknowledgedDefault = false;
 
 export const GetLedgerAlertsQueryParams = zod.object({
-  "limit": zod.coerce.number().min(1).max(getLedgerAlertsQueryLimitMax).default(getLedgerAlertsQueryLimitDefault).describe('Maximum number of most-recent entries to return (default 20, max 200).')
+  "limit": zod.coerce.number().min(1).max(getLedgerAlertsQueryLimitMax).default(getLedgerAlertsQueryLimitDefault).describe('Maximum number of most-recent entries to return (default 20, max 200).'),
+  "includeAcknowledged": zod.coerce.boolean().default(getLedgerAlertsQueryIncludeAcknowledgedDefault).describe('When true, include entries that have been acknowledged via\n`POST \/lean\/ledger-alerts\/ack`. Defaults to false so the panel\nonly shows actionable (unhandled) alerts. Each entry always\ncarries its `acknowledgedAt` field so the UI can render a\n\"show acknowledged\" toggle without a second round-trip.\n')
 })
 
 export const GetLedgerAlertsResponse = zod.object({
   "alerts": zod.array(zod.object({
+  "id": zod.string().describe('Server-computed acknowledgement id\n(`sha256(timestamp + \"\\n\" + message)` hex). Stable across\nrequests; clients pass this back into\n`POST \/lean\/ledger-alerts\/ack` to dismiss the entry.\n'),
+  "acknowledgedAt": zod.string().nullish().describe('ISO-8601 timestamp recorded when an operator dismissed this\nalert via `POST \/lean\/ledger-alerts\/ack`. Null when the alert\nis still actionable. Persisted in\n`data\/ledger-alerts.ack.json`.\n'),
   "timestamp": zod.string().describe('ISO-8601 timestamp of when the alert fired'),
   "workflow": zod.string().describe('Friendly tag of the workflow that fired the alert\n(e.g. `zeta-burst-101-10000`, `check-ledger-integrity.py`).\nFalls back to `argv[0]` or hostname when\n`MORNINGSTAR_WORKFLOW_NAME` is unset.\n'),
   "message": zod.string().describe('Underlying integrity-error message'),
@@ -280,6 +283,36 @@ export const GetLedgerAlertsResponse = zod.object({
   "totalReturned": zod.number(),
   "logPath": zod.string().describe('Filesystem path of the alert log that was read'),
   "logExists": zod.boolean().describe('True iff `data\/ledger-alerts.jsonl` exists on disk. False is\nthe normal healthy state — no alert has ever fired.\n')
+})
+
+
+/**
+ * Records that an operator has investigated and dismissed a single
+alert from `data/ledger-alerts.jsonl`. The acknowledgement is
+keyed by `sha256(timestamp + "\n" + message)` and persisted to
+the sidecar `data/ledger-alerts.ack.json`, so the dismissal
+survives server restarts. Acknowledging an already-acknowledged
+alert is a no-op (idempotent). Acknowledging an alert that no
+longer exists in the log still succeeds — the sidecar will be
+garbage-collected the next time the log rolls.
+
+Requires the same `Authorization: Bearer <LEAN_REBUILD_TOKEN>`
+header as the lockouts admin endpoints, and is subject to the
+same per-IP brute-force limiter.
+
+ * @summary Acknowledge (dismiss) a ledger alert
+ */
+export const AckLedgerAlertBody = zod.object({
+  "timestamp": zod.string().describe('The `timestamp` field of the alert entry to acknowledge (exact match).'),
+  "message": zod.string().describe('The `message` field of the alert entry to acknowledge (exact match).')
+})
+
+export const AckLedgerAlertResponse = zod.object({
+  "ok": zod.boolean(),
+  "id": zod.string().optional().describe('Server-computed acknowledgement id (`sha256(timestamp + \"\\n\" + message)` hex).'),
+  "acknowledgedAt": zod.string().optional().describe('ISO-8601 timestamp recorded on the sidecar'),
+  "alreadyAcknowledged": zod.boolean().optional().describe('True if the alert was already acknowledged before this call (no-op)'),
+  "error": zod.string().optional()
 })
 
 

@@ -8,6 +8,7 @@ import {
   useGetMorningstarHits,
   useGetLedgerIntegrity,
   useGetLedgerAlerts,
+  useAckLedgerAlert,
   getGetMorningstarHitsQueryKey,
   getGetLeanVerificationQueryKey,
   getGetLeanRebuildHistoryQueryKey,
@@ -248,16 +249,25 @@ export default function DashboardPage() {
     data: ledgerAlertsData,
     error: ledgerAlertsError,
   } = useGetLedgerAlerts(
-    { limit: 20 },
+    { limit: 20, includeAcknowledged: true },
     {
       query: {
-        queryKey: getGetLedgerAlertsQueryKey({ limit: 20 }),
+        queryKey: getGetLedgerAlertsQueryKey({
+          limit: 20,
+          includeAcknowledged: true,
+        }),
         refetchInterval: 30000,
         refetchIntervalInBackground: false,
         retry: false,
       },
     },
   );
+  const [showAcknowledgedAlerts, setShowAcknowledgedAlerts] = useState(false);
+  const ackAlertMutation = useAckLedgerAlert({
+    request: lockoutsAuthHeader ? { headers: lockoutsAuthHeader } : undefined,
+  });
+  const [pendingAckId, setPendingAckId] = useState<string | null>(null);
+  const [alertAckError, setAlertAckError] = useState<string | null>(null);
   const {
     data: ledgerIntegrity,
     error: ledgerIntegrityError,
@@ -550,6 +560,31 @@ export default function DashboardPage() {
       // ignore (private mode, etc.)
     }
   }, []);
+
+  const handleAckAlert = async (
+    alert: { id: string; timestamp: string; message: string },
+  ) => {
+    if (!rebuildToken) return;
+    setAlertAckError(null);
+    setPendingAckId(alert.id);
+    try {
+      await ackAlertMutation.mutateAsync({
+        data: { timestamp: alert.timestamp, message: alert.message },
+      });
+      await queryClient.invalidateQueries({
+        queryKey: getGetLedgerAlertsQueryKey({
+          limit: 20,
+          includeAcknowledged: true,
+        }),
+      });
+    } catch (err) {
+      setAlertAckError(
+        err instanceof Error ? err.message : "Failed to dismiss alert.",
+      );
+    } finally {
+      setPendingAckId(null);
+    }
+  };
 
   const handleClearLockout = async (ip: string) => {
     if (!rebuildToken) return;
@@ -1322,20 +1357,50 @@ export default function DashboardPage() {
                 className="border border-border bg-muted/20"
                 data-testid="panel-ledger-alerts"
               >
-                <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-muted/30">
+                <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-muted/30 gap-3">
                   <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                     <Activity className="w-3 h-3" />
                     Recent ledger alerts
                   </span>
-                  <span
-                    className="font-mono text-[11px] text-muted-foreground"
-                    data-testid="text-ledger-alerts-count"
-                  >
-                    {ledgerAlertsError
-                      ? "error"
-                      : ledgerAlertsData
-                        ? `${ledgerAlertsData.totalReturned} entr${ledgerAlertsData.totalReturned === 1 ? "y" : "ies"}`
-                        : "loading…"}
+                  <span className="flex items-center gap-3">
+                    {ledgerAlertsData ? (
+                      <label
+                        className="font-mono text-[11px] text-muted-foreground inline-flex items-center gap-1.5 cursor-pointer select-none"
+                        data-testid="label-show-acknowledged-alerts"
+                      >
+                        <input
+                          type="checkbox"
+                          className="h-3 w-3"
+                          checked={showAcknowledgedAlerts}
+                          onChange={(e) =>
+                            setShowAcknowledgedAlerts(e.target.checked)
+                          }
+                          data-testid="checkbox-show-acknowledged-alerts"
+                        />
+                        Show acknowledged
+                      </label>
+                    ) : null}
+                    <span
+                      className="font-mono text-[11px] text-muted-foreground"
+                      data-testid="text-ledger-alerts-count"
+                    >
+                      {ledgerAlertsError
+                        ? "error"
+                        : ledgerAlertsData
+                          ? (() => {
+                              const visible = ledgerAlertsData.alerts.filter(
+                                (a) => showAcknowledgedAlerts || !a.acknowledgedAt,
+                              ).length;
+                              const ackCount = ledgerAlertsData.alerts.filter(
+                                (a) => a.acknowledgedAt,
+                              ).length;
+                              const base = `${visible} entr${visible === 1 ? "y" : "ies"}`;
+                              return ackCount > 0 && !showAcknowledgedAlerts
+                                ? `${base} (${ackCount} ack'd hidden)`
+                                : base;
+                            })()
+                          : "loading…"}
+                    </span>
                   </span>
                 </div>
                 {ledgerAlertsError ? (
@@ -1347,86 +1412,139 @@ export default function DashboardPage() {
                       ? ledgerAlertsError.message
                       : "Failed to load alert log"}
                   </p>
-                ) : ledgerAlertsData && ledgerAlertsData.alerts.length === 0 ? (
-                  <p
-                    className="px-3 py-2 font-mono text-[11px] text-green-700 dark:text-green-400 flex items-center gap-1.5"
-                    data-testid="text-ledger-alerts-empty"
-                  >
-                    <CheckCircle2 className="w-3 h-3" />
-                    No alerts on record.
-                  </p>
                 ) : ledgerAlertsData ? (
-                  <ul className="divide-y divide-border">
-                    {ledgerAlertsData.alerts.map((alert, i) => {
-                      const transports = [
-                        { name: "webhook", info: alert.delivery.webhook },
-                        { name: "email", info: alert.delivery.email },
-                      ];
-                      const anyFailed = transports.some(
-                        (t) => t.info.status === "failed",
-                      );
+                  (() => {
+                    const visibleAlerts = ledgerAlertsData.alerts.filter(
+                      (a) => showAcknowledgedAlerts || !a.acknowledgedAt,
+                    );
+                    if (visibleAlerts.length === 0) {
+                      const allAcked =
+                        ledgerAlertsData.alerts.length > 0 &&
+                        !showAcknowledgedAlerts;
                       return (
-                        <li
-                          key={`alert-${alert.timestamp}-${i}`}
-                          className={`px-3 py-2 font-mono text-[11px] space-y-1 ${
-                            anyFailed
-                              ? "bg-amber-500/10 border-l-2 border-amber-500"
-                              : ""
-                          }`}
-                          data-testid={`row-ledger-alert-${i}`}
+                        <p
+                          className="px-3 py-2 font-mono text-[11px] text-green-700 dark:text-green-400 flex items-center gap-1.5"
+                          data-testid="text-ledger-alerts-empty"
                         >
-                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                            <span
-                              className="inline-flex items-center gap-1 font-bold text-red-700 dark:text-red-400"
-                            >
-                              <AlertTriangle className="w-3 h-3" />
-                              {alert.failureMode ?? "alert"}
-                            </span>
-                            <span
-                              className="text-muted-foreground"
-                              title={alert.timestamp}
-                              data-testid={`text-ledger-alert-timestamp-${i}`}
-                            >
-                              {formatTimestamp(alert.timestamp)}
-                            </span>
-                            <span
-                              className="text-foreground truncate"
-                              data-testid={`text-ledger-alert-workflow-${i}`}
-                              title={alert.workflow}
-                            >
-                              workflow={alert.workflow}
-                            </span>
-                            <span className="ml-auto flex items-center gap-1.5">
-                              {transports.map((t) => {
-                                const cls =
-                                  t.info.status === "ok"
-                                    ? "text-green-700 dark:text-green-400 border-green-500/40"
-                                    : t.info.status === "failed"
-                                      ? "text-amber-700 dark:text-amber-400 border-amber-500/50 bg-amber-500/10"
-                                      : "text-muted-foreground border-border";
-                                return (
-                                  <span
-                                    key={t.name}
-                                    className={`inline-block px-1.5 py-0.5 border ${cls}`}
-                                    title={t.info.error ?? undefined}
-                                    data-testid={`text-ledger-alert-${t.name}-${i}`}
-                                  >
-                                    {t.name}: {t.info.status}
-                                  </span>
-                                );
-                              })}
-                            </span>
-                          </div>
-                          <p
-                            className="text-foreground/80 break-words"
-                            data-testid={`text-ledger-alert-message-${i}`}
-                          >
-                            {alert.message}
-                          </p>
-                        </li>
+                          <CheckCircle2 className="w-3 h-3" />
+                          {allAcked
+                            ? "All alerts acknowledged. No outstanding incidents."
+                            : "No alerts on record."}
+                        </p>
                       );
-                    })}
-                  </ul>
+                    }
+                    return (
+                      <ul className="divide-y divide-border">
+                        {visibleAlerts.map((alert, i) => {
+                          const transports = [
+                            { name: "webhook", info: alert.delivery.webhook },
+                            { name: "email", info: alert.delivery.email },
+                          ];
+                          const anyFailed = transports.some(
+                            (t) => t.info.status === "failed",
+                          );
+                          const isAcked = Boolean(alert.acknowledgedAt);
+                          return (
+                            <li
+                              key={`alert-${alert.id}`}
+                              className={`px-3 py-2 font-mono text-[11px] space-y-1 ${
+                                isAcked
+                                  ? "opacity-60"
+                                  : anyFailed
+                                    ? "bg-amber-500/10 border-l-2 border-amber-500"
+                                    : ""
+                              }`}
+                              data-testid={`row-ledger-alert-${i}`}
+                            >
+                              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <span
+                                  className="inline-flex items-center gap-1 font-bold text-red-700 dark:text-red-400"
+                                >
+                                  <AlertTriangle className="w-3 h-3" />
+                                  {alert.failureMode ?? "alert"}
+                                </span>
+                                <span
+                                  className="text-muted-foreground"
+                                  title={alert.timestamp}
+                                  data-testid={`text-ledger-alert-timestamp-${i}`}
+                                >
+                                  {formatTimestamp(alert.timestamp)}
+                                </span>
+                                <span
+                                  className="text-foreground truncate"
+                                  data-testid={`text-ledger-alert-workflow-${i}`}
+                                  title={alert.workflow}
+                                >
+                                  workflow={alert.workflow}
+                                </span>
+                                <span className="ml-auto flex items-center gap-1.5">
+                                  {transports.map((t) => {
+                                    const cls =
+                                      t.info.status === "ok"
+                                        ? "text-green-700 dark:text-green-400 border-green-500/40"
+                                        : t.info.status === "failed"
+                                          ? "text-amber-700 dark:text-amber-400 border-amber-500/50 bg-amber-500/10"
+                                          : "text-muted-foreground border-border";
+                                    return (
+                                      <span
+                                        key={t.name}
+                                        className={`inline-block px-1.5 py-0.5 border ${cls}`}
+                                        title={t.info.error ?? undefined}
+                                        data-testid={`text-ledger-alert-${t.name}-${i}`}
+                                      >
+                                        {t.name}: {t.info.status}
+                                      </span>
+                                    );
+                                  })}
+                                  {isAcked ? (
+                                    <span
+                                      className="inline-block px-1.5 py-0.5 border border-border text-muted-foreground"
+                                      title={`Acknowledged at ${alert.acknowledgedAt}`}
+                                      data-testid={`text-ledger-alert-acked-${i}`}
+                                    >
+                                      ack'd {formatTimestamp(alert.acknowledgedAt ?? undefined)}
+                                    </span>
+                                  ) : rebuildToken ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        void handleAckAlert({
+                                          id: alert.id,
+                                          timestamp: alert.timestamp,
+                                          message: alert.message,
+                                        });
+                                      }}
+                                      disabled={pendingAckId === alert.id}
+                                      className="inline-flex items-center gap-1 px-2 py-0.5 border border-border bg-background font-mono text-[11px] uppercase tracking-wider text-muted-foreground hover:text-foreground disabled:opacity-60 disabled:cursor-not-allowed"
+                                      data-testid={`button-dismiss-ledger-alert-${i}`}
+                                    >
+                                      {pendingAckId === alert.id
+                                        ? "Dismissing…"
+                                        : "Dismiss"}
+                                    </button>
+                                  ) : null}
+                                </span>
+                              </div>
+                              <p
+                                className="text-foreground/80 break-words"
+                                data-testid={`text-ledger-alert-message-${i}`}
+                              >
+                                {alert.message}
+                              </p>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    );
+                  })()
+                ) : null}
+                {alertAckError ? (
+                  <p
+                    className="px-3 py-2 border-t border-border font-mono text-[11px] text-red-700 dark:text-red-400"
+                    data-testid="text-ledger-alert-ack-error"
+                  >
+                    {alertAckError}
+                  </p>
                 ) : null}
               </div>
 
