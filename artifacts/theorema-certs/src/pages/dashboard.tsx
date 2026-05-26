@@ -1661,6 +1661,11 @@ export default function DashboardPage() {
                 <dd
                   className="text-foreground"
                   data-testid="text-ledger-checked-at"
+                  title={
+                    ledgerIntegrity.lastCheckedAt
+                      ? `persisted across server restarts; previous check at ${ledgerIntegrity.lastCheckedAt}`
+                      : undefined
+                  }
                 >
                   {formatTimestamp(ledgerIntegrity.checkedAt)}
                 </dd>

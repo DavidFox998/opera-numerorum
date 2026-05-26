@@ -96,6 +96,18 @@ export interface LedgerIntegrityStatus {
      * @nullable
      */
   lastOkAgeSeconds?: number | null;
+  /**
+     * ISO-8601 timestamp of the most recent integrity check
+  attempt, regardless of outcome. Persisted to the same
+  `data/hits.txt.lastok` sidecar as `lastOkAt` so the value
+  survives server restarts; on boot the server reads it back
+  so the dashboard can immediately show when the verifier
+  last ran (vs `checkedAt`, which is just "now"). Null only
+  when no check has ever been recorded.
+
+     * @nullable
+     */
+  lastCheckedAt?: Date | null;
   /** Configured staleness threshold in seconds, from
   `LEDGER_STALE_THRESHOLD_SECONDS` (default 3600). A
   successful check older than this is treated as `stale`.

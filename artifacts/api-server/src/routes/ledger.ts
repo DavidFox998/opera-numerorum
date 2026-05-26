@@ -42,6 +42,7 @@ interface LedgerIntegrityStatus {
   checkpointPath: string;
   lastOkAt: string | null;
   lastOkAgeSeconds: number | null;
+  lastCheckedAt: string | null;
   staleThresholdSeconds: number;
   stale: boolean;
 }
@@ -95,30 +96,37 @@ export interface LedgerRouterOptions {
 
 export type { LedgerIntegrityStatus, FailureMode };
 
-function readPersistedLastOk(p: string): string | null {
+interface PersistedState {
+  lastOkAt: string | null;
+  lastCheckedAt: string | null;
+}
+
+function readPersistedState(p: string): PersistedState {
+  const empty: PersistedState = { lastOkAt: null, lastCheckedAt: null };
   try {
-    if (!existsSync(p)) return null;
+    if (!existsSync(p)) return empty;
     const raw = readFileSync(p, "utf-8");
     const parsed = JSON.parse(raw) as unknown;
-    if (
-      parsed &&
-      typeof parsed === "object" &&
-      "lastOkAt" in parsed &&
-      typeof (parsed as { lastOkAt: unknown }).lastOkAt === "string"
-    ) {
-      const v = (parsed as { lastOkAt: string }).lastOkAt;
-      if (!Number.isNaN(Date.parse(v))) return v;
+    if (!parsed || typeof parsed !== "object") return empty;
+    const obj = parsed as Record<string, unknown>;
+    function pickIso(key: string): string | null {
+      const v = obj[key];
+      if (typeof v !== "string") return null;
+      return Number.isNaN(Date.parse(v)) ? null : v;
     }
-    return null;
+    return {
+      lastOkAt: pickIso("lastOkAt"),
+      lastCheckedAt: pickIso("lastCheckedAt"),
+    };
   } catch {
-    return null;
+    return empty;
   }
 }
 
-function writePersistedLastOk(p: string, lastOkAt: string): void {
+function writePersistedState(p: string, state: PersistedState): void {
   try {
     const tmp = `${p}.tmp`;
-    writeFileSync(tmp, JSON.stringify({ lastOkAt }) + "\n");
+    writeFileSync(tmp, JSON.stringify(state) + "\n");
     renameSync(tmp, p);
   } catch {
     // Best-effort: never let a sidecar write failure break the endpoint.
@@ -140,7 +148,9 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
     opts.staleThresholdSeconds != null && Number.isFinite(opts.staleThresholdSeconds) && opts.staleThresholdSeconds > 0
       ? Math.floor(opts.staleThresholdSeconds)
       : resolveStaleThresholdSeconds(process.env.LEDGER_STALE_THRESHOLD_SECONDS);
-  let lastOkAt: string | null = readPersistedLastOk(LAST_OK_PATH);
+  const persisted = readPersistedState(LAST_OK_PATH);
+  let lastOkAt: string | null = persisted.lastOkAt;
+  let lastCheckedAt: string | null = persisted.lastCheckedAt;
 
   function computeStaleness(checkedAtIso: string): {
     lastOkAgeSeconds: number | null;
@@ -176,9 +186,15 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
       checkpointPath: CHECKPOINT,
       lastOkAt,
       lastOkAgeSeconds,
+      lastCheckedAt,
       staleThresholdSeconds: STALE_THRESHOLD_SECONDS,
       stale,
     };
+
+    // Always update lastCheckedAt — we ran a check regardless of outcome.
+    lastCheckedAt = checkedAt;
+    writePersistedState(LAST_OK_PATH, { lastOkAt, lastCheckedAt });
+    base.lastCheckedAt = lastCheckedAt;
 
     if (!existsSync(HITS)) {
       return {
@@ -315,7 +331,7 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
     }
 
     lastOkAt = checkedAt;
-    writePersistedLastOk(LAST_OK_PATH, checkedAt);
+    writePersistedState(LAST_OK_PATH, { lastOkAt, lastCheckedAt });
     const freshStaleness = computeStaleness(checkedAt);
     return {
       ...base,
@@ -328,6 +344,7 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
       ledgerLastModified,
       lastOkAt,
       lastOkAgeSeconds: freshStaleness.lastOkAgeSeconds,
+      lastCheckedAt,
       stale: freshStaleness.stale,
     };
   }
