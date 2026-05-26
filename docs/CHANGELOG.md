@@ -6,6 +6,43 @@ this file is the version history.
 
 ---
 
+## task #79 — Fix `Towers/YM/RealCurvatureV2.lean` so `towers-build` is green
+
+`lean-proof-towers/Towers/YM/RealCurvatureV2.lean` (Path B batch 6,
+landed 2026-05-26) was blocking the full `towers-build` workflow:
+
+1. `def lattice_deriv {n : ℕ} [NeZero n] (A : GaugeField n) (_μ : Fin 4) :
+   GaugeField n := fun i => A (i + 1) - A i` — the pointwise subtraction
+   on `GaugeField n = PiLp 2 (fun _ : Fin n => EuclideanSpace ℝ (Fin 8))`
+   pulls in `ENNReal.instCanonicallyOrderedCommSemiring`, which is
+   `noncomputable`, so the surrounding `def` itself must be
+   `noncomputable`.
+2. `theorem structure_constants_su3_def : … = 1 := by unfold …; decide`
+   got stuck because Lean inferred a `Classical.choice`-backed
+   `Decidable` instance for the `(0, 1, 2) = (0, 1, 2)` triple on
+   `Fin 8 × Fin 8 × Fin 8`, and `decide` cannot reduce a
+   classical `Decidable`.
+
+Fixes:
+
+- `def lattice_deriv …` → `noncomputable def lattice_deriv …`.
+- `decide` → `rw [if_pos rfl]`. Explicitly supplying the `rfl`
+  proof of `(0, 1, 2) = (0, 1, 2)` sidesteps the `Decidable`
+  instance selection entirely.
+
+All five RealCurvatureV2 bricks (`structure_constants_su3_def`,
+`lie_bracket_su3_def`, `lattice_deriv_forward_diff`,
+`curvature_su3_def`, `YMEnergy_nonneg`) now pass the per-brick
+axiom-footprint check with the classical-trio
+`{propext, Classical.choice, Quot.sound}`. `bash scripts/check-towers.sh`
+reports `ok: Towers library built; all 126 brick(s) passed the
+axiom-footprint check.` YM tower status unchanged: **Open**
+(`docs/ROADMAP.md` § 2). The fixes are mechanical — they recover
+exactly the bricks the Batch 6 commit intended to land; no new
+mathematical content, no scope creep.
+
+---
+
 ## v1.10 task #55 — `MassGap.HilbertSpace` upgraded to ℓ²(ℕ,ℂ) (Branch A)
 
 `lean-proof-towers/Towers/YM/MassGap.lean` line 138 had

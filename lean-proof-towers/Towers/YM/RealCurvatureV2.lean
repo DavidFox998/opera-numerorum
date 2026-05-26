@@ -144,7 +144,7 @@ schema is non-zero, in contrast to Batch 5's all-zero placeholder. -/
 theorem structure_constants_su3_def :
     structure_constants_su3 0 1 2 = 1 := by
   unfold structure_constants_su3
-  simp
+  rw [if_pos rfl]
 
 /-- **Brick 2 (`lie_bracket_su3_def`).** Unfolds the bracket to its
 defining bilinear sum, exposing the formula for downstream use. -/
