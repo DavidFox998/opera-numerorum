@@ -164,7 +164,7 @@ the box.
 - After any OpenAPI change, run `pnpm --filter @workspace/api-spec run codegen` before touching frontend.
 - `parentShas` is stored as text — JSON-parse on read.
 - Restart the `theorema-certs` workflow after `status-badge.tsx` changes (Vite HMR caches the type).
-- Don't run a second appender against `data/hits.txt`. `_append_line` has no file lock; one writer at a time.
+- `_append_line` takes an exclusive `fcntl.flock` on its append handle, so two appender workflows (`zeta-burst-101-10000` + `zeta-sieve-14159-100000`) can run simultaneously without interleaving lines or desyncing `hits.txt.checkpoint`. External backup/restore tools (e.g. the `morningstar-tamper` snapshot fixture) still need exclusive access — they bypass `_append_line` and can clobber concurrent writes.
 - `replit.md` is operational only. History lives in `docs/CHANGELOG.md`. Don't grow this file with version notes.
 
 ## Pointers

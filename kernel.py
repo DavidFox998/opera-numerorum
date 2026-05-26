@@ -46,6 +46,11 @@ from typing import Any
 
 import mpmath
 
+try:
+    import fcntl  # POSIX-only; the repo targets Linux (Replit/Nix)
+except ImportError:  # pragma: no cover - non-POSIX fallback
+    fcntl = None  # type: ignore[assignment]
+
 ELLIPTIC_LABEL_RE = _re.compile(r"^[A-Za-z0-9._-]{1,32}$")
 
 REPO_ROOT = Path(__file__).resolve().parent
@@ -189,13 +194,41 @@ def _update_checkpoint() -> None:
 
 def _append_line(line: str) -> None:
     """Append exactly one line + newline to hits.txt, fsync, then
-    refresh the at-rest checkpoint."""
+    refresh the at-rest checkpoint.
+
+    Cross-process safety: takes an exclusive `fcntl.flock` on the
+    open append handle before writing. Two concurrent appenders
+    (e.g. `zeta-burst-101-10000` running alongside
+    `zeta-sieve-14159-100000`) therefore queue on the lock instead
+    of racing on the checkpoint refresh — `_update_checkpoint` reads
+    the whole file, hashes it, and atomically replaces
+    `data/hits.txt.checkpoint`, so without serialization writer A
+    can land its line, writer B can append its own line, then writer
+    A's `_update_checkpoint` would rehash the file (now containing
+    B's line) and stamp it as A's checkpoint. With the lock the
+    sequence `write + flush + fsync + checkpoint` is atomic per
+    line; a second writer waits at `flock(LOCK_EX)` until the first
+    fully completes. POSIX `O_APPEND` already prevents byte-level
+    tearing for short writes (<= `PIPE_BUF`), but the lock is what
+    keeps the SHA chain in `hits.txt` and the recorded prefix-hash
+    in `hits.txt.checkpoint` consistent.
+
+    On non-POSIX hosts where `fcntl` is unavailable the function
+    falls back to plain append (the original behaviour). This repo
+    targets Linux, so that path is just defensive.
+    """
     HITS.parent.mkdir(parents=True, exist_ok=True)
     with HITS.open("a", encoding="utf-8") as f:
-        f.write(line + "\n")
-        f.flush()
-        os.fsync(f.fileno())
-    _update_checkpoint()
+        if fcntl is not None:
+            fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+        try:
+            f.write(line + "\n")
+            f.flush()
+            os.fsync(f.fileno())
+            _update_checkpoint()
+        finally:
+            if fcntl is not None:
+                fcntl.flock(f.fileno(), fcntl.LOCK_UN)
 
 
 def _prime_divisors(n: int) -> list[int]:
@@ -448,15 +481,19 @@ def sieve_zeros(
     a window. The constant factor is real; the asymptotic improvement
     is not.
 
-    Concurrency contract: `_append_line` uses POSIX `O_APPEND` plus
-    a single `f.write(line + "\n")` of ~250 bytes (well under
-    `PIPE_BUF=4096`), so two concurrent appender processes interleave
-    at *line granularity* — bytes within a single line cannot tear.
-    The Genesis seal covers only the preamble (lines 1-9), which
-    appends never touch, so a concurrent zeta_burst + zeta_sieve
-    against the same file is seal-safe even without a file lock.
-    Lines may appear out of strict temporal order, which is fine for
-    an append-only sealed ledger.
+    Concurrency contract: `_append_line` takes an exclusive
+    `fcntl.flock` on its open append handle, so the full sequence
+    `write + flush + fsync + _update_checkpoint` is atomic per line
+    against any other process that also goes through `_append_line`
+    (i.e. any sibling using the kernel API). Two concurrent appender
+    workflows — e.g. `zeta-burst-101-10000` alongside
+    `zeta-sieve-14159-100000` — therefore queue at line granularity
+    instead of racing on the checkpoint refresh, and the per-line
+    SHA chain in `hits.txt` stays internally consistent with the
+    recorded prefix hash in `hits.txt.checkpoint`. The Genesis seal
+    covers only the preamble (lines 1-9), which appends never touch.
+    Lines may still appear out of strict temporal order — fine for an
+    append-only sealed ledger.
 
     What is NOT safe under concurrency: external backup/restore tools
     (e.g. `morningstar-tamper`'s pytest fixture that snapshots

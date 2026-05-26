@@ -23,10 +23,39 @@ so the real append-only ledger is never touched.
 
 from __future__ import annotations
 
+import hashlib
+import multiprocessing
+import os
+from pathlib import Path
+
 import mpmath
 import pytest
 
 import kernel
+
+
+def _concurrent_appender_worker(
+    hits_path: str, worker_id: int, n_lines: int
+) -> None:
+    """Subprocess entry point for `test_append_line_is_concurrency_safe`.
+
+    Must be module-level so multiprocessing can pickle it. Each worker
+    redirects `kernel.HITS` to the shared tmp path, stubs the seal
+    verifier (the tmp file has no Genesis preamble), then appends
+    `n_lines` distinct, self-checking lines through `_append_line`.
+    The line format mirrors a real probe-style ledger entry just
+    enough to be SHA-stamped: `worker=<id> i=<i> sha=<sha>` where the
+    SHA is computed over `<id>:<i>` so we can verify on the parent
+    side that every line is intact (no torn writes, no half-flushed
+    bytes from a rival worker).
+    """
+    kernel.HITS = Path(hits_path)
+    kernel.CHECKPOINT = Path(hits_path + ".checkpoint")
+    kernel._verify_seal = lambda: None  # type: ignore[assignment]
+    for i in range(n_lines):
+        body = f"{worker_id}:{i}"
+        sha = hashlib.sha256(body.encode("utf-8")).hexdigest()
+        kernel._append_line(f"worker={worker_id} i={i} sha={sha}")
 
 
 @pytest.fixture
@@ -139,6 +168,91 @@ def test_elliptic_stub_does_not_call_mpmath_backend(tmp_hits):
     assert "L_real" not in out
     assert "L_imag" not in out
     assert out["tag"] == "ELLIPTIC_STUB"
+
+
+def test_append_line_is_concurrency_safe(tmp_path):
+    """Task #54: two concurrent appender processes against the same
+    `hits.txt` must not interleave bytes within a line, drop any line,
+    or desync the at-rest checkpoint.
+
+    We spawn two `multiprocessing.Process` workers, each writing
+    `N_PER_WORKER` SHA-stamped lines through `kernel._append_line`,
+    against a shared throwaway file. After both join we assert:
+
+      * Total line count is exactly `2 * N_PER_WORKER` — nothing was
+        lost, nothing was double-counted.
+      * Every line matches the strict `worker=<id> i=<i> sha=<hex>`
+        regex and the SHA on the line equals SHA-256 of `<id>:<i>`.
+        Any byte-level tearing (e.g. a write from worker A landing
+        mid-line of worker B) would corrupt the SHA or break the
+        regex and fail this check.
+      * Each `(worker_id, i)` pair appears exactly once.
+      * The final `hits.txt.checkpoint` records the *current* size
+        and SHA-256 of `hits.txt` (the last write's checkpoint update
+        wins, but it must still be self-consistent — no torn checkpoint
+        from a half-finished refresh).
+
+    Uses the `fork` start method so workers inherit the current
+    `kernel` module without re-importing it under a different working
+    directory. `N_PER_WORKER=80` is large enough to interleave a few
+    times on a busy machine without making the test slow.
+    """
+    import re
+
+    N_PER_WORKER = 80
+    hits = tmp_path / "hits.txt"
+
+    ctx = multiprocessing.get_context("fork")
+    procs = [
+        ctx.Process(
+            target=_concurrent_appender_worker,
+            args=(str(hits), wid, N_PER_WORKER),
+        )
+        for wid in (0, 1)
+    ]
+    for p in procs:
+        p.start()
+    for p in procs:
+        p.join(timeout=60)
+        assert p.exitcode == 0, f"worker {p.pid} exited {p.exitcode}"
+
+    text = hits.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    assert len(lines) == 2 * N_PER_WORKER, (
+        f"expected {2 * N_PER_WORKER} lines, got {len(lines)} — "
+        f"a concurrent writer dropped or duplicated a line"
+    )
+
+    pattern = re.compile(r"^worker=(\d+) i=(\d+) sha=([0-9a-f]{64})$")
+    seen: set[tuple[int, int]] = set()
+    for line in lines:
+        m = pattern.match(line)
+        assert m is not None, (
+            f"line did not parse cleanly — byte-level tearing? line={line!r}"
+        )
+        wid, i, sha = int(m.group(1)), int(m.group(2)), m.group(3)
+        expected_sha = hashlib.sha256(f"{wid}:{i}".encode("utf-8")).hexdigest()
+        assert sha == expected_sha, (
+            f"SHA mismatch on worker={wid} i={i}: line={line!r}"
+        )
+        key = (wid, i)
+        assert key not in seen, f"duplicate ledger entry for {key}"
+        seen.add(key)
+    assert len(seen) == 2 * N_PER_WORKER
+
+    checkpoint = hits.with_suffix(hits.suffix + ".checkpoint")
+    assert checkpoint.exists(), "checkpoint was never refreshed"
+    cp_size_str, cp_sha = checkpoint.read_text(encoding="utf-8").strip().split()
+    cp_size = int(cp_size_str)
+    raw = hits.read_bytes()
+    assert cp_size == len(raw), (
+        f"checkpoint size {cp_size} != live file size {len(raw)} — "
+        f"a checkpoint refresh raced with a sibling append"
+    )
+    assert cp_sha == hashlib.sha256(raw[:cp_size]).hexdigest(), (
+        "checkpoint SHA does not match the recorded prefix — "
+        "torn checkpoint refresh"
+    )
 
 
 def test_sieve_zeros_dry_run_does_not_write(tmp_hits):
