@@ -16,6 +16,7 @@ Run from the repo root: `pytest tests/test_morningstar.py -q`.
 
 from __future__ import annotations
 
+import hashlib
 import os
 import subprocess
 import sys
@@ -299,12 +300,165 @@ def test_verify_seal_survives_concurrent_atomic_rewriter(hits_backup):
         while time.monotonic() < deadline:
             kernel._verify_seal()
             iterations += 1
-        assert iterations > 50, (
+        # Lowered from 50 → 20 after the concurrent-tamper race fix
+        # added a sidecar `_HitsLock()` acquire on every _verify_seal
+        # call (flock syscalls dominate). The point of the check is
+        # "we ran the loop many times, not just once" — not a perf
+        # benchmark.
+        assert iterations > 20, (
             f"sanity: expected many _verify_seal cycles in 1s, got {iterations}"
         )
     finally:
         stop.set()
         t.join(timeout=2.0)
+    assert not errors, f"rewriter thread crashed: {errors}"
+
+
+def test_verify_seal_blocks_on_lock_during_real_tamper_window(
+    tmp_path, monkeypatch
+):
+    """Concurrent-tamper race regression: `_verify_seal` must take
+    the sidecar `kernel.hits_exclusive_lock()` so it can NEVER
+    observe the tampered bytes a `morningstar-tamper`-style
+    snapshot → mutate → restore window legitimately puts on disk.
+
+    Production failure (zeta-burst-101-10000, ZERO #2602):
+        Genesis seal verification failed:
+          expected: eecbcd9a…875f
+          got:      4cde0ac1…07dcc
+    A concurrent post-merge run of the tamper fixture rewrote the
+    preamble via `os.replace`; `_verify_seal` saw the *fully formed
+    tampered* bytes, not a torn read, so the 4×0.05s retry loop was
+    useless (every retry hashed the same tampered bytes).
+
+    The fix wraps the preamble read in `_HitsLock()`. The rewriter
+    here also takes that same lock for the snapshot → mutate →
+    restore window, so the main thread's `_verify_seal()` parks
+    until the rewriter releases — and then hashes the restored
+    bytes, not the mutated ones.
+
+    Isolation: this test monkeypatches `kernel.HITS`,
+    `kernel.HITS_LOCK_FILE`, and the seal module's `HITS` to
+    `tmp_path` so the rewriter never touches the real
+    `data/hits.txt`. It copies just the real preamble (through the
+    Genesis-seal marker) into the tmp file, which is exactly what
+    `compute_seal()` hashes, so `EXPECTED_SEAL` still matches the
+    tmp preamble's SHA. Real ledger and real `data/.hits.lock` are
+    untouched even if the test crashes; concurrent live workflows
+    (`zeta-burst-101-10000`, `zeta-sieve-14159-100000`) cannot lose
+    appends to this test.
+
+    Why not request `hits_backup`: that fixture holds the lock for
+    the entire test (and points at the REAL ledger), which would
+    both serialize the rewriter against the fixture and risk
+    clobbering concurrent appends.
+    """
+    import kernel
+    # NOTE: kernel loads scripts/check-genesis-seal.py via importlib
+    # (the path has a hyphen, no clean module name). `kernel._SEAL_MOD`
+    # IS the live reference, so monkeypatching `kernel._SEAL_MOD.HITS`
+    # below is the canonical hook for redirecting seal reads to a tmp.
+
+    # Copy the REAL preamble (everything up to and including the
+    # Genesis-seal marker line) into the tmp file. `compute_seal()`
+    # hashes exactly this prefix, so EXPECTED_SEAL still matches.
+    real_data = HITS.read_bytes()
+    marker = b"--- GENESIS SEAL ---"
+    # Find the MARKER LINE (a line that starts with the marker),
+    # not the first byte-occurrence of the marker substring -- the
+    # marker text is also quoted inside an explanatory comment
+    # earlier in the preamble.
+    marker_line = b"\n" + marker + b"\n"
+    marker_idx = real_data.index(marker_line)
+    eol = marker_idx + len(marker_line)  # include trailing \n
+    preamble = real_data[:eol]
+    # Add a stub body line so the file is realistic; nothing past
+    # the marker affects the seal hash.
+    original = preamble + b"# isolated test body -- not a real probe\n"
+
+    tmp_hits = tmp_path / "hits.txt"
+    tmp_lock = tmp_path / ".hits.lock"
+    tmp_hits.write_bytes(original)
+
+    monkeypatch.setattr(kernel, "HITS", tmp_hits)
+    monkeypatch.setattr(kernel, "HITS_LOCK_FILE", tmp_lock)
+    monkeypatch.setattr(kernel._SEAL_MOD, "HITS", tmp_hits)
+
+    # Sanity: confirm the seal module actually redirects to the tmp
+    # file under monkeypatch (regression: an earlier revision of
+    # check-genesis-seal.py bound HITS as a default-arg at
+    # definition time, so monkeypatching the module-level HITS did
+    # nothing and the test passed vacuously by hashing the real
+    # ledger).
+    assert kernel._SEAL_MOD.compute_seal() == hashlib.sha256(
+        preamble
+    ).hexdigest(), (
+        "seal module did not redirect to tmp; monkeypatch broken"
+    )
+
+    # Reset the class-level lock state so the previous test's fd
+    # (which was opened against the REAL .hits.lock) doesn't leak.
+    # If _fp is non-None we explicitly close it under the rlock
+    # before zeroing, so we don't leak a file descriptor.
+    with kernel._HitsLock._rlock:
+        old_fp = kernel._HitsLock._fp
+        if old_fp is not None:
+            try:
+                old_fp.close()
+            except Exception:
+                pass
+        monkeypatch.setattr(kernel._HitsLock, "_fp", None)
+        monkeypatch.setattr(kernel._HitsLock, "_depth", 0)
+
+    # Real tamper mutation: actually flips the preamble SHA. We
+    # preserve the marker so `compute_seal` doesn't raise SystemExit
+    # ("missing marker") — the test pins the HASH-mismatch race,
+    # not the missing-marker race (which is covered by the older
+    # `test_verify_seal_survives_concurrent_atomic_rewriter`).
+    lines = preamble.splitlines(keepends=True)
+    assert lines[2].startswith(b"#"), (
+        "test setup: expected preamble line 3 to be a comment"
+    )
+    lines[2] = b"# TAMPERED_LINE_3 (concurrent-tamper race regression)\n"
+    tampered = b"".join(lines) + (original[len(preamble):])
+    assert tampered != original, "test setup: tampered bytes must differ"
+    assert marker in tampered
+
+    stop = threading.Event()
+    errors: list[BaseException] = []
+
+    def rewriter() -> None:
+        try:
+            while not stop.is_set():
+                with kernel.hits_exclusive_lock():
+                    _atomic_write_bytes(tmp_hits, tampered)
+                    # Widen the window so the main thread definitely
+                    # tries to verify during the tampered state.
+                    time.sleep(0.005)
+                    _atomic_write_bytes(tmp_hits, original)
+        except BaseException as e:  # noqa: BLE001
+            errors.append(e)
+
+    t = threading.Thread(target=rewriter)  # NOT daemon: must join
+    try:
+        t.start()
+        deadline = time.monotonic() + 1.0
+        iterations = 0
+        while time.monotonic() < deadline:
+            # Must not raise: the lock fix means we wait for the
+            # rewriter to release, then hash the restored bytes.
+            kernel._verify_seal()
+            iterations += 1
+        assert iterations > 10, (
+            f"sanity: expected several _verify_seal cycles in 1s "
+            f"with the 5ms tamper window, got {iterations}"
+        )
+    finally:
+        stop.set()
+        t.join(timeout=10.0)
+        assert not t.is_alive(), (
+            "rewriter thread did not exit cleanly"
+        )
     assert not errors, f"rewriter thread crashed: {errors}"
 
 

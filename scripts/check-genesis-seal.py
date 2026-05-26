@@ -25,7 +25,14 @@ EXPECTED_SEAL = "eecbcd9a540aa7a2c90edd23827c73e4d1bb5af641d352f70a5de849b21f875
 SEAL_MARKER = "--- GENESIS SEAL ---"
 
 
-def preamble_bytes(path: Path = HITS) -> bytes:
+def preamble_bytes(path: Path | None = None) -> bytes:
+    # Resolve `HITS` at call time, not definition time, so callers
+    # that monkeypatch the module-level `HITS` (e.g. the in-process
+    # tamper-race regression test in tests/test_morningstar.py)
+    # actually redirect the read. Binding the default in the
+    # signature would freeze the path at import.
+    if path is None:
+        path = HITS
     if not path.exists():
         raise SystemExit(f"FATAL: {path} missing.")
     text = path.read_text(encoding="utf-8")
@@ -40,7 +47,7 @@ def preamble_bytes(path: Path = HITS) -> bytes:
     return body.encode("utf-8")
 
 
-def compute_seal(path: Path = HITS) -> str:
+def compute_seal(path: Path | None = None) -> str:
     return hashlib.sha256(preamble_bytes(path)).hexdigest()
 
 

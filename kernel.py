@@ -161,7 +161,22 @@ def _verify_seal() -> None:
     expected = _SEAL_MOD.EXPECTED_SEAL
     for attempt in range(_SEAL_VERIFY_RETRIES):
         try:
-            got = _SEAL_MOD.compute_seal()
+            # Concurrent-tamper race fix: take the sidecar lock around the preamble read.
+            # The `morningstar-tamper` fixture wraps its
+            # snapshot → mutate → restore window in the SAME lock
+            # (`kernel.hits_exclusive_lock()`, task #59), so any
+            # concurrent legitimate-tamper window in another process
+            # blocks our read here until the file is restored. Without
+            # this, a long-running probe (e.g. `zeta-burst-101-10000`)
+            # caught the file in the *mutated* state — `os.replace`
+            # makes the new bytes fully visible mid-window, so the
+            # retry loop above is useless against this case: every
+            # retry sees the same tampered SHA. The lock is
+            # thread-reentrant within a process, so the tamper fixture
+            # itself (which holds the lock and calls `kernel.probe()`,
+            # which calls `_verify_seal()`) does not self-deadlock.
+            with _HitsLock():
+                got = _SEAL_MOD.compute_seal()
         except SystemExit as e:
             # compute_seal raises SystemExit when hits.txt is missing
             # or the marker is gone — usually a transient mid-write
