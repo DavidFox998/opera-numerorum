@@ -307,6 +307,22 @@ BRICKS=(
   # or any Leray-Hopf solution; this is closure of the *placeholder*
   # predicate under time shift.
   "Towers.NS.EnergyIneq|TheoremaAureum.Towers.NS.HasFiniteEnergy_time_translate"
+  # Task #101 (2026-05-27): full Euclidean-motion invariance of the
+  # placeholder finite-energy predicate. Composes Task #78
+  # (`HasFiniteEnergy_translate`, spatial translation) with Task #89
+  # (`HasFiniteEnergy_rotate`, linear isometry / rotation) into the
+  # rigid-body change-of-frame `x ↦ R x + a`: if `u₀` has finite
+  # placeholder energy with witness `M`, then for any linear isometry
+  # `R : EuclideanSpace ℝ (Fin 3) →ₗᵢ[ℝ] EuclideanSpace ℝ (Fin 3)` and
+  # any translation `a : ℝ³`, the field `fun t x => u₀ t (R x + a)`
+  # also has finite placeholder energy with the *same* witness `M`.
+  # Documents that the schema respects the full Euclidean motion
+  # group E(3) on the spatial slice, not just its generators in
+  # isolation. NS tower status unchanged: Open (`docs/ROADMAP.md` § 3).
+  # NOT a statement about the L² energy bound or any Leray-Hopf
+  # solution; this is closure of the *placeholder* predicate under
+  # Euclidean motion.
+  "Towers.NS.EnergyIneq|TheoremaAureum.Towers.NS.HasFiniteEnergy_euclidean_motion"
   # Task #70 (2026-05-26): name the "energy never grows" predicate
   # inside the NS schema. `EnergyMonotone u u₀ : Prop` is the
   # explicit `∀ t, H1Norm u t ≤ H1Norm u₀ 0` shape named by the

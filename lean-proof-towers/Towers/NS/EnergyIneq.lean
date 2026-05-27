@@ -575,6 +575,58 @@ theorem HasFiniteEnergy_time_translate (u₀ : VelocityField)
   refine ⟨M, fun x => ?_⟩
   simpa using h x
 
+/-
+  ## Task #101 (2026-05-27) — full Euclidean motion invariance of the
+  placeholder finite-energy predicate.
+
+  Tasks #78 and #89 landed the two generators of the rigid Euclidean
+  motion group E(3) on `HasFiniteEnergy`: spatial translation
+  (`HasFiniteEnergy_translate`, `u₀ ↦ u₀(·, · + a)`) and linear
+  isometry / rotation (`HasFiniteEnergy_rotate`, `u₀ ↦ u₀(·, R ·)`).
+  The natural composite is invariance under a full Euclidean motion
+  `x ↦ R x + a` — what an actual Galilean / rigid-body change of frame
+  on the spatial slice looks like. Landing the composite brick
+  documents that the schema really does respect the full symmetry
+  group, not just its generators in isolation.
+
+  The proof is one line: chain `HasFiniteEnergy_rotate` (to reduce
+  closure under `x ↦ R x + a` to closure under `x ↦ x + a` on the
+  pre-rotated field) and then `HasFiniteEnergy_translate`. The
+  composite reuses the *same* witness `M` as the original `u₀`.
+
+  **Honest scope.** This does NOT advance the NS tower past
+  `Status: Open` (see `docs/ROADMAP.md` § 3). `HasFiniteEnergy` is
+  still the Task #51 placeholder (bounded amplitude at `t = 0`), not
+  the L² energy bound. Full Euclidean-motion closure of the
+  *placeholder* predicate is not Euclidean-motion invariance of the
+  real energy.
+
+  Axiom-footprint contract (per `scripts/check-towers.sh`): the
+  theorem must be either axiom-free or use only the classical trio
+  `{propext, Classical.choice, Quot.sound}`.
+-/
+
+/-- **Full Euclidean-motion invariance of placeholder finite-energy.**
+    If `u₀` has finite placeholder energy with witness `M`, then for
+    any linear isometry `R` of `ℝ³` and any translation `a : ℝ³`, the
+    field transformed by the full Euclidean motion `x ↦ R x + a`,
+    `fun t x => u₀ t (R x + a)`, also has finite placeholder energy
+    with the same witness `M`. Composes `HasFiniteEnergy_rotate`
+    (Task #89) with `HasFiniteEnergy_translate` (Task #78),
+    documenting closure of the placeholder schema under the full
+    rigid Euclidean motion group E(3) on the spatial slice, not just
+    its generators in isolation. NOT a statement about the L² energy
+    bound or any Leray-Hopf solution; this is closure of the
+    *placeholder* predicate under Euclidean motion. -/
+theorem HasFiniteEnergy_euclidean_motion (u₀ : VelocityField)
+    (R : EuclideanSpace ℝ (Fin 3) →ₗᵢ[ℝ] EuclideanSpace ℝ (Fin 3))
+    (a : EuclideanSpace ℝ (Fin 3)) (hu : HasFiniteEnergy u₀) :
+    HasFiniteEnergy (fun (t : ℝ) (x : EuclideanSpace ℝ (Fin 3)) =>
+      u₀ t (R x + a)) :=
+  HasFiniteEnergy_rotate
+    (fun (t : ℝ) (x : EuclideanSpace ℝ (Fin 3)) => u₀ t (x + a)) R
+    (HasFiniteEnergy_translate u₀ a hu)
+
 end NS
 end Towers
 end TheoremaAureum
