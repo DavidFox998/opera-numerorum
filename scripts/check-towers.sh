@@ -1778,6 +1778,20 @@ BRICKS=(
   # per-plaquette factor is still a placeholder. YM tower stays `Status: Open`.
   # Discharges the 2nd of two 19.1q sorries in Attempts/; sorry count 10 → 9.
   "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.polymer_activity_bound_real"
+  # ---- Batch 19.2 — +6 ITEMS (4 theorems + 2 defs): Peter-Weyl polymer activity (`_pw` suffix).
+  # Additive promotion alongside the 19.1s placeholders (which stay on the
+  # wall). `plaquette_activity_pw β N p := Weyl_sum_explicit_SU3_real (1/β) N`
+  # (the real 19.1o truncated Peter-Weyl sum). `polymer_activity_finite_N_pw`
+  # gains the `Real.exp (-β * γ.card)` cardinality-suppression prefactor.
+  # The originally-spec'd `≤ Real.exp (-c/β)` upper bound is NOT shipped —
+  # the (0,0) trivial-rep summand forces `plaquette_activity_pw ≥ 1`, so the
+  # honest analogue is the lower bound `plaquette_activity_pw_ge_one`. The
+  # conditional KP-shape lift `polymer_activity_bound_real_pw` still ships,
+  # mirroring the 19.1s pattern. YM tower stays `Status: Open`.
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.plaquette_activity_pw_nonneg"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.plaquette_activity_pw_ge_one"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.plaquette_activity_pw_pos"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.polymer_activity_bound_real_pw"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

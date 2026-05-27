@@ -2232,6 +2232,125 @@ theorem polymer_activity_bound_real
     _ = Real.exp ((γ.card : ℝ) * (-c / β)) := (Real.exp_nat_mul _ _).symm
     _ = Real.exp (-c * γ.card / β) := by congr 1; ring
 
+/-! ==== Batch 19.2 — Peter-Weyl polymer activity (`_pw` suffix) ====
+
+Additive promotion **alongside** the 19.1s placeholders (which stay
+on the wall). The `_pw` (Peter-Weyl) bodies replace the placeholder
+`Real.exp (-1/β)` activity with the real truncated Peter-Weyl sum
+`Weyl_sum_explicit_SU3_real (1/β) N` from 19.1o, and the polymer
+activity gains the `Real.exp (-β * γ.card)` cardinality-suppression
+prefactor expected of a Wilson-style action.
+
+**Honest-scope note.** A `≤ Real.exp (-c/β)` upper bound on the
+per-plaquette activity is **NOT** included in this batch — the
+`(0, 0)` trivial-rep summand of `Weyl_sum_explicit_SU3_real (1/β) N`
+contributes `1² · exp(0) = 1`, forcing
+`plaquette_activity_pw β N p ≥ 1`. The honest lower bound is
+shipped as `plaquette_activity_pw_ge_one` below; the upper bound
+would require either promoting one of the placeholder heat-kernel
+defs to bridge to `Heat_kernel_asymptotics_real`, or a separate
+quantitative analysis of the truncated Peter-Weyl sum. Parked.
+The conditional KP-shape lift `polymer_activity_bound_real_pw`
+still ships, with the per-plaquette upper bound left as an
+explicit hypothesis (mirroring the 19.1s placeholder pattern).
+
+YM tower stays `Status: Open` in `docs/ROADMAP.md`. -/
+
+/-- **Per-plaquette activity, real Peter-Weyl body (19.2).**
+`Weyl_sum_explicit_SU3_real (1/β) N` from 19.1o — the truncated
+Peter-Weyl sum at heat-kernel parameter `t = 1/β`. Coexists with the
+19.1s placeholder `plaquette_activity`. The plaquette argument is
+unused at this surface (the Peter-Weyl sum is position-independent
+on the lattice; per-plaquette dependence enters when the action gains
+a real `F_μν`-coupling, parked). -/
+noncomputable def plaquette_activity_pw (β : ℝ) (N : ℕ) (_p : Plaquette) : ℝ :=
+  Weyl_sum_explicit_SU3_real (1 / β) N
+
+/-- **Polymer activity, real Peter-Weyl body (19.2).** Multiplicative
+shape over plaquettes with a `Real.exp (-β * γ.card)` prefactor
+(cardinality suppression — each plaquette in the polymer costs `β` in
+the action). Coexists with the 19.1s placeholder
+`polymer_activity_finite_N`. -/
+noncomputable def polymer_activity_finite_N_pw
+    (β : ℝ) (N : ℕ) (γ : Polymer) : ℝ :=
+  Real.exp (-β * γ.card) * ∏ p ∈ γ, plaquette_activity_pw β N p
+
+/-- **BRICK (19.2) — `plaquette_activity_pw` is nonneg.** Direct from
+`Weyl_sum_explicit_SU3_real_nonneg` (19.1o). -/
+theorem plaquette_activity_pw_nonneg (β : ℝ) (N : ℕ) (p : Plaquette) :
+    0 ≤ plaquette_activity_pw β N p := by
+  unfold plaquette_activity_pw
+  exact Weyl_sum_explicit_SU3_real_nonneg _ _
+
+/-- **BRICK (19.2) — `plaquette_activity_pw` is bounded below by 1.**
+The `(0, 0)` trivial-rep summand of the truncated Peter-Weyl sum
+contributes `dim(0,0)² · exp(-(1/β) · C₂(0,0)) = 1² · exp(0) = 1`,
+and all other summands are nonneg. This is the honest replacement
+for the originally-spec'd `≤ Real.exp (-c/β)` upper bound, which is
+unprovable: the truncated Peter-Weyl sum does NOT decay as `β → 0`,
+it limits to the heat-kernel value at large `t = 1/β`, which on a
+compact group tends to `1/Vol(G) > 0`. -/
+theorem plaquette_activity_pw_ge_one (β : ℝ) (N : ℕ) (p : Plaquette) :
+    1 ≤ plaquette_activity_pw β N p := by
+  unfold plaquette_activity_pw Weyl_sum_explicit_SU3_real
+  set S : Finset (ℕ × ℕ) :=
+    ((Finset.range (N + 1)) ×ˢ (Finset.range (N + 1))).filter
+      (fun p : ℕ × ℕ => p.1 + p.2 ≤ N) with hS
+  have h00 : (0, 0) ∈ S := by
+    simp [hS, Finset.mem_filter, Finset.mem_product, Finset.mem_range]
+  have hterm :
+      ((Weyl_dim_SU3_explicit (0, 0) : ℝ)) ^ 2 *
+        Real.exp (-((1 / β) * (Casimir_SU3_explicit (0, 0) : ℝ))) = 1 := by
+    have h1 : (Weyl_dim_SU3_explicit (0, 0) : ℝ) = 1 := by
+      rw [Weyl_dim_SU3_explicit_at_zero]; norm_num
+    have h2 : (Casimir_SU3_explicit (0, 0) : ℝ) = 0 := by
+      rw [Casimir_SU3_explicit_at_zero]; norm_num
+    rw [h1, h2]; simp
+  have hpos :
+      ∀ mn ∈ S, 0 ≤ ((Weyl_dim_SU3_explicit mn : ℝ)) ^ 2 *
+        Real.exp (-((1 / β) * (Casimir_SU3_explicit mn : ℝ))) := by
+    intro mn _
+    exact mul_nonneg (sq_nonneg _) (Real.exp_pos _).le
+  calc (1 : ℝ)
+      = ((Weyl_dim_SU3_explicit (0, 0) : ℝ)) ^ 2 *
+          Real.exp (-((1 / β) * (Casimir_SU3_explicit (0, 0) : ℝ))) := hterm.symm
+    _ ≤ ∑ mn ∈ S,
+          ((Weyl_dim_SU3_explicit mn : ℝ)) ^ 2 *
+            Real.exp (-((1 / β) * (Casimir_SU3_explicit mn : ℝ))) :=
+        Finset.single_le_sum (f := fun mn =>
+          ((Weyl_dim_SU3_explicit mn : ℝ)) ^ 2 *
+            Real.exp (-((1 / β) * (Casimir_SU3_explicit mn : ℝ)))) hpos h00
+
+/-- **BRICK (19.2) — `plaquette_activity_pw` is strictly positive.**
+Immediate from `_ge_one`: `0 < 1 ≤ plaquette_activity_pw β N p`. -/
+theorem plaquette_activity_pw_pos (β : ℝ) (N : ℕ) (p : Plaquette) :
+    0 < plaquette_activity_pw β N p :=
+  lt_of_lt_of_le zero_lt_one (plaquette_activity_pw_ge_one β N p)
+
+/-- **BRICK (19.2) — Kotecký-Preiss per-plaquette → polymer lift,
+Peter-Weyl body.** Same conditional shape as the 19.1s
+`polymer_activity_bound_real`, but on the `_pw` def with the
+`Real.exp (-β * γ.card)` prefactor preserved on both sides.
+The per-plaquette upper bound `Real.exp (-c/β)` enters as a
+hypothesis — see the file-level honest-scope note above for why a
+side-bound on `plaquette_activity_pw` itself is not provable in
+this batch. -/
+theorem polymer_activity_bound_real_pw
+    (β c : ℝ) (_hβ : 0 < β) (_hc : 0 ≤ c) (N : ℕ) (γ : Polymer)
+    (hbound : ∀ p ∈ γ, plaquette_activity_pw β N p ≤ Real.exp (-c / β)) :
+    polymer_activity_finite_N_pw β N γ ≤
+      Real.exp (-β * γ.card) * Real.exp (-c * γ.card / β) := by
+  unfold polymer_activity_finite_N_pw
+  refine mul_le_mul_of_nonneg_left ?_ (Real.exp_pos _).le
+  calc ∏ p ∈ γ, plaquette_activity_pw β N p
+      ≤ ∏ _p ∈ γ, Real.exp (-c / β) :=
+        Finset.prod_le_prod
+          (fun p _ => plaquette_activity_pw_nonneg β N p)
+          (fun p hp => hbound p hp)
+    _ = Real.exp (-c / β) ^ γ.card := Finset.prod_const _
+    _ = Real.exp ((γ.card : ℝ) * (-c / β)) := (Real.exp_nat_mul _ _).symm
+    _ = Real.exp (-c * γ.card / β) := by congr 1; ring
+
 end ClusterExpansion
 end YM
 end Towers
