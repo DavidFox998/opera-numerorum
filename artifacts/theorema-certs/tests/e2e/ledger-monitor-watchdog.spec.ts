@@ -149,4 +149,50 @@ test.describe("dashboard: ledger monitor watchdog badge", () => {
       page.locator('[data-testid="text-ledger-monitor-watchdog"]'),
     ).toHaveCount(0);
   });
+
+  test("the 'last fire' relative-age text ticks up on its own without a reload (task #143)", async ({
+    page,
+  }) => {
+    // Anchor the watchdog fire 30s in the past. The dashboard runs a
+    // 1s `setNowMs(Date.now())` interval (task #73) that the watchdog
+    // badge consumes via `formatRelativeAge(wdFiredAt, nowMs)`, so the
+    // rendered "Ns ago" string should advance once per wall-clock
+    // second without any user interaction or full page reload.
+    const firedAt = new Date(Date.now() - 30_000).toISOString();
+    const overridesRef: { current: WatchdogOverrides } = {
+      current: {
+        watchdogState: "stalled",
+        watchdogLastFiredAt: firedAt,
+      },
+    };
+
+    await installLedgerIntegrityMock(page, overridesRef);
+    await page.goto("/");
+
+    const firedAgo = page.locator(
+      '[data-testid="text-ledger-monitor-watchdog-fired"]',
+    );
+    await expect(firedAgo).toBeVisible();
+    // Format under test is "Ns ago" (sub-minute).
+    await expect(firedAgo).toHaveText(/^\d+s ago$/);
+
+    const initialText = (await firedAgo.textContent())?.trim() ?? "";
+    expect(initialText).toMatch(/^\d+s ago$/);
+
+    // Wait long enough that the per-second tick has to bump the
+    // displayed seconds at least once. No reload, no refetch — purely
+    // the live `nowMs` ticking through the same DOM node.
+    await expect
+      .poll(
+        async () => (await firedAgo.textContent())?.trim() ?? "",
+        { timeout: 5_000, intervals: [250, 500, 1_000] },
+      )
+      .not.toBe(initialText);
+
+    const laterText = (await firedAgo.textContent())?.trim() ?? "";
+    expect(laterText).toMatch(/^\d+s ago$/);
+    const initialSec = Number(initialText.replace(/s ago$/, ""));
+    const laterSec = Number(laterText.replace(/s ago$/, ""));
+    expect(laterSec).toBeGreaterThan(initialSec);
+  });
 });
