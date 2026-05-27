@@ -1181,6 +1181,27 @@ BRICKS=(
   "Towers.YM.SpectralGap|TheoremaAureum.Towers.YM.SpectralGap.Perron_Frobenius_statement"
   "Towers.YM.SpectralGap|TheoremaAureum.Towers.YM.SpectralGap.spectral_radius_nonneg"
   "Towers.YM.SpectralGap|TheoremaAureum.Towers.YM.SpectralGap.mass_gap_nonneg"
+
+  # ---- Batch 19.1d (2026-05-27) — Cluster Expansion + Glimm-Jaffe
+  # skeleton. Wall 305 → 313 (+8 bricks). Honest deviation: user
+  # spec named wall 305→325 (+20). Shipping the 8 named Track 1
+  # bricks per spec; Track 2 (T_g.lean sorry replacements) stays as
+  # sorry per the "Hard theorems → Towers/Attempts/ with sorry"
+  # constraint (sorry docstrings updated to reference this batch).
+  # All 8 bricks are honest placeholders / named-handle bridges
+  # mirroring the Batch 19.1c SpectralGap discipline. The real
+  # cluster-expansion analytic bounds live as part of the sorry in
+  # `Towers/Attempts/T_g.lean :: Perron_Frobenius_for_transfer`,
+  # NOT in BRICKS. YM tower stays `Status: Open`;
+  # `MassGap_YM4_Clay` stays a schema.
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Wilson_measure_def"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.High_temp_expansion"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Cluster_estimate_base"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Polymer_partition_function"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Cluster_convergence_radius"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Correlation_decay_from_CE"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Transfer_from_measure"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Transfer_bound_from_CE"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

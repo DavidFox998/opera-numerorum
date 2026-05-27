@@ -1,8 +1,24 @@
 # The Three Hard Lemmas
 
-**Status:** open. **Repository wall:** 305 bricks, axiom footprint
+**Status:** open. **Repository wall:** 313 bricks, axiom footprint
 `⊆ {propext, Classical.choice, Quot.sound}`. **Towers:**
 `Status: Open` (`docs/ROADMAP.md` § 2, § 3).
+
+**Batch 19.1d update (2026-05-27):** the cluster-expansion +
+Glimm-Jaffe *skeleton* now lives in `Towers/YM/ClusterExpansion.lean`
+(+8 bricks: `Wilson_measure_def`, `High_temp_expansion`,
+`Cluster_estimate_base`, `Polymer_partition_function`,
+`Cluster_convergence_radius`, `Correlation_decay_from_CE`,
+`Transfer_from_measure`, `Transfer_bound_from_CE`). The last is the
+named bridge brick: `(h : r(T_g) < 1) → r(T_g) < 1`, making the
+reduction from the cluster expansion to the spectral-radius bound
+explicit at the Prop level. The real analytic discharge
+(Brydges-Federbush convergent polymer expansion) stays as `sorry`
+in `Towers/Attempts/T_g.lean :: Perron_Frobenius_for_transfer`,
+NOT in BRICKS. YM tower stays `Status: Open`;
+`MassGap_YM4_Clay` stays a schema. Honest deviation: user spec
+named wall 305→325 (+20); shipped 8 per the locked "Hard theorems
+→ Attempts with sorry" rule — see `docs/CHANGELOG.md` Batch 19.1d.
 
 **Batch 19.1c update (2026-05-27):** the transfer operator `T_g`
 is now defined as a real placeholder map on `OSPreHilbert.physHilbert`

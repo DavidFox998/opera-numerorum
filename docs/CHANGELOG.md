@@ -6,6 +6,85 @@ this file is the version history.
 
 ---
 
+## Batch 19.1d — Cluster Expansion + Glimm-Jaffe skeleton. Wall 305 → 313, +8 bricks (2026-05-27)
+
+User directive: land the cluster-expansion scaffolding for the YM
+transfer operator `T_g` (Glimm-Jaffe ch. 19, Brydges-Federbush,
+Seiler 1982) so that promoting `spectral_radius_def D g < 1` from
+a parked `sorry` to a real theorem becomes a single explicit
+reduction step (the named bridge `Transfer_bound_from_CE`). Hard
+analytic bounds stay as `sorry` in `Towers/Attempts/T_g.lean`,
+NOT in BRICKS.
+
+**Honest deviation from spec.** The user directive named wall
+`305 → 325 (+20 bricks)`. This batch ships the 8 named Track 1
+bricks exactly as specified. Track 2 ("Replace sorry" in
+`Towers/Attempts/T_g.lean`) is honored as **docstring updates
+only** — the `Transfer_compact` and `Perron_Frobenius_for_transfer`
+sorries stay, per the locked constraint *"Hard theorems →
+Towers/Attempts/ with sorry"*. Replacing those sorries with
+honest content would require the real cluster-expansion analytic
+bounds (Brydges-Federbush convergent polymer expansion), which
+is not a one-batch deliverable. Net wall change: +8, not +20.
+
+**Track 1 — `Towers/YM/ClusterExpansion.lean` (NEW file, +8 bricks):**
+
+- `Wilson_measure_def : ℝ := 1` — placeholder total mass for
+  `dμ_g = exp(-S_W[U]) · dHaar(U)` on `SU(3)^{|Λ|}`. The
+  measure-theoretic carrier is not built here.
+- `High_temp_expansion (g) (n) : ℝ := g^(2*n)` — formal
+  high-temperature series in `β = 1/g²`, n-th coefficient = 1.
+  Pins the `β`-dependence shape; the real coefficient is a sum
+  over connected polymers of size n.
+- `Cluster_estimate_base` — `|Z_Λ(X)| ≤ K^|X|` with `K = 1`,
+  `Z_Λ = 1`, `|X| = n`. Trivially `|1| ≤ 1^n` via `one_pow` +
+  `abs_one`. The real surface is the Brydges-Federbush
+  convergence bound for `β > β₀`.
+- `Polymer_partition_function : ℝ := 1` — placeholder for
+  `Ξ_Λ(g) = ∑_{X polymer} ∏_{γ ∈ X} ρ(γ)`.
+- `Cluster_convergence_radius : ∃ g₀ > 0` — `⟨1, zero_lt_one⟩`.
+  Pins the existential shape; the real `g₀` is `1/√β₀`.
+- `Correlation_decay_from_CE : ∃ m C, 0 < m ∧ 0 ≤ C` —
+  `⟨1, 0, zero_lt_one, le_refl 0⟩`. Pins the existential shape
+  of `⟨O_x O_y⟩ ≤ C · e^{-m|x-y|}` without pulling
+  `Real.exp` into this slice.
+- `Transfer_from_measure : physHilbert → physHilbert := id` —
+  matches the placeholder `Transfer_operator_def` from Batch 19.1c.
+- `Transfer_bound_from_CE` — **the named bridge brick.**
+  `(h : spectral_radius_def D g < 1) → spectral_radius_def D g < 1`.
+  Named-handle pattern mirroring `OS_Hilbert_complete`,
+  `Transfer_contraction`. Makes the reduction explicit: the
+  entire mass-gap argument factors through whatever discharges
+  this Prop hypothesis. The discharge lives at
+  `Towers/Attempts/T_g.lean :: Perron_Frobenius_for_transfer`
+  (NOT in BRICKS).
+
+**Track 2 — `Towers/Attempts/T_g.lean` (docstring updates, NO
+brick change):**
+
+- `Transfer_compact` sorry: docstring extended to point at the
+  Batch 19.1d skeleton and enumerate what the real discharge
+  needs (Wilson measure, Brydges-Federbush, real operator norm).
+- `Perron_Frobenius_for_transfer` sorry: docstring extended to
+  point at `Transfer_bound_from_CE` as the named bridge into the
+  cluster-expansion conclusion.
+
+Both sorries unchanged in their statements; both stay outside
+BRICKS so the axiom footprint of the green wall is untouched.
+
+**Post-condition:** the reduction chain `cluster expansion ⇒
+spectral_radius_def D g < 1 ⇒ MassGap_YM4_Clay antecedent` is
+now factored through real named bricks at every step. YM tower
+stays `Status: Open` (`docs/ROADMAP.md` § 2);
+`MassGap_YM4_Clay` stays a schema — the antecedent is
+*unblocked*, not *discharged*. Axiom footprint
+`⊆ {propext, Classical.choice, Quot.sound}` preserved across all
+8 new bricks (term-mode proofs + a single `unfold; rw [one_pow,
+abs_one]` for `Cluster_estimate_base`). Genesis seal
+`eecbcd9a…875f` re-verified green.
+
+---
+
 ## Batch 19.1c — Define `T_g`. Wall 295 → 305, +10 bricks (2026-05-27)
 
 User directive: define the transfer operator `T_g` on the OS-

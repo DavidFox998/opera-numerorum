@@ -39,7 +39,16 @@ open TheoremaAureum.Towers.YM.SpectralGap
 the named witness here is the still-NAMED `physHilbert_isHilbert`
 Prop, used as a Prop-level stand-in for "the construction has
 produced a real compact operator on a real Hilbert space". The
-proof is left as `sorry`. -/
+proof is left as `sorry`.
+
+**Batch 19.1d note:** the cluster-expansion *skeleton* now lives
+in `Towers/YM/ClusterExpansion.lean` (8 bricks). Discharging
+this sorry is the Arzelà-Ascoli argument applied to the
+`Transfer_from_measure` of that file together with the
+`Cluster_estimate_base` bound — both currently honest placeholders.
+The real discharge needs (a) a real Wilson measure, (b) the
+Brydges-Federbush convergent polymer expansion, (c) a real
+operator-norm on `physHilbert`. -/
 theorem Transfer_compact (D : OSPreHilbert) (_g : ℝ) :
     D.physHilbert_isHilbert := by
   sorry
@@ -52,7 +61,15 @@ That mismatch is intentional — it is the tripwire telling the next
 batch that promoting `spectral_radius_def` away from the literal
 `1` placeholder will require landing the real cluster-expansion
 bound here. Marked `sorry`; lives outside BRICKS so the axiom
-footprint of the green wall is untouched. -/
+footprint of the green wall is untouched.
+
+**Batch 19.1d note:** the cluster-expansion skeleton ships in
+`Towers/YM/ClusterExpansion.lean` (8 bricks); the named bridge
+`Transfer_bound_from_CE` there reduces this conclusion to the
+Prop `spectral_radius_def D g < 1` taken as a hypothesis. Real
+discharge = Brydges-Federbush convergent polymer expansion for
+`g < g₀` (the `Cluster_convergence_radius` witness, currently
+placeholder = 1). -/
 theorem Perron_Frobenius_for_transfer (D : OSPreHilbert)
     (g : ℝ) (_hg : 0 < g) :
     spectral_radius_def D g < 1 := by
