@@ -430,3 +430,23 @@ hypothesis side of one of the three conditional theorems with
 real analysis. Per `replit.md` "honest-scope wording is locked,"
 no UI surface or doc claims any tower discharged at landing of
 any 19.1\* sub-batch.
+
+---
+
+## Batch 18 — Honest checkmate attempt on all three (2026-05-27)
+
+User directive: *"If lemma fails, leave `sorry`. No cheats."* All
+three fail — they are the Clay-level analytic content itself. Per
+the locked rule "Hard theorems land in `Towers/Attempts/` as
+sorry-bearing stubs", three new **Attempts** files ship the
+headline statements with `by sorry` bodies, NOT in BRICKS:
+
+| Track | Theorem | File |
+|---|---|---|
+| 1 (YM) | `Perron_Frobenius_for_transfer_unconditional : ∀ g > 0, ∃ λ ∈ (0,1)` | `Towers/Attempts/Perron.lean` |
+| 2 (Spectral) | `gap_uniform_in_Lambda_v2 : ∃ δ₀ > 0, ∀ Λ : ℕ, δ₀ ≤ δ₀` | `Towers/Attempts/UniformGap.lean` |
+| 3 (NS) | `enstrophy_bound_global u : ∃ C, ∀ t, H1Norm_v2 u t ≤ C` | `Towers/Attempts/Enstrophy.lean` |
+
+**No promotion fires.** `MassGap_YM4_Clay`, `MassGap_YM_operator`,
+and `NavierStokes_global_regular` stay schema. All three towers
+stay `Status: Open`. Wall stays at **295**.

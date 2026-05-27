@@ -6,6 +6,61 @@ this file is the version history.
 
 ---
 
+## Batch 18 — Three-Hard-Lemmas honest checkmate attempt (2026-05-27)
+
+User directive: land the three Clay-level analytic surfaces
+(`Perron_Frobenius_for_transfer` unconditional, `gap_uniform_in_Lambda_v2`,
+`enstrophy_bound_global`) with the explicit constraint *"If lemma
+fails, leave `sorry`. No cheats."* All three are out-of-scope
+research surfaces; per the locked rule "Hard theorems land in
+`Towers/Attempts/` as sorry-bearing stubs", they ship as three new
+**Attempts** files, NOT as BRICKS.
+
+**Files (NEW, NOT in BRICKS):**
+
+- `lean-proof-towers/Towers/Attempts/Perron.lean` —
+  `Perron_Frobenius_for_transfer_unconditional` (`∀ g > 0, ∃ λ ∈ (0,1)`)
+  with `sorry`. Pins the SU(3) Wilson lattice mass-gap surface that
+  the existing `Towers.YM.Transfer.Perron_Frobenius_for_transfer`
+  brick states only as a conditional pass-through.
+- `lean-proof-towers/Towers/Attempts/UniformGap.lean` —
+  `gap_uniform_in_Lambda_v2` (`∃ δ₀ > 0, ∀ Λ : ℕ, δ₀ ≤ δ₀`) with
+  `sorry`. The load-bearing surface is the **quantifier order**
+  `∃ δ₀, ∀ Λ` (IR-uniform Poincaré + cutoff-independent Neumann);
+  the inequality body is a vacuous tautology because a real `Δ_Λ`
+  lives in a spectral predicate the Towers scaffold has not exposed.
+- `lean-proof-towers/Towers/Attempts/Enstrophy.lean` —
+  `enstrophy_bound_global` (`∃ C, ∀ t, H1Norm_v2 u t ≤ C`) with
+  `sorry`. The Clay 3D Navier-Stokes global regularity statement
+  itself, restated against the placeholder `H1Norm_v2` from
+  `Towers.NS.EnergyV2`.
+
+All three added to `lean-proof-towers/lakefile.lean` roots. None
+added to BRICKS — putting them there would fail the
+`{propext, Classical.choice, Quot.sound}` footprint check because
+`sorry` pulls in `sorryAx`. The wall stays at **295** (not 283 as
+the user prompt sketched; current wall counted from 19.1b).
+
+**Honest-scope:** YM and NS towers stay `Status: Open` in
+`docs/ROADMAP.md`. The Batch-18 prompt's "If all 3 compile as
+`theorem`, auto-promote `MassGap_YM4_Clay`, `MassGap_YM_operator`,
+`NavierStokes_global_regular` from schema to theorem" is satisfied
+vacuously in the wrong direction: the three theorems compile only
+because of `sorry`, so no promotion fires and no schema is touched.
+No `replit.md` edits, no sealed-file edits (Genesis seal still
+`eecbcd9a…875f`).
+
+**Validation:** Genesis seal verified green. Local `lake build
+Towers` could not be re-run this turn — the sandbox restore path
+restored mathlib's `.git/` from tar but does not populate the
+worktree, and `git restore` / `git checkout` are blocked from the
+main agent. The three new files are structurally identical to the
+known-green `Towers/Attempts/OSHilbert.lean` from 19.1b (same
+imports, namespaces, `by sorry` body); ratification of the compile
+defers to the next towers-build CI run on a clean checkout.
+
+---
+
 ## Batch 19.1b — OS Hilbert space (named-placeholder skeleton) (2026-05-27)
 
 Second slice of the Three-Hard-Lemmas OS prerequisite. Wall
