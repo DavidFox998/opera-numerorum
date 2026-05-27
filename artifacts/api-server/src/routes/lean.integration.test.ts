@@ -951,6 +951,28 @@ describe("GET /api/lean/ledger-alerts — corrupt log resilience", () => {
     // The ack sidecar on disk no longer mentions the rolled-off id.
     const ackAfter = JSON.parse(readFileSync(ackPath, "utf8"));
     expect(ackAfter[oldEntryId]).toBeUndefined();
+
+    // Task #119: the GET response surfaces how many stale dismissals
+    // were trimmed on this call, so operators can confirm housekeeping
+    // is running.
+    expect(r.json.ackGcDropped).toBe(1);
+
+    // A subsequent GET has nothing left to GC and reports zero.
+    const r2 = await call({
+      path: "/api/lean/ledger-alerts?includeAcknowledged=true",
+    });
+    expect(r2.status).toBe(200);
+    expect(r2.json.ackGcDropped).toBe(0);
+  });
+
+  it("reports ackGcDropped=0 on the healthy no-log path", async () => {
+    const { rmSync: rm } = await import("node:fs");
+    rm(fixturePath, { force: true });
+    __testing.setAlertsLogPath(fixturePath);
+    const r = await call({ path: "/api/lean/ledger-alerts" });
+    expect(r.status).toBe(200);
+    expect(r.json.logExists).toBe(false);
+    expect(r.json.ackGcDropped).toBe(0);
   });
 });
 

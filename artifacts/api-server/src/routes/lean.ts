@@ -274,6 +274,7 @@ router.get("/lean/ledger-alerts", (req, res) => {
       totalReturned: 0,
       logPath: ALERTS_LOG_PATH,
       logExists: false,
+      ackGcDropped: 0,
     });
     return;
   }
@@ -288,6 +289,7 @@ router.get("/lean/ledger-alerts", (req, res) => {
       totalReturned: 0,
       logPath: ALERTS_LOG_PATH,
       logExists: true,
+      ackGcDropped: 0,
     });
     return;
   }
@@ -314,16 +316,16 @@ router.get("/lean/ledger-alerts", (req, res) => {
       // Skip malformed lines.
     }
   }
+  let ackGcDropped = 0;
   if (oldestLiveAlertMs !== null && Object.keys(ackMap).length > 0) {
-    let changed = false;
     for (const [id, ackedAt] of Object.entries(ackMap)) {
       const ackMs = Date.parse(ackedAt);
       if (Number.isFinite(ackMs) && ackMs < oldestLiveAlertMs) {
         delete ackMap[id];
-        changed = true;
+        ackGcDropped++;
       }
     }
-    if (changed) {
+    if (ackGcDropped > 0) {
       try {
         writeAckMap(ackMap, req.log);
       } catch (err) {
@@ -359,6 +361,7 @@ router.get("/lean/ledger-alerts", (req, res) => {
     totalReturned: alerts.length,
     logPath: ALERTS_LOG_PATH,
     logExists: true,
+    ackGcDropped,
   });
 });
 

@@ -1411,6 +1411,13 @@ export default function DashboardPage() {
                                   `${droppedCount} suppressed (sink wedged)`,
                                 );
                               }
+                              const gcDropped =
+                                ledgerAlertsData.ackGcDropped ?? 0;
+                              if (gcDropped > 0) {
+                                suffixes.push(
+                                  `${gcDropped} stale dismissal${gcDropped === 1 ? "" : "s"} cleaned up`,
+                                );
+                              }
                               return suffixes.length > 0
                                 ? `${base} (${suffixes.join(", ")})`
                                 : base;

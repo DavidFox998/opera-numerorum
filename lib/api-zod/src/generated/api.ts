@@ -286,7 +286,8 @@ export const GetLedgerAlertsResponse = zod.object({
   "limit": zod.number().describe('Effective limit applied to the response'),
   "totalReturned": zod.number(),
   "logPath": zod.string().describe('Filesystem path of the alert log that was read'),
-  "logExists": zod.boolean().describe('True iff `data\/ledger-alerts.jsonl` exists on disk. False is\nthe normal healthy state — no alert has ever fired.\n')
+  "logExists": zod.boolean().describe('True iff `data\/ledger-alerts.jsonl` exists on disk. False is\nthe normal healthy state — no alert has ever fired.\n'),
+  "ackGcDropped": zod.number().optional().describe('Count of dismissed-alert records garbage-collected on this\ncall because the underlying alert has rolled off the log\n(task #102 \/ #119). Always present; usually 0. Surfaced so\noperators can confirm housekeeping is running and notice\nif it ever runs away.\n')
 })
 
 

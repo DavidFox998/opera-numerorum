@@ -867,6 +867,14 @@ components:
           description: |
             True iff `data/ledger-alerts.jsonl` exists on disk. False is
             the normal healthy state — no alert has ever fired.
+        ackGcDropped:
+          type: integer
+          description: |
+            Count of dismissed-alert records garbage-collected on this
+            call because the underlying alert has rolled off the log
+            (task #102 / #119). Always present; usually 0. Surfaced so
+            operators can confirm housekeeping is running and notice
+            if it ever runs away.
 
     MorningstarProbe:
       type: object

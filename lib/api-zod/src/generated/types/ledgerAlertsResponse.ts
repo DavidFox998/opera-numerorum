@@ -19,4 +19,11 @@ export interface LedgerAlertsResponse {
   the normal healthy state — no alert has ever fired.
    */
   logExists: boolean;
+  /** Count of dismissed-alert records garbage-collected on this
+  call because the underlying alert has rolled off the log
+  (task #102 / #119). Always present; usually 0. Surfaced so
+  operators can confirm housekeeping is running and notice
+  if it ever runs away.
+   */
+  ackGcDropped?: number;
 }
