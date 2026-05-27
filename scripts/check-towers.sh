@@ -1672,6 +1672,37 @@ BRICKS=(
   "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Casimir_SU3_explicit_at_fundamental"
   "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Weyl_sum_explicit_SU3_nonneg"
   "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Small_t_dominance"
+  # -----------------------------------------------------------------
+  # Batch 19.1o — Truncated Peter-Weyl (real Finset sum surface).
+  # Promote 19.1n `Weyl_sum_explicit_SU3 t N := 0` to the real-valued
+  # companion `Weyl_sum_explicit_SU3_real t N := Σ_{m+n≤N} dim² ·
+  # exp(-t·C₂)` — genuine finite truncation of the Peter-Weyl
+  # spectral decomposition `K_t(1) = Σ_λ dim(λ)² · e^{-t·C₂(λ)}`.
+  #
+  # +10 sorry-free BRICKS, footprint ⊆
+  # {propext, Classical.choice, Quot.sound}. Additive only; 19.1n
+  # bricks (Weyl_sum_explicit_SU3_nonneg, Small_t_dominance) stay
+  # untouched. New 3 defs (NOT in BRICKS):
+  #   Weyl_sum_explicit_SU3_real    : Finset.sum over filter
+  #   Heat_kernel_at_identity        := 2 · Weyl_sum_explicit_SU3_real
+  #   Truncation_error_bound_value   := Weyl_sum_explicit_SU3_real
+  #
+  # Track 2 (Attempts/): Single_plaquette_bound_SU3 sorry untouched
+  # (statement unchanged), docstring updated to note the finite-N
+  # Peter-Weyl is now closed in YM/, leaving only the infinite-sum
+  # convergence (Varadhan / Molchanov on compact Lie groups) +
+  # continuum-limit gap. YM tower stays Status: Open.
+  # -----------------------------------------------------------------
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Weyl_sum_explicit_SU3_real_nonneg"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Weyl_sum_explicit_SU3_real_at_zero"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Weyl_sum_monotone_N"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Weyl_sum_bounded_by_heat"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Truncation_error_bound"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Small_t_dominance_real"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Heat_kernel_tail_estimate"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Peter_Weyl_partial"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Heat_kernel_at_identity_nonneg"
+  "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.Truncation_error_bound_value_nonneg"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

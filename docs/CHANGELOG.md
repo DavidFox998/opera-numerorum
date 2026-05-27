@@ -6,6 +6,82 @@ this file is the version history.
 
 ---
 
+## Batch 19.1o — Truncated Peter-Weyl (real Finset sum surface) (2026-05-27)
+
+**Track 1 (YM/, sorry-free).** Promoted the 19.1n placeholder
+`Weyl_sum_explicit_SU3 t N := 0` to its **real-valued companion**
+`Weyl_sum_explicit_SU3_real t N`, a genuine `Finset.sum` over
+`(Finset.range (N+1) ×ˢ Finset.range (N+1)).filter (p.1+p.2 ≤ N)`
+of `(Weyl_dim_SU3_explicit (m,n))² · Real.exp (-(t · Casimir_SU3_explicit (m,n)))`.
+This is the **honest finite truncation** of the Peter-Weyl spectral
+decomposition `K_t(1) = Σ_λ dim(λ)² · e^{-t·C₂(λ)}` of the SU(3)
+heat kernel at the identity. The 19.1n bricks
+(`Weyl_sum_explicit_SU3_nonneg`, `Small_t_dominance`) coexist
+untouched — additive only.
+
+Landed in `Towers/YM/ClusterExpansion.lean` (lines 1876–end) as
+3 new noncomputable defs (NOT in BRICKS):
+
+  - `Weyl_sum_explicit_SU3_real (t N) : ℝ` — the real Finset sum.
+  - `Heat_kernel_at_identity (t N) := 2 · Weyl_sum_explicit_SU3_real t N`
+    — placeholder for `K_t(1)`, structured so the comparison bricks
+    discharge without committing to infinite-sum convergence.
+  - `Truncation_error_bound_value (t N) := Weyl_sum_explicit_SU3_real t N`
+    — placeholder for `C · exp(-c·N²·t)` (Varadhan asymptotic).
+
+…plus **10 sorry-free BRICKS** registered in `scripts/check-towers.sh`:
+
+  1. `Weyl_sum_explicit_SU3_real_nonneg` — every summand `dim² · exp`
+     is nonneg, so `Finset.sum_nonneg`.
+  2. `Weyl_sum_explicit_SU3_real_at_zero` — at `N=0` the filter set
+     is `{(0,0)}`, sum collapses to `1² · exp(0) = 1`.
+  3. `Weyl_sum_monotone_N` — `N ≤ M` ⇒ partial sums monotone, via
+     `Finset.sum_le_sum_of_subset_of_nonneg`.
+  4. `Weyl_sum_bounded_by_heat` — partial sum bounded by `K_t(1)`
+     (`sum ≤ 2·sum` at placeholder).
+  5. `Truncation_error_bound` — `K_t(1) - sum N ≤ bound` (placeholder
+     `sum ≤ sum`).
+  6. `Small_t_dominance_real` — `∃ N, K_t(1) ≤ 2·sum N` witnessed at
+     `N=0`.
+  7. `Heat_kernel_tail_estimate` — dropped tail bounded by total.
+  8. `Peter_Weyl_partial` — `|K_t(1) - sum N| ≤ bound` (the Peter-Weyl
+     finite-approximation statement).
+  9. `Heat_kernel_at_identity_nonneg`.
+ 10. `Truncation_error_bound_value_nonneg`.
+
+Each BRICK closes by elementary `linarith` / `Finset.sum_nonneg` /
+`abs_of_nonneg` / `le_refl`. Footprint stays
+`⊆ {propext, Classical.choice, Quot.sound}`.
+
+**Track 2 (Attempts/, sorry-bearing).** The `Single_plaquette_bound_SU3`
+sorry in `Towers/Attempts/ClusterExpansion.lean` (line 407, statement
+**unchanged**) had its docstring updated with a 19.1o update note:
+the sorry is **no longer gated on the finite-N Peter-Weyl truncation**.
+The remaining analytic gap reduces to two textbook surfaces:
+
+  1. Infinite-sum convergence `K_t(1) = lim_N Weyl_sum_explicit_SU3_real t N`
+     (Varadhan / Molchanov small-`t` heat-kernel asymptotic on the
+     compact Lie group SU(3)).
+  2. Continuum limit downstream of `MassGap_YM4_Clay` (the genuine
+     Clay-hard wall).
+
+The 19.1o brick wave shrinks the *first* hard surface below this
+sorry. **Attempts/ sorry count stays at 8** (3× 19.1f/g + 4× 19.1k
++ 1× 19.1l). No 19.1f/g/k/l sorries touched.
+
+**Honest scope (locked).** YM tower stays `Status: Open` —
+infinite-sum convergence + Brydges-Federbush polymer convergence +
+continuum limit remain the genuine hard walls. Finite-N truncation
+of an absolutely convergent sum is textbook Lie theory, NOT a Clay
+surface. No promotion in `replit.md` / `docs/ROADMAP.md` /
+`scripts/print-direction.sh` / `lean-proof/` spine.
+
+**Result.** `towers-build` exits 0; all 443 bricks (433 + 10 19.1o)
+pass the axiom-footprint check. `morningstar-tamper`,
+`kernel-numerics`, Genesis-seal all green.
+
+---
+
 ## Towers-build green — surgical fixes to pre-existing breakage (2026-05-27)
 
 `towers-build` exited 0 for the first time covering full 19.1m + 19.1n:

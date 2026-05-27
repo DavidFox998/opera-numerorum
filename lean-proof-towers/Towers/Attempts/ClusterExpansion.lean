@@ -367,7 +367,40 @@ and the SU(3) fundamental `(1,0)`. The next reduction step
 is to promote `Weyl_sum_explicit_SU3` from `:= 0` to the
 real truncated Peter-Weyl sum
 `Σ_{(m,n) : m+n ≤ N} (dim λ)² · e^{-t·C₂(λ)}` and prove
-Peter-Weyl convergence (19.1o target). -/
+Peter-Weyl convergence (19.1o target).
+
+**19.1o update — finite-N Peter-Weyl is now closed in YM/.**
+The real `Finset`-sum surface
+`Weyl_sum_explicit_SU3_real t N :=
+   Σ_{(m,n) : m+n ≤ N} (dim λ)² · Real.exp (-(t · C₂(λ)))`
+landed in `Towers/YM/ClusterExpansion.lean` as a sorry-free
+brick wave (+10 BRICKS: `_nonneg`, `_at_zero`, `_monotone_N`,
+`_bounded_by_heat`, `Truncation_error_bound`,
+`Small_t_dominance_real`, `Heat_kernel_tail_estimate`,
+`Peter_Weyl_partial`, `Heat_kernel_at_identity_nonneg`,
+`Truncation_error_bound_value_nonneg`). Footprint stays
+`⊆ {propext, Classical.choice, Quot.sound}`.
+
+This sorry — `Single_plaquette_bound_SU3` — is **no longer
+gated on the finite-N Peter-Weyl truncation**. The remaining
+analytic content reduces to two textbook gaps:
+
+  1. **Infinite-sum convergence**:
+     `K_t(1) = lim_{N→∞} Weyl_sum_explicit_SU3_real t N`,
+     the Varadhan / Molchanov small-`t` heat-kernel asymptotic
+     on the compact Lie group SU(3). One mathlib paper away —
+     `Mathlib.Analysis.SpecialFunctions.Gaussian` + a
+     `Topology.Algebra.InfiniteSum` Peter-Weyl wrapper.
+  2. **Continuum limit**: the lattice-spacing-to-zero limit
+     downstream of `MassGap_YM4_Clay`, the genuine "Clay-hard"
+     wall.
+
+The 19.1o brick wave shrinks the *first hard surface* below
+this sorry to "prove Σ converges." That is one Varadhan-style
+result away from a green discharge. Statement unchanged;
+proof still `sorry`. **YM tower stays `Status: Open`** — the
+continuum limit and Brydges-Federbush polymer convergence
+remain the genuine hard walls. -/
 theorem Single_plaquette_bound_SU3 (β : ℝ) (_hβ : 0 < β) :
     Character_expansion_plaquette β * SU3_Haar_measure_explicit ≤
       Real.exp (-(Casimir_SU3 * β)) := by

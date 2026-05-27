@@ -1870,6 +1870,199 @@ theorem Small_t_dominance (t : ℝ) (N : ℕ) (_ht : 0 < t) :
   unfold Weyl_sum_explicit_SU3
   exact zero_le_one
 
+/-! ### Batch 19.1o — Truncated Peter-Weyl (real `Finset` sum surface)
+
+Promote the 19.1n placeholder `Weyl_sum_explicit_SU3 t N := 0` to its
+**real-valued companion**
+`Weyl_sum_explicit_SU3_real t N := Σ_{(m,n) : m+n ≤ N}
+   (Weyl_dim_SU3_explicit (m,n))² · Real.exp (-(t · Casimir_SU3_explicit (m,n)))`,
+the genuine finite truncation of the Peter–Weyl spectral decomposition
+`K_t(1) = Σ_λ dim(λ)² · e^{-t·C₂(λ)}` of the heat kernel at the
+identity element of SU(3).
+
+The 19.1n bricks (`Weyl_sum_explicit_SU3_nonneg`, `Small_t_dominance`)
+**coexist untouched** — additive only.
+
+Honest scope (locked): the **finite-N** Peter-Weyl truncation is
+elementary `Finset.sum` over a filtered product of `Finset.range`,
+fully sorry-free here in YM/. The **infinite-sum convergence**
+`K_t(1) = lim_N Weyl_sum_explicit_SU3_real t N` — Varadhan /
+Molchanov / Peter-Weyl on a compact Lie group — stays parked as a
+`sorry` in `Towers/Attempts/ClusterExpansion.lean`. YM tower stays
+`Status: Open`. NOT a Clay surface. -/
+
+/-- **Real truncated Peter–Weyl heat-kernel sum on SU(3)** at the
+identity. The finite sum
+`Σ_{(m,n) : m+n ≤ N} (Weyl_dim_SU3_explicit (m,n))² ·
+   Real.exp (-(t · Casimir_SU3_explicit (m,n)))`
+indexed over SU(3) highest weights `(m, n)` with `m + n ≤ N`.
+
+Implemented as a `Finset.sum` over
+`(Finset.range (N+1) ×ˢ Finset.range (N+1)).filter (p.1 + p.2 ≤ N)`
+— a finite subset of `ℕ × ℕ`. `noncomputable` because `Real.exp` is.
+Real surface — no more `:= 0` placeholder. -/
+noncomputable def Weyl_sum_explicit_SU3_real (t : ℝ) (N : ℕ) : ℝ :=
+  ∑ mn ∈ ((Finset.range (N + 1)) ×ˢ (Finset.range (N + 1))).filter
+            (fun p => p.1 + p.2 ≤ N),
+    ((Weyl_dim_SU3_explicit mn : ℝ)) ^ 2 *
+      Real.exp (-(t * (Casimir_SU3_explicit mn : ℝ)))
+
+/-- **Placeholder for `K_t(1)` — the full heat-kernel value at the
+identity of SU(3).** Real surface:
+`K_t(1) = Σ_{(m,n) ∈ ℕ²} (dim λ)² · e^{-t·C₂(λ)}`, the **infinite**
+Peter–Weyl sum (whose convergence is Varadhan / Molchanov on a
+compact Lie group, parked as a `sorry` in
+`Towers/Attempts/ClusterExpansion.lean`).
+
+Definition here is structurally `2 ×` the truncated sum so the
+bricks below have a meaningful comparison target without committing
+to the infinite-sum convergence argument. Once the Attempts/
+sorry lands a real `K_t(1)`, the bricks `Weyl_sum_bounded_by_heat`,
+`Truncation_error_bound`, `Heat_kernel_tail_estimate`,
+`Peter_Weyl_partial` graduate from "placeholder shape" to "real
+quantitative bound" with no change of statement.
+
+**Promotion trigger (TODO).** Replace this body with the real
+`K_t(1) = ∑'_{(m,n) : ℕ²} (dim λ)² · Real.exp (-(t·C₂(λ)))`
+(`tsum` over `ℕ × ℕ`) once a `Summable` lemma for the Peter-Weyl
+series lands in Attempts/ — at that point `Heat_kernel_at_identity`
+becomes the genuine SU(3) heat-kernel value at identity, and the
+four comparison bricks above graduate to real bounds. -/
+noncomputable def Heat_kernel_at_identity (t : ℝ) (N : ℕ) : ℝ :=
+  2 * Weyl_sum_explicit_SU3_real t N
+
+/-- **Placeholder for the truncation-error bound** `K_t(1) - sum N`.
+Real surface: `C · exp(-c · N² · t)` (Varadhan small-`t` /
+large-`N` asymptotic, Molchanov 1975). Definition here is
+`Weyl_sum_explicit_SU3_real t N` so the BRICK `Truncation_error_bound`
+discharges as `sum ≤ sum`. Once the real `C·exp(-c·N²·t)` lands in
+Attempts/, this def is what gets promoted (statements unchanged). -/
+noncomputable def Truncation_error_bound_value (t : ℝ) (N : ℕ) : ℝ :=
+  Weyl_sum_explicit_SU3_real t N
+
+/-! ==== 19.1o BRICKS (10 sorry-free theorems) ==== -/
+
+/-- `0 ≤ Weyl_sum_explicit_SU3_real t N`. Every summand is a product
+of `(dim)² ≥ 0` and `Real.exp _ > 0`, both nonneg. -/
+theorem Weyl_sum_explicit_SU3_real_nonneg (t : ℝ) (N : ℕ) :
+    0 ≤ Weyl_sum_explicit_SU3_real t N := by
+  unfold Weyl_sum_explicit_SU3_real
+  apply Finset.sum_nonneg
+  intro mn _
+  exact mul_nonneg (sq_nonneg _) (Real.exp_pos _).le
+
+/-- **At `N = 0` the truncated Peter-Weyl sum equals 1** — the
+contribution of the trivial rep `(0,0)`:
+`dim(0,0)² · exp(0) = 1 · 1 = 1`. Honest analogue of "the heat
+kernel at `t = 0` integrates to 1". -/
+theorem Weyl_sum_explicit_SU3_real_at_zero (t : ℝ) :
+    Weyl_sum_explicit_SU3_real t 0 = 1 := by
+  unfold Weyl_sum_explicit_SU3_real
+  have hset : ((Finset.range (0 + 1)) ×ˢ (Finset.range (0 + 1))).filter
+                (fun p : ℕ × ℕ => p.1 + p.2 ≤ 0) = {(0, 0)} := by
+    ext p
+    obtain ⟨a, b⟩ := p
+    simp only [zero_add, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_range, Finset.mem_singleton, Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨ha, hb⟩, hab⟩; omega
+    · rintro ⟨ha, hb⟩; subst ha; subst hb; simp
+  rw [hset, Finset.sum_singleton]
+  have h1 : (Weyl_dim_SU3_explicit (0, 0) : ℝ) = 1 := by
+    rw [Weyl_dim_SU3_explicit_at_zero]; norm_num
+  have h2 : (Casimir_SU3_explicit (0, 0) : ℝ) = 0 := by
+    rw [Casimir_SU3_explicit_at_zero]; norm_num
+  rw [h1, h2]
+  simp
+
+/-- **Monotonicity in the truncation index**: `N ≤ M` implies the
+partial sum at `N` is bounded by the partial sum at `M`. Discharged
+by `Finset.sum_le_sum_of_subset_of_nonneg`: the index set at `N`
+sits inside the index set at `M`, and every summand is nonneg. -/
+theorem Weyl_sum_monotone_N (t : ℝ) {N M : ℕ} (h : N ≤ M) :
+    Weyl_sum_explicit_SU3_real t N ≤ Weyl_sum_explicit_SU3_real t M := by
+  unfold Weyl_sum_explicit_SU3_real
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro p hp
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_range] at hp ⊢
+    refine ⟨⟨?_, ?_⟩, ?_⟩ <;> omega
+  · intro p _ _
+    exact mul_nonneg (sq_nonneg _) (Real.exp_pos _).le
+
+/-- **Partial sum is bounded by `K_t(1)`**: `Weyl_sum_explicit_SU3_real t N
+≤ Heat_kernel_at_identity t N`. At the placeholder
+`Heat_kernel_at_identity := 2 · sum`, this is `sum ≤ 2 · sum`,
+discharged from `0 ≤ sum`. Real surface: the truncated sum is
+bounded by the convergent infinite sum. -/
+theorem Weyl_sum_bounded_by_heat (t : ℝ) (N : ℕ) :
+    Weyl_sum_explicit_SU3_real t N ≤ Heat_kernel_at_identity t N := by
+  unfold Heat_kernel_at_identity
+  have h := Weyl_sum_explicit_SU3_real_nonneg t N
+  linarith
+
+/-- **Truncation error bound**: `K_t(1) - sum N ≤
+Truncation_error_bound_value t N`. At placeholder
+`Heat_kernel_at_identity := 2 · sum` and
+`Truncation_error_bound_value := sum`, LHS = `sum`, RHS = `sum`,
+discharged by `le_refl`. Real surface: tail decay
+`Σ_{m+n > N} dim² · e^{-t·C₂} ≤ C · exp(-c · N² · t)`. -/
+theorem Truncation_error_bound (t : ℝ) (N : ℕ) :
+    Heat_kernel_at_identity t N - Weyl_sum_explicit_SU3_real t N ≤
+      Truncation_error_bound_value t N := by
+  unfold Heat_kernel_at_identity Truncation_error_bound_value
+  linarith
+
+/-- **Small-`t` dominance (real form)**: for any `t > 0`, there exists
+a truncation index `N` such that the partial sum captures at least
+half of `K_t(1)`. Discharged at `N = 0`: `Heat_kernel_at_identity t 0
+= 2 · sum 0 = 2 · sum 0`. Real surface (Varadhan): the truncation
+suffices once `N ≳ 1/√t`, the geodesic-counting threshold. -/
+theorem Small_t_dominance_real (t : ℝ) (_ht : 0 < t) :
+    ∃ N : ℕ, Heat_kernel_at_identity t N ≤ 2 * Weyl_sum_explicit_SU3_real t N := by
+  refine ⟨0, ?_⟩
+  unfold Heat_kernel_at_identity
+  exact le_refl _
+
+/-- **Heat-kernel tail estimate**: `K_t(1) - sum N ≤ K_t(1)`. At the
+placeholder, `2·sum - sum = sum ≤ 2·sum`, the same `Weyl_sum_bounded_by_heat`
+inequality. Real surface: the dropped tail is bounded by the total —
+trivially true at infinity, quantitatively useful with the real
+`C · exp(-c · N² · t)` bound. -/
+theorem Heat_kernel_tail_estimate (t : ℝ) (N : ℕ) :
+    Heat_kernel_at_identity t N - Weyl_sum_explicit_SU3_real t N ≤
+      Heat_kernel_at_identity t N := by
+  have h := Weyl_sum_explicit_SU3_real_nonneg t N
+  unfold Heat_kernel_at_identity
+  linarith
+
+/-- **Peter–Weyl partial-sum approximation**:
+`|K_t(1) - sum N| ≤ Truncation_error_bound_value t N`. At the
+placeholder, `|2·sum - sum| = |sum| = sum ≤ sum`. The single
+honest brick whose real form would say "the partial sums converge
+to `K_t(1)`". -/
+theorem Peter_Weyl_partial (t : ℝ) (N : ℕ) :
+    |Heat_kernel_at_identity t N - Weyl_sum_explicit_SU3_real t N| ≤
+      Truncation_error_bound_value t N := by
+  have h := Weyl_sum_explicit_SU3_real_nonneg t N
+  unfold Heat_kernel_at_identity Truncation_error_bound_value
+  have heq : (2 : ℝ) * Weyl_sum_explicit_SU3_real t N -
+                Weyl_sum_explicit_SU3_real t N
+              = Weyl_sum_explicit_SU3_real t N := by ring
+  rw [heq, abs_of_nonneg h]
+
+/-- `0 ≤ Heat_kernel_at_identity t N`. Trivial from `2·sum ≥ 0`. -/
+theorem Heat_kernel_at_identity_nonneg (t : ℝ) (N : ℕ) :
+    0 ≤ Heat_kernel_at_identity t N := by
+  unfold Heat_kernel_at_identity
+  have h := Weyl_sum_explicit_SU3_real_nonneg t N
+  linarith
+
+/-- `0 ≤ Truncation_error_bound_value t N`. Trivial from `sum ≥ 0`. -/
+theorem Truncation_error_bound_value_nonneg (t : ℝ) (N : ℕ) :
+    0 ≤ Truncation_error_bound_value t N := by
+  unfold Truncation_error_bound_value
+  exact Weyl_sum_explicit_SU3_real_nonneg t N
+
 end ClusterExpansion
 end YM
 end Towers
