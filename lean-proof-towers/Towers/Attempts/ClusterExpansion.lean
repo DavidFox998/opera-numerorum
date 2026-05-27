@@ -464,10 +464,170 @@ Brydges–Federbush polymer convergence and the UV continuum
 limit `a → 0` downstream of `MassGap_YM4_Clay`.
 
 Statement and proof body **unchanged**. YM tower stays
-`Status: Open`. No new axioms. No fake proofs. -/
+`Status: Open`. No new axioms. No fake proofs.
+
+**19.1q update — MayerScaffold lands the named gap as three
+typed surfaces.** The previously-monolithic "polymer convergence"
+gap behind this sorry is now refactored into three named typed
+holes in the `MayerScaffold` section below: `Mayer_overlap`
+(the Mayer-graph edge predicate, `Polymer → Polymer → Prop`),
+`polymer_activity_finite_N` (the polymer activity functional
+`ζ(β, N, γ)` built honestly from `Weyl_sum_explicit_SU3_real`),
+and `kotecky_preiss_criterion` (the strict-contraction
+implication that closes the Mayer expansion under the
+Kotecký-Preiss bound). Sorry count on this batch goes 8 → 11;
+each new sorry is individually named, individually cited, and
+individually scoped — refactor only, not progress. This sorry
+(`Single_plaquette_bound_SU3`) is unchanged and stays gated
+on the same `Polymer_activity_bound_real` surface as before. -/
 theorem Single_plaquette_bound_SU3 (β : ℝ) (_hβ : 0 < β) :
     Character_expansion_plaquette β * SU3_Haar_measure_explicit ≤
       Real.exp (-(Casimir_SU3 * β)) := by
+  sorry
+
+/-! ============================================================
+    Batch 19.1q — MayerScaffold (Brydges-Federbush typed gap)
+
+    Refactor the monolithic "polymer convergence" surface above
+    into three named typed holes. **Not progress on the math** —
+    progress on the *scaffolding*: anyone discharging this gap
+    now has three named obligations instead of one anonymous
+    one, each individually citable, individually scopeable,
+    individually defeatable.
+
+    **Scope locked.** YM tower stays `Status: Open` per
+    `docs/ROADMAP.md` § 2. The genuine Clay surfaces remain
+    untouched:
+
+      1. Brydges-Federbush convergence of the Mayer series
+         (Mayer-Montroll + tree-graph + Kotecký-Preiss).
+      2. UV continuum limit `a → 0` downstream of
+         `MassGap_YM4_Clay`.
+
+    The three new sorries below name pieces of (1) only.
+
+    **Deviation from spec (honest).** The spec wrote
+    `Mayer_graph (γ : Polymer) : SimpleGraph Plaquette := sorry`.
+    Two issues: (a) `SimpleGraph` would require a new mathlib
+    import (`Mathlib.Combinatorics.SimpleGraph.Basic`) for a
+    structure that Kotecký-Preiss only uses through its edge
+    predicate; (b) the Mayer graph of a polymer system is a
+    single graph indexed by *all* polymers, not one graph per
+    polymer. The honest shape is the edge predicate
+    `Mayer_overlap : Polymer → Polymer → Prop` ("γ and γ'
+    share a plaquette"), which is exactly what
+    `kotecky_preiss_criterion` quantifies over. Naming is
+    therefore `Mayer_overlap`, not `Mayer_graph`.
+
+    **Placeholder vs sorry.** `Plaquette`, `Polymer`, and
+    `Converges_Mayer_expansion` are placeholder type/Prop
+    aliases (NOT sorries — just the minimum structural stubs
+    needed so the three named gaps typecheck against the
+    existing repo). Promoting them to real definitions (a
+    lattice site type, a finite-support polymer activity, the
+    actual Mayer-Montroll convergence statement) is downstream
+    work that does NOT live in 19.1q.
+
+    No new BRICKS. No YM/ changes. Wall stays 443.
+============================================================ -/
+
+/-- **Placeholder lattice plaquette index type.** Real surface:
+a plaquette is a unit square in the 4D lattice `Λ ⊆ ℤ⁴` spanned
+by two orthogonal unit lattice vectors, equipped with an
+orientation. The placeholder `:= ℕ` is the minimum stub that
+makes `Polymer := Finset Plaquette` typecheck — *not* an
+embedding into the geometry. -/
+def Plaquette : Type := ℕ
+
+/-- **Placeholder polymer type.** Real surface: a polymer is a
+*connected* finite set of plaquettes (connectivity via shared
+links, Glimm-Jaffe Defn. 20.1.3). The placeholder `:= Finset
+Plaquette` drops the connectivity constraint — it is the
+minimum stub making `polymer_activity_finite_N` typecheck.
+Promoting to the real connected-set type is downstream work. -/
+def Polymer : Type := Finset Plaquette
+
+/-- **Mayer-graph edge predicate.** Real surface: `Mayer_overlap
+γ γ' = true` iff `γ ∩ γ' ≠ ∅` (Glimm-Jaffe Eq. 20.3.4). The
+Kotecký-Preiss criterion is stated as a sum over neighbours of
+a fixed polymer `γ₀` in this graph, so the edge predicate is
+the only structural piece needed downstream.
+
+**Why sorry, not `γ.toFinset ∩ γ'.toFinset ≠ ∅`?** Because
+`Polymer := Finset Plaquette` is itself a placeholder, the real
+intersection predicate cannot be written honestly yet — the
+real `Polymer` type would be a connected-set quotient, where
+overlap also accounts for shared links / shared sites at the
+boundary, not just shared plaquettes. Marked `sorry` to flag
+that the predicate IS the real definitional content, not a
+trivial Finset operation. -/
+def Mayer_overlap (_γ₀ _γ : Polymer) : Prop := by
+  sorry
+
+/-- **Polymer activity functional `ζ(β, N, γ)`** at the
+finite-N Peter-Weyl truncation. Real surface:
+`ζ(β, γ) = e^{-β · |γ|} · ∏_{p ∈ γ} Z_p(β)`,
+where `Z_p(β) = ∫_{SU(3)} e^{-β Re tr U_p} dU_p` is the
+single-plaquette partition function (Glimm-Jaffe Eq. 20.3.5).
+The 19.1o `Weyl_sum_explicit_SU3_real` is the honest finite-N
+truncation of `Z_p(β)` via the Peter-Weyl heat-kernel
+expansion. The full activity then bundles `e^{-β|γ|}` (cardinality-
+suppression factor) with the product of single-plaquette
+truncated partition functions.
+
+**Why sorry, not the literal `Real.exp (-(β * γ.card)) *
+Weyl_sum_explicit_SU3_real (γ.card / β) N` expression?** Because
+the "product over plaquettes" of single-plaquette truncated
+partition functions is *not* the same as
+`Weyl_sum_explicit_SU3_real` of any single argument — it is a
+`Finset.prod` over `γ`, each factor itself a truncated sum.
+Writing that honestly requires lifting `Weyl_sum_explicit_SU3_real`
+through `Finset.prod`, which is downstream work (and where the
+Mayer combinatorics start to bite). Marked `sorry` so the
+definitional surface is not silently understated. -/
+noncomputable def polymer_activity_finite_N
+    (_β : ℝ) (_N : ℕ) (_γ : Polymer) : ℝ := by
+  sorry
+
+/-- **Mayer-expansion convergence Prop.** Placeholder `Prop`
+slot consumed by `kotecky_preiss_criterion`. Real surface: the
+absolute convergence statement `Σ_γ |ζ(β, N, γ)| < ∞` on the
+infinite-volume polymer set, plus the cluster-expansion identity
+`log Z = Σ_X φ_T(X) · ∏_{γ ∈ X} ζ(γ)` with Ursell coefficients
+`φ_T` (Glimm-Jaffe Eq. 20.4.1). Placeholder `:= True` so the
+implication body typechecks without committing to the real
+statement; the *substance* lives in `kotecky_preiss_criterion`. -/
+def Converges_Mayer_expansion (_β : ℝ) (_N : ℕ) : Prop := True
+
+/-- **Kotecký-Preiss strict-contraction criterion (typed gap).**
+Real surface: the implication
+`(∀ γ₀, Σ_{γ : Mayer_overlap γ₀ γ} |ζ(β, N, γ)| · e^{|γ|} ≤ |γ₀|)`
+`→ Mayer expansion converges absolutely`,
+i.e. the statement that a uniform Kotecký-Preiss bound on the
+weighted activity sum implies absolute convergence of the
+Mayer-Montroll series.
+
+The hypothesis here is a *placeholder simplification*: the real
+KP hypothesis is the `∀ γ₀, Σ_{γ overlaps γ₀} ...` quantified
+form, not the unquantified `True` we admit below. The `sorry`
+flags that the real implication is 40+ pages of Brydges-Federbush
+combinatorics (tree-graph inequality, Ursell coefficient bounds,
+absolute convergence of the cluster expansion), not a tactic
+shortcut. Classical-trio-clean *in principle* once mathlib has
+the supporting infinite-sum infrastructure (`Summable` /
+`HasSum` / `tsum` on weighted polymer sets).
+
+**Reference:** Kotecký & Preiss 1986, *Cluster expansion for
+abstract polymer models*, Comm. Math. Phys. 103 (1986) 491-498
+(the original 7-page paper); modern textbook treatment in
+Friedli-Velenik 2018 *Statistical Mechanics of Lattice Systems*
+Chapter 5. **Estimated formalisation cost:** 6-12 months,
+2000+ lines, with the bulk going to the supporting
+infinite-sum + tree-graph mathlib infrastructure rather than
+the KP argument itself (which is short once the substrate
+exists). -/
+theorem kotecky_preiss_criterion (β : ℝ) (N : ℕ) (_γ₀ : Polymer) :
+    True → Converges_Mayer_expansion β N := by
   sorry
 
 end ClusterExpansion
