@@ -1792,6 +1792,31 @@ BRICKS=(
   "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.plaquette_activity_pw_ge_one"
   "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.plaquette_activity_pw_pos"
   "Towers.YM.ClusterExpansion|TheoremaAureum.Towers.YM.ClusterExpansion.polymer_activity_bound_real_pw"
+  # Task #154 (2026-05-27, Batch 19.1p-redux-a): SU(3) Peter-Weyl
+  # Summability — four sorry-free bricks in `Towers/YM/PeterWeyl.lean`
+  # proving that the heat-kernel spectral series
+  # `∑_{(m,n) : ℕ × ℕ} (dim λ_{m,n})² · exp(-(β · C₂(λ_{m,n})))`
+  # is `Summable` for every `β > 0`, where `dim` and `C₂` are the
+  # real explicit polynomial forms from Batch 19.1n (NOT the
+  # `:= 1` / `:= 0` placeholders, which would force the false
+  # `Summable (fun _ => 1)`). Brick 1 (`_real_ge_linear`) gives the
+  # linear Casimir lower bound `m + n ≤ C₂(m,n)`. Brick 2
+  # (`_real_le_poly`) gives the polynomial Weyl-dim upper bound
+  # `dim(m,n) ≤ (m+1)²(n+1)²`. Brick 3 (`summable_poly_succ_…`)
+  # ports `Real.summable_pow_mul_exp_neg_nat_mul` from mathlib onto
+  # `((n : ℝ) + 1)^4 · exp(-(β · n))`. Brick 4 (headline)
+  # `PeterWeyl_Summable_SU3` squeezes the summand against the
+  # product envelope `f(m) · f(n)`, with the envelope summable
+  # over `ℕ × ℕ` via `summable_prod_of_nonneg.mpr` on top of
+  # Brick 3. Wall 452 → 456. YM/ stays sorry-free. Genuine
+  # `K_t(1)` identity + Varadhan / Molchanov small-`t` asymptotic
+  # still live downstream (Task #155, Batch 19.1p-redux-b). YM
+  # tower stays `Status: Open` (`docs/ROADMAP.md` § 2). NOT a Clay
+  # surface.
+  "Towers.YM.PeterWeyl|TheoremaAureum.Towers.YM.PeterWeyl.Casimir_SU3_explicit_real_ge_linear"
+  "Towers.YM.PeterWeyl|TheoremaAureum.Towers.YM.PeterWeyl.Weyl_dim_SU3_explicit_real_le_poly"
+  "Towers.YM.PeterWeyl|TheoremaAureum.Towers.YM.PeterWeyl.summable_poly_succ_exp_neg_real"
+  "Towers.YM.PeterWeyl|TheoremaAureum.Towers.YM.PeterWeyl.PeterWeyl_Summable_SU3"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

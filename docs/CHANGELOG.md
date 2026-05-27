@@ -6,6 +6,84 @@ this file is the version history.
 
 ---
 
+## Batch 19.1p-redux-a — SU(3) Peter-Weyl Summability. Wall 452 → 456, +4 BRICKS, no new Attempts sorry (2026-05-27)
+
+**Track 1 (YM/, sorry-free, Task #154).** New file
+`Towers/YM/PeterWeyl.lean` (4 bricks). Discharges what Batch 19.3
+parked as the *"Summable lemma is what blocks 19.1p"* sorry hinge
+in `Towers/Attempts/ClusterExpansion.lean` line 693 by giving the
+heat-kernel spectral series
+
+  `∑_{(m,n) : ℕ × ℕ} (dim λ_{m,n})² · exp(-(β · C₂(λ_{m,n})))`
+
+a real `Summable` proof for every `β > 0`, where `dim` and `C₂`
+are the **real explicit polynomial forms** landed in Batch 19.1n
+(`Weyl_dim_SU3_explicit (m,n) := (m+1)(n+1)(m+n+2)/2`,
+`Casimir_SU3_explicit (m,n) := m²+n²+mn+3m+3n`), NOT the
+`Weyl_dim_def := 1` / `Casimir_eigenvalue_def := 0` placeholders
+(which would force the false `Summable (fun _ => 1)`).
+
+The four bricks:
+
+  1. `Casimir_SU3_explicit_real_ge_linear` —
+     `(m + n : ℝ) ≤ Casimir_SU3_explicit (m, n)`. Trivial cast
+     bound, used in Brick 4 to dominate `exp(-β · C₂)` by
+     `exp(-β · m) · exp(-β · n)`.
+  2. `Weyl_dim_SU3_explicit_real_le_poly` —
+     `(dim : ℝ) ≤ ((m : ℝ)+1)² · ((n : ℝ)+1)²`. Lifts the Nat
+     comparison `(m+1)(n+1)(m+n+2) ≤ 2 · (m+1)²(n+1)²`
+     (since `(m+1)(n+1) ≥ m+n+1`) through `Nat.div_le_of_le_mul`,
+     then casts once. Avoids `((·/2 : ℕ) : ℝ)` cast traps by
+     keeping all arithmetic at the `ℕ` level.
+  3. `summable_poly_succ_exp_neg_real` —
+     `Summable (fun n : ℕ => ((n : ℝ) + 1)^4 · exp(-(β · n)))` for
+     `β > 0`. Binomial-expands `(n+1)^4` into a 5-term polynomial
+     and combines `Real.summable_pow_mul_exp_neg_nat_mul k` for
+     `k ∈ {0, 1, 2, 3, 4}` via `Summable.add` and `.mul_left`.
+  4. `PeterWeyl_Summable_SU3` *(headline)* —
+     `Summable (fun (m,n) : ℕ × ℕ => (dim)² · exp(-(β · C₂)))`
+     for `β > 0`. Squeeze against the product envelope
+     `f(m) · f(n)` where `f(n) := ((n:ℝ)+1)^4 · exp(-(β · n))`.
+     Envelope summability over `ℕ × ℕ` via
+     `summable_prod_of_nonneg.mpr` on top of Brick 3
+     (`Summable.mul_left` per fiber, `Summable.mul_right` over
+     fibers using `tsum_mul_left`). Squeeze closes by
+     `Summable.of_nonneg_of_le`.
+
+**Honest scope (locked).** The four bricks above are textbook
+real-analysis facts about the SU(3) Peter-Weyl spectral series at
+the identity. They are NOT a constructive 4D pure-YM measure, NOT
+the OS Hilbert reconstruction, NOT a mass-gap bound on any YM
+Hamiltonian, NOT the Varadhan / Molchanov small-`t` heat-kernel
+asymptotic `K_t(1) ~ C · exp(-c/t) / t^4` (that is the next gap,
+parked downstream in Task #155, Batch 19.1p-redux-b). YM tower
+stays `Status: Open` (`docs/ROADMAP.md` § 2).
+
+**Drift coverage.**
+  * `lakefile.lean` roots gains `Towers.YM.PeterWeyl`.
+  * `scripts/check-towers.sh` BRICKS gains the 4 new entries with
+    long-form Task #154 comment. Wall 452 → 456.
+  * `replit.md` table gains the per-batch row.
+  * `data/hits.txt` preamble Genesis seal unchanged
+    (`eecbcd9a…875f`); no probe appends. Verified by
+    `scripts/check-genesis-seal.py` exit 0.
+
+**Tripwires (unchanged).**
+  * The bound `(m+n) ≤ C₂` is slack — the real Casimir is
+    quadratic in `(m,n)`, so a future Brick replacing the linear
+    estimate with the quadratic one (needed downstream to recover
+    the Varadhan exponent) will intentionally tighten this brick.
+  * Brick 2's `(m+1)²(n+1)²` envelope is also slack vs. the
+    cubic-in-`(m+n)` true growth; downstream `dim` asymptotics
+    will tighten.
+  * No new sorries in `Towers/Attempts/`. The line-693 hinge in
+    `Attempts/ClusterExpansion.lean` is still a sorry — it
+    consumes this `Summable` term *plus* the missing identification
+    `∑'_{m,n} f(m,n) = K_t(1)` and the Varadhan / Molchanov
+    asymptotic, which is what Task #155 lands.
+
+---
+
 ## Batch 19.1o — Truncated Peter-Weyl (real Finset sum surface) (2026-05-27)
 
 **Track 1 (YM/, sorry-free).** Promoted the 19.1n placeholder
