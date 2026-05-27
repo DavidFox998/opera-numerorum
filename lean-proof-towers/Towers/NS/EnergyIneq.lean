@@ -627,6 +627,75 @@ theorem HasFiniteEnergy_euclidean_motion (u₀ : VelocityField)
     (fun (t : ℝ) (x : EuclideanSpace ℝ (Fin 3)) => u₀ t (x + a)) R
     (HasFiniteEnergy_translate u₀ a hu)
 
+/-
+  ## Task #117 (2026-05-27) — time-reversal invariance of the
+  placeholder finite-energy predicate.
+
+  Tasks #78 (spatial translation), #89 (rotation), and #100 (time
+  translation) covered the rigid-motion symmetry trio on the
+  placeholder NS energy schema. The natural next elementary symmetry
+  on the spacetime domain is **time reversal**: replacing
+  `u₀(t, x)` with `u₀(-t, x)` should also preserve the placeholder
+  finite-energy witness.
+
+  **Honest scope.** The placeholder predicate
+  `HasFiniteEnergy u₀ := ∃ M, ∀ x, ‖u₀ 0 x‖ ≤ M` only inspects the
+  velocity field at `t = 0`. Time reversal `t ↦ -t` fixes `t = 0`
+  (`-0 = 0`), so the time-reversed field
+  `fun t x => u₀ (-t) x` evaluated at `t = 0` is *definitionally*
+  `u₀ 0 x`. The proof is therefore unconditional and one line:
+  reuse the original witness `M` directly, with `hM x` unchanged.
+
+  This is distinct from Task #100 (`HasFiniteEnergy_time_translate`),
+  which was *conditional* on a uniform bound at the shifted time `s`
+  precisely because `t = 0 ↦ s ≠ 0` under translation. Reversal is
+  the rare time-axis symmetry that is honestly unconditional on this
+  placeholder, because `t = 0` is its fixed point.
+
+  Honest disclaimer: this is NOT the full physical time reversal of
+  Navier-Stokes (which would also flip the sign of the velocity,
+  `u₀(t, x) ↦ -u₀(-t, x)`, since velocity reverses under time
+  reversal). The "with sign flip" variant would land equally cleanly
+  here (`‖-u₀ 0 x‖ = ‖u₀ 0 x‖` by `norm_neg`) but the unsigned
+  variant is the shape that lands one-line trio-clean and matches
+  the surface-level reindexing flavour of #78 / #89 / #100. The full
+  signed reversal is a future brick once `HasFiniteEnergy` is
+  upgraded toward real PDE content.
+
+  Does NOT advance the NS tower past `Status: Open` (see
+  `docs/ROADMAP.md` § 3). `HasFiniteEnergy` is still the Task #51
+  placeholder (bounded amplitude at `t = 0`), not the L² energy
+  bound; time-reversal closure of the *placeholder* predicate is
+  not time-reversal invariance of the real energy.
+
+  Axiom-footprint contract (per `scripts/check-towers.sh`): the
+  theorem must be either axiom-free or use only the classical trio
+  `{propext, Classical.choice, Quot.sound}`.
+-/
+
+/-- **Time-reversal invariance of placeholder finite-energy.** If
+    `u₀` has finite placeholder energy with witness `M`, then the
+    time-reversed field `fun t x => u₀ (-t) x` also has finite
+    placeholder energy with the *same* witness `M`. Unconditional
+    (unlike Task #100's `HasFiniteEnergy_time_translate`) because
+    the placeholder predicate inspects `u₀` only at `t = 0`, which
+    is the fixed point of `t ↦ -t` (`-0 = 0`). References the Task
+    #51 schema def `HasFiniteEnergy`, completing the rigid-motion
+    symmetry quartet with Task #78 (`HasFiniteEnergy_translate`),
+    Task #89 (`HasFiniteEnergy_rotate`), and Task #100
+    (`HasFiniteEnergy_time_translate`). NOT a statement about the
+    L² energy bound or any Leray-Hopf solution, and NOT the full
+    physical time reversal (which would also flip the sign of the
+    velocity); this is closure of the *placeholder* predicate under
+    the time-axis reflection `t ↦ -t`. -/
+theorem HasFiniteEnergy_time_reverse (u₀ : VelocityField)
+    (hu : HasFiniteEnergy u₀) :
+    HasFiniteEnergy (fun (t : ℝ) (x : EuclideanSpace ℝ (Fin 3)) =>
+      u₀ (-t) x) := by
+  obtain ⟨M, hM⟩ := hu
+  refine ⟨M, fun x => ?_⟩
+  simpa using hM x
+
 end NS
 end Towers
 end TheoremaAureum
