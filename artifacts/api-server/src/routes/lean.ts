@@ -156,7 +156,7 @@ function invalidateCache(): void {
 }
 
 let ALERTS_LOG_PATH = path.join(REPO_ROOT, "data", "ledger-alerts.jsonl");
-const ALERTS_ACK_PATH = path.join(REPO_ROOT, "data", "ledger-alerts.ack.json");
+let ALERTS_ACK_PATH = path.join(REPO_ROOT, "data", "ledger-alerts.ack.json");
 const ALERTS_DEFAULT_LIMIT = 20;
 const ALERTS_MAX_LIMIT = 200;
 
@@ -292,6 +292,48 @@ router.get("/lean/ledger-alerts", (req, res) => {
     return;
   }
   const lines = raw.split("\n");
+  // GC pass: drop ack ids whose acknowledgement predates the oldest live
+  // alert in the log. Such acks reference alerts that have rolled off the
+  // ring buffer and can never match a real entry again — keeping them
+  // around just bloats the sidecar and risks spurious collisions if a
+  // future alert hashes to the same id.
+  let oldestLiveAlertMs: number | null = null;
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) continue;
+    try {
+      const parsed = JSON.parse(t) as unknown;
+      const entry = normalizeAlertEntry(parsed);
+      if (!entry) continue;
+      const ms = Date.parse(entry.timestamp);
+      if (Number.isFinite(ms)) {
+        oldestLiveAlertMs = ms;
+        break;
+      }
+    } catch {
+      // Skip malformed lines.
+    }
+  }
+  if (oldestLiveAlertMs !== null && Object.keys(ackMap).length > 0) {
+    let changed = false;
+    for (const [id, ackedAt] of Object.entries(ackMap)) {
+      const ackMs = Date.parse(ackedAt);
+      if (Number.isFinite(ackMs) && ackMs < oldestLiveAlertMs) {
+        delete ackMap[id];
+        changed = true;
+      }
+    }
+    if (changed) {
+      try {
+        writeAckMap(ackMap, req.log);
+      } catch (err) {
+        req.log.warn(
+          { err, path: ALERTS_ACK_PATH },
+          "Failed to persist GC'd alert ack sidecar",
+        );
+      }
+    }
+  }
   const alerts: LedgerAlertView[] = [];
   for (let i = lines.length - 1; i >= 0 && alerts.length < limit; i--) {
     const line = lines[i].trim();
@@ -1187,6 +1229,9 @@ export const __testing = {
   },
   setAlertsLogPath(p: string | null): void {
     ALERTS_LOG_PATH = p ?? path.join(REPO_ROOT, "data", "ledger-alerts.jsonl");
+  },
+  setAlertsAckPath(p: string | null): void {
+    ALERTS_ACK_PATH = p ?? path.join(REPO_ROOT, "data", "ledger-alerts.ack.json");
   },
   normalizeAlertEntry,
 };

@@ -784,14 +784,18 @@ describe("rebuild cooldown surfaces Retry-After (429) even with a valid token", 
 describe("GET /api/lean/ledger-alerts — corrupt log resilience", () => {
   let tmpDir: string;
   let fixturePath: string;
+  let ackPath: string;
 
   beforeEach(() => {
     tmpDir = mkdtempSync(path.join(tmpdir(), "ledger-alerts-test-"));
     fixturePath = path.join(tmpDir, "ledger-alerts.jsonl");
+    ackPath = path.join(tmpDir, "ledger-alerts.ack.json");
+    __testing.setAlertsAckPath(ackPath);
   });
 
   afterEach(() => {
     __testing.setAlertsLogPath(null);
+    __testing.setAlertsAckPath(null);
     rmSync(tmpDir, { recursive: true, force: true });
   });
 
@@ -893,5 +897,59 @@ describe("GET /api/lean/ledger-alerts — corrupt log resilience", () => {
     expect(normalized).not.toBeNull();
     expect(normalized!.failureMode).toBeNull();
     expect(normalized!.expectedSize).toBeNull();
+  });
+
+  it("GCs ack entries whose alerts have rolled off the log", async () => {
+    // Step 1: write a log that includes an old entry, dismiss it.
+    const oldEntry = {
+      timestamp: "2026-01-01T00:00:00Z",
+      message: "old alert that will roll off",
+      workflow: "zeta-burst-old",
+    };
+    const oldEntryId = (await import("node:crypto"))
+      .createHash("sha256")
+      .update(oldEntry.timestamp + "\n" + oldEntry.message)
+      .digest("hex");
+
+    writeFileSync(fixturePath, JSON.stringify(oldEntry) + "\n");
+    __testing.setAlertsLogPath(fixturePath);
+    process.env["LEAN_REBUILD_TOKEN"] = "shared";
+
+    const ackRes = await call({
+      method: "POST",
+      path: "/api/lean/ledger-alerts/ack",
+      authorization: "Bearer shared",
+      body: { timestamp: oldEntry.timestamp, message: oldEntry.message },
+    });
+    expect(ackRes.status).toBe(200);
+    expect(ackRes.json.ok).toBe(true);
+    expect(ackRes.json.id).toBe(oldEntryId);
+
+    // Confirm the ack landed on disk before we move on.
+    const { readFileSync } = await import("node:fs");
+    const ackBefore = JSON.parse(readFileSync(ackPath, "utf8"));
+    expect(ackBefore[oldEntryId]).toBeTruthy();
+
+    // Step 2: roll the log past it — replace contents with a fresh, newer
+    // alert (simulating the ring buffer evicting the old one).
+    const newEntry = {
+      timestamp: new Date(Date.now() + 60_000).toISOString(),
+      message: "fresh alert after rollover",
+      workflow: "zeta-burst-new",
+    };
+    writeFileSync(fixturePath, JSON.stringify(newEntry) + "\n");
+
+    // Step 3: GET should drop the stale ack and not surface it.
+    const r = await call({
+      path: "/api/lean/ledger-alerts?includeAcknowledged=true",
+    });
+    expect(r.status).toBe(200);
+    expect(r.json.alerts).toHaveLength(1);
+    expect(r.json.alerts[0].message).toBe(newEntry.message);
+    expect(r.json.alerts[0].acknowledgedAt).toBeNull();
+
+    // The ack sidecar on disk no longer mentions the rolled-off id.
+    const ackAfter = JSON.parse(readFileSync(ackPath, "utf8"));
+    expect(ackAfter[oldEntryId]).toBeUndefined();
   });
 });
