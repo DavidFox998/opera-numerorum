@@ -6,7 +6,10 @@ import { createHash, createHmac } from "node:crypto";
 import http from "node:http";
 import type { AddressInfo } from "node:net";
 import express from "express";
-import { createLedgerRouter } from "./ledger.js";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { createLedgerRouter, createLedgerChecker, startLedgerMonitor } from "./ledger.js";
+import type { LedgerAlertInvocation, LedgerAlertSink } from "../lib/ledgerAlerts.js";
 
 /**
  * Mirrors the canonicalize() + HMAC scheme in ledger.ts so tests can
@@ -855,4 +858,160 @@ describe("GET /api/ledger/integrity", () => {
       srv.close((err) => (err ? reject(err) : resolve())),
     );
   });
+});
+
+/**
+ * Task #129: end-to-end coverage that proves the watchdog stall alert
+ * actually rides the same kernel `_fire_ledger_alert` rail as
+ * production. We boot the real `startLedgerMonitor` wired against a
+ * sink that mirrors `createKernelAlertSink` (spawns the real
+ * `kernel.py`) but redirects `kernel.ALERTS_LOG` to a per-test tmp
+ * file so the assertions don't pollute `data/ledger-alerts.jsonl`.
+ * The unit tests in `ledger.monitor.test.ts` already pin the state
+ * machine; this test pins the wiring through to the on-disk JSONL.
+ */
+describe("watchdog stall alert (task #129, e2e through kernel)", () => {
+  const REPO_ROOT = path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "..",
+    "..",
+    "..",
+    "..",
+  );
+
+  function makeKernelishSink(alertsLogPath: string): LedgerAlertSink {
+    // Mirror of `createKernelAlertSink` but injects
+    // `kernel.ALERTS_LOG = Path(alertsLogPath)` before firing so we
+    // observe a real kernel write into a per-test tmp file. Also
+    // clears alert env vars so no real webhook / SMTP delivery is
+    // attempted from this test.
+    const program = [
+      "import json, os, sys, pathlib",
+      `sys.path.insert(0, ${JSON.stringify(REPO_ROOT)})`,
+      "for v in ('MORNINGSTAR_ALERT_WEBHOOK_URL','MORNINGSTAR_ALERT_EMAIL_TO','MORNINGSTAR_ALERT_SMTP_HOST'):",
+      "    os.environ.pop(v, None)",
+      "import kernel",
+      `kernel.ALERTS_LOG = pathlib.Path(${JSON.stringify(alertsLogPath)})`,
+      "data = json.load(sys.stdin)",
+      "kernel._fire_ledger_alert(data['message'], data['context'])",
+      "assert kernel._await_alert_dispatch(15.0), 'alert dispatch did not drain'",
+    ].join("\n");
+    return (invocation: LedgerAlertInvocation) =>
+      new Promise<void>((resolve, reject) => {
+        const child = spawn("python3", ["-c", program], {
+          stdio: ["pipe", "ignore", "pipe"],
+        });
+        let stderr = "";
+        child.stderr.on("data", (b: Buffer) => {
+          stderr += b.toString("utf-8");
+        });
+        child.on("error", (err) => reject(err));
+        child.on("exit", (code) => {
+          if (code !== 0) {
+            reject(
+              new Error(
+                `kernel sink subprocess exited ${code}; stderr=${stderr}`,
+              ),
+            );
+            return;
+          }
+          resolve();
+        });
+        child.stdin.end(
+          JSON.stringify({
+            message: invocation.message,
+            context: invocation.context,
+          }),
+        );
+      });
+  }
+
+  function readAlertsLog(p: string): Array<Record<string, unknown>> {
+    if (!existsSync(p)) return [];
+    return readFileSync(p, "utf-8")
+      .split("\n")
+      .filter((l) => l.trim() !== "")
+      .map((l) => JSON.parse(l) as Record<string, unknown>);
+  }
+
+  it(
+    "fires a monitor_stalled entry to ledger-alerts.jsonl when ticks freeze, then a monitor_recovered entry when ticks resume",
+    async () => {
+      const dir = mkdtempSync(path.join(tmpdir(), "watchdog-e2e-"));
+      const hp = path.join(dir, "hits.txt");
+      const cp = path.join(dir, "hits.txt.checkpoint");
+      const lp = path.join(dir, "hits.txt.lastok");
+      const alertsLogPath = path.join(dir, "ledger-alerts.jsonl");
+
+      const sealed = "line1\nline2\n";
+      const buf = Buffer.from(sealed, "utf-8");
+      writeFileSync(hp, buf);
+      writeFileSync(cp, `${buf.length} ${sha256(buf)}\n`);
+
+      const { buildStatus } = createLedgerChecker({
+        hitsPath: hp,
+        checkpointPath: cp,
+        lastOkPath: lp,
+      });
+      const sink = makeKernelishSink(alertsLogPath);
+
+      // Use a tiny interval (LEDGER_INTEGRITY_CHECK_INTERVAL_SECONDS=1
+      // ⇒ intervalMs=1000, stall threshold = 2s). We drive the
+      // watchdog manually against an injected `now()` clock so the
+      // test is deterministic and does not actually sleep.
+      let clockMs = 10_000_000;
+      const monitor = startLedgerMonitor({
+        buildStatus,
+        sink,
+        intervalMs: 1_000,
+        hitsPath: hp,
+        checkpointPath: cp,
+        logger: { info: () => {}, warn: () => {}, error: () => {} },
+        now: () => clockMs,
+      });
+
+      try {
+        // Just past the 2x interval = 2_000ms threshold: stall fires.
+        clockMs += 2_500;
+        await monitor.checkWatchdog();
+
+        const stalled = readAlertsLog(alertsLogPath);
+        expect(stalled).toHaveLength(1);
+        expect(stalled[0]["failure_mode"]).toBe("monitor_stalled");
+        expect(stalled[0]["source"]).toBe("api-server-monitor-watchdog");
+        expect(stalled[0]["hits_path"]).toBe(hp);
+        expect(stalled[0]["checkpoint_path"]).toBe(cp);
+        expect(stalled[0]["stall_threshold_seconds"]).toBe(2);
+        expect(stalled[0]["monitor_interval_seconds"]).toBe(1);
+        expect(typeof stalled[0]["stall_age_seconds"]).toBe("number");
+        expect(String(stalled[0]["message"])).toMatch(/watchdog/i);
+        expect(String(stalled[0]["message"])).toMatch(/stalled/i);
+        // The kernel decorates every record with its own delivery /
+        // workflow metadata — proof we routed through the real
+        // `_fire_ledger_alert` path, not a stub.
+        expect(stalled[0]["delivery"]).toBeTruthy();
+        expect(stalled[0]["workflow"]).toBeTruthy();
+
+        // Still stalled across additional checks: silent (dedup).
+        clockMs += 5_000;
+        await monitor.checkWatchdog();
+        expect(readAlertsLog(alertsLogPath)).toHaveLength(1);
+
+        // A real tick lands ⇒ watchdog notices recovery on next pass.
+        await monitor.tick();
+        await monitor.checkWatchdog();
+
+        const recovered = readAlertsLog(alertsLogPath);
+        expect(recovered).toHaveLength(2);
+        expect(recovered[1]["failure_mode"]).toBe("recovered");
+        expect(recovered[1]["previous_failure_mode"]).toBe("monitor_stalled");
+        expect(recovered[1]["source"]).toBe("api-server-monitor-watchdog");
+        expect(String(recovered[1]["message"])).toMatch(/RECOVERED/);
+      } finally {
+        monitor.stop();
+        rmSync(dir, { recursive: true, force: true });
+      }
+    },
+    30_000,
+  );
 });
