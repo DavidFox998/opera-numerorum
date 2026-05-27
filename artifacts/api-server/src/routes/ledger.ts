@@ -770,6 +770,24 @@ export interface LedgerChecker {
         ackedBy: string | null;
       }
     | { ok: false; reason: "no_incident" };
+  /**
+   * Task #140: rotate the sidecar HMAC secret in response to a tamper
+   * alert. Persists the new key (keyfile, or in-memory env slot when
+   * the boot-time secret came from `LEDGER_SIDECAR_SECRET`), re-seals
+   * the live sidecar with the new MAC, and clears the sticky
+   * forged-incident state + its on-disk ack sibling so the dashboard
+   * banner clears on the next `/api/ledger/integrity` poll.
+   */
+  rotateSidecarSecret: (rotatedBy?: string | null) => {
+    ok: true;
+    rotatedAt: string;
+    secretPersisted: boolean;
+    persistedTo: "env" | "keyfile";
+    keyfilePath: string | null;
+    rotatedBy: string | null;
+    sidecarResealed: boolean;
+    hadForgedIncident: boolean;
+  };
 }
 
 export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
@@ -809,7 +827,18 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
   const STRICT_MODE = isSidecarSecretStrictMode(
     process.env.LEDGER_SIDECAR_SECRET_STRICT_MODE,
   );
-  const SIDECAR_SECRET = loadOrCreateSecret(
+  // Task #140: track whether the boot-time secret came from
+  // `LEDGER_SIDECAR_SECRET` (env-only, no on-disk fallback) so the
+  // rotate endpoint can preserve that posture — updating the
+  // in-memory `process.env` slot rather than persisting a fresh
+  // keyfile that would defeat the env-only deploy. `null` means the
+  // on-disk keyfile was used (rotation should rewrite the keyfile);
+  // a string means the env var was honored at boot (rotation should
+  // update the env slot only).
+  const bootInlineSecretRaw = process.env.LEDGER_SIDECAR_SECRET;
+  const bootInlineSecretWasUsed: boolean =
+    loadInlineSecret(bootInlineSecretRaw) != null;
+  let SIDECAR_SECRET = loadOrCreateSecret(
     SECRET_PATH,
     defaultLogger,
     process.env.LEDGER_SIDECAR_SECRET,
@@ -1353,6 +1382,123 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
     };
   }
 
+  /**
+   * Task #140: rotate the sidecar HMAC secret after a tamper alert.
+   * Generates a fresh 32-byte key, persists it (keyfile by default,
+   * or in-memory env slot when the boot-time secret came from
+   * `LEDGER_SIDECAR_SECRET`), re-seals the live sidecar with the new
+   * MAC so the next integrity poll classifies it as `ok`, and clears
+   * the sticky forged-incident state plus its on-disk ack sibling.
+   *
+   * Returns the persistence posture used (`"env"` vs `"keyfile"`),
+   * the resolved keyfile path when applicable, and the rotation
+   * timestamp. Best-effort on the file writes: a keyfile write
+   * failure does NOT abort rotation — the new secret stays in
+   * memory and the function reports `secretPersisted: false` so the
+   * dashboard can warn the operator that the next restart will
+   * regenerate yet another key.
+   */
+  function rotateSidecarSecret(
+    rotatedBy?: string | null,
+  ): {
+    ok: true;
+    rotatedAt: string;
+    secretPersisted: boolean;
+    persistedTo: "env" | "keyfile";
+    keyfilePath: string | null;
+    rotatedBy: string | null;
+    sidecarResealed: boolean;
+    hadForgedIncident: boolean;
+  } {
+    const rotatedAt = new Date().toISOString();
+    const rotatedByNormalized: string =
+      typeof rotatedBy === "string" && rotatedBy.length > 0
+        ? rotatedBy
+        : "anonymous";
+    const fresh = randomBytes(32);
+    let secretPersisted = false;
+    let persistedTo: "env" | "keyfile";
+    let keyfilePath: string | null = null;
+    if (bootInlineSecretWasUsed) {
+      // Env-only posture (Task #109): hold the new secret in memory
+      // and update the process.env slot so any in-process consumer
+      // re-reading it sees the rotated value. We deliberately do NOT
+      // touch the keyfile here — writing one would silently downgrade
+      // the operator's hardened deploy posture.
+      process.env.LEDGER_SIDECAR_SECRET = fresh.toString("hex");
+      persistedTo = "env";
+      secretPersisted = true;
+    } else {
+      persistedTo = "keyfile";
+      keyfilePath = SECRET_PATH;
+      try {
+        const tmp = `${SECRET_PATH}.tmp`;
+        writeFileSync(tmp, fresh.toString("hex") + "\n");
+        try {
+          chmodSync(tmp, 0o600);
+        } catch {
+          /* best-effort */
+        }
+        renameSync(tmp, SECRET_PATH);
+        try {
+          chmodSync(SECRET_PATH, 0o600);
+        } catch {
+          /* best-effort */
+        }
+        secretPersisted = true;
+      } catch (err) {
+        defaultLogger.warn?.(
+          { err, secretPath: SECRET_PATH },
+          "ledger sidecar: rotate could not persist new secret to keyfile (in-memory only; next restart will regenerate)",
+        );
+      }
+    }
+    SIDECAR_SECRET = fresh;
+    // Re-seal the live sidecar with the new MAC so the next
+    // /api/ledger/integrity poll reads a valid payload and flips
+    // `lastOkSidecarStatus` back to `ok`.
+    let sidecarResealed = true;
+    try {
+      writePersistedState(LAST_OK_PATH, SIDECAR_SECRET, CHECKPOINT, {
+        lastOkAt,
+        lastCheckedAt,
+      });
+    } catch {
+      sidecarResealed = false;
+    }
+    // Clear sticky forged-incident state and its on-disk ack sibling
+    // so the banner does not re-render after rotation.
+    const hadForgedIncident = forgedIncident != null;
+    forgedIncident = null;
+    lastOkSidecarStatus = "ok";
+    bootForgedAlertPending = false;
+    try {
+      if (existsSync(FORGED_ACK_PATH)) unlinkSync(FORGED_ACK_PATH);
+    } catch {
+      /* best-effort */
+    }
+    defaultLogger.warn?.(
+      {
+        rotatedAt,
+        rotatedBy: rotatedByNormalized,
+        persistedTo,
+        secretPersisted,
+        hadForgedIncident,
+      },
+      "ledger sidecar: HMAC secret rotated",
+    );
+    return {
+      ok: true,
+      rotatedAt,
+      secretPersisted,
+      persistedTo,
+      keyfilePath,
+      rotatedBy: rotatedByNormalized,
+      sidecarResealed,
+      hadForgedIncident,
+    };
+  }
+
   return {
     router,
     buildStatus,
@@ -1367,6 +1513,7 @@ export function createLedgerChecker(opts: LedgerRouterOptions): LedgerChecker {
       return true;
     },
     acknowledgeForgedSidecar,
+    rotateSidecarSecret,
   };
 }
 

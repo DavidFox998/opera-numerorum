@@ -211,6 +211,13 @@ import { defaultChecker as defaultLedgerChecker } from "./ledger.js";
 let forgedSidecarAcker: typeof defaultLedgerChecker.acknowledgeForgedSidecar =
   defaultLedgerChecker.acknowledgeForgedSidecar;
 
+/**
+ * Task #140: same indirection as `forgedSidecarAcker` so tests can
+ * swap in a stub rotator without booting the full checker.
+ */
+let sidecarSecretRotator: typeof defaultLedgerChecker.rotateSidecarSecret =
+  defaultLedgerChecker.rotateSidecarSecret;
+
 function readAckMap(log: import("pino").Logger): Record<string, string> {
   return readAckMapShared(ALERTS_ACK_PATH, log);
 }
@@ -632,6 +639,42 @@ router.post("/ledger/sidecar-forged-ack", (req, res) => {
     alreadyAcknowledged: result.alreadyAcknowledged,
     payloadSha: result.payloadSha,
     ackedBy: result.ackedBy,
+  });
+});
+
+router.post("/ledger/sidecar-secret/rotate", (req, res) => {
+  const auth = checkRebuildAuth(req);
+  if (!auth.ok) {
+    applyAuthFailureHeaders(res, auth);
+    res.status(auth.status).json({ ok: false, error: auth.error });
+    return;
+  }
+  // Task #140: thread the rebuild-auth attribution into the rotation
+  // log so the audit trail names the operator who rotated the secret
+  // (named tokens win over X-Referee-Name, same precedence as ack).
+  const result = sidecarSecretRotator(auth.refereeName);
+  req.log.warn(
+    {
+      rotatedAt: result.rotatedAt,
+      rotatedBy: result.rotatedBy,
+      rotatedByIp: getClientIp(req),
+      refereeName: auth.refereeName,
+      persistedTo: result.persistedTo,
+      secretPersisted: result.secretPersisted,
+      sidecarResealed: result.sidecarResealed,
+      hadForgedIncident: result.hadForgedIncident,
+    },
+    "Ledger sidecar HMAC secret rotated by operator",
+  );
+  res.json({
+    ok: true,
+    rotatedAt: result.rotatedAt,
+    rotatedBy: result.rotatedBy,
+    persistedTo: result.persistedTo,
+    keyfilePath: result.keyfilePath,
+    secretPersisted: result.secretPersisted,
+    sidecarResealed: result.sidecarResealed,
+    hadForgedIncident: result.hadForgedIncident,
   });
 });
 

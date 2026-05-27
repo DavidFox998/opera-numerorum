@@ -329,6 +329,82 @@ export interface SidecarForgedAckResult {
 }
 
 /**
+ * Where the new secret was persisted. `env` means the
+in-memory `process.env.LEDGER_SIDECAR_SECRET` slot was
+updated (the boot-time secret came from that env var, so
+no on-disk keyfile is created to preserve the hardened
+posture). `keyfile` means the on-disk secret file was
+rewritten with `chmod 0600`.
+
+ */
+export type SidecarSecretRotateResultPersistedTo = typeof SidecarSecretRotateResultPersistedTo[keyof typeof SidecarSecretRotateResultPersistedTo];
+
+
+export const SidecarSecretRotateResultPersistedTo = {
+  env: 'env',
+  keyfile: 'keyfile',
+} as const;
+
+/**
+ * Result of `POST /ledger/sidecar-secret/rotate` (task #140). On
+success, the live sidecar has been re-sealed with a fresh
+HMAC secret and the sticky forged-incident state has been
+cleared, so the next `GET /ledger/integrity` poll reports
+`lastOkSidecarStatus: "ok"`.
+
+ */
+export interface SidecarSecretRotateResult {
+  ok: boolean;
+  /** ISO-8601 timestamp when the new HMAC secret was generated */
+  rotatedAt: string;
+  /**
+     * Attribution string for the operator that rotated the
+  secret. A matched named token from `LEDGER_REBUILD_TOKENS`
+  wins; otherwise the sanitized `X-Referee-Name` header;
+  otherwise the literal string `"anonymous"`.
+
+     * @nullable
+     */
+  rotatedBy?: string | null;
+  /** Where the new secret was persisted. `env` means the
+  in-memory `process.env.LEDGER_SIDECAR_SECRET` slot was
+  updated (the boot-time secret came from that env var, so
+  no on-disk keyfile is created to preserve the hardened
+  posture). `keyfile` means the on-disk secret file was
+  rewritten with `chmod 0600`.
+   */
+  persistedTo: SidecarSecretRotateResultPersistedTo;
+  /**
+     * Resolved keyfile path when `persistedTo === "keyfile"`,
+  null when `persistedTo === "env"`.
+
+     * @nullable
+     */
+  keyfilePath?: string | null;
+  /** True when the new secret was successfully persisted
+  (env slot updated, or keyfile written). False on a
+  best-effort keyfile write failure — the new secret stays
+  in memory and the next restart will regenerate yet
+  another key. Operators should investigate the
+  permissions on the keyfile directory.
+   */
+  secretPersisted: boolean;
+  /** True when the live `data/hits.txt.lastok` was
+  successfully rewritten with a fresh MAC bound to the new
+  secret. False on a best-effort write failure; the next
+  integrity poll will rewrite it.
+   */
+  sidecarResealed: boolean;
+  /** True when a sticky forged-sidecar incident was active at
+  the moment of rotation (i.e. the rotation cleared the
+  red banner). False when the operator rotated
+  preemptively with no active incident.
+   */
+  hadForgedIncident: boolean;
+  error?: string;
+}
+
+/**
  * Per-transport delivery status at fire time
  */
 export type LedgerAlertEntryDelivery = {

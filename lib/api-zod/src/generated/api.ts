@@ -341,6 +341,38 @@ export const AckSidecarForgedResponse = zod.object({
 
 
 /**
+ * Task #140. Generates a fresh 32-byte HMAC secret, persists it
+(the on-disk keyfile by default; the in-memory
+`LEDGER_SIDECAR_SECRET` env slot when the boot-time secret
+came from that env var so the env-only hardened deploy
+posture is preserved), re-seals the live
+`data/hits.txt.lastok` sidecar with the new MAC, and clears
+the sticky forged-incident state plus its on-disk ack sibling
+(`data/hits.txt.lastok.forged-ack`). The next
+`GET /ledger/integrity` poll therefore reports
+`lastOkSidecarStatus: "ok"` and the red dashboard banner
+clears.
+
+Requires the same `Authorization: Bearer <LEAN_REBUILD_TOKEN>`
+header as the other admin endpoints, and is subject to the
+same per-IP brute-force limiter (`/lean/lockouts`).
+
+ * @summary Rotate the sidecar HMAC secret after a tamper alert
+ */
+export const RotateSidecarSecretResponse = zod.object({
+  "ok": zod.boolean(),
+  "rotatedAt": zod.string().describe('ISO-8601 timestamp when the new HMAC secret was generated'),
+  "rotatedBy": zod.string().nullish().describe('Attribution string for the operator that rotated the\nsecret. A matched named token from `LEDGER_REBUILD_TOKENS`\nwins; otherwise the sanitized `X-Referee-Name` header;\notherwise the literal string `\"anonymous\"`.\n'),
+  "persistedTo": zod.enum(['env', 'keyfile']).describe('Where the new secret was persisted. `env` means the\nin-memory `process.env.LEDGER_SIDECAR_SECRET` slot was\nupdated (the boot-time secret came from that env var, so\nno on-disk keyfile is created to preserve the hardened\nposture). `keyfile` means the on-disk secret file was\nrewritten with `chmod 0600`.\n'),
+  "keyfilePath": zod.string().nullish().describe('Resolved keyfile path when `persistedTo === \"keyfile\"`,\nnull when `persistedTo === \"env\"`.\n'),
+  "secretPersisted": zod.boolean().describe('True when the new secret was successfully persisted\n(env slot updated, or keyfile written). False on a\nbest-effort keyfile write failure — the new secret stays\nin memory and the next restart will regenerate yet\nanother key. Operators should investigate the\npermissions on the keyfile directory.\n'),
+  "sidecarResealed": zod.boolean().describe('True when the live `data\/hits.txt.lastok` was\nsuccessfully rewritten with a fresh MAC bound to the new\nsecret. False on a best-effort write failure; the next\nintegrity poll will rewrite it.\n'),
+  "hadForgedIncident": zod.boolean().describe('True when a sticky forged-sidecar incident was active at\nthe moment of rotation (i.e. the rotation cleared the\nred banner). False when the operator rotated\npreemptively with no active incident.\n'),
+  "error": zod.string().optional()
+}).describe('Result of `POST \/ledger\/sidecar-secret\/rotate` (task #140). On\nsuccess, the live sidecar has been re-sealed with a fresh\nHMAC secret and the sticky forged-incident state has been\ncleared, so the next `GET \/ledger\/integrity` poll reports\n`lastOkSidecarStatus: \"ok\"`.\n')
+
+
+/**
  * Records that an operator has investigated and dismissed a single
 alert from `data/ledger-alerts.jsonl`. The acknowledgement is
 keyed by `sha256(timestamp + "\n" + message)` and persisted to

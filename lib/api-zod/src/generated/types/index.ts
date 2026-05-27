@@ -41,5 +41,7 @@ export * from './ledgerIntegrityStatusStatus';
 export * from './morningstarHits';
 export * from './morningstarProbe';
 export * from './sidecarForgedAckResult';
+export * from './sidecarSecretRotateResult';
+export * from './sidecarSecretRotateResultPersistedTo';
 export * from './uploadUrlRequest';
 export * from './uploadUrlResponse';

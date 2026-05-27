@@ -10,6 +10,7 @@ import {
   useGetLedgerAlerts,
   useAckLedgerAlert,
   useAckSidecarForged,
+  useRotateSidecarSecret,
   useRerollLedgerCheckpoint,
   getGetMorningstarHitsQueryKey,
   getGetLeanVerificationQueryKey,
@@ -275,6 +276,9 @@ export default function DashboardPage() {
   const ackSidecarForgedMutation = useAckSidecarForged({
     request: lockoutsAuthHeader ? { headers: lockoutsAuthHeader } : undefined,
   });
+  const rotateSidecarSecretMutation = useRotateSidecarSecret({
+    request: lockoutsAuthHeader ? { headers: lockoutsAuthHeader } : undefined,
+  });
   const rerollCheckpointMutation = useRerollLedgerCheckpoint({
     request: lockoutsAuthHeader ? { headers: lockoutsAuthHeader } : undefined,
   });
@@ -282,6 +286,9 @@ export default function DashboardPage() {
     string | null
   >(null);
   const [sidecarForgedAckError, setSidecarForgedAckError] = useState<
+    string | null
+  >(null);
+  const [sidecarSecretRotateError, setSidecarSecretRotateError] = useState<
     string | null
   >(null);
   const [pendingAckId, setPendingAckId] = useState<string | null>(null);
@@ -1898,9 +1905,38 @@ export default function DashboardPage() {
                         ? "Acknowledged"
                         : "Acknowledge"}
                   </button>
+                  <button
+                    type="button"
+                    className="border border-red-500/40 bg-red-500/10 hover:bg-red-500/20 disabled:opacity-50 disabled:cursor-not-allowed px-2 py-1 text-[11px] uppercase tracking-wider text-red-700 dark:text-red-300"
+                    data-testid="button-rotate-ledger-sidecar-secret"
+                    disabled={rotateSidecarSecretMutation.isPending}
+                    title="Generate a fresh HMAC secret, re-seal the live sidecar, and clear this banner. Operator-attribution is recorded in the server log."
+                    onClick={() => {
+                      setSidecarSecretRotateError(null);
+                      rotateSidecarSecretMutation.mutate(undefined, {
+                        onSuccess: () => {
+                          void queryClient.invalidateQueries({
+                            queryKey: getGetLedgerIntegrityQueryKey(),
+                          });
+                        },
+                        onError: (err: unknown) => {
+                          const msg =
+                            err instanceof Error
+                              ? err.message
+                              : "Failed to rotate sidecar HMAC secret.";
+                          setSidecarSecretRotateError(msg);
+                        },
+                      });
+                    }}
+                  >
+                    {rotateSidecarSecretMutation.isPending
+                      ? "Rotating…"
+                      : "Rotate sidecar secret"}
+                  </button>
                   <span className="text-[10px] text-muted-foreground">
-                    Banner stays visible (with badge) until a non-forged
-                    sidecar is read on next boot.
+                    Acknowledge keeps the banner sticky until next boot;
+                    rotate clears it immediately by re-sealing the sidecar
+                    with a fresh secret.
                   </span>
                 </div>
               ) : (
@@ -1918,6 +1954,14 @@ export default function DashboardPage() {
                   data-testid="text-ack-ledger-sidecar-forged-error"
                 >
                   {sidecarForgedAckError}
+                </div>
+              ) : null}
+              {sidecarSecretRotateError ? (
+                <div
+                  className="text-[11px] text-red-700 dark:text-red-300"
+                  data-testid="text-rotate-ledger-sidecar-secret-error"
+                >
+                  {sidecarSecretRotateError}
                 </div>
               ) : null}
             </div>

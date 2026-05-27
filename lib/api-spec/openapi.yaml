@@ -364,6 +364,41 @@ paths:
         "503":
           description: Rebuilds are disabled (no rebuild token configured)
 
+  /ledger/sidecar-secret/rotate:
+    post:
+      operationId: rotateSidecarSecret
+      tags: [ledger]
+      summary: Rotate the sidecar HMAC secret after a tamper alert
+      description: |
+        Task #140. Generates a fresh 32-byte HMAC secret, persists it
+        (the on-disk keyfile by default; the in-memory
+        `LEDGER_SIDECAR_SECRET` env slot when the boot-time secret
+        came from that env var so the env-only hardened deploy
+        posture is preserved), re-seals the live
+        `data/hits.txt.lastok` sidecar with the new MAC, and clears
+        the sticky forged-incident state plus its on-disk ack sibling
+        (`data/hits.txt.lastok.forged-ack`). The next
+        `GET /ledger/integrity` poll therefore reports
+        `lastOkSidecarStatus: "ok"` and the red dashboard banner
+        clears.
+
+        Requires the same `Authorization: Bearer <LEAN_REBUILD_TOKEN>`
+        header as the other admin endpoints, and is subject to the
+        same per-IP brute-force limiter (`/lean/lockouts`).
+      responses:
+        "200":
+          description: Sidecar HMAC secret rotated and banner cleared
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SidecarSecretRotateResult"
+        "401":
+          description: Missing or invalid referee rebuild token
+        "429":
+          description: Per-IP brute-force lockout in effect
+        "503":
+          description: Rebuilds are disabled (no rebuild token configured)
+
   /lean/ledger-alerts/ack:
     post:
       operationId: ackLedgerAlert
@@ -944,6 +979,69 @@ components:
             shows up in `lastOkSidecarStatusAcknowledgedBy` on
             subsequent `GET /ledger/integrity` responses. Null only
             on legacy ack files written before task #139 landed.
+        error:
+          type: string
+
+    SidecarSecretRotateResult:
+      type: object
+      required: [ok, rotatedAt, persistedTo, secretPersisted, sidecarResealed, hadForgedIncident]
+      description: |
+        Result of `POST /ledger/sidecar-secret/rotate` (task #140). On
+        success, the live sidecar has been re-sealed with a fresh
+        HMAC secret and the sticky forged-incident state has been
+        cleared, so the next `GET /ledger/integrity` poll reports
+        `lastOkSidecarStatus: "ok"`.
+      properties:
+        ok:
+          type: boolean
+        rotatedAt:
+          type: string
+          description: ISO-8601 timestamp when the new HMAC secret was generated
+        rotatedBy:
+          type: ["string", "null"]
+          description: |
+            Attribution string for the operator that rotated the
+            secret. A matched named token from `LEDGER_REBUILD_TOKENS`
+            wins; otherwise the sanitized `X-Referee-Name` header;
+            otherwise the literal string `"anonymous"`.
+        persistedTo:
+          type: string
+          enum: [env, keyfile]
+          description: |
+            Where the new secret was persisted. `env` means the
+            in-memory `process.env.LEDGER_SIDECAR_SECRET` slot was
+            updated (the boot-time secret came from that env var, so
+            no on-disk keyfile is created to preserve the hardened
+            posture). `keyfile` means the on-disk secret file was
+            rewritten with `chmod 0600`.
+        keyfilePath:
+          type: ["string", "null"]
+          description: |
+            Resolved keyfile path when `persistedTo === "keyfile"`,
+            null when `persistedTo === "env"`.
+        secretPersisted:
+          type: boolean
+          description: |
+            True when the new secret was successfully persisted
+            (env slot updated, or keyfile written). False on a
+            best-effort keyfile write failure — the new secret stays
+            in memory and the next restart will regenerate yet
+            another key. Operators should investigate the
+            permissions on the keyfile directory.
+        sidecarResealed:
+          type: boolean
+          description: |
+            True when the live `data/hits.txt.lastok` was
+            successfully rewritten with a fresh MAC bound to the new
+            secret. False on a best-effort write failure; the next
+            integrity poll will rewrite it.
+        hadForgedIncident:
+          type: boolean
+          description: |
+            True when a sticky forged-sidecar incident was active at
+            the moment of rotation (i.e. the rotation cleared the
+            red banner). False when the operator rotated
+            preemptively with no active incident.
         error:
           type: string
 

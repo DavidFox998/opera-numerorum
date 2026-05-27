@@ -40,6 +40,7 @@ import type {
   LedgerIntegrityStatus,
   MorningstarHits,
   SidecarForgedAckResult,
+  SidecarSecretRotateResult,
   UploadUrlRequest,
   UploadUrlResponse
 } from './api.schemas';
@@ -1169,6 +1170,92 @@ export const useAckSidecarForged = <TError = ErrorType<void>,
         TContext
       > => {
       return useMutation(getAckSidecarForgedMutationOptions(options));
+    }
+
+export const getRotateSidecarSecretUrl = () => {
+
+
+
+
+  return `/api/ledger/sidecar-secret/rotate`
+}
+
+/**
+ * Task #140. Generates a fresh 32-byte HMAC secret, persists it
+(the on-disk keyfile by default; the in-memory
+`LEDGER_SIDECAR_SECRET` env slot when the boot-time secret
+came from that env var so the env-only hardened deploy
+posture is preserved), re-seals the live
+`data/hits.txt.lastok` sidecar with the new MAC, and clears
+the sticky forged-incident state plus its on-disk ack sibling
+(`data/hits.txt.lastok.forged-ack`). The next
+`GET /ledger/integrity` poll therefore reports
+`lastOkSidecarStatus: "ok"` and the red dashboard banner
+clears.
+
+Requires the same `Authorization: Bearer <LEAN_REBUILD_TOKEN>`
+header as the other admin endpoints, and is subject to the
+same per-IP brute-force limiter (`/lean/lockouts`).
+
+ * @summary Rotate the sidecar HMAC secret after a tamper alert
+ */
+export const rotateSidecarSecret = async ( options?: RequestInit): Promise<SidecarSecretRotateResult> => {
+
+  return customFetch<SidecarSecretRotateResult>(getRotateSidecarSecretUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getRotateSidecarSecretMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof rotateSidecarSecret>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof rotateSidecarSecret>>, TError,void, TContext> => {
+
+const mutationKey = ['rotateSidecarSecret'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof rotateSidecarSecret>>, void> = () => {
+
+
+          return  rotateSidecarSecret(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RotateSidecarSecretMutationResult = NonNullable<Awaited<ReturnType<typeof rotateSidecarSecret>>>
+
+    export type RotateSidecarSecretMutationError = ErrorType<void>
+
+    /**
+ * @summary Rotate the sidecar HMAC secret after a tamper alert
+ */
+export const useRotateSidecarSecret = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof rotateSidecarSecret>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof rotateSidecarSecret>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getRotateSidecarSecretMutationOptions(options));
     }
 
 export const getAckLedgerAlertUrl = () => {

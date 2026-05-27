@@ -11,7 +11,10 @@ import { createHash, createHmac } from "node:crypto";
 import http from "node:http";
 import type { AddressInfo } from "node:net";
 import express from "express";
-import { createLedgerRouter } from "../../../api-server/src/routes/ledger.js";
+import {
+  createLedgerRouter,
+  createLedgerChecker,
+} from "../../../api-server/src/routes/ledger.js";
 
 /**
  * Task #125: end-to-end coverage for the sidecar tamper / stale-binding
@@ -280,6 +283,167 @@ test.describe("dashboard: ledger sidecar tamper / stale-binding banners", () => 
       ).toHaveCount(0);
     } finally {
       await fixture.close();
+    }
+  });
+
+  /**
+   * Task #140: rotating the sidecar HMAC secret from the dashboard
+   * clears the red banner on the next /integrity poll.
+   *
+   * Strategy mirrors task #138's ack spec: instead of the read-only
+   * `createLedgerRouter` we boot the full `createLedgerChecker` so we
+   * have its `rotateSidecarSecret()` handle, mount the integrity
+   * router AND a token-gated POST wrapper at
+   * `/api/ledger/sidecar-secret/rotate` (matching the real
+   * `lean.ts:checkRebuildAuth` shape so the dashboard's outbound
+   * `Authorization: Bearer <token>` header does not need a special
+   * case), forward both endpoints into the page, then drive the
+   * button. After the POST resolves and TanStack Query invalidates
+   * the integrity key, the next poll must report
+   * `lastOkSidecarStatus: "ok"` and the panel must disappear.
+   */
+  test("clicking 'Rotate sidecar secret' rotates the HMAC key, re-seals the live sidecar, and clears the banner on the next /integrity poll", async ({
+    page,
+  }) => {
+    const ROTATE_TOKEN = "fixture-rotate-token";
+    const REBUILD_TOKEN_STORAGE_KEY = "lean-rebuild-token";
+
+    const tmpDir = mkdtempSync(path.join(tmpdir(), "ledger-rotate-e2e-"));
+    const hitsPath = path.join(tmpDir, "hits.txt");
+    const checkpointPath = path.join(tmpDir, "hits.txt.checkpoint");
+    const lastOkPath = path.join(tmpDir, "hits.txt.lastok");
+    const secretPath = path.join(tmpDir, "hits.txt.lastok.key");
+
+    const sealed = "line1\nline2\nline3\n";
+    const buf = Buffer.from(sealed, "utf-8");
+    writeFileSync(hitsPath, buf);
+    writeFileSync(checkpointPath, `${buf.length} ${sha256(buf)}\n`);
+    writeFileSync(secretPath, "ab".repeat(32) + "\n");
+    // Forged sidecar at boot so the banner renders.
+    writeFileSync(
+      lastOkPath,
+      JSON.stringify({
+        lastOkAt: "2099-01-01T00:00:00.000Z",
+        lastCheckedAt: "2099-01-01T00:00:00.000Z",
+      }) + "\n",
+    );
+
+    const checker = createLedgerChecker({
+      hitsPath,
+      checkpointPath,
+      lastOkPath,
+      secretPath,
+    });
+    const app = express();
+    app.use(express.json());
+    app.use("/api", checker.router);
+    app.post("/api/ledger/sidecar-secret/rotate", (req, res) => {
+      const auth = req.headers["authorization"] ?? "";
+      const match = /^Bearer\s+(.+)$/i.exec(
+        Array.isArray(auth) ? (auth[0] ?? "") : auth,
+      );
+      const provided = match ? match[1]?.trim() : "";
+      if (!provided || provided !== ROTATE_TOKEN) {
+        res
+          .status(401)
+          .json({ ok: false, error: "Unauthorized: bad referee token." });
+        return;
+      }
+      const result = checker.rotateSidecarSecret("e2e-operator");
+      res.json(result);
+    });
+    const srv = http.createServer(app);
+    await new Promise<void>((resolve) => srv.listen(0, "127.0.0.1", resolve));
+    const port = (srv.address() as AddressInfo).port;
+    const baseUrl = `http://127.0.0.1:${port}`;
+
+    try {
+      const forward = async (
+        route: Route,
+        request: Request,
+        suffix: string,
+      ) => {
+        const upstream = new URL(request.url());
+        const forwarded = `${baseUrl}${suffix}${upstream.search}`;
+        const res = await fetch(forwarded, {
+          method: request.method(),
+          headers: request.headers(),
+          body: request.postData() ?? undefined,
+        });
+        const body = Buffer.from(await res.arrayBuffer());
+        const headers: Record<string, string> = {};
+        res.headers.forEach((v, k) => {
+          const lk = k.toLowerCase();
+          if (
+            lk === "content-encoding" ||
+            lk === "content-length" ||
+            lk === "transfer-encoding"
+          ) {
+            return;
+          }
+          headers[k] = v;
+        });
+        await route.fulfill({ status: res.status, headers, body });
+      };
+      await page.route(LEDGER_INTEGRITY_URL, (route, request) =>
+        forward(route, request, "/api/ledger/integrity"),
+      );
+      await page.route(
+        "**/api/ledger/sidecar-secret/rotate",
+        (route, request) =>
+          forward(route, request, "/api/ledger/sidecar-secret/rotate"),
+      );
+
+      // Seed the referee token in localStorage so the dashboard sends
+      // `Authorization: Bearer <token>` on the rotate POST AND so the
+      // rotate button renders (gated on rebuildToken).
+      await page.addInitScript(
+        ([key, token]) => {
+          window.localStorage.setItem(key as string, token as string);
+        },
+        [REBUILD_TOKEN_STORAGE_KEY, ROTATE_TOKEN],
+      );
+
+      await page.goto("/");
+
+      const panel = page.locator(
+        '[data-testid="panel-ledger-sidecar-forged"]',
+      );
+      await expect(panel).toBeVisible();
+      const rotateBtn = page.locator(
+        '[data-testid="button-rotate-ledger-sidecar-secret"]',
+      );
+      await expect(rotateBtn).toBeVisible();
+      await expect(rotateBtn).toBeEnabled();
+      await expect(rotateBtn).toHaveText(/^Rotate sidecar secret$/);
+
+      await rotateBtn.click();
+
+      // After the POST resolves + the integrity query invalidates,
+      // the next poll re-seals the sidecar (already done by the
+      // rotate call) and reports lastOkSidecarStatus: "ok" — the
+      // panel must disappear entirely.
+      await expect(panel).toHaveCount(0);
+      await expect(
+        page.locator(
+          '[data-testid="text-rotate-ledger-sidecar-secret-error"]',
+        ),
+      ).toHaveCount(0);
+    } finally {
+      await new Promise<void>((resolve, reject) =>
+        srv.close((err) => (err ? reject(err) : resolve())),
+      );
+      try {
+        unlinkSync(lastOkPath);
+      } catch {
+        /* ignore */
+      }
+      try {
+        unlinkSync(secretPath);
+      } catch {
+        /* ignore */
+      }
+      rmSync(tmpDir, { recursive: true, force: true });
     }
   });
 
