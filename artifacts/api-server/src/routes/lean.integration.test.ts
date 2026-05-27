@@ -953,3 +953,115 @@ describe("GET /api/lean/ledger-alerts — corrupt log resilience", () => {
     expect(ackAfter[oldEntryId]).toBeUndefined();
   });
 });
+
+describe("POST /api/lean/ledger-alerts/ack — dismiss flow", () => {
+  let tmpDir: string;
+  let fixturePath: string;
+  let ackPath: string;
+  const entry = {
+    timestamp: "2026-05-26T18:00:00Z",
+    message: "ledger checkpoint drift — dismiss flow test",
+    workflow: "zeta-burst-101-10000",
+  };
+  let entryId: string;
+
+  beforeEach(async () => {
+    tmpDir = mkdtempSync(path.join(tmpdir(), "ledger-alerts-ack-test-"));
+    fixturePath = path.join(tmpDir, "ledger-alerts.jsonl");
+    ackPath = path.join(tmpDir, "ledger-alerts.ack.json");
+    writeFileSync(fixturePath, JSON.stringify(entry) + "\n");
+    __testing.setAlertsLogPath(fixturePath);
+    __testing.setAlertsAckPath(ackPath);
+    entryId = (await import("node:crypto"))
+      .createHash("sha256")
+      .update(entry.timestamp + "\n" + entry.message)
+      .digest("hex");
+  });
+
+  afterEach(() => {
+    __testing.setAlertsLogPath(null);
+    __testing.setAlertsAckPath(null);
+    rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  it("returns 401 on the dismiss endpoint when the bearer token is wrong", async () => {
+    process.env["LEAN_REBUILD_TOKEN"] = "shared";
+    const r = await call({
+      method: "POST",
+      path: "/api/lean/ledger-alerts/ack",
+      authorization: "Bearer nope",
+      body: { timestamp: entry.timestamp, message: entry.message },
+    });
+    expect(r.status).toBe(401);
+    expect(r.json.ok).toBe(false);
+
+    // GET surface should not have been mutated.
+    const { existsSync } = await import("node:fs");
+    expect(existsSync(ackPath)).toBe(false);
+    const list = await call({
+      path: "/api/lean/ledger-alerts?includeAcknowledged=true",
+    });
+    expect(list.json.alerts).toHaveLength(1);
+    expect(list.json.alerts[0].acknowledgedAt).toBeNull();
+  });
+
+  it("returns 200 with a valid token, hides the entry from the default GET, surfaces it under includeAcknowledged=true, and is idempotent on re-dismiss", async () => {
+    process.env["LEAN_REBUILD_TOKEN"] = "shared";
+
+    // First dismiss: 200, persisted ack timestamp, alreadyAcknowledged=false.
+    const first = await call({
+      method: "POST",
+      path: "/api/lean/ledger-alerts/ack",
+      authorization: "Bearer shared",
+      body: { timestamp: entry.timestamp, message: entry.message },
+    });
+    expect(first.status).toBe(200);
+    expect(first.json).toMatchObject({
+      ok: true,
+      id: entryId,
+      alreadyAcknowledged: false,
+    });
+    expect(typeof first.json.acknowledgedAt).toBe("string");
+    const firstAckedAt: string = first.json.acknowledgedAt;
+    expect(Number.isFinite(Date.parse(firstAckedAt))).toBe(true);
+
+    // Sidecar on disk reflects the dismiss.
+    const { readFileSync } = await import("node:fs");
+    const sidecar = JSON.parse(readFileSync(ackPath, "utf8"));
+    expect(sidecar[entryId]).toBe(firstAckedAt);
+
+    // Default GET hides dismissed entries.
+    const hidden = await call({ path: "/api/lean/ledger-alerts" });
+    expect(hidden.status).toBe(200);
+    expect(hidden.json.alerts).toEqual([]);
+    expect(hidden.json.totalReturned).toBe(0);
+
+    // GET with includeAcknowledged=true surfaces it with the ack timestamp.
+    const shown = await call({
+      path: "/api/lean/ledger-alerts?includeAcknowledged=true",
+    });
+    expect(shown.status).toBe(200);
+    expect(shown.json.alerts).toHaveLength(1);
+    expect(shown.json.alerts[0].id).toBe(entryId);
+    expect(shown.json.alerts[0].acknowledgedAt).toBe(firstAckedAt);
+
+    // Re-dismiss is idempotent: alreadyAcknowledged=true, ack timestamp unchanged.
+    const second = await call({
+      method: "POST",
+      path: "/api/lean/ledger-alerts/ack",
+      authorization: "Bearer shared",
+      body: { timestamp: entry.timestamp, message: entry.message },
+    });
+    expect(second.status).toBe(200);
+    expect(second.json).toMatchObject({
+      ok: true,
+      id: entryId,
+      acknowledgedAt: firstAckedAt,
+      alreadyAcknowledged: true,
+    });
+
+    // Sidecar still holds the original ack timestamp.
+    const sidecarAfter = JSON.parse(readFileSync(ackPath, "utf8"));
+    expect(sidecarAfter[entryId]).toBe(firstAckedAt);
+  });
+});
