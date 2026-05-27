@@ -4,7 +4,11 @@ import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { desc, lt } from "drizzle-orm";
-import { db, leanRebuildHistoryTable } from "@workspace/db";
+import {
+  db,
+  leanRebuildHistoryTable,
+  ledgerCheckpointRerollHistoryTable,
+} from "@workspace/db";
 
 const router: IRouter = Router();
 
@@ -71,6 +75,65 @@ async function recordRebuildAttempt(
   } catch (err) {
     log.error({ err }, "Failed to persist rebuild history entry");
   }
+}
+
+interface CheckpointRerollHistoryEntry {
+  timestamp: string;
+  durationMs: number;
+  exitCode: number;
+  ok: boolean;
+  error: string | null;
+  refereeName: string | null;
+  ip: string | null;
+}
+
+const CHECKPOINT_REROLL_HISTORY_CAPACITY = 20;
+
+async function recordCheckpointRerollAttempt(
+  entry: CheckpointRerollHistoryEntry,
+  log: import("pino").Logger,
+): Promise<void> {
+  try {
+    await db.insert(ledgerCheckpointRerollHistoryTable).values({
+      timestamp: new Date(entry.timestamp),
+      durationMs: entry.durationMs,
+      exitCode: entry.exitCode,
+      ok: entry.ok,
+      error: entry.error,
+      refereeName: entry.refereeName,
+      ip: entry.ip,
+    });
+    const cutoff = await db
+      .select({ id: ledgerCheckpointRerollHistoryTable.id })
+      .from(ledgerCheckpointRerollHistoryTable)
+      .orderBy(desc(ledgerCheckpointRerollHistoryTable.id))
+      .limit(1)
+      .offset(CHECKPOINT_REROLL_HISTORY_CAPACITY);
+    if (cutoff.length > 0) {
+      await db
+        .delete(ledgerCheckpointRerollHistoryTable)
+        .where(lt(ledgerCheckpointRerollHistoryTable.id, cutoff[0].id + 1));
+    }
+  } catch (err) {
+    log.error({ err }, "Failed to persist checkpoint reroll history entry");
+  }
+}
+
+async function listCheckpointRerollHistory(): Promise<CheckpointRerollHistoryEntry[]> {
+  const rows = await db
+    .select()
+    .from(ledgerCheckpointRerollHistoryTable)
+    .orderBy(desc(ledgerCheckpointRerollHistoryTable.id))
+    .limit(CHECKPOINT_REROLL_HISTORY_CAPACITY);
+  return rows.map((r) => ({
+    timestamp: r.timestamp.toISOString(),
+    durationMs: r.durationMs,
+    exitCode: r.exitCode,
+    ok: r.ok,
+    error: r.error,
+    refereeName: r.refereeName,
+    ip: r.ip,
+  }));
 }
 
 async function listRebuildHistory(): Promise<RebuildHistoryEntry[]> {
@@ -577,15 +640,28 @@ router.post("/ledger/checkpoint/reroll", async (req, res) => {
     });
     lastRebuildFinishedAt = Date.now();
     const durationMs = Date.now() - start;
+    const clientIp = getClientIp(req);
     req.log.info(
       {
         ok: outcome.ok,
         exitCode: outcome.exitCode,
         durationMs,
-        rerolledBy: getClientIp(req),
+        rerolledBy: clientIp,
         refereeName: auth.refereeName,
       },
       "Ledger checkpoint reroll attempted",
+    );
+    await recordCheckpointRerollAttempt(
+      {
+        timestamp: new Date().toISOString(),
+        durationMs,
+        exitCode: outcome.exitCode,
+        ok: outcome.ok,
+        error: outcome.error,
+        refereeName: auth.refereeName,
+        ip: clientIp || null,
+      },
+      req.log,
     );
     res.json({
       ok: outcome.ok,
@@ -597,6 +673,16 @@ router.post("/ledger/checkpoint/reroll", async (req, res) => {
     });
   } finally {
     checkpointRerollInFlight = false;
+  }
+});
+
+router.get("/ledger/checkpoint/reroll/history", async (req, res) => {
+  try {
+    const entries = await listCheckpointRerollHistory();
+    res.json({ entries, capacity: CHECKPOINT_REROLL_HISTORY_CAPACITY });
+  } catch (err) {
+    req.log.error({ err }, "Failed to read checkpoint reroll history");
+    res.status(500).json({ error: "Failed to read checkpoint reroll history" });
   }
 });
 

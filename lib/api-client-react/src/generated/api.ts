@@ -23,6 +23,7 @@ import type {
   Certificate,
   CertificateSummary,
   CertificateUpdate,
+  CheckpointRerollHistory,
   CheckpointRerollResult,
   GetLedgerAlertsParams,
   GetMorningstarHitsParams,
@@ -1430,6 +1431,89 @@ export const useRerollLedgerCheckpoint = <TError = ErrorType<void>,
       > => {
       return useMutation(getRerollLedgerCheckpointMutationOptions(options));
     }
+
+export const getGetLedgerCheckpointRerollHistoryUrl = () => {
+
+
+
+
+  return `/api/ledger/checkpoint/reroll/history`
+}
+
+/**
+ * Task #141. Returns the most recent ~20 persisted checkpoint
+re-roll attempts (timestamp, duration, exit code, ok, error,
+referee name, originating IP). Mirrors `/lean/verify/history`
+in shape. No auth required — referees can audit who re-rolled
+the sealed prefix and when.
+
+ * @summary Recent checkpoint re-roll attempts (audit trail)
+ */
+export const getLedgerCheckpointRerollHistory = async ( options?: RequestInit): Promise<CheckpointRerollHistory> => {
+
+  return customFetch<CheckpointRerollHistory>(getGetLedgerCheckpointRerollHistoryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLedgerCheckpointRerollHistoryQueryKey = () => {
+    return [
+    `/api/ledger/checkpoint/reroll/history`
+    ] as const;
+    }
+
+
+export const getGetLedgerCheckpointRerollHistoryQueryOptions = <TData = Awaited<ReturnType<typeof getLedgerCheckpointRerollHistory>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLedgerCheckpointRerollHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLedgerCheckpointRerollHistoryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLedgerCheckpointRerollHistory>>> = ({ signal }) => getLedgerCheckpointRerollHistory({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLedgerCheckpointRerollHistory>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLedgerCheckpointRerollHistoryQueryResult = NonNullable<Awaited<ReturnType<typeof getLedgerCheckpointRerollHistory>>>
+export type GetLedgerCheckpointRerollHistoryQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Recent checkpoint re-roll attempts (audit trail)
+ */
+
+export function useGetLedgerCheckpointRerollHistory<TData = Awaited<ReturnType<typeof getLedgerCheckpointRerollHistory>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLedgerCheckpointRerollHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLedgerCheckpointRerollHistoryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getGetMorningstarHitsUrl = (params?: GetMorningstarHitsParams,) => {
   const normalizedParams = new URLSearchParams();

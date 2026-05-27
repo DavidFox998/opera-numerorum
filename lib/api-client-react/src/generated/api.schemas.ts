@@ -293,6 +293,42 @@ export interface CheckpointRerollResult {
   error?: string | null;
 }
 
+export interface CheckpointRerollHistoryEntry {
+  /** ISO-8601 timestamp of when the re-roll attempt finished. */
+  timestamp: string;
+  /** Wall-clock duration of the helper invocation in milliseconds. */
+  durationMs: number;
+  /** Process exit code (-1 if the helper failed to spawn). */
+  exitCode: number;
+  /** True iff the helper exited 0 and the checkpoint was re-rolled. */
+  ok: boolean;
+  /**
+     * High-level error envelope (null on success).
+     * @nullable
+     */
+  error?: string | null;
+  /**
+     * Identity of the referee who triggered this re-roll. Named-token
+  owner wins over the optional `X-Referee-Name` header; null when
+  attribution was not supplied.
+
+     * @nullable
+     */
+  refereeName?: string | null;
+  /**
+     * Originating client IP captured at request time.
+     * @nullable
+     */
+  ip?: string | null;
+}
+
+export interface CheckpointRerollHistory {
+  /** Most recent re-roll attempts first. */
+  entries: CheckpointRerollHistoryEntry[];
+  /** Maximum number of attempts retained in the audit trail. */
+  capacity: number;
+}
+
 /**
  * Result of `POST /ledger/sidecar-forged-ack` (task #124). On
 success, the dashboard banner driven by

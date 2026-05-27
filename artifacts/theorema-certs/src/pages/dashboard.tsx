@@ -12,12 +12,14 @@ import {
   useAckSidecarForged,
   useRotateSidecarSecret,
   useRerollLedgerCheckpoint,
+  useGetLedgerCheckpointRerollHistory,
   getGetMorningstarHitsQueryKey,
   getGetLeanVerificationQueryKey,
   getGetLeanRebuildHistoryQueryKey,
   getGetLeanLockoutsQueryKey,
   getGetLedgerIntegrityQueryKey,
   getGetLedgerAlertsQueryKey,
+  getGetLedgerCheckpointRerollHistoryQueryKey,
 } from "@workspace/api-client-react";
 import { ShaChip } from "@/components/sha-chip";
 import { StatusBadge } from "@/components/status-badge";
@@ -281,6 +283,14 @@ export default function DashboardPage() {
   });
   const rerollCheckpointMutation = useRerollLedgerCheckpoint({
     request: lockoutsAuthHeader ? { headers: lockoutsAuthHeader } : undefined,
+  });
+  const { data: checkpointRerollHistory } = useGetLedgerCheckpointRerollHistory({
+    query: {
+      queryKey: getGetLedgerCheckpointRerollHistoryQueryKey(),
+      refetchInterval: 30000,
+      refetchIntervalInBackground: false,
+      retry: false,
+    },
   });
   const [rerollCheckpointError, setRerollCheckpointError] = useState<
     string | null
@@ -2216,6 +2226,87 @@ export default function DashboardPage() {
                   </span>
                 ) : null}
               </p>
+            );
+          })()}
+
+          {(() => {
+            // Task #141: persistent audit trail of checkpoint re-rolls.
+            // Mirrors the rebuild-history panel above so referees can
+            // see who re-rolled the sealed prefix, when, from which IP,
+            // and whether the attempt succeeded — across restarts.
+            const entries = checkpointRerollHistory?.entries ?? [];
+            if (entries.length === 0) return null;
+            const capacity = checkpointRerollHistory?.capacity ?? entries.length;
+            return (
+              <div
+                className="border border-border bg-muted/20"
+                data-testid="panel-checkpoint-reroll-history"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-1.5 border-b border-border bg-muted/30">
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                    Recent checkpoint re-rolls
+                  </span>
+                  <span
+                    className="font-mono text-[11px] text-muted-foreground"
+                    data-testid="text-checkpoint-reroll-history-count"
+                  >
+                    {entries.length} of last {capacity}
+                  </span>
+                </div>
+                <ul className="divide-y divide-border">
+                  {entries.map((entry, i) => (
+                    <li
+                      key={`${entry.timestamp}-${i}`}
+                      className="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-1.5 font-mono text-[11px]"
+                      data-testid={`row-checkpoint-reroll-history-${i}`}
+                      data-reroll-ok={entry.ok ? "true" : "false"}
+                    >
+                      <span
+                        className={
+                          entry.ok
+                            ? "text-green-700 dark:text-green-400 md:w-12"
+                            : "text-red-700 dark:text-red-400 md:w-12"
+                        }
+                      >
+                        {entry.ok ? "ok" : "fail"}
+                      </span>
+                      <span className="text-muted-foreground md:w-44">
+                        {formatTimestamp(entry.timestamp)}
+                      </span>
+                      <span className="text-muted-foreground md:w-20">
+                        {entry.durationMs}ms
+                      </span>
+                      <span
+                        className={
+                          entry.refereeName
+                            ? "text-foreground md:w-40 truncate"
+                            : "text-muted-foreground italic md:w-40 truncate"
+                        }
+                        title={
+                          entry.refereeName ?? "no referee attribution supplied"
+                        }
+                      >
+                        {entry.refereeName ?? "anonymous"}
+                      </span>
+                      <span
+                        className="text-muted-foreground md:w-32 truncate"
+                        title={entry.ip ?? "no client ip captured"}
+                      >
+                        {entry.ip ?? "—"}
+                      </span>
+                      {entry.error ? (
+                        <span
+                          className="text-red-700 dark:text-red-400 flex-1 min-w-0 truncate"
+                          title={entry.error}
+                          data-testid={`text-checkpoint-reroll-history-error-${i}`}
+                        >
+                          {entry.error}
+                        </span>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             );
           })()}
 

@@ -435,6 +435,29 @@ export const RerollLedgerCheckpointResponse = zod.object({
 
 
 /**
+ * Task #141. Returns the most recent ~20 persisted checkpoint
+re-roll attempts (timestamp, duration, exit code, ok, error,
+referee name, originating IP). Mirrors `/lean/verify/history`
+in shape. No auth required — referees can audit who re-rolled
+the sealed prefix and when.
+
+ * @summary Recent checkpoint re-roll attempts (audit trail)
+ */
+export const GetLedgerCheckpointRerollHistoryResponse = zod.object({
+  "entries": zod.array(zod.object({
+  "timestamp": zod.coerce.date().describe('ISO-8601 timestamp of when the re-roll attempt finished.'),
+  "durationMs": zod.number().describe('Wall-clock duration of the helper invocation in milliseconds.'),
+  "exitCode": zod.number().describe('Process exit code (-1 if the helper failed to spawn).'),
+  "ok": zod.boolean().describe('True iff the helper exited 0 and the checkpoint was re-rolled.'),
+  "error": zod.string().nullish().describe('High-level error envelope (null on success).'),
+  "refereeName": zod.string().nullish().describe('Identity of the referee who triggered this re-roll. Named-token\nowner wins over the optional `X-Referee-Name` header; null when\nattribution was not supplied.\n'),
+  "ip": zod.string().nullish().describe('Originating client IP captured at request time.')
+})).describe('Most recent re-roll attempts first.'),
+  "capacity": zod.number().describe('Maximum number of attempts retained in the audit trail.')
+})
+
+
+/**
  * Returns the parsed contents of `data/hits.txt`: the header comment
 lines, the five frozen Genesis lines (including the
 `--- GENESIS SEAL ---` marker), the SHA-256 of the immutable

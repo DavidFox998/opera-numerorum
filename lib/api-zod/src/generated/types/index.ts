@@ -11,6 +11,8 @@ export * from './certificateStatus';
 export * from './certificateSummary';
 export * from './certificateUpdate';
 export * from './certificateUpdateStatus';
+export * from './checkpointRerollHistory';
+export * from './checkpointRerollHistoryEntry';
 export * from './checkpointRerollResult';
 export * from './getLedgerAlertsParams';
 export * from './getMorningstarHitsParams';

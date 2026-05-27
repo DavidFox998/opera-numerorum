@@ -479,6 +479,25 @@ paths:
         "503":
           description: Rebuilds are disabled (no rebuild token configured)
 
+  /ledger/checkpoint/reroll/history:
+    get:
+      operationId: getLedgerCheckpointRerollHistory
+      tags: [ledger]
+      summary: Recent checkpoint re-roll attempts (audit trail)
+      description: |
+        Task #141. Returns the most recent ~20 persisted checkpoint
+        re-roll attempts (timestamp, duration, exit code, ok, error,
+        referee name, originating IP). Mirrors `/lean/verify/history`
+        in shape. No auth required — referees can audit who re-rolled
+        the sealed prefix and when.
+      responses:
+        "200":
+          description: Checkpoint re-roll history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckpointRerollHistory"
+
   /morningstar/hits:
     get:
       operationId: getMorningstarHits
@@ -943,6 +962,49 @@ components:
             `refused` (exit 2, existing checkpoint already fails verify),
             `timeout`, `spawn_failed`, or a generic non-zero exit. Null
             on success.
+
+    CheckpointRerollHistoryEntry:
+      type: object
+      required: [timestamp, durationMs, exitCode, ok]
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp of when the re-roll attempt finished.
+        durationMs:
+          type: integer
+          description: Wall-clock duration of the helper invocation in milliseconds.
+        exitCode:
+          type: integer
+          description: Process exit code (-1 if the helper failed to spawn).
+        ok:
+          type: boolean
+          description: True iff the helper exited 0 and the checkpoint was re-rolled.
+        error:
+          type: ["string", "null"]
+          description: High-level error envelope (null on success).
+        refereeName:
+          type: ["string", "null"]
+          description: |
+            Identity of the referee who triggered this re-roll. Named-token
+            owner wins over the optional `X-Referee-Name` header; null when
+            attribution was not supplied.
+        ip:
+          type: ["string", "null"]
+          description: Originating client IP captured at request time.
+
+    CheckpointRerollHistory:
+      type: object
+      required: [entries, capacity]
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/CheckpointRerollHistoryEntry"
+          description: Most recent re-roll attempts first.
+        capacity:
+          type: integer
+          description: Maximum number of attempts retained in the audit trail.
 
     SidecarForgedAckResult:
       type: object
