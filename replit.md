@@ -153,10 +153,10 @@ plaquette / `F_μν` / mass-gap, NOT the Sobolev H¹ norm / Leray–Hopf
 solution. For per-batch prose and tactic notes see
 `docs/CHANGELOG.md`.
 
-**Current wall: 475 BRICKS** (script-reported by `scripts/check-towers.sh`).
-Last verified build: `towers-build` workflow, 2026-05-28 14:18 UTC —
-`ok: Towers library built; all 475 brick(s) passed the
-axiom-footprint check.` Run ID `towers-build_20260528_141837_597`.
+**Current wall: 478 BRICKS** (script-reported by `scripts/check-towers.sh`).
+Last verified build: `towers-build` workflow, 2026-05-28 15:08 UTC —
+`ok: Towers library built; all 478 brick(s) passed the
+axiom-footprint check.` Run ID `towers-build_20260528_150811_808`.
 
 | Date | Task / Batch | Δ Wall | Headline (full prose in `docs/CHANGELOG.md`) |
 |---|---|---|---|
@@ -172,6 +172,9 @@ axiom-footprint check.` Run ID `towers-build_20260528_141837_597`.
 | 2026-05-28 | Batch 157.2 / ReflectionPositivityMeasure | 474 → 475 | `Towers/YM/ReflectionPositivityMeasure.lean` — `reflectionPos_diracEvalLM` (δ₀ ℂ-linear functional satisfies the `reflectionPos` predicate from 157.1; honest *inhabitedness* witness — the predicate is consistent, NOT a proof that any YM / Euclidean measure satisfies OS Axiom 1). Surface #1 stays OPEN. |
 | 2026-05-28 | Batch 158.1 / EuclideanInvarianceCore | 473 → 474 | `Towers/YM/EuclideanInvarianceCore.lean` — `translateAction_zero` (zero-translation is the identity action on coord-0; honest single-coord translation stand-in, **not** `EuclideanGroup` / `AffineGroup` — those don't exist in mathlib v4.12.0). Surface #1 stays OPEN. |
 | 2026-05-28 | Batch 157.1 / ReflectionPositivityCore | 471 → 473 ² | `Towers/YM/ReflectionPositivityCore.lean` (Option B, replaces rejected 156.6 Varadhan) — `reflection_involutive` (coord-0 spatial reflection is an involution on ℂ-valued test fns over `EuclideanSpace ℝ (Fin (n+1))`) + `reflection_pos_one` (integration against a probability measure sends `1 ↦ 1`; honest replacement for the malformed `[IsProbabilityMeasure ρ]`-on-a-linear-map template). Defines OS-positivity *predicate* `reflectionPos`; does **NOT** prove OS Axiom 1 for any YM / Euclidean measure. Surface #1 stays OPEN (Varadhan opengap parked). |
+| 2026-05-28 | Batch 159.1 / ClusteringCore (TRI PARALLEL) | 475 → 476 | `Towers/YM/ClusteringCore.lean` — `clusters_zero` (zero-zero pair trivially clusters under any measure; inhabitedness witness for the `clusters` cluster-decay predicate, same pattern as Batch 157.2). Honest stand-in for the rejected `clusters_product`, which required `integral_prod_mul` / `measure_prod` lemmas mathlib v4.12.0 does not export under those names. Does **NOT** prove cluster decay for any YM measure. Surface #1 stays OPEN. |
+| 2026-05-28 | Batch 160.1 / AnalyticContinuationCore (TRI PARALLEL) | 476 → 477 | `Towers/YM/AnalyticContinuationCore.lean` — `exp_neg_continues` (real exp `t ↦ exp(-t·H)` analytically continues to entire `z ↦ exp(-z·H)`; predicate `analyticallyContinues`). Discharged via explicit composition `Complex.differentiable_exp.comp (differentiable_id.neg.mul_const (H : ℂ))` — `fun_prop` was tried first but failed with "No theorems found for `Complex.exp`" in our minimal import surface. Does **NOT** prove YM Schwinger → Wightman analytic continuation. Surface #1 stays OPEN. |
+| 2026-05-28 | Batch 161.1 / TemperednessCore (TRI PARALLEL) | 477 → 478 | `Towers/YM/TemperednessCore.lean` — `tempered_of_clm` (every continuous ℂ-linear functional on any complex normed space `E` satisfies the opNorm-bound predicate `tempered`, via `ContinuousLinearMap.le_opNorm`). Honest stand-in for the rejected Schwartz-space version — mathlib v4.12.0 does not equip `SchwartzMap ℝ ℂ` with a global `Norm` instance (only the seminorm family), so we generalize away from Schwartz to a generic `E`. Does **NOT** prove the full Schwartz-semi-norm-family temperedness, and says nothing about any YM field operator. Surface #1 stays OPEN. |
 
 ¹ Batch 156.2's own brick delta is **+1**; the extra +1 reconciles
 `Towers.NS.HasFiniteEnergy_galilean_group` (Task #146, already in

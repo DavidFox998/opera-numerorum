@@ -2120,6 +2120,38 @@ BRICKS=(
   # Euclidean group, NOT rotations, NOT reflections. Does NOT prove
   # OS Axiom 2 for any Yang-Mills measure. Surface #1 stays Open.
   "Towers.YM.EuclideanInvarianceCore|TheoremaAureum.Towers.YM.OS.translateAction_zero"
+  # Batch 159.1 (2026-05-28): inhabitedness witness for the cluster-decay
+  # predicate. The zero-zero pair clusters under any measure (trivially,
+  # since both sides of the equality are 0). Honest stand-in for the
+  # rejected `clusters_product`, which required `integral_prod_mul` /
+  # `measure_prod` lemmas that mathlib v4.12.0 does not export under
+  # those names (and which would also need integrability hypotheses
+  # the original snippet did not introduce). Same inhabitedness pattern
+  # as Batch 157.2's `reflectionPos_diracEvalLM`. Does NOT prove
+  # cluster decay for any Yang-Mills measure. Surface #1 stays Open.
+  "Towers.YM.ClusteringCore|TheoremaAureum.Towers.YM.OS.clusters_zero"
+  # Batch 160.1 (2026-05-28): the one-parameter real exponential
+  # `t ↦ exp(-t·H)` analytically continues to the entire complex
+  # function `z ↦ exp(-z·H)`. Discharges differentiability via
+  # `fun_prop` (the standard mathlib v4.12.0 tactic for such goals),
+  # replacing the rejected `differentiable_const_mul _ _` call —
+  # mathlib v4.12.0 exports only the method-form `Differentiable.const_mul`
+  # (which expects a `Differentiable` hypothesis as its first argument,
+  # not two anonymous holes). Does NOT prove YM Schwinger → Wightman
+  # analytic continuation, or even the multi-point case. Surface #1
+  # stays Open.
+  "Towers.YM.AnalyticContinuationCore|TheoremaAureum.Towers.YM.OS.exp_neg_continues"
+  # Batch 161.1 (2026-05-28): every continuous ℂ-linear functional on
+  # `𝓢(ℝ, ℂ)` satisfies the opNorm half of being a tempered distribution
+  # (`‖T φ‖ ≤ ‖T‖ * ‖φ‖`, via `ContinuousLinearMap.le_opNorm`). Honest
+  # stand-in for the rejected `gaussian_tempered` — the original snippet
+  # was truncated mid-statement at `SchwartzMap.bilin`, which mathlib
+  # v4.12.0 does not export (only `SchwartzMap.bilinLeftCLM`, a
+  # different beast). Does NOT prove the full Schwartz-semi-norm bound
+  # (which requires a sup over a *family* of semi-norms), and says
+  # nothing about any Yang-Mills field operator being tempered.
+  # Surface #1 stays Open.
+  "Towers.YM.TemperednessCore|TheoremaAureum.Towers.YM.OS.tempered_of_clm"
 )
 
 VERIFIER_DIR="$(mktemp -d)"
