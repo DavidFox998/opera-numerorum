@@ -154,9 +154,9 @@ solution. For per-batch prose and tactic notes see
 `docs/CHANGELOG.md`.
 
 **Current wall: 473 BRICKS** (script-reported by `scripts/check-towers.sh`).
-Last verified build: `towers-build` workflow, 2026-05-28 00:31 UTC (last
-script-pass at wall 471; +2 from 157.1 below pending re-run of
-`towers-build`).
+Last verified build: `towers-build` workflow, 2026-05-28 05:53 UTC —
+`ok: Towers library built; all 473 brick(s) passed the
+axiom-footprint check.` Run ID `towers-build_20260528_055355_674`.
 
 | Date | Task / Batch | Δ Wall | Headline (full prose in `docs/CHANGELOG.md`) |
 |---|---|---|---|
