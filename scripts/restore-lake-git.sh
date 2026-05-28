@@ -41,6 +41,12 @@
 #   - a tar file is missing for a package whose working tree exists
 #   - after restore, `git rev-parse HEAD` does not match the
 #     manifest-pinned rev
+#   - working tree files missing even though `.git/` is intact
+#     (Task #172: `lake build` silently wipes the worktree under
+#     `.lake/packages/mathlib/` between builds, leaving `.git/`
+#     behind. Detected via `git status --porcelain` reporting `D `
+#     deletions; healed with `git checkout -- .` against the
+#     vendored objects.)
 
 set -euo pipefail
 
@@ -128,6 +134,25 @@ restore_one() {
     local cur
     cur="$(git -C "$pkg_dir" rev-parse HEAD 2>/dev/null || echo "")"
     if [ "$cur" = "$rev" ]; then
+      # Task #172: `.git/` matches the pinned rev, but the working
+      # tree itself may have been wiped (`lake build` has been seen
+      # to delete thousands of files under
+      # `.lake/packages/mathlib/` between builds, leaving `.git/`
+      # behind). `git status --porcelain` reports a `D ` prefix for
+      # every missing tracked file; if any are gone, heal the
+      # worktree from the vendored objects via `git checkout -- .`
+      # before declaring the package restored.
+      local deletions
+      deletions="$(git -C "$pkg_dir" status --porcelain 2>/dev/null | grep -c '^ D ' || true)"
+      if [ "${deletions:-0}" -gt 0 ]; then
+        echo "restore-lake-git: warn  $name has \`.git\` at pinned rev but $deletions tracked file(s) missing from worktree; running \`git checkout -- .\`." >&2
+        if ! git -C "$pkg_dir" checkout -- . >/dev/null 2>&1; then
+          echo "restore-lake-git: error: $name: \`git checkout -- .\` failed to repopulate worktree." >&2
+          return 1
+        fi
+        echo "restore-lake-git: ok    $name @ ${rev:0:12} (worktree rehydrated from local objects)." >&2
+        return 0
+      fi
       echo "restore-lake-git: ok    $name @ ${rev:0:12} (already restored)." >&2
       return 0
     fi
