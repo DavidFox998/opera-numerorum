@@ -2349,6 +2349,22 @@ BRICKS=(
   "Towers.YM.LatticeGauge|TheoremaAureum.Towers.YM.LatticeGauge.Lattice_def"
   "Towers.YM.WilsonAction|TheoremaAureum.Towers.YM.LatticeGauge.wilsonAction_zero_beta"
   "Towers.YM.GibbsMeasure|TheoremaAureum.Towers.YM.LatticeGauge.partitionFn_zero_beta_eq_one"
+  # TRI PARALLEL #9 / Batches 169.1, 169.2, 169.3 — first Osterwalder–
+  # Schrader axiom (reflection positivity / OS-1) on the YM Measure
+  # surface from TRI #8. TimeReflection defines θ on sites/links/
+  # configs and proves the constant-1 config is θ-fixed
+  # (`configRefl_const_one`). PositiveLattice defines the positive-
+  # time predicate and the positive-time subalgebra; sanity brick
+  # `positiveTime_zero`. ReflectionPositivity proves OS-1 *under the
+  # Batch 168.3 Dirac haar stand-in*: the integral collapses to a
+  # point eval at the (sole) support `const 1`, where θ-fixed-ness
+  # reduces the integrand to `‖F(const 1)‖²`, discharged by
+  # `Complex.normSq_nonneg`. Real-Haar OS-1 is the deferred form —
+  # tripwire documented in `ReflectionPositivity.lean`. Surface #1
+  # stays OPEN (mass gap, clustering, full OS not addressed).
+  "Towers.YM.TimeReflection|TheoremaAureum.Towers.YM.LatticeGauge.configRefl_const_one"
+  "Towers.YM.PositiveLattice|TheoremaAureum.Towers.YM.LatticeGauge.positiveTime_zero"
+  "Towers.YM.ReflectionPositivity|TheoremaAureum.Towers.YM.LatticeGauge.reflection_positivity"
 )
 
 VERIFIER_DIR="$(mktemp -d)"
