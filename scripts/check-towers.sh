@@ -2226,6 +2226,9 @@ BRICKS=(
   "Towers.YM.TransferOperatorBound|TheoremaAureum.Towers.YM.OS.transfer_gap_zero"
   "Towers.YM.TwoPointDecay|TheoremaAureum.Towers.YM.OS.clustering_zero_from_transfer"
   "Towers.YM.MassGapFromDecay|TheoremaAureum.Towers.YM.OS.mass_gap_from_clustering_zero"
+  "Towers.YM.IntegratedTailReal|TheoremaAureum.Towers.YM.OS.integrated_tail_le_exp"
+  "Towers.YM.TransferGapReal|TheoremaAureum.Towers.YM.OS.transfer_gap_real"
+  "Towers.YM.MassGapReal|TheoremaAureum.Towers.YM.OS.mass_gap_from_transfer"
 )
 
 VERIFIER_DIR="$(mktemp -d)"
