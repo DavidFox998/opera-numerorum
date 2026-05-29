@@ -18,14 +18,15 @@ Honest scope (locked)
 Drift from snippet
 ------------------
 (1) Snippet's import `Mathlib.Analysis.NormedSpace.Spectrum` does not
-    exist under that name in mathlib v4.12.0. The actual module is
-    `Mathlib.Analysis.NormedSpace.Banach.Uniform`-adjacent; the
-    `spectralRadius` API lives in `Mathlib.Analysis.NormedSpace.Spectrum`
-    in newer mathlib but in v4.12.0 is exported from
-    `Mathlib.Analysis.NormedSpace.OperatorNorm.NormedSpace` /
-    `Mathlib.FieldTheory.Normal`. Import surface used:
-    `Mathlib.Analysis.NormedSpace.Banach.UniformOpen` (smallest
-    available cover); the actual lemma is `spectralRadius_le_nnnorm`.
+    exist under that name in mathlib v4.12.0 — that module path was a
+    pre-rename location. In v4.12.0 the `spectralRadius` API (including
+    `spectralRadius_le_nnnorm`) lives in
+    `Mathlib.Analysis.Normed.Algebra.Spectrum`, which is the module we
+    import here (matching `Towers/YM/TransferOperator.lean`). The old
+    `NormedSpace.Spectrum` path only ever resolved against a stale
+    cached olean, so this brick built standalone but broke a full
+    `lake build Towers` replay against the real v4.12.0 source tree
+    (Task #208).
 (2) Snippet wrote `spectralRadius_le_opNorm` — that constant does
     not exist in mathlib v4.12.0. The library lemma is
     `spectralRadius_le_nnnorm : spectralRadius 𝕜 a ≤ ‖a‖₊`.
@@ -51,19 +52,9 @@ open ContinuousLinearMap
     `‖T‖ ≤ 1` implies `spectralRadius ℂ T ≤ 1`. Generic utility,
     not a YM-specific bound. -/
 theorem spectral_bound {H : Type*}
-    [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H]
+    [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H] [Nontrivial H]
     (T : H →L[ℂ] H) (h : ‖T‖ ≤ 1) : spectralRadius ℂ T ≤ 1 := by
-  refine iSup₂_le fun k hk => ?_
-  have hkT : ‖k‖ ≤ ‖T‖ * ‖(1 : H →L[ℂ] H)‖ :=
-    spectrum.norm_le_norm_mul_of_mem hk
-  have h1 : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
-    rw [ContinuousLinearMap.one_def]
-    exact ContinuousLinearMap.norm_id_le
-  have hk1 : ‖k‖ ≤ 1 :=
-    calc ‖k‖
-        ≤ ‖T‖ * ‖(1 : H →L[ℂ] H)‖ := hkT
-      _ ≤ 1 * 1 := mul_le_mul h h1 (norm_nonneg _) zero_le_one
-      _ = 1 := one_mul _
-  exact_mod_cast hk1
+  have hsr : spectralRadius ℂ T ≤ ‖T‖₊ := spectrum.spectralRadius_le_nnnorm T
+  exact le_trans hsr (by exact_mod_cast h)
 
 end TheoremaAureum.Towers.YM.OS

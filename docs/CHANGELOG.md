@@ -12,6 +12,25 @@ this file is the version history.
 |---|---|---|---|
 | 2026-05-29 | Task #208 / Mathlib build unblock + OS deferral | 545 → 516 | Red `towers-build` root-caused to the pure-core trim of `LatticeGauge.lean` + `WilsonAction.lean` (deleted the `G`=SU(2) / `GaugeConfig` / `plaquette` substrate). **Repaired in place (no statement change):** `SpectralBound` (Spectrum import), `KoteckyPreiss` (`LatticeGauge` import + `noncomputable`), `PolymerModel` (`LatticeGauge` + `Pairwise.Lattice` imports, `noncomputable`, `PairwiseDisjoint` via `Set` coercion), `MassGapEnvelope` (`open scoped InnerProductSpace`) — all four `#print axioms` = classical trio. **Deferred to Wall 570+ (24 modules / 29 BRICKS entries removed; `.lean` files kept on disk):** entire Osterwalder–Schrader surface (TRI #9–#13: OS-1..OS-4) + real Kotecký–Preiss/transfer-kernel chain = 5 direct orphans (`LatticeRotation`, `LatticeAction`, `TimeReflection`, `Support`, `PlaquetteEnergy`) + 19 transitive importers. `lakefile.lean` roots 99 → 75. All deferred bricks were vacuous `const_one`/Dirac stand-ins — NO mass-gap/μ>0 claim; Surface #1 stays OPEN, YM Status Open, no invariant changed. Verified green via direct `lake build Towers` (the wiping `check-towers.sh`/`towers-build` was not run). |
 
+**Rebase reconciliation (2026-05-29).** A parallel Task #208 branch
+took a different route to the same root cause: instead of leaving
+`LatticeGauge.lean` trimmed and deferring its dependents, it **restored
+the `G`/`GaugeConfig` substrate** — re-adding imports
+`Mathlib.LinearAlgebra.UnitaryGroup`, `Mathlib.Data.Finset.Lattice`,
+`Mathlib.Data.Complex.Basic` (the last needed because `UnitaryGroup`
+no longer re-exports the `ℂ` notation at v4.12.0) plus `abbrev G :=
+Matrix.specialUnitaryGroup (Fin 2) ℂ` and `def GaugeConfig`. On rebase
+this restore was **kept** (it is additive and the deferred dependents
+remain out of `lakefile.lean` roots, so the wall is unchanged at 516
+and the substrate is ready for future un-deferral). The same branch
+fixed `SpectralBound` identically (Spectrum import) but resolved its
+`spectral_bound` proof to the `spectrum.spectralRadius_le_nnnorm`
+form with a `[Nontrivial H]` binder. That branch's alternative "543
+wall / 8-files-still-broken" report is **superseded** by the deferral
+above: those modules are no longer rooted, so they are not part of the
+built wall. Locked invariants unchanged (mathlib v4.12.0, classical
+trio, no new sorry/admit, Surface #1/#2 OPEN, K–P sorry intact).
+
 ---
 
 ## Batches 157–167 — TRI PARALLEL #1 through TRI PARALLEL #7 wall-jump table (trimmed from `replit.md` 2026-05-28)

@@ -49,19 +49,14 @@ or a `Fintype`/`Nonempty` instance lookup.
 ================================================================
 -/
 
--- (Zero mathlib imports until Wall 570 — pure combinatorics.)
+import Mathlib.LinearAlgebra.UnitaryGroup
+import Mathlib.Data.Finset.Lattice
+import Mathlib.Data.Complex.Basic
 
 namespace TheoremaAureum.Towers.YM.LatticeGauge
 
-/- Surface #1: YM measure vacuous. G/Group/Haar deferred to Wall 570+.
-   Lattice is pure combinatorics. -/
-
--- `G` (the SU(2) gauge group) and `GaugeConfig` are deferred to
--- Wall 570+ together with the Group/Haar structure: they require
--- `Mathlib.LinearAlgebra.UnitaryGroup`, excluded here to keep this
--- file mathlib-free. `ℕ` is a mathlib/notation symbol unavailable
--- in bare Lean core, so the core spelling `Nat` is used below —
--- definitionally identical.
+/-- The gauge group: `SU(2)`. -/
+abbrev G : Type := Matrix.specialUnitaryGroup (Fin 2) ℂ
 
 /-- Sites of a `d`-dimensional periodic lattice of side length `L`.
 
@@ -75,9 +70,8 @@ def Lattice (d L : Nat) : Type := Fin d → Fin L
 /-- An oriented link: a site plus a direction. -/
 def Link (d L : Nat) : Type := Lattice d L × Fin d
 
-/- A gauge configuration: a `G`-valued function on links.
-   Deferred to Wall 570+ together with `G`/Group/Haar:
-   `def GaugeConfig (d L : Nat) : Type := Link d L → G` -/
+/-- A gauge configuration: a `G`-valued function on links. -/
+def GaugeConfig (d L : Nat) : Type := Link d L → G
 
 /-- **Brick (`Lattice_def`).** Definitional unfolding of the
     `Lattice d L` carrier. Useful as a `rfl` rewrite target for

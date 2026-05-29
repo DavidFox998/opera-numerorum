@@ -9,6 +9,11 @@ the Wall-510 / Wall-539 / Wall-542 trims).
 - **Wall:** 516 BRICKS (`${#BRICKS[@]}` in `scripts/check-towers.sh`;
   was 545 pre-deferral — prior `543` headline was stale by 2. See
   **Task #208** below for the −29-entry / 24-module deferral.)
+  - Rebase note (Task #208): the `LatticeGauge.lean` `G`/`GaugeConfig`
+    substrate was kept RESTORED (mathlib imports + defs) rather than
+    left trimmed — additive, wall unchanged at 516; the deferred
+    dependents stay out of `lakefile.lean` roots. `SpectralBound`
+    resolves to the `spectrum.spectralRadius_le_nnnorm` proof form.
 - **YM Surface #1:** Open
 - **Axiom debt:** `[]` on `TheoremaAureum.main_theorem`
   (`#print axioms` returns `[]`; also `[]` on `H2_WeilTransfer` and
