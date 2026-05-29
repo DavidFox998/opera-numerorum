@@ -34,6 +34,19 @@ the Wall-510 / Wall-539 / Wall-542 trims).
 
 ## Pending / in-flight (not yet landed)
 
+- **Wall 571-B / [YM1-LB-Core]** — `Towers/YM/LatticePositivity.lean`
+  written + VERIFIED (`namespace TheoremaAureum.YM_MassGap`). Pure-core
+  (no mathlib, no imports, `Int`/`Nat` only): `lattice_positivity`
+  proves a finite sum of integer squares is `≥ 0` and `= 0` iff every
+  term is `0` — the trivial discrete shadow of "H ≥ 0", NOTHING more.
+  `#print axioms …lattice_positivity` = [] (strictly empty) via direct
+  `lean` (lake-free). Registered as [YM1-LB-Core], NOT [YM1]; makes NO
+  mass-gap / μ>0 / Surface-#1 claim — Surface #1 stays OPEN, YM Status
+  Open. NOT in `scripts/check-towers.sh` BRICKS (that path is
+  lake-gated → script-reported wall unchanged). ℝ companion
+  "B-deferred" (`Towers/YM/LatticePositivityReal.lean`) awaits a
+  healthy mathlib cache. Verify: see the file's honest-scope header.
+
 - **Batch 178.1 / SLinkDef** — `Towers/YM/SLinkDef.lean` written
   (`S_link` + brick `S_link_const_one`), NOT registered to
   `lakefile.lean` / `scripts/check-towers.sh` BRICKS array, no wall
