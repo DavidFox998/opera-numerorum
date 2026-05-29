@@ -552,15 +552,31 @@ NOT a real Peter-Weyl truncation of the single-plaquette SU(3)
 partition function. -/
 
 
-/-- **Mayer-expansion convergence Prop.** Placeholder `Prop`
-slot consumed by `kotecky_preiss_criterion`. Real surface: the
-absolute convergence statement `Σ_γ |ζ(β, N, γ)| < ∞` on the
-infinite-volume polymer set, plus the cluster-expansion identity
+/-- **Mayer-expansion convergence Prop (Task #191 — promoted to a
+real `Summable` statement).** Previously the placeholder `:= True`.
+
+Now the genuine absolute-convergence surface of the Mayer-Montroll
+series on the infinite-volume polymer set:
+
+  `Summable (fun γ : Polymer => |polymer_activity_finite_N β N γ|)`,
+
+i.e. the weighted polymer activity functional `ζ(β, N, γ)`
+(`polymer_activity_finite_N`, 19.1s, the real `∏ p ∈ γ, …`
+Mayer-product) is absolutely summable over *all* polymers
+`γ : Polymer = Finset ℕ`. This is the convergence criterion
+behind the cluster-expansion identity
 `log Z = Σ_X φ_T(X) · ∏_{γ ∈ X} ζ(γ)` with Ursell coefficients
-`φ_T` (Glimm-Jaffe Eq. 20.4.1). Placeholder `:= True` so the
-implication body typechecks without committing to the real
-statement; the *substance* lives in `kotecky_preiss_criterion`. -/
-def Converges_Mayer_expansion (_β : ℝ) (_N : ℕ) : Prop := True
+`φ_T` (Glimm-Jaffe Eq. 20.4.1).
+
+Promoting away from `:= True` *intentionally re-opens* the proof
+obligation in `kotecky_preiss_criterion` (below) — that tripwire
+was placed exactly here (Tasks #171 / #191). The discharge is the
+Brydges-Federbush / Kotecký-Preiss convergence argument; it stays
+parked as a scoped `sorry` in `Attempts/` (NOT in BRICKS), so the
+green-wall axiom footprint is untouched and the YM tower stays
+`Status: Open`. -/
+def Converges_Mayer_expansion (β : ℝ) (N : ℕ) : Prop :=
+  Summable (fun γ : Polymer => |polymer_activity_finite_N β N γ|)
 
 /-- **Kotecký-Preiss strict-contraction criterion (typed gap).**
 Real surface: the implication
@@ -600,29 +616,38 @@ absolute-convergence proof on weighted polymer sums (i.e. the
 honest KP combinatorial argument itself, ~40 pages per the
 estimate above).
 
-**Task #171 update — honestly narrowed, not falsely promoted.**
-The previous `sorry` here over-promised: it pretended that
-discharging the strict-`<` Brydges-Federbush convergence
-argument lived behind this name. In fact, the *current
-statement* — `True → Converges_Mayer_expansion β N` — unfolds
-to `True → True` at the `Converges_Mayer_expansion := True`
-placeholder. That is exactly the situation the locked
-honest-scope rule (`replit.md`) addresses: do **not** carry a
-`sorry` against a vacuous goal as if it were a genuine open
-surface; the goal is vacuous *because* the placeholder is
-vacuous, and the real surface lives in the predicate
-`Converges_Mayer_expansion` that this implication targets.
-We therefore close this implication honestly with `trivial`,
-and re-park the genuine 40-page Brydges-Federbush content
-inside the docstring of `Converges_Mayer_expansion` (above)
-where the placeholder `:= True` lives. Promoting
-`Converges_Mayer_expansion` to its real Mayer-Montroll
-content will *intentionally* re-open this proof obligation —
-the tripwire is exactly there. YM tower stays
-`Status: Open`. -/
+**Task #171 update — honestly narrowed.**
+At Task #171 the previous `sorry` here was honestly closed with
+`trivial`: the statement `True → Converges_Mayer_expansion β N`
+unfolded to `True → True` at the `Converges_Mayer_expansion :=
+True` placeholder, so carrying a `sorry` against a vacuous goal
+would have been dishonest. The genuine 40-page Brydges-Federbush
+content was re-parked in the docstring of
+`Converges_Mayer_expansion`, with the explicit note that
+promoting that predicate to its real Mayer-Montroll content
+would *intentionally* re-open this proof obligation — the
+tripwire was placed exactly there.
+
+**Task #191 update — tripwire tripped, scoped `sorry` re-opened.**
+`Converges_Mayer_expansion` is now the real
+`Summable (fun γ => |polymer_activity_finite_N β N γ|)` statement
+(absolute convergence of the weighted polymer activity over the
+infinite-volume polymer set), no longer `True`. The conclusion
+of this implication is therefore a genuine open surface again:
+the hypothesis `True` does not supply the Kotecký-Preiss bound
+needed to establish summability, and there is no tactic shortcut.
+We re-open the obligation as a single named, scoped `sorry`,
+exactly as the Task #171 tripwire predicted. It lives in
+`Attempts/` (NOT in BRICKS), so the green-wall axiom footprint
+is untouched and the YM tower stays `Status: Open`. Discharging
+it is the honest KP combinatorial argument cited above
+(Kotecký-Preiss 1986 / Friedli-Velenik 2018 Ch. 5) on top of the
+`Summable` / `HasSum` / `tsum` substrate over weighted polymer
+sets. -/
 theorem kotecky_preiss_criterion (β : ℝ) (N : ℕ) (_γ₀ : Polymer) :
     True → Converges_Mayer_expansion β N := by
-  intro _; trivial
+  intro _
+  sorry
 
 /-! ============================================================
     Batch 19.3 / 19.1p-redux-b — Truncated Peter-Weyl ≤ heat-kernel
