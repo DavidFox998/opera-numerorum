@@ -2503,6 +2503,7 @@ if (monitorIntervalSeconds != null) {
 // so MORNINGSTAR_ALERT_WEBHOOK_URL / MORNINGSTAR_ALERT_EMAIL_TO
 // already-configured for tamper alerts also receive the digest.
 import {
+  hasAlertSinkConfigured,
   resolveRerollDigestIntervalSeconds,
   startRerollDigestScheduler,
 } from "../lib/rerollDigest.js";
@@ -2510,7 +2511,11 @@ import {
 const rerollDigestIntervalSeconds = resolveRerollDigestIntervalSeconds(
   process.env["MORNINGSTAR_REROLL_DIGEST_INTERVAL_SECONDS"],
 );
-if (rerollDigestIntervalSeconds != null) {
+if (rerollDigestIntervalSeconds != null && !hasAlertSinkConfigured()) {
+  defaultLogger.info(
+    "reroll digest: no sinks configured, digest disabled (set MORNINGSTAR_ALERT_WEBHOOK_URL or MORNINGSTAR_ALERT_EMAIL_TO)",
+  );
+} else if (rerollDigestIntervalSeconds != null) {
   const windowHours = Math.max(1, Math.round(rerollDigestIntervalSeconds / 3600));
   startRerollDigestScheduler({
     intervalMs: rerollDigestIntervalSeconds * 1000,

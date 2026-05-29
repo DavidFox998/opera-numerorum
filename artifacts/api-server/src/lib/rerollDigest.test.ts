@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import {
   buildRerollDigest,
+  hasAlertSinkConfigured,
   resolveRerollDigestIntervalSeconds,
   runRerollDigestOnce,
   type RerollDigestRow,
@@ -84,6 +85,7 @@ describe("runRerollDigestOnce", () => {
       logger: stubLogger,
       now: () => NOW,
       fetchRows: async () => rows,
+      hasSink: () => true,
     });
     expect(result).not.toBeNull();
     expect(sink).toHaveBeenCalledTimes(1);
@@ -96,6 +98,41 @@ describe("runRerollDigestOnce", () => {
     expect(inv.context.fail_count).toBe(1);
     expect(typeof inv.context.digest_text).toBe("string");
     expect(inv.message).toContain("Checkpoint re-roll digest");
+  });
+
+  it("disables the digest when no sinks are configured", async () => {
+    const sink = vi.fn();
+    const fetchRows = vi.fn(async () => [row({ ok: false })]);
+    const logger = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
+    const r = await runRerollDigestOnce({
+      windowHours: 24,
+      sink,
+      logger,
+      now: () => NOW,
+      fetchRows,
+      hasSink: () => false,
+    });
+    expect(r).toBeNull();
+    expect(sink).not.toHaveBeenCalled();
+    expect(fetchRows).not.toHaveBeenCalled();
+    expect(logger.info).toHaveBeenCalledWith(
+      expect.objectContaining({ windowHours: 24 }),
+      "reroll digest: no sinks configured, digest disabled",
+    );
+  });
+
+  it("dispatches when a sink is configured", async () => {
+    const sink = vi.fn().mockResolvedValue(undefined);
+    const r = await runRerollDigestOnce({
+      windowHours: 24,
+      sink,
+      logger: stubLogger,
+      now: () => NOW,
+      fetchRows: async () => [row({ ok: true })],
+      hasSink: () => true,
+    });
+    expect(r).not.toBeNull();
+    expect(sink).toHaveBeenCalledTimes(1);
   });
 
   it("skips dispatch when the window has no attempts (default)", async () => {
@@ -120,6 +157,7 @@ describe("runRerollDigestOnce", () => {
       now: () => NOW,
       fetchRows: async () => [],
       skipWhenEmpty: false,
+      hasSink: () => true,
     });
     expect(sink).toHaveBeenCalledTimes(1);
   });
@@ -132,8 +170,35 @@ describe("runRerollDigestOnce", () => {
       logger: stubLogger,
       now: () => NOW,
       fetchRows: async () => [row({ ok: false })],
+      hasSink: () => true,
     });
     expect(r).not.toBeNull();
+  });
+});
+
+describe("hasAlertSinkConfigured", () => {
+  it("is false when neither transport env var is set", () => {
+    expect(hasAlertSinkConfigured({})).toBe(false);
+    expect(
+      hasAlertSinkConfigured({
+        MORNINGSTAR_ALERT_WEBHOOK_URL: "  ",
+        MORNINGSTAR_ALERT_EMAIL_TO: "",
+      }),
+    ).toBe(false);
+  });
+
+  it("is true when the webhook URL is set", () => {
+    expect(
+      hasAlertSinkConfigured({
+        MORNINGSTAR_ALERT_WEBHOOK_URL: "http://example/alert",
+      }),
+    ).toBe(true);
+  });
+
+  it("is true when the email recipient is set", () => {
+    expect(
+      hasAlertSinkConfigured({ MORNINGSTAR_ALERT_EMAIL_TO: "ops@example.com" }),
+    ).toBe(true);
   });
 });
 

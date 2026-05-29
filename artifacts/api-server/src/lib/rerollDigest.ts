@@ -151,6 +151,23 @@ export async function fetchRerollRowsSince(
   }));
 }
 
+/**
+ * Task #198: mirror the kernel transports' env-var gate
+ * (`kernel._fire_ledger_alert` reads the exact same two vars). A sink
+ * counts as "configured" when either the webhook URL or the email
+ * recipient is a non-empty string after trimming. With neither set,
+ * `_fire_ledger_alert` would still spawn, write a "not_configured"
+ * history row, and return — pure noise on a sink-less deployment, so
+ * the digest scheduler short-circuits before dispatching.
+ */
+export function hasAlertSinkConfigured(
+  env: NodeJS.ProcessEnv = process.env,
+): boolean {
+  const webhook = (env["MORNINGSTAR_ALERT_WEBHOOK_URL"] ?? "").trim();
+  const emailTo = (env["MORNINGSTAR_ALERT_EMAIL_TO"] ?? "").trim();
+  return webhook.length > 0 || emailTo.length > 0;
+}
+
 export interface RerollDigestRunOptions {
   windowHours: number;
   sink: LedgerAlertSink;
@@ -161,6 +178,7 @@ export interface RerollDigestRunOptions {
   ) => Promise<RerollDigestRow[]>;
   now?: () => Date;
   skipWhenEmpty?: boolean;
+  hasSink?: () => boolean;
 }
 
 /**
@@ -172,6 +190,14 @@ export async function runRerollDigestOnce(
   opts: RerollDigestRunOptions,
 ): Promise<RerollDigest | null> {
   const now = (opts.now ?? (() => new Date()))();
+  const hasSink = opts.hasSink ?? hasAlertSinkConfigured;
+  if (!hasSink()) {
+    opts.logger.info(
+      { windowHours: opts.windowHours },
+      "reroll digest: no sinks configured, digest disabled",
+    );
+    return null;
+  }
   const fetcher = opts.fetchRows ?? fetchRerollRowsSince;
   let rows: RerollDigestRow[];
   try {
