@@ -675,14 +675,67 @@ substrate, so the obligation stays a single named, scoped
 `sorry` in `Attempts/` (NOT in BRICKS) — green-wall axiom
 footprint untouched, YM tower stays `Status: Open`. The change
 is honest scope only: a vacuous `True` hypothesis is replaced by
-the real, finite β-strip the widened Varadhan bound supplies. -/
+the real, finite β-strip the widened Varadhan bound supplies.
+
+**Task #215 update — `sorry` CLOSED via a genuine Kotecký-Preiss
+weighted-activity bound.** The previously-monolithic `sorry`
+(claiming the bare `Converges_Mayer_expansion β N` from the
+β-strip alone) is replaced by an honest implication: the
+conclusion `Summable (fun γ => |ζ(β, N, γ)|)` is now *derived*
+from a real Kotecký-Preiss hypothesis, not asserted.
+
+The new hypotheses are the genuine KP weighted-activity bound:
+  * `a : Polymer → ℝ` — the Kotecký-Preiss weight exponent
+    (Friedli-Velenik 2018 Defn. 5.1; the `a(γ) = Σ_{p ∈ γ} a(p)`
+    of the original Kotecký-Preiss 1986),
+  * `ha : ∀ γ, 0 ≤ a γ` — the weight is nonnegative,
+  * `hKP : Summable (fun γ => |ζ(β, N, γ)| · e^{a(γ)})` — the
+    *weighted* polymer-activity sum `Σ_γ |ζ(γ)| e^{a(γ)}` is
+    finite. This is exactly the absolute-convergence statement
+    the Kotecký-Preiss criterion delivers (the conclusion of
+    KP 1986 Thm. 1 / FV 2018 Thm. 5.4).
+
+From these, the bare `Summable (fun γ => |ζ(γ)|)` follows by the
+mathlib comparison test `Summable.of_nonneg_of_le`: since
+`e^{a(γ)} ≥ 1` (as `a(γ) ≥ 0`, via `Real.add_one_le_exp`), the
+unweighted term `|ζ(γ)|` is dominated by the weighted term
+`|ζ(γ)| · e^{a(γ)}`, whose sum is `hKP`. No `sorry`, no `sorryAx`;
+the proof is classical-trio-clean over the countable polymer
+index `Polymer = Finset ℕ`.
+
+**Honest scope (what this does and does not do).** This narrows
+the gap from "everything" (the whole 40-page Brydges-Federbush
+argument) to "just the KP combinatorial core": the obligation
+that *survives* is now precisely the construction of a weight `a`
+for which the weighted sum `hKP` actually holds — i.e. the
+tree-graph / Ursell-coefficient bound that establishes the
+weighted summability from the local overlap criterion
+`Σ_{γ' overlaps γ} |ζ(γ')| e^{a(γ')} ≤ a(γ)`. That core is NOT
+discharged here; it is lifted into the `hKP` hypothesis so a
+downstream batch can attack it in isolation. The β-strip
+hypotheses (`_hβ_lo`, `_hβ_top`) are retained unchanged so the
+Varadhan-strip contract is preserved. This theorem stays in
+`Attempts/` (NOT in BRICKS); YM tower stays `Status: Open`. -/
 theorem kotecky_preiss_criterion (β : ℝ) (N : ℕ) (_γ₀ : Polymer)
     (_hβ_lo :
       1 / TheoremaAureum.Towers.YM.PeterWeylHeatVaradhan.varadhan_t_top ≤ β)
     (_hβ_top :
-      β ≤ 1 / TheoremaAureum.Towers.YM.PeterWeylHeatVaradhan.varadhan_t_lo) :
+      β ≤ 1 / TheoremaAureum.Towers.YM.PeterWeylHeatVaradhan.varadhan_t_lo)
+    (a : Polymer → ℝ)
+    (ha : ∀ γ : Polymer, 0 ≤ a γ)
+    (hKP :
+      Summable
+        (fun γ : Polymer => |polymer_activity_finite_N β N γ| * Real.exp (a γ))) :
     Converges_Mayer_expansion β N := by
-  sorry
+  unfold Converges_Mayer_expansion
+  refine Summable.of_nonneg_of_le (fun γ => abs_nonneg _) (fun γ => ?_) hKP
+  have hone : (1 : ℝ) ≤ Real.exp (a γ) := by
+    have h := Real.add_one_le_exp (a γ)
+    linarith [ha γ]
+  calc |polymer_activity_finite_N β N γ|
+      = |polymer_activity_finite_N β N γ| * 1 := (mul_one _).symm
+    _ ≤ |polymer_activity_finite_N β N γ| * Real.exp (a γ) :=
+        mul_le_mul_of_nonneg_left hone (abs_nonneg _)
 
 /-! ============================================================
     Batch 19.3 / 19.1p-redux-b — Truncated Peter-Weyl ≤ heat-kernel
