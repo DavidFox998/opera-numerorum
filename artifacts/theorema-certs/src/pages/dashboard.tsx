@@ -26,6 +26,7 @@ import {
   getGetLedgerAlertsQueryKey,
   getGetLedgerCheckpointRerollHistoryQueryKey,
 } from "@workspace/api-client-react";
+import type { LedgerAlertDeliveryStatus } from "@workspace/api-client-react";
 import { ShaChip } from "@/components/sha-chip";
 import { StatusBadge } from "@/components/status-badge";
 import { VerifyTxtDialog } from "@/components/verify-txt-dialog";
@@ -1858,9 +1859,9 @@ export default function DashboardPage() {
                               ).length;
                               const droppedCount = ledgerAlertsData.alerts.filter(
                                 (a) =>
-                                  a.delivery.webhook.status ===
+                                  a.delivery?.webhook?.status ===
                                     "dropped_backpressure" ||
-                                  a.delivery.email.status ===
+                                  a.delivery?.email?.status ===
                                     "dropped_backpressure",
                               ).length;
                               const kindLabel =
@@ -2017,9 +2018,18 @@ export default function DashboardPage() {
                     return (
                       <ul className="divide-y divide-border">
                         {visibleAlerts.map((alert, i) => {
+                          const missingTransport: LedgerAlertDeliveryStatus = {
+                            status: "not_configured",
+                          };
                           const transports = [
-                            { name: "webhook", info: alert.delivery.webhook },
-                            { name: "email", info: alert.delivery.email },
+                            {
+                              name: "webhook",
+                              info: alert.delivery?.webhook ?? missingTransport,
+                            },
+                            {
+                              name: "email",
+                              info: alert.delivery?.email ?? missingTransport,
+                            },
                           ];
                           const anyFailed = transports.some(
                             (t) => t.info.status === "failed",
