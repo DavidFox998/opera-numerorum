@@ -17,7 +17,7 @@ def clusterSum_bound : Nat := 0
 
 theorem cluster_expansion_converges_vacuous :
   ∀ n : Nat, clusterCoeff n ≤ clusterSum_bound := by
-  intro n; decide
+  intro n; show (0:Int) ≤ 0; decide
 
 theorem cluster_sum_finite : clusterSum_bound = 0 := by rfl
 end TheoremaAureum.Towers.YM
