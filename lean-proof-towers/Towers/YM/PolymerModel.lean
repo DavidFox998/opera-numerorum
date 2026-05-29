@@ -101,8 +101,10 @@ Should depend only on the classical trio
 ================================================================
 -/
 
+import Towers.YM.LatticeGauge
 import Towers.YM.WilsonAction
 import Mathlib.Analysis.SpecialFunctions.Exp
+import Mathlib.Data.Set.Pairwise.Lattice
 
 namespace TheoremaAureum.Towers.YM.LatticeGauge
 
@@ -123,7 +125,7 @@ def linkEnergy {d L : ℕ} (_l : Link d L) : ℝ := 1
 /-- **`polymerWeightReal d L β X`** — total weight of polymer
     `X` at coupling `β`. With `linkEnergy ≡ 1`, evaluates to
     `rexp(-β)^|X|`. -/
-def polymerWeightReal (d L : ℕ) (β : ℝ) (X : Polymer d L) : ℝ :=
+noncomputable def polymerWeightReal (d L : ℕ) (β : ℝ) (X : Polymer d L) : ℝ :=
   ∏ l in X, Real.exp (-β * linkEnergy l)
 
 /-- **`isAdmissible γ`** — a family `γ` of polymers is
@@ -131,7 +133,7 @@ def polymerWeightReal (d L : ℕ) (β : ℝ) (X : Polymer d L) : ℝ :=
     sets of links. Honest typing of snippet's
     `PairwiseDisjoint γ`. -/
 def isAdmissible {d L : ℕ} (γ : Finset (Polymer d L)) : Prop :=
-  γ.PairwiseDisjoint (fun X : Polymer d L => (X : Set (Link d L)))
+  (γ : Set (Polymer d L)).PairwiseDisjoint (fun X : Polymer d L => (X : Set (Link d L)))
 
 /-- **Brick (`polymerWeightReal_empty`).** The empty polymer
     has weight `1` (empty product). Trivial; lands one brick

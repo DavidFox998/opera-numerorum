@@ -94,6 +94,7 @@ namespace MassGapEnvelope
 
 open TheoremaAureum.Towers.YM.Continuum
 open TheoremaAureum.Towers.YM.PeterWeylHeatVaradhan
+open scoped InnerProductSpace
 
 /-- **Mass-gap envelope constant.** Concrete positive real
 `varadhan_C / varadhan_t_top ^ 4`. Built from the strip-form

@@ -41,7 +41,7 @@ Should depend only on the classical trio
 -/
 
 import Mathlib.Analysis.NormedSpace.OperatorNorm.NormedSpace
-import Mathlib.Analysis.NormedSpace.Spectrum
+import Mathlib.Analysis.Normed.Algebra.Spectrum
 
 namespace TheoremaAureum.Towers.YM.OS
 
@@ -53,7 +53,17 @@ open ContinuousLinearMap
 theorem spectral_bound {H : Type*}
     [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H]
     (T : H →L[ℂ] H) (h : ‖T‖ ≤ 1) : spectralRadius ℂ T ≤ 1 := by
-  have hsr : spectralRadius ℂ T ≤ ‖T‖₊ := spectralRadius_le_nnnorm T
-  exact le_trans hsr (by exact_mod_cast h)
+  refine iSup₂_le fun k hk => ?_
+  have hkT : ‖k‖ ≤ ‖T‖ * ‖(1 : H →L[ℂ] H)‖ :=
+    spectrum.norm_le_norm_mul_of_mem hk
+  have h1 : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    rw [ContinuousLinearMap.one_def]
+    exact ContinuousLinearMap.norm_id_le
+  have hk1 : ‖k‖ ≤ 1 :=
+    calc ‖k‖
+        ≤ ‖T‖ * ‖(1 : H →L[ℂ] H)‖ := hkT
+      _ ≤ 1 * 1 := mul_le_mul h h1 (norm_nonneg _) zero_le_one
+      _ = 1 := one_mul _
+  exact_mod_cast hk1
 
 end TheoremaAureum.Towers.YM.OS

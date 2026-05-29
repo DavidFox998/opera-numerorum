@@ -85,6 +85,7 @@ Should depend only on the classical trio
 ================================================================
 -/
 
+import Towers.YM.LatticeGauge
 import Towers.YM.WilsonAction
 import Mathlib.Analysis.SpecialFunctions.Exp
 
@@ -101,7 +102,7 @@ def β₀ : ℝ := 0
 /-- **`polymerWeight d L β X`** — total weight of a polymer
     `X : Finset (Link d L)` at coupling `β`. Each link
     contributes `rexp(-β)`; polymer weight is the product. -/
-def polymerWeight (d L : ℕ) (β : ℝ) (X : Finset (Link d L)) : ℝ :=
+noncomputable def polymerWeight (d L : ℕ) (β : ℝ) (X : Finset (Link d L)) : ℝ :=
   ∏ _l in X, Real.exp (-β)
 
 /-- **Brick (`kotecky_preiss`).** Stand-in Kotecký–Preiss
