@@ -3374,6 +3374,34 @@ BRICKS=(
   "Towers.YM.Wall262_ConnectiveRatio|TheoremaAureum.Towers.YM.Wall262.threshold_factorization"
   "Towers.YM.Wall262_ConnectiveRatio|TheoremaAureum.Towers.YM.Wall262.defect_lt"
   "Towers.YM.Wall262_ConnectiveRatio|TheoremaAureum.Towers.YM.Wall262.su2_wins"
+  # Wall263_CoxeterSpectral: the HONEST response to "restate Wall261 using the H4
+  # Coxeter matrix M_H4, with largest eigenvalue of 2I−M_H4 = φ = 2cos(π/5)" — that
+  # claimed eigenvalue identity is FALSE, and this file machine-checks why WITHOUT
+  # any `axiom` (namespace Wall263). B := 2I−M_H4 is the weighted path with edge
+  # weights 1,1,φ (φ is the label-5 EDGE WEIGHT, an entry of the matrix, NOT a
+  # spectral quantity). GENUINE/UNCONDITIONAL: coxeterCharpoly (det(λI−B) =
+  # λ⁴−(2+φ²)λ²+φ²); coxeterCharpoly_phi (value at λ=φ is −φ², a pure `ring` fact —
+  # the φ⁴ cancels φ²·φ² identically, golden-ratio identity not even invoked);
+  # phi_not_root (machine-checks coxeterCharpoly φ ≠ 0; the "hence NOT an
+  # eigenvalue, not the largest" reading is DOCUMENTARY modulo the hand-computed
+  # char poly — mathlib v4.12.0 has no det_fin_four/charpoly↔eigenvalue bridge, so
+  # B/det/eigenvalues are NOT formalized); phi_lt_two (only φ<2 is machine-checked;
+  # documentary: true spectral radius 2cos(π/30)≈1.989∈(φ,2); NO false "degree-≥2 ⟹
+  # radius-≥2" claim — the A₄ path refutes it); one_lt_phi (1<φ). The largest
+  # eigenvalue is actually 2cos(π/30)≈1.989 (H4 Coxeter number h=30), NOT φ≈1.618.
+  # CONDITIONAL (NAMED OPEN hyps, NOT axioms/sorry): defect_bound_H4 — the faithful
+  # transcription of `apply KP_theorem_weighted H4_spectral_bound` over two ordinary
+  # hypotheses h_spec (EffDeg x ≤ φ, the unproven leap; real KP constant is the
+  # connective constant ≥6, not φ) and h_kp (the weighted-KP combinator). All
+  # sorry-free, #print axioms = classical trio (verified live, raw lean v4.12.0
+  # Towers/YM/Wall263_CoxeterSpectral.lean, EXIT=0). HONEST: proves NO YM result,
+  # refutes the proposed eigenvalue identity, does NOT touch kotecky_preiss_criterion.
+  # YM stays Status: Open.
+  "Towers.YM.Wall263_CoxeterSpectral|TheoremaAureum.Towers.YM.Wall263.coxeterCharpoly_phi"
+  "Towers.YM.Wall263_CoxeterSpectral|TheoremaAureum.Towers.YM.Wall263.phi_not_root"
+  "Towers.YM.Wall263_CoxeterSpectral|TheoremaAureum.Towers.YM.Wall263.phi_lt_two"
+  "Towers.YM.Wall263_CoxeterSpectral|TheoremaAureum.Towers.YM.Wall263.one_lt_phi"
+  "Towers.YM.Wall263_CoxeterSpectral|TheoremaAureum.Towers.YM.Wall263.defect_bound_H4"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

@@ -60,8 +60,42 @@ history. Roadmap → `docs/ROADMAP.md`.
     inputs; they prove NO NS existence/uniqueness/regularity result. NS stays
     `Status: Open`; Surface #1/#2 stay OPEN; YM untouched.
 
-- **Wall:** 645 BRICKS (`${#BRICKS[@]}` in `scripts/check-towers.sh`). The
-  source of truth for the count is the script, not this file.
+- **Wall:** BRICKS array in `scripts/check-towers.sh` (`${#BRICKS[@]}`) is the
+  source of truth for the count, not this file.
+- **Wall263_CoxeterSpectral — HONEST REFUTATION of "largest eigenvalue of
+  2I−M_H4 = φ", axiom-free (bricks, in BRICKS):**
+  `Towers/YM/Wall263_CoxeterSpectral.lean` (namespace `Wall263`). The honest
+  response to the proposal to restate Wall261 via the H4 Coxeter/Cartan matrix
+  `M_H4 = !![2,-1,0,0;-1,2,-1,0;0,-1,2,-φ;0,0,-φ,2]` with the requested theorem
+  "largest eigenvalue of `B := 2I−M_H4` equals `φ = 2cos(π/5)`" — that claim is
+  FALSE and this file machine-checks why WITHOUT introducing any Lean `axiom`
+  (the user's proposed code used one; classical trio preserved). `B` is the
+  weighted path `!![0,1,0,0;1,0,1,0;0,1,0,φ;0,0,φ,0]` with edge weights `1,1,φ`,
+  so **`φ` is the label-`5` EDGE WEIGHT (an entry of the matrix), NOT a spectral
+  quantity. GENUINE/UNCONDITIONAL:** `coxeterCharpoly` (the char poly
+  `det(λI−B) = λ⁴−(2+φ²)λ²+φ²` via the symmetric-tridiagonal determinant
+  recursion); `coxeterCharpoly_phi` (value at `λ=φ` is `−φ²`, a pure `ring`
+  fact — the `φ⁴` cancels `φ²·φ²` identically, the golden-ratio identity is not
+  even invoked); `phi_not_root` (`φ` is NOT a root of `coxeterCharpoly`, the
+  hand-computed char poly — machine-checked as `coxeterCharpoly φ ≠ 0`; the
+  eigenvalue-level reading "hence not an eigenvalue, a fortiori not the largest"
+  is DOCUMENTARY, modulo the hand computation, since mathlib v4.12.0 has no
+  `det_fin_four`/charpoly↔eigenvalue bridge so `B`/det/eigenvalues are NOT
+  formalized); `phi_lt_two` (`φ<2` — only `φ<2` is machine-checked; documentary
+  context: the true spectral radius `2cos(π/30)≈1.989 ∈ (φ,2)`; NO false
+  "degree-`≥2 ⟹` radius-`≥2`" claim — the A₄ path refutes that); `one_lt_phi`
+  (`1<φ`). The actual largest eigenvalue is `2cos(π/30)≈1.989` (H4 Coxeter number
+  `h=30`, Perron eigenvalue `2cos(π/h)`), NOT `φ≈1.618` (which is λ_max of the
+  UNWEIGHTED A₄ path — a different matrix, documented only).
+  **CONDITIONAL (NAMED OPEN hyps, NOT axioms/sorry):** `defect_bound_H4` — the
+  faithful transcription of `apply KP_theorem_weighted H4_spectral_bound` over
+  two ordinary Lean hypotheses `h_spec` (`EffDeg x ≤ φ`, the unproven leap; the
+  real KP constant is the connective constant `≥ 6`, not `φ`) and `h_kp` (the
+  weighted-KP combinator). 5 public theorems; all `sorry`-free, `#print axioms`
+  = classical trio (verified live, raw `lean` v4.12.0, EXIT=0). HONEST: proves
+  NO YM result — it REFUTES the proposed eigenvalue identity and records the
+  honest reduction; makes NO mass-gap / μ>0 / Surface-#1 claim, does NOT touch
+  `kotecky_preiss_criterion`. YM stays `Status: Open`.
 - **Wall262_ConnectiveRatio — HONEST CONDITIONAL connective-ratio defect bound →
   SU(2) polymer-rate win (bricks, in BRICKS):**
   `Towers/YM/Wall262_ConnectiveRatio.lean` (namespace `Wall262`). Sequel to

@@ -45,6 +45,12 @@ HEAD.
   deep-audit tamper guard) so merges no longer time out or false-fail under
   this contention; the `theorema-certs-e2e` validation workflow is the
   authoritative blocking gate.
+- Worst case: the mathlib **working tree** itself is gone (e.g. `lakefile.lean`
+  MISSING, not just oleans/tag) from concurrent `fetch-oleans` + `towers-build`
+  clobbering each other. `restore-lake-git` restores `.git` but NOT the checked-out
+  files; the fix is to run `towers-build` SOLO (no concurrent fetch-oleans) — its
+  `lake update` re-materializes the working tree, then `cache get` repopulates
+  oleans. Never run `fetch-oleans` and `towers-build` at the same time.
 - Durable fix (needs user sign-off): stop towers-build auto-restarting on
   merges and/or make check-towers.sh use the non-destructive lake path
   (assert tag → restore → `cache get` → `lake build`, never `lake update`).
