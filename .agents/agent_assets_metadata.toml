@@ -120,3 +120,15 @@ id = "9V0YbuP9Nh4wtwkkCRujc"
 uri = "file://artifacts/theorema-certs/public/pdfs/m7.pdf"
 type = "pdf"
 title = "M7"
+
+[[outputs]]
+id = "AR-dEWUSEh4f96NLJY_PU"
+uri = "file://docs/YangMills_Honor_Transition.pdf"
+type = "pdf"
+title = "Yang–Mills Honor & Navier–Stokes Transition (9 pp)"
+
+[[outputs]]
+id = "_spxsGg0hXj2WBGXZdihD"
+uri = "file://docs/YangMills_Referee_Kit.zip"
+type = "unspecified"
+title = "Yang–Mills Referee Download Kit"
