@@ -66,7 +66,7 @@ def translateLink (d L : ℕ) [NeZero L]
     actually evaluate). Requires `[NeZero L]` for `Neg (Fin L)`. -/
 def translateConfig (d L : ℕ) [NeZero L]
     (v : Lattice d L) (U : GaugeConfig d L) : GaugeConfig d L :=
-  fun l => U (translateLink d L (-v) l)
+  fun l => U (translateLink d L (fun i => -v i) l)
 
 /-- **Brick (`translateConfig_const_one`).** The constant-`1`
     gauge configuration is translation-fixed:

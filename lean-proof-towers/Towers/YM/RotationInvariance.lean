@@ -43,6 +43,13 @@ on the support of the Gibbs measure".
 * (2) Snippet's `namespace TheoremaAureum.Towers.YM` is widened
   to `TheoremaAureum.Towers.YM.LatticeGauge` to match the
   Batch 168.x / 169.x / 170.x / 171.1 files.
+* (3) The genuine `LatticeGauge.wilsonAction` (Task #248 Step 2)
+  takes only the configuration `U` (its `d L` are implicit and it
+  carries NO coupling parameter `β`). The earlier vacuous stand-in
+  took `d L β` explicitly; those arguments are dropped from both
+  call sites here, and the now-unused `β` binder is removed from
+  the theorem signature. The conceptual β discussion above is
+  unchanged — it describes the deferred real-Haar case.
 
 ## Tripwire
 When the real SU(2) Haar measure lands, the *statement* of
@@ -71,10 +78,9 @@ namespace TheoremaAureum.Towers.YM.LatticeGauge
     the tripwire that re-strengthens to the universal form once
     real Haar lands. -/
 theorem wilson_rotateConfig_const_one (d L : ℕ) [NeZero L]
-    (β : ℝ) (μ ν : Fin d) :
-    wilsonAction d L β
-        (rotateConfig d L μ ν (fun _ : Link d L => (1 : G))) =
-      wilsonAction d L β (fun _ : Link d L => (1 : G)) := by
+    (μ ν : Fin d) :
+    wilsonAction (rotateConfig d L μ ν (fun _ : Link d L => (1 : G))) =
+      wilsonAction (fun _ : Link d L => (1 : G)) := by
   rw [rotateConfig_const_one]
 
 end TheoremaAureum.Towers.YM.LatticeGauge
