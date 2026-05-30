@@ -3427,6 +3427,26 @@ BRICKS=(
   "Towers.YM.Wall262a_RatioModel|TheoremaAureum.Towers.YM.Wall262a.factorial_smooth"
   "Towers.YM.Wall262a_RatioModel|TheoremaAureum.Towers.YM.Wall262a.seven_enters_at_seven"
   "Towers.YM.Wall262a_RatioModel|TheoremaAureum.Towers.YM.Wall262a.threshold_factorization"
+
+  # Wall256_Note (2026-05-30) — HONEST CONDITIONAL apex: "conditional on the
+  # truncated polymer-activity bound, SU(2) has a gap". Sits one step earlier
+  # than Wall256_MassGapConditional (which starts from an assumed spectral gap
+  # ρ<1): the entry point here is the per-polymer activity rate I > log 7 (the
+  # content of `kotecky_preiss_criterion`). GENUINE content:
+  # `kp_summable_of_truncatedActivity` — comparison-test bridge from the
+  # activity bound (a n ≤ exp(-I)ⁿ, I > log 7) + entropy count (N n ≤ 7ⁿ) to KP
+  # summability ∑ₙ N n·a n < ∞, via Wall256Rate.kp_rate_summable +
+  # Summable.of_nonneg_of_le. `su2_gap_of_truncatedActivity` threads that through
+  # a SECOND named-open hypothesis `h_bridge` (the unformalized Brydges–Federbush
+  # convergence: KP summability ⟹ geometric clustering with ρ<1) and delegates
+  # the ρ^d=exp(-Δd) algebra to Wall256.mass_gap_pos_of_spectral_gap. Both
+  # theorems sorry-free, #print axioms = classical trio (verified live, raw lean
+  # v4.12.0 Towers/YM/Wall256_Note.lean, EXIT=0). HONEST: proves NO mass gap; the
+  # entire content lives in the two OPEN hypotheses (TruncatedActivityBound +
+  # h_bridge); corr/sep ABSTRACT; the activity rate is NOT discharged; does NOT
+  # touch kotecky_preiss_criterion; makes NO μ>0 / Surface-#1 claim. YM Open.
+  "Towers.YM.Wall256_Note|TheoremaAureum.Towers.YM.Wall256Note.kp_summable_of_truncatedActivity"
+  "Towers.YM.Wall256_Note|TheoremaAureum.Towers.YM.Wall256Note.su2_gap_of_truncatedActivity"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

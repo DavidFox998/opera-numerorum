@@ -34,6 +34,13 @@ history. Roadmap → `docs/ROADMAP.md`.
   trio (verified live, raw `lean` v4.12.0, EXIT=0), and HONEST: each proves NO YM
   result, discharges NO open surface, makes NO mass-gap / μ>0 / Surface-#1 claim,
   and does NOT touch `kotecky_preiss_criterion`. One-line index (newest first):
+  - **Wall256_Note** — HONEST CONDITIONAL apex "conditional on the truncated
+    activity bound, SU(2) has a gap". `kp_summable_of_truncatedActivity` is the
+    GENUINE comparison-test bridge (activity `a n ≤ exp(−I)ⁿ`, `I>log 7` + count
+    `≤7ⁿ` ⟹ KP summable); `su2_gap_of_truncatedActivity` threads it through a
+    SECOND NAMED OPEN `h_bridge` (Brydges–Federbush KP-summable ⟹ ρ<1 clustering)
+    into the gap shape. Entry one step earlier than `mass_gap_pos_of_spectral_gap`;
+    proves NO gap (activity rate NOT discharged); abstract corr/sep.
   - **Wall262a_RatioModel** — standalone numeric MODEL of Theoria's R-series
     (invented H4 weights; `R(exp(−0.88)) ≤ 1743/2000`; `1743=3·7·83`,
     `2000=2⁴·5³`); Theoria's "λ_max(2I−M_H4)=φ" FALSE (=2cos(π/30)). Standalone
