@@ -55,6 +55,8 @@ const REBUILD_HISTORY_REFEREE_FILTER_STORAGE_KEY =
   "lean-rebuild-history-referee-filter";
 const REROLL_HISTORY_REFEREE_FILTER_STORAGE_KEY =
   "lean-checkpoint-reroll-history-referee-filter";
+const SIDECAR_FORGED_HISTORY_REFEREE_FILTER_STORAGE_KEY =
+  "lean-sidecar-forged-history-referee-filter";
 const LEDGER_ALERTS_KIND_FILTER_STORAGE_KEY =
   "lean-ledger-alerts-kind-filter";
 type LedgerAlertsKindFilter = "all" | "tamper" | "monitor";
@@ -723,6 +725,36 @@ export default function DashboardPage() {
     }
   }, []);
 
+  const [forgedHistoryRefereeFilter, setForgedHistoryRefereeFilterState] =
+    useState<string>(() => {
+      try {
+        return (
+          window.localStorage.getItem(
+            SIDECAR_FORGED_HISTORY_REFEREE_FILTER_STORAGE_KEY,
+          ) ?? ""
+        );
+      } catch {
+        return "";
+      }
+    });
+  const setForgedHistoryRefereeFilter = useCallback((value: string) => {
+    setForgedHistoryRefereeFilterState(value);
+    try {
+      if (value) {
+        window.localStorage.setItem(
+          SIDECAR_FORGED_HISTORY_REFEREE_FILTER_STORAGE_KEY,
+          value,
+        );
+      } else {
+        window.localStorage.removeItem(
+          SIDECAR_FORGED_HISTORY_REFEREE_FILTER_STORAGE_KEY,
+        );
+      }
+    } catch {
+      // ignore (private mode, etc.)
+    }
+  }, []);
+
   const rerollRefereeSummaries = useMemo(() => {
     const map = new Map<
       string,
@@ -761,6 +793,37 @@ export default function DashboardPage() {
         refereeKey(e.refereeName) === rerollHistoryRefereeFilter,
     );
   }, [checkpointRerollHistory, rerollHistoryRefereeFilter]);
+
+  // Forged-sidecar dismissals are attributed via `ackedBy` (the operator
+  // who clicked Acknowledge) rather than `refereeName`, and carry no
+  // ok/fail outcome — so the summary only tracks per-operator counts and
+  // the most recent dismissal timestamp.
+  const forgedRefereeSummaries = useMemo(() => {
+    const map = new Map<string, { total: number; lastAt: string | null }>();
+    const entries = forgedAckHistory?.entries ?? [];
+    for (const entry of entries) {
+      const key = refereeKey(entry.ackedBy);
+      const existing = map.get(key) ?? {
+        total: 0,
+        lastAt: null as string | null,
+      };
+      existing.total += 1;
+      if (!existing.lastAt) existing.lastAt = entry.acknowledgedAt;
+      map.set(key, existing);
+    }
+    return Array.from(map.entries())
+      .map(([key, v]) => ({ key, ...v }))
+      .sort((a, b) => b.total - a.total);
+  }, [forgedAckHistory]);
+
+  const filteredForgedEntries = useMemo(() => {
+    const entries = forgedAckHistory?.entries ?? [];
+    if (!forgedHistoryRefereeFilter) return entries;
+    return entries.filter(
+      (e: { ackedBy?: string | null }) =>
+        refereeKey(e.ackedBy) === forgedHistoryRefereeFilter,
+    );
+  }, [forgedAckHistory, forgedHistoryRefereeFilter]);
 
   useEffect(() => {
     if (logPanelRef.current) {
@@ -2587,11 +2650,45 @@ export default function DashboardPage() {
                               : ""}
                           </span>
                         ) : null}
+                        <label
+                          htmlFor="ledger-sidecar-forged-history-referee-filter"
+                          className="font-mono text-[10px] uppercase tracking-wider text-red-700/80 dark:text-red-300/80"
+                        >
+                          Referee
+                        </label>
+                        <select
+                          id="ledger-sidecar-forged-history-referee-filter"
+                          value={forgedHistoryRefereeFilter}
+                          onChange={(e) =>
+                            setForgedHistoryRefereeFilter(e.target.value)
+                          }
+                          className="font-mono text-[10px] bg-background border border-red-500/30 px-1.5 py-0.5"
+                          data-testid="select-ledger-sidecar-forged-history-referee-filter"
+                        >
+                          <option value="">all</option>
+                          {forgedRefereeSummaries.map((s) => (
+                            <option key={s.key} value={s.key}>
+                              {refereeLabel(s.key)} ({s.total})
+                            </option>
+                          ))}
+                        </select>
+                        {forgedHistoryRefereeFilter ? (
+                          <button
+                            type="button"
+                            onClick={() => setForgedHistoryRefereeFilter("")}
+                            className="font-mono text-[10px] underline text-red-700/70 dark:text-red-300/70 hover:text-red-700 dark:hover:text-red-300"
+                            data-testid="button-ledger-sidecar-forged-history-clear-filter"
+                          >
+                            clear
+                          </button>
+                        ) : null}
                         <span
                           className="font-mono text-[10px] text-red-700/70 dark:text-red-300/70"
                           data-testid="text-ledger-sidecar-forged-history-count"
                         >
-                          {entries.length} of last {capacity}
+                          {forgedHistoryRefereeFilter
+                            ? `${filteredForgedEntries.length} of ${entries.length}`
+                            : `${entries.length} of last ${capacity}`}
                         </span>
                       </div>
                     </div>
@@ -2721,8 +2818,17 @@ export default function DashboardPage() {
                         archive empty
                       </p>
                     ) : null}
+                    {entries.length > 0 &&
+                    filteredForgedEntries.length === 0 ? (
+                      <p
+                        className="px-2 py-2 font-mono text-[10px] text-red-700/60 dark:text-red-300/60"
+                        data-testid="text-ledger-sidecar-forged-history-no-match"
+                      >
+                        No dismissals match the current filter.
+                      </p>
+                    ) : null}
                     <ul className="divide-y divide-red-500/15">
-                      {entries.map((entry, i) => (
+                      {filteredForgedEntries.map((entry, i) => (
                         <li
                           key={`${entry.acknowledgedAt}-${i}`}
                           className="flex flex-wrap items-center gap-x-3 gap-y-1 px-2 py-1 font-mono text-[10px]"

@@ -6,6 +6,159 @@ this file is the version history.
 
 ---
 
+## Migrated from replit.md trim (2026-05-30)
+
+The following per-task sections were moved verbatim out of the live-ops
+`replit.md` during a trim. They are the version history for these tasks.
+
+### SU(3) Haar instance stack — `Towers/YM/SU3Instances.lean` (COMPLETE — 2026-05-30)
+
+- NEW file `Towers/YM/SU3Instances.lean` (namespace
+  `TheoremaAureum.Towers.YM.SU3Instances`, `import Mathlib`). Equips
+  `SU(3) = Matrix.specialUnitaryGroup (Fin 3) ℂ` (a
+  `Submonoid (Matrix (Fin 3) (Fin 3) ℂ)`) with the FULL instance stack
+  `MeasureTheory.Measure.haarMeasure` requires, so `haarMeasure ⊤` elaborates:
+  - `instGroupSU3 : Group SU3` — inverse = `star` (conjugate transpose);
+    `star_mem_SU3` proves closure (unitary stays unitary via `unitary.star_mem`,
+    `det (star A) = star (det A) = star 1 = 1`). Built `{ Monoid with … }` so
+    `Group.toMonoid` IS the inherited Submonoid monoid (no diamond).
+  - `instTopologicalGroupSU3 : TopologicalGroup SU3` — `Continuous.subtype_mk`
+    over ambient `ContinuousMul` (`instContinuousMulMatrixOfContinuousAdd`) and
+    `continuous_star` (`instContinuousStarMatrix`).
+  - `instCompactSpaceSU3 : CompactSpace SU3` — `SU(3)` is CLOSED
+    (`isClosed_eq` on `A * star A = 1` and `det A = 1`, `Continuous.matrix_det`)
+    inside the COMPACT poly-disc `∏ᵢⱼ closedBall 0 1` (`isCompact_univ_pi` +
+    `isCompact_closedBall`; entries bounded by 1 via `norm_entry_le_one`:
+    `∑ₖ ‖A k j‖² = (star A * A) j j = 1`). Then `isCompact_iff_compactSpace`.
+  - `instMeasurableSpaceSU3 := borel _`, `instBorelSpaceSU3 := ⟨rfl⟩`,
+    `instNonemptySU3 := ⟨1⟩`.
+  - `haarSU3 : Measure SU3 := haarMeasure ⊤` (the payload).
+- **Axioms (verified live, `lake env lean Towers/YM/SU3Instances.lean` +
+  `#print axioms`):** `haarSU3` depends on `[propext, Classical.choice,
+  Quot.sound]` (classical trio, NO `sorryAx`). Axioms are transitive, so the
+  whole stack is trio-clean. No `sorry` / `admit` / `sorryAx` anywhere.
+- **Machine-truth API note (v4.12.0):** `haarMeasure`'s REAL instance
+  requirement is only `{Group, TopologicalSpace, TopologicalGroup,
+  MeasurableSpace, BorelSpace}` + a `PositiveCompacts` arg (NO
+  LocallyCompact / T2 / SecondCountable for the *definition*).
+  `specialUnitaryGroup = unitaryGroup ⊓ mker detMonoidHom` shipped with
+  TopologicalSpace only (not even `Group`); `unitaryGroup` had auto `Group`
+  but no `TopologicalGroup`/`CompactSpace`/`MeasurableSpace`.
+  `Matrix (Fin 3) (Fin 3) ℂ` has NO canonical metric/norm, so compactness is via
+  the PRODUCT-topology box, NOT metric Heine-Borel.
+- Registered as a `lakefile.lean` root (clean, elaborates green). NOT in
+  `scripts/check-towers.sh` BRICKS → script-reported wall UNCHANGED at 539.
+- INVARIANT-LOCKED: genuine Haar-measure infrastructure on the compact group
+  `SU(3)`. Makes NO Yang–Mills mass-gap / μ>0 / spectral claim and does NOT
+  touch Surface #1 (stays OPEN), YM **Status: Open**.
+
+### Task #255 follow-up — discharge `hpos` in MassGap574 for non-trivial `U` (COMPLETE — 2026-05-29)
+
+- NEW theorem `YM_mass_gap_nontrivial` appended to
+  `Towers/YM/MassGap574.lean` (imports `Towers.YM.WilsonPositivity`,
+  opens `…LatticeGauge`). Same SCALAR-shadow statement as `YM_mass_gap`
+  (`∃ m>0, spectrum_bound (E := PiLp 2 (fun _:Fin n=>ℝ)) (H U) m`) but the
+  deferred-positivity hypothesis `hpos : 0 < wilsonAction U` is REPLACED by
+  the geometric, provable condition `(h : ∃ x μ ν, wilsonPlaquette U x μ ν ≠ 1)`.
+  Proof chain: `wilsonAction_pos_of_nontrivial U h` (Task #255) ⟹
+  `0 < wilsonAction U` ⟹ `(spectrum_bound_H_iff U (wilsonAction U)).mpr le_rfl`
+  with witness `m := wilsonAction U`. **No `sorry`; axioms = classical trio**
+  `[propext, Classical.choice, Quot.sound]` (verified live).
+- **Original `YM_mass_gap` (with `hpos` + `sorry`) KEPT UNTOUCHED** — confirmed
+  live: `MassGap574.lean:65 warning: declaration uses 'sorry'`.
+- INVARIANT-LOCKED: this is NOT a Yang–Mills mass gap. `H U = wilsonAction U • 𝟙`
+  is the scalar / Perron-sector shadow, NOT the real Wilson transfer operator.
+  Wall 574 stays OPEN, Surface #1 stays OPEN, YM Status: Open. NO μ>0 claim.
+  NOT in `scripts/check-towers.sh` BRICKS, NOT a `lakefile.lean` root → wall
+  unchanged at 539.
+- **Required codegen fix (axiom-neutral):** `def H` in
+  `Towers/YM/LatticePositivityReal.lean` is now `noncomputable def H`.
+  `H U ψ = wilsonAction U • ψ` scales a real `PiLp 2` vector → depends on
+  `Real.instRCLike`, no executable code, so olean emission failed with
+  "consider marking it as 'noncomputable'". Marking `H` `noncomputable` is
+  codegen-only: no axiom / proof / statement change. With it, the full dep
+  chain emits real oleans and `MassGap574` elaborates end-to-end.
+
+### Task #221 — make `IsMassGap T Δ` reference a T-derived operator (COMPLETE — 2026-05-29)
+
+Replaced the free existential in `IsMassGap` (`∃ H op, OS.HasMassGap H op Δ`,
+which any unrelated stand-in could discharge) with a predicate over an operator
+*derived from* the theory argument `T : YM4_Continuum`.
+
+- **`Towers/YM/Continuum.lean`** — three new helper defs + one re-stated def:
+  - `continuumScale (T) : ℝ := 1 / (1 + gauge_rank + spacetime_dim)`
+    (`noncomputable`). Genuinely *reads* both `Nat` fields of `T`: SU(3)/4D →
+    `1/8`, a degenerate schema → a different scale.
+  - `continuumScale_pos (T) : 0 < continuumScale T` (`unfold; positivity`).
+  - `continuumOp (T) : ℂ →L[ℂ] ℂ := ((1 - continuumScale T : ℝ):ℂ) • 1`
+    (`noncomputable`). A FIXED FUNCTION OF `T`, scalar-of-identity on `H := ℂ`;
+    its real-part quadratic form is `(1 - continuumScale T)·‖x‖²`, carrying a
+    gap of size exactly `continuumScale T`.
+  - `IsMassGap (T) (Δ) := OS.HasMassGap ℂ (continuumOp T) Δ` — NO more
+    `∃ H op`. Unfolds to `0 < Δ ∧ Δ ≤ continuumScale T`.
+- **`Towers/YM/MassGapEnvelope.lean`** — re-stated the headline brick
+  `IsMassGap_mass_gap_envelope_default (a A)` to conclude
+  `IsMassGap (lattice_to_continuum a A) (continuumScale (lattice_to_continuum a A))`.
+  Drift note: the old exp(100)-order varadhan envelope constant is too large for
+  a fixed T-derived operator's gap window `(0, continuumScale T]`, so the brick
+  now closes against `continuumScale`. The sibling constants
+  `mass_gap_envelope_constant{,_pos,_widened_pos}` are kept.
+- **`Towers/Attempts/Clay.lean`** — `MassGap_YM4_Clay` (`∃ Δ, IsMassGap T Δ`)
+  keeps its parked `sorry` (now trivially provable, deliberately NOT proven —
+  represents the real OS Hamiltonian target). YM **Status: Open**, Surface #1
+  OPEN.
+- **No wall change.** Helper defs left unregistered.
+- **Infra gotcha discovered + fixed:** the destructive mathlib re-clone that
+  wipes oleans is triggered because the restore-tar's vendored mathlib `.git`
+  lacks the `v4.12.0` tag, so lake fetches from remote to resolve
+  `inputRev: v4.12.0`. Fix: create the tag locally —
+  `git -C .lake/packages/mathlib tag v4.12.0 <HEAD>` (the manifest `rev` already
+  = HEAD). With the tag present `lake update` / `lake build` resolve offline and
+  stop re-cloning. (This local tag is NOT persisted in the restore tar; recreate
+  it after any `restore-lake-git.sh` worktree rebuild if the wipe recurs.)
+- Makes NO mass-gap / μ>0 / Surface-#1-CLOSED claim — `continuumOp` is an
+  honest scalar-of-identity stand-in, NOT a continuum-YM Hamiltonian.
+
+### Task #220 — feed the lattice→continuum map into the mass-gap envelope (2026-05-29)
+
+Routed the headline envelope brick through Task #195's non-trivial
+`lattice_to_continuum a A` map instead of the bare `({} : YM4_Continuum)`
+literal, so the input-dependent schema (rank off `A`, dimension off `a`)
+actually flows through the mass-gap statement.
+
+- **`Towers/YM/MassGapEnvelope.lean`** —
+  `IsMassGap_mass_gap_envelope_default` now takes `(a : ℝ) (A : SU3Connection)`
+  and states `IsMassGap (lattice_to_continuum a A) mass_gap_envelope_constant`.
+  Since `IsMassGap` ignores its theory argument, the scalar-of-identity
+  witness/proof are byte-for-byte unchanged. The two sibling constant bricks
+  (`mass_gap_envelope_constant_pos`, `..._widened_pos`) were left untouched.
+- **No wall change** — same brick name, no new/removed BRICKS.
+- Makes NO mass-gap / μ>0 / Surface-#1/#2/#3 claim — pure plumbing of an
+  existing input-dependent placeholder schema map. Surfaces #1/#2/#3 stay OPEN,
+  YM **Status: Open**.
+
+### Task #219 — carry the wider t-range through to continuum + mass-gap envelope (2026-05-29)
+
+Routed the Task #194 upper-widened strip bound
+`Heat_kernel_envelope_real_le_varadhan_widened_upper` (retuned amplitude
+`varadhan_C_widened`, valid `t`-window up to
+`varadhan_t_top_widened = 2·varadhan_t_top`) through the continuum schema
+slot and into the mass-gap envelope constant. Three additive bricks (+3 → wall 535):
+
+- **`Towers/YM/ContinuumHookup.lean`** — `continuum_heat_envelope_bound_widened_upper`
+  (widened-signature companion; for `varadhan_t_lo ≤ t ≤ varadhan_t_top_widened`,
+  `Heat_kernel_envelope_real t ≤ varadhan_C_widened · exp(-(varadhan_c/t)) / t^4`)
+  + `continuum_heat_envelope_pos_widened` (positivity of the widened RHS).
+- **`Towers/YM/MassGapEnvelope.lean`** — `mass_gap_envelope_constant_widened`
+  (def) + `mass_gap_envelope_constant_widened_pos` — the widened envelope
+  constant `varadhan_C_widened / varadhan_t_top_widened^4 > 0`. Honest
+  positive-real constant, NO spectral content.
+- **+3 BRICKS** (532 → 535). Axioms = classical trio, no `sorry`.
+- Makes NO mass-gap / μ>0 / Surface-#1/#2/#3 claim — pure plumbing of an
+  existing bounded-`t` STRIP bound. Surfaces #1/#2/#3 stay OPEN, YM **Status: Open**.
+
+---
+
 ## Tower Status snapshot — 2026-05-29 12:47 PDT
 
 **Task #255 complete — 2026-05-29.** Strict Wilson action positivity.
