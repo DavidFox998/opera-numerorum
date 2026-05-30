@@ -232,10 +232,28 @@ Status legend:
     `galerkin_strong_convergence` is an HONEST combinator routing the Phase-4A
     energy bound through the assumed criterion; it proves nothing about NS by
     itself. Fully `sorry`-free, classical trio (verified live).
+  - **Phase 5 — Status: Complete.** `Towers/NS/WeakSolution.lean` (imports
+    Compactness ⇒ the whole Phase-3/4 stack) — the Galerkin weak-existence
+    argument as an HONEST combinator. `weak_solution_exists (u₀) (f) :
+    ∃ u, WeakNS u u₀ f` is PROVED from THREE NAMED `Prop` inputs (the ≤3
+    "sorries", stated as Props — NEVER `by sorry`, so zero `sorryAx`):
+    `galerkin_subsequence_converges` (SORRY 1: Galerkin sequence converges to a
+    candidate; needs the COMPACT `AubinLionsCriterion`),
+    `limit_satisfies_weak_form` (SORRY 2: limit solves NS in the modeled
+    distribution sense), `energy_inequality_passes_to_limit` (SORRY 3: energy
+    inequality passes to the limit). `WeakMomentum` is a MODELED **linear**
+    Stokes weak form (nonlinear `(u·∇)u` DROPPED) and `WeakNS` a MODELED
+    surrogate (init + `WeakMomentum` + force-free energy bound), NOT the literal
+    Leray–Hopf definition. Index/viscosity match Phase 3/4 (`Hdiv_free (s+2)`,
+    `ν = 1`). `#print axioms weak_solution_exists` = classical trio (verified
+    live). The combinator routes the three unproved NAMED inputs into the
+    conclusion; it proves NOTHING about NS by itself. Last combinator BEFORE
+    Surface #1 (`global_smooth_exists`); does NOT touch it.
   - HONEST scope: these build spaces, name/bound operators, build the
-    approximation scheme + its a-priori bound, and NAME the compactness input;
-    they prove NO NS existence/uniqueness/regularity result and NO convergence
-    of the full sequence. NS stays `Status: Open`; Surface #2 stays OPEN.
+    approximation scheme + its a-priori bound, NAME the compactness input, and
+    assemble the weak-existence combinator from NAMED analytic inputs; they
+    prove NO NS existence/uniqueness/regularity result and NO convergence of the
+    full sequence. NS stays `Status: Open`; Surface #1/#2 stay OPEN.
 
 ## 4. 280-curve cohort (M9 Weil-transfer discharge) — and BSD
 

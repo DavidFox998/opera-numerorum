@@ -60,6 +60,31 @@ history. Roadmap → `docs/ROADMAP.md`.
     sequence. NS tower stays `Status: Open`; Surface #2 stays OPEN; YM
     untouched.
 
+- **NS Tower 540 Phase 5 COMPLETE — weak-existence combinator (NOT a brick,
+  not in BRICKS, not a lakefile root; `sorry`-free / classical-trio, `#print
+  axioms weak_solution_exists` = trio, verified live):**
+  `Towers/NS/WeakSolution.lean` (imports Compactness ⇒ the whole Phase-3/4
+  stack) assembles the classical Galerkin weak-existence argument as an HONEST
+  combinator. `weak_solution_exists (u₀) (f) : ∃ u, WeakNS u u₀ f` is PROVED
+  from THREE NAMED `Prop` inputs (the "≤3 sorries", stated as Props — NEVER
+  `by sorry` — so zero `sorryAx`): `galerkin_subsequence_converges` (SORRY 1:
+  the Galerkin sequence converges to a candidate with the right initial data —
+  needs the COMPACT `AubinLionsCriterion`, absent from mathlib v4.12.0),
+  `limit_satisfies_weak_form` (SORRY 2: the limit solves NS in the modeled
+  distribution sense), and `energy_inequality_passes_to_limit` (SORRY 3: the
+  energy inequality passes to the limit). `WeakMomentum` is a MODELED **linear**
+  Stokes weak form (the nonlinear transport term `(u·∇)u` is DROPPED — no
+  test-function/distribution machinery in mathlib v4.12.0) and `WeakNS` is a
+  MODELED surrogate (init condition + `WeakMomentum` + force-free energy bound),
+  NOT the literal Leray–Hopf weak-solution definition. Index/viscosity
+  bookkeeping matches Phase 3/4 (everything on `Hdiv_free (s+2)`, `ν = 1`).
+  HONEST scope: the combinator routes the three unproved NAMED inputs into the
+  conclusion (exactly as `galerkin_strong_convergence` routes
+  `AubinLionsCriterion`); it proves **NOTHING** about NS by itself — no
+  existence/uniqueness/regularity. This is the last combinator BEFORE Surface #1
+  (`global_smooth_exists`) but does NOT touch it. NS stays `Status: Open`;
+  Surface #1/#2 stay OPEN; YM untouched.
+
 - **Wall:** 550 BRICKS (`${#BRICKS[@]}` in `scripts/check-towers.sh`). The
   source of truth for the count is the script, not this file.
 - **Real SU(3) chordal distance is a genuine metric (NEW brick, in BRICKS):**
