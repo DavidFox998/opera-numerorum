@@ -3301,6 +3301,29 @@ BRICKS=(
   "Towers.YM.Wall259_DependenceBound|TheoremaAureum.Towers.YM.Wall259.polymer_criterion_of_single_site"
   "Towers.YM.Wall259_DependenceBound|TheoremaAureum.Towers.YM.Wall259.polymer_criterion_of_threshold"
   "Towers.YM.Wall259_DependenceBound|TheoremaAureum.Towers.YM.Wall259.dependence_bound_kp_summable"
+  # Wall260_ClayReduction: the Clay reduction in POINTWISE dependence-defect form —
+  # HONEST CONDITIONAL combinator (namespace Wall260). Split as requested: C=6 is
+  # COMBINATORICS, h_defect is ANALYSIS. GENUINE/UNCONDITIONAL: C_Z4 := 6 : ℕ;
+  # link_incidence_number_4d (Wall258.linkIncidence 4 = C_Z4, no axioms at all,
+  # reuses linkIncidence_four); threshold_split (log(7·C)=log7+logC for C>0);
+  # new_clay_reduction (from the NAMED OPEN defect bound h_defect : ∀ x, I_E x −
+  # I_polymer x ≤ log C and h_rate : ∀ x, log(7·C) < I_E x conclude ∀ x, log 7 <
+  # I_polymer x — rate FUNCTIONS I_E,I_polymer : ℝ→ℝ); new_clay_reduction_Z4 (C=6,
+  # threshold log(7·6)=log 42 ≈ 3.73767). h_defect/h_rate are HYPOTHESES, NOT
+  # axiom/sorry — so NO sorryAx and no new axioms. All sorry-free, #print axioms =
+  # classical trio (link_incidence_number_4d = no axioms; verified by hand: raw
+  # lean Towers/YM/Wall260_ClayReduction.lean + #print axioms, EXIT=0). HONEST: a
+  # REDUCTION not a proof — despite the name it proves NO part of the Clay problem,
+  # discharges NO open surface, constructs NO real SU(N) rate functional (I_E,
+  # I_polymer abstract); h_defect is the NAMED OPEN cluster-expansion / Dobrushin
+  # dependence input, proved nowhere. C=6 is the ℤ⁴ honest constant (threshold log
+  # 42); smaller C (H4/120-cell) is a DIFFERENT geometry, deferred. Makes NO mass-
+  # gap / μ>0 / Surface-#1 claim, does NOT touch kotecky_preiss_criterion. YM
+  # stays Status: Open.
+  "Towers.YM.Wall260_ClayReduction|TheoremaAureum.Towers.YM.Wall260.link_incidence_number_4d"
+  "Towers.YM.Wall260_ClayReduction|TheoremaAureum.Towers.YM.Wall260.threshold_split"
+  "Towers.YM.Wall260_ClayReduction|TheoremaAureum.Towers.YM.Wall260.new_clay_reduction"
+  "Towers.YM.Wall260_ClayReduction|TheoremaAureum.Towers.YM.Wall260.new_clay_reduction_Z4"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

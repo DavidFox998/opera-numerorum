@@ -60,8 +60,29 @@ history. Roadmap → `docs/ROADMAP.md`.
     inputs; they prove NO NS existence/uniqueness/regularity result. NS stays
     `Status: Open`; Surface #1/#2 stay OPEN; YM untouched.
 
-- **Wall:** 629 BRICKS (`${#BRICKS[@]}` in `scripts/check-towers.sh`). The
+- **Wall:** 633 BRICKS (`${#BRICKS[@]}` in `scripts/check-towers.sh`). The
   source of truth for the count is the script, not this file.
+- **Wall260_ClayReduction — HONEST CONDITIONAL Clay reduction (pointwise defect
+  form) (bricks, in BRICKS):** `Towers/YM/Wall260_ClayReduction.lean` (namespace
+  `Wall260`). The pointwise-function version of the dependence-defect reduction,
+  split as requested: **`C = 6` is COMBINATORICS, `h_defect` is ANALYSIS.**
+  **GENUINE/UNCONDITIONAL:** `C_Z4 := 6 : ℕ`; `link_incidence_number_4d`
+  (`Wall258.linkIncidence 4 = C_Z4`, NO axioms at all, reuses `linkIncidence_four`);
+  `threshold_split` (`log(7·C) = log 7 + log C` for `C > 0`); `new_clay_reduction`
+  (from the NAMED OPEN defect bound `h_defect : ∀ x, I_E x − I_polymer x ≤ log C`
+  over rate FUNCTIONS `I_E, I_polymer : ℝ → ℝ` and `h_rate : ∀ x, log(7·C) < I_E x`,
+  conclude `∀ x, log 7 < I_polymer x`); `new_clay_reduction_Z4` (`C = 6`, threshold
+  `log(7·6) = log 42 ≈ 3.73767`). `h_defect`/`h_rate` are HYPOTHESES, NOT
+  `axiom`/`by sorry` — so NO `sorryAx` and no new axioms. 4 public theorems; all
+  `sorry`-free, `#print axioms` = classical trio (`link_incidence_number_4d` = no
+  axioms; verified live, raw `lean` v4.12.0, EXIT=0). HONEST: a REDUCTION, NOT a
+  proof — despite the name it proves NO part of the Clay problem, discharges NO
+  open surface, constructs NO real SU(N) rate functional (`I_E`, `I_polymer`
+  abstract); `h_defect` is the NAMED OPEN cluster-expansion / Dobrushin dependence
+  input, proved nowhere. `C = 6` is the ℤ⁴ honest constant (threshold `log 42`); a
+  smaller `C` (H4/120-cell spectral gap `1 + λ₂ ≈ 2.618`, threshold ≈ `log 18.33`)
+  is a DIFFERENT geometry, deferred. Makes NO mass-gap / μ>0 / Surface-#1 claim,
+  does NOT touch `kotecky_preiss_criterion`. YM stays `Status: Open`.
 - **Wall259_DependenceBound — HONEST CONDITIONAL dependence-defect REDUCTION
   (bricks, in BRICKS):** `Towers/YM/Wall259_DependenceBound.lean` (namespace
   `Wall259`). The honest conditional version of the "dependence defect" reduction:
