@@ -190,4 +190,110 @@ theorem wilsonAction_pos_of_nontrivial {d L : ℕ} [NeZero L]
   exact ⟨ν₀, Finset.mem_univ ν₀,
     (plaquetteEnergy_pos_iff U x₀ μ₀ ν₀).mpr hP⟩
 
+/-! ### Honest KP scaffolding (necessary, NOT sufficient)
+
+The following are `sorry`-free, classical-trio lemmas that any
+Kotecký–Preiss / cluster-expansion estimate must rest on. They are
+**necessary but NOT sufficient**: each is a *pointwise* positivity, and
+the infimum of the Wilson energy over non-vacuum configurations is `0`
+(the action is continuous and vanishes at the vacuum), so NONE of them
+yields the uniform-in-`L` spectral gap the mass gap needs. Surface #1
+stays OPEN; YM stays `Status: Open`; the genuine gap remains the
+disclaimed `Transfer.kotecky_preiss_criterion` `sorry`. -/
+
+/-- **Brick (`wilsonAction_nonneg`).** The bare ordered-pair SU(3) Wilson
+    action is non-negative: a finite triple sum of non-negative
+    per-plaquette energies (`plaquetteEnergy_nonneg`). This is the input
+    to the sub-Markov kernel bound `exp(-β·actL) ≤ 1` for `T_L`.
+    INVARIANT-LOCKED: NOT a mass-gap / gap claim. -/
+theorem wilsonAction_nonneg {d L : ℕ} [NeZero L] (U : GaugeConfig d L) :
+    0 ≤ wilsonAction U := by
+  letI : Fintype (Lattice d L) := inferInstanceAs (Fintype (Fin d → Fin L))
+  unfold wilsonAction
+  exact Finset.sum_nonneg fun x _ =>
+    Finset.sum_nonneg fun μ _ =>
+      Finset.sum_nonneg fun ν _ => plaquetteEnergy_nonneg U x μ ν
+
+/-- **Brick (`plaquetteEnergy_eq_zero_iff`).** The per-plaquette energy
+    vanishes exactly at a trivial plaquette:
+    `plaquetteEnergy U x μ ν = 0 ↔ wilsonPlaquette U x μ ν = 1`. Immediate
+    from `plaquetteEnergy_nonneg` + `plaquetteEnergy_pos_iff`. -/
+theorem plaquetteEnergy_eq_zero_iff {d L : ℕ} [NeZero L]
+    (U : GaugeConfig d L) (x : Lattice d L) (μ ν : Fin d) :
+    plaquetteEnergy U x μ ν = 0 ↔ wilsonPlaquette U x μ ν = 1 := by
+  have hnn := plaquetteEnergy_nonneg U x μ ν
+  constructor
+  · intro h0
+    by_contra hne
+    have hpos := (plaquetteEnergy_pos_iff U x μ ν).mpr hne
+    rw [h0] at hpos
+    exact lt_irrefl 0 hpos
+  · intro h1
+    by_contra h0
+    exact ((plaquetteEnergy_pos_iff U x μ ν).mp
+      (lt_of_le_of_ne hnn (Ne.symm h0))) h1
+
+/-- **Brick (`wilsonAction_eq_zero_iff`) — HONEST vacuum characterisation.**
+    `wilsonAction U = 0 ↔ every plaquette is trivial`. The sum of
+    non-negative energies vanishes iff each does
+    (`Finset.sum_eq_zero_iff_of_nonneg`), and each does iff its plaquette
+    is `1` (`plaquetteEnergy_eq_zero_iff`).
+
+    HONESTY NOTE: this is **NOT** `U = 1`. A constant non-identity
+    configuration (`U ≡ g`, `g ≠ 1`, giving `P = g·g·g⁻¹·g⁻¹ = 1`) and
+    flat / pure-gauge configurations have all-trivial plaquettes yet
+    `U ≠ 1`, so `wilsonAction U = 0 ↔ U = 1` is **false**. The honest
+    right-hand side is "all plaquettes trivial". -/
+theorem wilsonAction_eq_zero_iff {d L : ℕ} [NeZero L] (U : GaugeConfig d L) :
+    wilsonAction U = 0 ↔ ∀ x μ ν, wilsonPlaquette U x μ ν = 1 := by
+  letI : Fintype (Lattice d L) := inferInstanceAs (Fintype (Fin d → Fin L))
+  unfold wilsonAction
+  constructor
+  · intro h x μ ν
+    have h1 := (Finset.sum_eq_zero_iff_of_nonneg
+      (fun x _ => Finset.sum_nonneg fun μ _ => Finset.sum_nonneg fun ν _ =>
+        plaquetteEnergy_nonneg U x μ ν)).mp h x (Finset.mem_univ x)
+    have h2 := (Finset.sum_eq_zero_iff_of_nonneg
+      (fun μ _ => Finset.sum_nonneg fun ν _ => plaquetteEnergy_nonneg U x μ ν)).mp
+      h1 μ (Finset.mem_univ μ)
+    have h3 := (Finset.sum_eq_zero_iff_of_nonneg
+      (fun ν _ => plaquetteEnergy_nonneg U x μ ν)).mp h2 ν (Finset.mem_univ ν)
+    exact (plaquetteEnergy_eq_zero_iff U x μ ν).mp h3
+  · intro h
+    refine Finset.sum_eq_zero fun x _ => Finset.sum_eq_zero fun μ _ =>
+      Finset.sum_eq_zero fun ν _ => ?_
+    exact (plaquetteEnergy_eq_zero_iff U x μ ν).mpr (h x μ ν)
+
+/-- A **polymer** (minimal honest scaffolding) is a finite set of oriented
+    plaquettes `(x, μ, ν)`; its **energy** is the sum of the per-plaquette
+    Wilson energies over the set. This is the *energy functional* ONLY —
+    it is NOT the cluster-expansion *activity / weight* `z_γ` and proves
+    NOTHING about polymer convergence. -/
+noncomputable def polymerEnergy {d L : ℕ} [NeZero L] (U : GaugeConfig d L)
+    (γ : Finset (Lattice d L × Fin d × Fin d)) : ℝ :=
+  γ.sum (fun p => plaquetteEnergy U p.1 p.2.1 p.2.2)
+
+/-- `polymerEnergy` is non-negative (`plaquetteEnergy_nonneg` termwise). -/
+theorem polymerEnergy_nonneg {d L : ℕ} [NeZero L] (U : GaugeConfig d L)
+    (γ : Finset (Lattice d L × Fin d × Fin d)) :
+    0 ≤ polymerEnergy U γ :=
+  Finset.sum_nonneg fun p _ => plaquetteEnergy_nonneg U p.1 p.2.1 p.2.2
+
+/-- **Honest polymer-energy positivity (necessary for KP, NOT sufficient).**
+    A polymer containing at least one non-trivial plaquette has strictly
+    positive energy (`Finset.sum_pos'` + `plaquetteEnergy_pos_iff`).
+
+    HONESTY NOTE: this does **NOT** give a uniform gap. The infimum of the
+    energy over non-trivial polymers is `0` (continuity + vacuum), so this
+    pointwise positivity is *necessary* but *not sufficient* — the
+    uniform-in-`L` bound a Kotecký–Preiss estimate needs requires the
+    (OPEN) cluster expansion. Surface #1 stays OPEN. -/
+theorem polymerEnergy_pos_of_nontrivial {d L : ℕ} [NeZero L]
+    (U : GaugeConfig d L) (γ : Finset (Lattice d L × Fin d × Fin d))
+    (h : ∃ p ∈ γ, wilsonPlaquette U p.1 p.2.1 p.2.2 ≠ 1) :
+    0 < polymerEnergy U γ := by
+  obtain ⟨p, hp, hne⟩ := h
+  refine Finset.sum_pos' (fun q _ => plaquetteEnergy_nonneg U q.1 q.2.1 q.2.2) ?_
+  exact ⟨p, hp, (plaquetteEnergy_pos_iff U p.1 p.2.1 p.2.2).mpr hne⟩
+
 end TheoremaAureum.Towers.YM.LatticeGauge

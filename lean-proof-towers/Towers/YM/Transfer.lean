@@ -47,6 +47,7 @@ remains a schema; this file only feeds its antecedents.
 
 import Towers.YM.Wilson
 import Towers.YM.WilsonAction
+import Towers.YM.WilsonPositivity
 import Towers.YM.SU3Instances
 
 open scoped BigOperators
@@ -167,6 +168,19 @@ noncomputable def actL : (L : ℕ) → (Fin (4 * L ^ 4) → SU3Instances.SU3) �
   | 0, _ => 0
   | (k + 1), w => @wilsonAction 4 (k + 1) ⟨Nat.succ_ne_zero k⟩ (toGauge (k + 1) w)
 
+/-- `actL L w ≥ 0`: it is `0` on the degenerate `L = 0` lattice and the
+non-negative `wilsonAction` of the transported gauge config otherwise
+(`wilsonAction_nonneg`). This is what makes the heat kernel
+`exp(-β·actL) ≤ 1` for `β ≥ 0` — the sub-Markov bound, NOT a spectral
+gap. -/
+theorem actL_nonneg (L : ℕ) (w : Fin (4 * L ^ 4) → SU3Instances.SU3) :
+    0 ≤ actL L w := by
+  cases L with
+  | zero => exact le_refl 0
+  | succ k =>
+    haveI : NeZero (k + 1) := ⟨Nat.succ_ne_zero k⟩
+    exact wilsonAction_nonneg (toGauge (k + 1) w)
+
 /-- `wilsonAction ∘ toGauge` is continuous in the link vector: a finite
 sum of per-plaquette energies, each a polynomial-with-conjugate in the
 continuous matrix entries of the SU(3) carriers. -/
@@ -283,55 +297,39 @@ noncomputable def T_L (L : ℕ) (β : ℝ) (f : Lp ℝ 2 (haarN (4 * L ^ 4))) :
     Lp ℝ 2 (haarN (4 * L ^ 4)) :=
   Memℒp.toLp _ (memℒp_intOp L β f)
 
-/-- **Operator-norm bound for `T_L` (`transfer_operator_norm_le`).** `sorry`-free,
-classical-trio only.
+/-- **Sub-Markov contraction bound for `T_L` (`transfer_operator_norm_le`).**
+`sorry`-free, classical-trio only.
 
-`∃ a > 0, ∀ β > 0, ∀ f, ‖T_L L β f‖ ≤ exp(a·β)·‖f‖` — the integral operator `T_L`
-is a **bounded** operator, with an exponential-in-β control of its operator norm.
-The proof is pure soft analysis: the heat kernel `K(U,V) = exp(-β·actL(V⁻¹·U))` is
-continuous on the **compact** configuration space, so `actL` attains a finite
-minimum `m₀` (`IsCompact.exists_isMinOn`); hence `K ≤ exp((|m₀|+1)·β)`, and
-`L¹ ≤ L²` (`eLpNorm_le_eLpNorm_of_exponent_le`) on the probability space `haarN`
-plus the a.e. bound (`Lp.norm_le_of_ae_bound`) give the result with `a := |m₀|+1`
-(which absorbs the sign of `m₀`).
+`∀ β > 0, ∀ f, ‖T_L L β f‖ ≤ ‖f‖` — i.e. `‖T_L‖ ≤ 1`. The heat kernel
+`K(U,V) = exp(-β·actL(V⁻¹·U))` is `≤ 1` because `actL ≥ 0` (`actL_nonneg`,
+from `wilsonAction_nonneg ← plaquetteEnergy_nonneg ← traceRe_le_three`) and
+`β > 0`, so `-β·actL ≤ 0`. The pointwise estimate
+`‖(T_L f)(U)‖ ≤ ∫ |K|·‖f‖ ≤ ∫ ‖f‖ ≤ ‖f‖` (using `K ≤ 1`, then `L¹ ≤ L²`
+on the probability space `haarN`) plus `Lp.norm_le_of_ae_bound`
+(`measureUnivNNReal = 1`) gives `‖T_L f‖ ≤ ‖f‖`.
 
-**Honesty (locked invariants).** This is *mere boundedness*. It does **NOT** use
-the deferred `Re tr P ≤ 3` analytic input; it does **NOT** assert `‖T_L‖ ≤ 1` (a
-contraction); it does **NOT** assert any decay/`exp(-β·S_min)` bound — that would
-be *false*, since the constant function is an eigenvector with eigenvalue
-`Z(β) = ∫ exp(-β·S)`, so `‖T_L‖ = Z(β)` (which does not decay exponentially), and
-`S_min := inf_{U ≠ 1} wilsonAction U = 0` (the action is continuous and vanishes
-at `1`). It makes **NO** spectral / mass-gap / `m > 0` claim. Surface #1 stays
-OPEN; YM stays `Status: Open`. -/
-theorem transfer_operator_norm_le (L : ℕ) :
-    ∃ a : ℝ, 0 < a ∧ ∀ β : ℝ, 0 < β →
-      ∀ f : Lp ℝ 2 (haarN (4 * L ^ 4)),
-        ‖T_L L β f‖ ≤ Real.exp (a * β) * ‖f‖ := by
-  haveI : CompactSpace (Fin (4 * L ^ 4) → SU3Instances.SU3) := Pi.compactSpace
-  haveI : Nonempty (Fin (4 * L ^ 4) → SU3Instances.SU3) := inferInstance
-  obtain ⟨w₀, -, hw₀⟩ :=
-    isCompact_univ.exists_isMinOn Set.univ_nonempty (continuous_actL L).continuousOn
-  set m₀ : ℝ := actL L w₀ with hm₀
-  have hmin : ∀ w, m₀ ≤ actL L w := by
-    intro w; rw [hm₀]; exact isMinOn_iff.mp hw₀ w (Set.mem_univ w)
-  refine ⟨|m₀| + 1, by positivity, ?_⟩
-  intro β hβ f
-  set M : ℝ := Real.exp ((|m₀| + 1) * β) with hMdef
-  have hM_nonneg : 0 ≤ M := Real.exp_nonneg _
-  have hker : ∀ U V, kernel L β U V ≤ M := by
+**Honesty (locked invariants).** This is the genuine *upper bound* — the
+sub-Markov / contraction property `‖T_L‖ ≤ 1`. It is **NOT** a spectral
+gap, **NOT** a *strict* contraction, and makes **NO** decay / mass-gap /
+`m > 0` claim: only `‖T_L‖ ≤ 1` is proved (NO equality / tightness claim —
+constants are eigenfunctions with eigenvalue `Z(β) = ∫ exp(-β·actL) ≤ 1`, so
+`T_L` does NOT contract the vacuum sector to `0`), and
+`S_min := inf_{U ≠ 1} wilsonAction U = 0` (the action is continuous and
+vanishes at `1`), so no `exp(-β·S_min)` decay holds. The genuine spectral
+gap on the zero-mean / vacuum-orthogonal sector is the OPEN
+`kotecky_preiss_criterion` below. Surface #1 stays OPEN; YM stays
+`Status: Open`. -/
+theorem transfer_operator_norm_le (L : ℕ) (β : ℝ) (hβ : 0 < β)
+    (f : Lp ℝ 2 (haarN (4 * L ^ 4))) :
+    ‖T_L L β f‖ ≤ ‖f‖ := by
+  have hker : ∀ U V, kernel L β U V ≤ 1 := by
     intro U V
-    rw [hMdef]
     unfold kernel
-    apply Real.exp_le_exp.mpr
-    have h2 : -actL L (groupDiff L U V) ≤ |m₀| + 1 := by
-      have hge : m₀ ≤ actL L (groupDiff L U V) := hmin _
-      have : -|m₀| ≤ m₀ := neg_abs_le m₀
-      linarith
-    nlinarith [mul_le_mul_of_nonneg_left h2 hβ.le, hβ]
+    rw [← Real.exp_zero]
+    exact Real.exp_le_exp.mpr
+      (by nlinarith [mul_nonneg hβ.le (actL_nonneg L (groupDiff L U V))])
   have hf_int : Integrable (fun V => ‖f V‖) (haarN (4 * L ^ 4)) :=
     ((Lp.memℒp f).integrable one_le_two).norm
-  have hMf_int : Integrable (fun V => M * ‖f V‖) (haarN (4 * L ^ 4)) :=
-    hf_int.const_mul M
   have hL1L2 : ∫ V, ‖f V‖ ∂(haarN (4 * L ^ 4)) ≤ ‖f‖ := by
     rw [integral_norm_eq_lintegral_nnnorm (Lp.aestronglyMeasurable f), Lp.norm_def]
     refine ENNReal.toReal_mono (Lp.eLpNorm_ne_top f) ?_
@@ -341,7 +339,7 @@ theorem transfer_operator_norm_le (L : ℕ) :
       _ ≤ eLpNorm f 2 (haarN (4 * L ^ 4)) :=
           eLpNorm_le_eLpNorm_of_exponent_le (by norm_num) (Lp.aestronglyMeasurable f)
   have hbound : ∀ U,
-      ‖∫ V, kernel L β U V * f V ∂(haarN (4 * L ^ 4))‖ ≤ M * ‖f‖ := by
+      ‖∫ V, kernel L β U V * f V ∂(haarN (4 * L ^ 4))‖ ≤ ‖f‖ := by
     intro U
     calc ‖∫ V, kernel L β U V * f V ∂(haarN (4 * L ^ 4))‖
         ≤ ∫ V, ‖kernel L β U V * f V‖ ∂(haarN (4 * L ^ 4)) :=
@@ -349,20 +347,18 @@ theorem transfer_operator_norm_le (L : ℕ) :
       _ = ∫ V, kernel L β U V * ‖f V‖ ∂(haarN (4 * L ^ 4)) := by
           refine integral_congr_ae (ae_of_all _ fun V => ?_)
           simp only [norm_mul, Real.norm_eq_abs, abs_of_nonneg (kernel_nonneg L β U V)]
-      _ ≤ ∫ V, M * ‖f V‖ ∂(haarN (4 * L ^ 4)) := by
-          refine integral_mono_of_nonneg (ae_of_all _ fun V => ?_) hMf_int
+      _ ≤ ∫ V, ‖f V‖ ∂(haarN (4 * L ^ 4)) := by
+          refine integral_mono_of_nonneg (ae_of_all _ fun V => ?_) hf_int
             (ae_of_all _ fun V => ?_)
           · exact mul_nonneg (kernel_nonneg L β U V) (norm_nonneg _)
-          · exact mul_le_mul_of_nonneg_right (hker U V) (norm_nonneg _)
-      _ = M * ∫ V, ‖f V‖ ∂(haarN (4 * L ^ 4)) := integral_mul_left M _
-      _ ≤ M * ‖f‖ := mul_le_mul_of_nonneg_left hL1L2 hM_nonneg
-  have hae : ∀ᵐ U ∂(haarN (4 * L ^ 4)), ‖(T_L L β f) U‖ ≤ M * ‖f‖ := by
+          · exact mul_le_of_le_one_left (norm_nonneg _) (hker U V)
+      _ ≤ ‖f‖ := hL1L2
+  have hae : ∀ᵐ U ∂(haarN (4 * L ^ 4)), ‖(T_L L β f) U‖ ≤ ‖f‖ := by
     have hcoe := Memℒp.coeFn_toLp (memℒp_intOp L β f)
     filter_upwards [hcoe] with U hU
     have hval : (T_L L β f) U = ∫ V, kernel L β U V * f V ∂(haarN (4 * L ^ 4)) := hU
     rw [hval]; exact hbound U
-  have hnorm := Lp.norm_le_of_ae_bound (f := T_L L β f)
-    (mul_nonneg hM_nonneg (norm_nonneg f)) hae
+  have hnorm := Lp.norm_le_of_ae_bound (f := T_L L β f) (norm_nonneg f) hae
   have hμ1 : measureUnivNNReal (haarN (4 * L ^ 4)) = 1 := by
     simp [measureUnivNNReal, measure_univ]
   rw [hμ1] at hnorm

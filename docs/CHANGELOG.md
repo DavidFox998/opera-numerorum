@@ -6,6 +6,66 @@ this file is the version history.
 
 ---
 
+## Transfer-operator contraction: tighten `transfer_operator_norm_le` to `‖T_L‖ ≤ 1` + honest positivity scaffolding (2026-05-30)
+
+**What landed (NO wall change; nothing registered in `scripts/check-towers.sh`
+BRICKS or as a `lakefile.lean` root):**
+
+- **`Towers/YM/Transfer.lean` — `transfer_operator_norm_le` TIGHTENED** from the
+  old operator-norm *growth* bound `∃ a > 0, ∀ β > 0, ‖T_L L β f‖ ≤ exp(a·β)·‖f‖`
+  to the genuine sub-Markov **contraction** `∀ β > 0, ∀ f, ‖T_L L β f‖ ≤ ‖f‖`
+  (i.e. `‖T_L‖ ≤ 1`). The old compactness / `actL`-minimum / `|m₀|` machinery is
+  gone; the new proof is: heat kernel `exp(-β·actL) ≤ 1` (since `actL ≥ 0` and
+  `β > 0`) ⟹ pointwise `‖(T_L f)(U)‖ ≤ ∫ ‖f‖` ⟹ `L¹ ≤ L²` on the probability
+  measure `haarN` ⟹ `Lp.norm_le_of_ae_bound` with `measureUnivNNReal = 1`.
+- **NEW `Transfer.actL_nonneg`** — `0 ≤ actL L w` (`0` on the degenerate `L = 0`
+  lattice, else `wilsonAction_nonneg (toGauge …)`). This is the new lemma that
+  powers the kernel `≤ 1` step.
+- **NEW honest scaffolding in `Towers/YM/WilsonPositivity.lean`:**
+  - `wilsonAction_nonneg`, `plaquetteEnergy_eq_zero_iff`.
+  - `wilsonAction_eq_zero_iff : wilsonAction U = 0 ↔ ∀ x μ ν, wilsonPlaquette U x μ ν = 1`
+    — HONESTLY "all plaquettes trivial", **NOT** `↔ U = 1` (gauge/centre freedom
+    makes the `U = 1` reading false). Proved term-mode via
+    `Finset.sum_eq_zero_iff_of_nonneg` `.mp` (the `rw` form fails on the nested
+    triple sum's higher-order pattern under the `letI` Fintype instance — use
+    `.mp` / `Finset.sum_eq_zero`, which are defeq-friendly).
+  - `polymerEnergy` (sum of per-plaquette Wilson energies over a finite set of
+    oriented plaquettes) + `polymerEnergy_nonneg` + `polymerEnergy_pos_of_nontrivial`
+    (the latter requires an explicit `∃` non-trivial-plaquette hypothesis).
+
+- **Axiom audit (verified live, `lake env lean` + `#print axioms`,
+  2026-05-30):** `transfer_operator_norm_le`, `actL_nonneg`, `wilsonAction_nonneg`,
+  `wilsonAction_eq_zero_iff`, `polymerEnergy_pos_of_nontrivial` all =
+  `[propext, Classical.choice, Quot.sound]` (classical trio, NO `sorryAx`).
+  `Transfer.kotecky_preiss_criterion` still = `[propext, sorryAx, Classical.choice,
+  Quot.sound]` — UNTOUCHED, INVARIANT-LOCKED.
+
+**Honest roadmap to the gap (correcting the false "Step 1").** The mass gap is a
+spectral **lower** bound `T_L ≥ c·𝟙` on the zero-mean / vacuum-orthogonal sector
+(equivalently the contraction `‖T_L f‖ ≤ exp(-β·gap)·‖f‖` of
+`kotecky_preiss_criterion`, OPEN). The naive "Step 1: prove
+`vacuum_strict_positivity : ∀ U ≠ 1, wilsonAction U ≥ δ > 0`" is **FALSE and
+REFUSED**: `Fin (4·L⁴) → SU(3)` is compact and `wilsonAction` is continuous with
+`wilsonAction(vacuum) = 0`, so `U ≠ 1` configurations sit arbitrarily close to
+the vacuum and `inf {wilsonAction U : U ≠ 1} = 0`. The honest Step 1 is only the
+*pointwise* positivity `wilsonAction_eq_zero_iff` (= necessary, not sufficient);
+a **uniform** gap is a genuine cluster-expansion / Kotecký–Preiss result, NOT a
+compactness corollary — it stays in the OPEN `kotecky_preiss_criterion`.
+
+**Invariants held.** No `sorry`/`admit`/`sorryAx` in any landed/registered brick;
+classical-trio only; YM **Status: Open**; Surface #1 OPEN; NO mass-gap / `m > 0` /
+`μ > 0` / "Surface #1 closed" claim; the `Towers/Attempts/ClusterExpansion.lean`
+`kotecky_preiss_criterion` `sorry` is untouched.
+
+**Infra (this session).** `.lake/packages/mathlib/.git` was missing again (a
+workflow/merge reset had `git -C` walking up to the workspace repo, so `v4.12.0`
+did not resolve and the `809c3fb…` object was absent), while the 4850 oleans +
+source worktree were intact. Recovered WITHOUT a re-download: `scripts/restore-lake-git.sh`
+×2, then recreate the tag `git -C .lake/packages/mathlib tag -f v4.12.0
+809c3fb3b5c8f5d7dace56e200b426187516535a`. Verified the two edited files with
+`lake env lean … -o <olean>` (emit fresh oleans so the Transfer check sees the new
+`wilsonAction_nonneg`); `towers-build` deliberately NOT run (destructive re-clone).
+
 ## Migrated from replit.md trim (2026-05-30)
 
 The following per-task sections were moved verbatim out of the live-ops

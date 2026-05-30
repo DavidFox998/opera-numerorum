@@ -46,20 +46,37 @@ history. Roadmap → `docs/ROADMAP.md`.
   Wilson action (via `linkEquiv`/`toGauge`, continuity + `Memℒp` proofs). `#print
   axioms T_L` = classical trio (no `sorryAx`), verified live. Makes **no**
   spectral / mass-gap / `m > 0` claim; Surface #1 stays OPEN; YM stays
-  `Status: Open`. The companion `Transfer.transfer_operator_norm_le` is now a
-  **`sorry`-free, classical-trio-only** theorem (`#print axioms` = trio,
-  verified live): `∃ a > 0, ∀ β > 0, ‖T_L L β f‖ ≤ exp(a·β)·‖f‖` — an
-  operator-norm UPPER (growth) bound only, proved via compactness + `actL`
-  minimum + `L¹ ≤ L²` on the probability measure. It is explicitly **NOT** a
-  contraction (`‖T_L‖ ≤ 1`), decay, spectral-gap, or mass-gap claim, and its
-  docstring disclaims the false `exp(-β·S_min)` reading. The genuine mass gap
-  lives in the NEW `Transfer.kotecky_preiss_criterion` — a **disclaimed
+  `Status: Open`. The companion `Transfer.transfer_operator_norm_le` is now
+  **TIGHTENED** to the genuine sub-Markov **contraction** (it was an `exp(a·β)`
+  growth bound): `∀ β > 0, ∀ f, ‖T_L L β f‖ ≤ ‖f‖` — i.e. `‖T_L‖ ≤ 1`.
+  `sorry`-free, classical-trio only (`#print axioms` = trio, verified live).
+  Proof: the heat kernel `exp(-β·actL) ≤ 1` because `actL ≥ 0`
+  (`Transfer.actL_nonneg ← WilsonPositivity.wilsonAction_nonneg`), then
+  `L¹ ≤ L²` on the probability measure `haarN`. It is explicitly **NOT** a
+  *strict* contraction, decay, spectral-gap, or mass-gap claim: only
+  `‖T_L‖ ≤ 1` is proved (no equality / tightness claim — constants are
+  eigenfunctions with eigenvalue `Z(β) = ∫ exp(-β·actL) ≤ 1`, so `T_L` does
+  **not** contract the vacuum sector to `0`), and
+  `S_min := inf_{U ≠ 1} wilsonAction U = 0` (the action is continuous and
+  vanishes at the vacuum), so no `exp(-β·S_min)` decay holds. The genuine mass gap would be the OPPOSITE inequality — a
+  spectral *lower* bound `T_L ≥ c·𝟙` on the zero-mean sector — and stays OPEN
+  in the NEW `Transfer.kotecky_preiss_criterion`, a **disclaimed
   single-`sorry` placeholder** (own namespace `…YM.Transfer`, reports `sorryAx`,
   NOT a brick): `∃ β₀ > 0, ∀ β > β₀, ∃ gap > 0, ∀ L f, (∫ f d(haarN) = 0) →
-  ‖T_L L β f‖ ≤ exp(-(β·gap))·‖f‖` (contraction on the zero-mean / vacuum-
-  orthogonal sector, uniform in `L`). OPEN — it does NOT close Surface #1, does
+  ‖T_L L β f‖ ≤ exp(-(β·gap))·‖f‖`. OPEN — it does NOT close Surface #1, does
   NOT prove the mass gap, and does NOT touch the invariant-locked
   `kotecky_preiss_criterion` `sorry` in `Towers/Attempts/ClusterExpansion.lean`.
+- **Honest positivity scaffolding (NOT bricks, not in BRICKS):**
+  `Towers/YM/WilsonPositivity.lean` adds `wilsonAction_nonneg`,
+  `plaquetteEnergy_eq_zero_iff`, and `wilsonAction_eq_zero_iff` — the LAST
+  states `wilsonAction U = 0 ↔ ∀ x μ ν, wilsonPlaquette U x μ ν = 1` (all
+  plaquettes trivial), HONESTLY **NOT** `↔ U = 1`. Plus a polymer-energy
+  functional `polymerEnergy` with `polymerEnergy_nonneg` and
+  `polymerEnergy_pos_of_nontrivial` (the latter needs an explicit
+  non-trivial-plaquette hypothesis). `Transfer.actL_nonneg` lifts
+  `wilsonAction_nonneg` through `toGauge`. All classical-trio, verified live;
+  every lemma is *necessary-not-sufficient* — pointwise positivity is NOT a
+  uniform spectral gap, since the off-vacuum infimum of `wilsonAction` is `0`.
 
 ## Locked invariants (every batch must hold these)
 
