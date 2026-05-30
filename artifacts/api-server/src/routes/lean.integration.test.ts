@@ -693,7 +693,7 @@ describe("Checkpoint reroll history — write + read path (Task #141)", () => {
     expect(() => new Date(get.json.entries[0].timestamp)).not.toThrow();
   });
 
-  it("trims to the 20-row capacity: when the cutoff query reports an overflow row, recordCheckpointRerollAttempt deletes the older rows", async () => {
+  it("task #225: prunes by time on every insert — recordCheckpointRerollAttempt issues a retention delete against the reroll table", async () => {
     process.env["LEAN_REBUILD_TOKEN"] = "shared";
     __testing.setRerollSpawner(async () => ({
       ok: true,
@@ -702,10 +702,10 @@ describe("Checkpoint reroll history — write + read path (Task #141)", () => {
       stderr: "",
       error: null,
     }));
-    // Simulate "there are already >20 rows" — the cutoff query
-    // returns the 21st-newest row's id, and the route must issue a
-    // delete-where for everything older.
-    selectOffsetResult = [{ id: 42 }];
+    // Retention is now time-based, not count-based: there is no cutoff
+    // select, so the delete fires unconditionally on every insert,
+    // dropping rows older than the 32-day horizon.
+    selectOffsetResult = [];
 
     const post = await call({
       method: "POST",
@@ -715,8 +715,8 @@ describe("Checkpoint reroll history — write + read path (Task #141)", () => {
     expect(post.status).toBe(200);
     expect(post.json.ok).toBe(true);
 
-    // The cutoff-driven delete fired exactly once, against the
-    // reroll table (not the rebuild table).
+    // The retention delete fired exactly once, against the reroll
+    // table (not the rebuild table).
     expect(deleteCallsByTable.get(REROLL_TABLE_KEY)).toBe(1);
     expect(deleteCallsByTable.get(REBUILD_TABLE_KEY) ?? 0).toBe(0);
   });
@@ -766,6 +766,21 @@ describe("Checkpoint reroll history — write + read path (Task #141)", () => {
     expect(Math.max(...durations)).toBe(1019);
     expect(durations).not.toContain(1020);
     expect(durations).not.toContain(1024);
+  });
+
+  it("task #225: retention horizon covers the longest digest window so 7d/30d digests never under-count", () => {
+    // The retention cutoff (time-based pruning) must be at least as
+    // long as the widest on-demand digest window. If someone widens
+    // REROLL_DIGEST_WINDOW_HOURS (e.g. adds a 90d view) without bumping
+    // CHECKPOINT_REROLL_HISTORY_RETENTION_MS, this fails loudly instead
+    // of silently under-counting that window.
+    const maxWindowHours = Math.max(
+      ...Object.values(__testing.REROLL_DIGEST_WINDOW_HOURS),
+    );
+    const maxWindowMs = maxWindowHours * 60 * 60 * 1000;
+    expect(__testing.CHECKPOINT_REROLL_HISTORY_RETENTION_MS).toBeGreaterThan(
+      maxWindowMs,
+    );
   });
 });
 

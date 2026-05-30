@@ -87,7 +87,29 @@ interface CheckpointRerollHistoryEntry {
   ip: string | null;
 }
 
+// Display cap for the "recent re-roll history" dashboard panel — how
+// many rows GET /ledger/checkpoint/reroll/history returns. This is a
+// *cosmetic* limit on the response only; it does NOT bound how much
+// history is retained in the table (see the retention policy below).
 const CHECKPOINT_REROLL_HISTORY_CAPACITY = 20;
+
+// Task #225 — retention policy for the re-roll history table.
+//
+// Retention is TIME-based, not count-based. The earlier 20-row ring
+// buffer doubled as the retention bound, which silently broke the
+// on-demand digest (task #199): `REROLL_DIGEST_WINDOW_HOURS` recomputes
+// over windows up to 30 days, so on a busy deployment the 7d/30d
+// digests under-counted as soon as attempts rolled off the 20-row cap.
+//
+// We now keep every attempt for at least the longest digest window
+// (30d) plus a 2-day safety margin, so a digest run straddling the 30d
+// boundary still sees a full window. Each insert prunes rows older than
+// this cutoff. Keep this >= the largest value in
+// `REROLL_DIGEST_WINDOW_HOURS`; the retention test in
+// `lean.integration.test.ts` guards against drift between the two.
+const CHECKPOINT_REROLL_HISTORY_RETENTION_DAYS = 32;
+const CHECKPOINT_REROLL_HISTORY_RETENTION_MS =
+  CHECKPOINT_REROLL_HISTORY_RETENTION_DAYS * 24 * 60 * 60 * 1000;
 
 async function recordCheckpointRerollAttempt(
   entry: CheckpointRerollHistoryEntry,
@@ -103,17 +125,15 @@ async function recordCheckpointRerollAttempt(
       refereeName: entry.refereeName,
       ip: entry.ip,
     });
-    const cutoff = await db
-      .select({ id: ledgerCheckpointRerollHistoryTable.id })
-      .from(ledgerCheckpointRerollHistoryTable)
-      .orderBy(desc(ledgerCheckpointRerollHistoryTable.id))
-      .limit(1)
-      .offset(CHECKPOINT_REROLL_HISTORY_CAPACITY);
-    if (cutoff.length > 0) {
-      await db
-        .delete(ledgerCheckpointRerollHistoryTable)
-        .where(lt(ledgerCheckpointRerollHistoryTable.id, cutoff[0].id + 1));
-    }
+    // Time-based retention: drop anything older than the retention
+    // cutoff so longer digest windows always see a full window, while
+    // unbounded growth is still bounded by the 32-day horizon.
+    const retentionCutoff = new Date(
+      Date.now() - CHECKPOINT_REROLL_HISTORY_RETENTION_MS,
+    );
+    await db
+      .delete(ledgerCheckpointRerollHistoryTable)
+      .where(lt(ledgerCheckpointRerollHistoryTable.timestamp, retentionCutoff));
   } catch (err) {
     log.error({ err }, "Failed to persist checkpoint reroll history entry");
   }
@@ -1994,4 +2014,7 @@ export const __testing = {
     checkpointRerollInFlight = false;
   },
   normalizeAlertEntry,
+  CHECKPOINT_REROLL_HISTORY_CAPACITY,
+  CHECKPOINT_REROLL_HISTORY_RETENTION_MS,
+  REROLL_DIGEST_WINDOW_HOURS,
 };
