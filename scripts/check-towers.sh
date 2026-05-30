@@ -3072,6 +3072,48 @@ BRICKS=(
   "Towers.YM.Wall253_KP_Cluster|TheoremaAureum.Towers.YM.Wall253.kp_cluster_summable"
   "Towers.YM.Wall253_KP_Cluster|TheoremaAureum.Towers.YM.Wall253.kp_cluster_sum_lt_two"
   "Towers.YM.Wall253_KP_Cluster|TheoremaAureum.Towers.YM.Wall253.kp_cluster_criterion"
+  # Wall254_OS_Positivity: HONEST CONDITIONAL Osterwalder-Schrader reflection
+  # positivity (OS2) combinator. gram_form_eq / gram_re_nonneg PROVE the genuine,
+  # unconditional Gram positive-semidefiniteness (re ∑_{i,j} conj(c_i)c_j⟪v_i,v_j⟫
+  # = re⟪Σ c_i•v_i, Σ⟫ ≥ 0 via inner_self_nonneg) — the linear-algebra heart of
+  # OS positivity, bearing on NO measure. os2_of_gram_realization /
+  # os2_diagonal_nonneg route OS2 for the (abstract) Wilson reflected pairing P
+  # through the SINGLE NAMED OPEN surface hGNS : ∀ F G, P F G = ⟪J F, J G⟫ (the
+  # Osterwalder-Seiler GNS realization of the reflected kernel as a Hilbert-space
+  # Gram form) — a HYPOTHESIS, NOT `by sorry`, so NO sorryAx. All sorry-free,
+  # #print axioms = classical trio (verified by hand: raw lean v4.12.0 +
+  # #print axioms, EXIT=0). HONEST: this proves NO OS2 for the actual Wilson
+  # measure (the entire content is the open hGNS; no Wilson measure is
+  # constructed), addresses only OS2 (not OS0/1/3/4 nor the continuum limit), and
+  # makes NO mass-gap / mu>0 / Surface-#1 claim; does NOT discharge the
+  # invariant-locked kotecky_preiss_criterion sorry. YM stays Status: Open.
+  "Towers.YM.Wall254_OS_Positivity|TheoremaAureum.Towers.YM.Wall254.gram_form_eq"
+  "Towers.YM.Wall254_OS_Positivity|TheoremaAureum.Towers.YM.Wall254.gram_re_nonneg"
+  "Towers.YM.Wall254_OS_Positivity|TheoremaAureum.Towers.YM.Wall254.os2_of_gram_realization"
+  "Towers.YM.Wall254_OS_Positivity|TheoremaAureum.Towers.YM.Wall254.os2_diagonal_nonneg"
+  # Wall255_KP_Entropy: HONEST CONDITIONAL "beat the 7^n entropy" combinator.
+  # entropy_geometric_summable / entropy_geometric_tsum PROVE the genuine,
+  # unconditional convergence of ∑_n 7^n·q^n = ∑_n (7q)^n (total (1-7q)⁻¹) for
+  # 0≤q, 7q<1 — the 7^n entropy factor is KEPT (contrast Wall253's size-series
+  # majorant, which dropped it). kp_entropy_weighted_summable beats the entropy
+  # for any count N n ≤ 7^n by comparison; kp_polymer_entropy_weighted_summable
+  # instantiates it at EntropyBound's genuine polymer count, CONDITIONAL on the
+  # two NAMED OPEN surfaces h_entropy (connective-constant count) and q<1/7
+  # (per-polymer smallness). seven_q_lt_one_of_lt_inv_seven (q<1/7 ⟹ 7q<1) and
+  # seven_half_not_lt_one (¬ 7·(1/2)<1) record the honest gap: Wall252's
+  # kp_sum_lt_half (<1/2) does NOT reach the <1/7 needed. All sorry-free,
+  # #print axioms = classical trio (verified by hand: raw lean v4.12.0 +
+  # #print axioms, EXIT=0). HONEST: the entropy is beaten ONLY under the OPEN
+  # q<1/7 surface; establishes NO KP convergence (no uniform per-polymer activity
+  # bound, no tree-graph weighting), makes NO mass-gap / mu>0 / Surface-#1 claim,
+  # and does NOT discharge the invariant-locked kotecky_preiss_criterion sorry.
+  # YM stays Status: Open.
+  "Towers.YM.Wall255_KP_Entropy|TheoremaAureum.Towers.YM.Wall255.seven_q_lt_one_of_lt_inv_seven"
+  "Towers.YM.Wall255_KP_Entropy|TheoremaAureum.Towers.YM.Wall255.seven_half_not_lt_one"
+  "Towers.YM.Wall255_KP_Entropy|TheoremaAureum.Towers.YM.Wall255.entropy_geometric_summable"
+  "Towers.YM.Wall255_KP_Entropy|TheoremaAureum.Towers.YM.Wall255.entropy_geometric_tsum"
+  "Towers.YM.Wall255_KP_Entropy|TheoremaAureum.Towers.YM.Wall255.kp_entropy_weighted_summable"
+  "Towers.YM.Wall255_KP_Entropy|TheoremaAureum.Towers.YM.Wall255.kp_polymer_entropy_weighted_summable"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

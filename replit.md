@@ -60,8 +60,46 @@ history. Roadmap → `docs/ROADMAP.md`.
     inputs; they prove NO NS existence/uniqueness/regularity result. NS stays
     `Status: Open`; Surface #1/#2 stay OPEN; YM untouched.
 
-- **Wall:** 575 BRICKS (`${#BRICKS[@]}` in `scripts/check-towers.sh`). The
+- **Wall:** 585 BRICKS (`${#BRICKS[@]}` in `scripts/check-towers.sh`). The
   source of truth for the count is the script, not this file.
+- **Wall254_OS_Positivity — HONEST CONDITIONAL Osterwalder–Schrader OS2
+  combinator (bricks, in BRICKS):** `Towers/YM/Wall254_OS_Positivity.lean`
+  routes reflection positivity through the genuine Gram-PSD heart. **(1)
+  GENUINE/UNCONDITIONAL:** `gram_form_eq` (`⟪∑cᵢ•vᵢ, ∑cⱼ•vⱼ⟫ = ∑ᵢⱼ
+  conj(cᵢ)cⱼ⟪vᵢ,vⱼ⟫`) and `gram_re_nonneg` (`0 ≤ re ∑ᵢⱼ conj(cᵢ)cⱼ⟪vᵢ,vⱼ⟫`, via
+  `inner_self_nonneg`) — the linear-algebra heart of OS positivity for any
+  `RCLike` inner-product space, bearing on NO measure. **(2) CONDITIONAL:**
+  `os2_of_gram_realization` / `os2_diagonal_nonneg` derive OS2 positivity for an
+  abstract Wilson reflected pairing `P : Obs→Obs→𝕜` from the SINGLE NAMED OPEN
+  surface `hGNS : ∀ F G, P F G = ⟪J F, J G⟫` (the Osterwalder–Seiler GNS
+  realization of the reflected kernel as a Hilbert-space Gram form — a
+  HYPOTHESIS, NOT `by sorry`, so NO `sorryAx`). 4 public theorems; all
+  `sorry`-free, `#print axioms` = classical trio (verified live, raw `lean`
+  v4.12.0, EXIT=0). HONEST: proves NO OS2 for the actual Wilson measure (the
+  entire content is the OPEN `hGNS`; NO Wilson measure is constructed), addresses
+  ONLY OS2 (not OS0/1/3/4, not the thermodynamic/continuum limit), makes NO
+  mass-gap / μ>0 / Surface-#1 claim, and does NOT discharge the
+  `kotecky_preiss_criterion` `sorry`. Uses `Mathlib.Analysis.InnerProductSpace
+  .Basic` (`inner_self_nonneg`, `sum_inner`, `inner_sum`, `inner_smul_left/right`).
+- **Wall255_KP_Entropy — HONEST CONDITIONAL "beat the 7ⁿ entropy" combinator
+  (bricks, in BRICKS):** `Towers/YM/Wall255_KP_Entropy.lean`. **(1)
+  GENUINE/UNCONDITIONAL:** `entropy_geometric_summable` / `entropy_geometric_tsum`
+  — for `0 ≤ q`, `7q < 1`, the entropy-weighted series `∑ₙ 7ⁿ·qⁿ = ∑ₙ (7q)ⁿ`
+  is `Summable` with total `(1−7q)⁻¹`. The `7ⁿ` factor is KEPT (contrast
+  Wall253's size-series majorant, which DROPPED it). **(2) CONDITIONAL:**
+  `kp_entropy_weighted_summable` beats the entropy for any count `N n ≤ 7ⁿ` by
+  comparison; `kp_polymer_entropy_weighted_summable` instantiates it at
+  `EntropyBound`'s genuine polymer count, CONDITIONAL on the two NAMED OPEN
+  surfaces `h_entropy` (connective-constant count) and `q < 1/7` (per-polymer
+  smallness). **(3) Honest gap:** `seven_q_lt_one_of_lt_inv_seven` (`q<1/7 ⟹
+  7q<1`) and `seven_half_not_lt_one` (`¬ 7·(1/2) < 1`) record that Wall252's
+  `kp_sum_lt_half` (`< 1/2`) does NOT reach the `< 1/7` needed (`7·½ = 3.5 ≥ 1`).
+  6 public theorems; all `sorry`-free, `#print axioms` = classical trio (verified
+  live, raw `lean` v4.12.0, EXIT=0). HONEST: the entropy is beaten ONLY under the
+  OPEN `q < 1/7` surface; establishes NO KP convergence (no uniform per-polymer
+  activity bound `|ζ(γ)| ≤ q^{|γ|}`, no tree-graph weighting), makes NO mass-gap
+  / μ>0 / Surface-#1 claim, and does NOT discharge the `kotecky_preiss_criterion`
+  `sorry`. YM stays `Status: Open`.
 - **Wall253_KP_Cluster — HONEST CONDITIONAL Kotecký–Preiss cluster expansion
   (bricks, in BRICKS):** `Towers/YM/Wall253_KP_Cluster.lean` extends Wall252's
   single-plaquette `kp_sum_lt_half` base case toward a full polymer sum in two
