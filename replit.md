@@ -60,7 +60,7 @@ history. Roadmap → `docs/ROADMAP.md`.
     inputs; they prove NO NS existence/uniqueness/regularity result. NS stays
     `Status: Open`; Surface #1/#2 stay OPEN; YM untouched.
 
-- **Wall:** 557 BRICKS (`${#BRICKS[@]}` in `scripts/check-towers.sh`). The
+- **Wall:** 567 BRICKS (`${#BRICKS[@]}` in `scripts/check-towers.sh`). The
   source of truth for the count is the script, not this file.
 - **SU(2) Wilson-positivity companion (brick, in BRICKS):**
   `Towers/YM/WilsonPositivitySU2.lean` lands the verbatim N = 2 instances of the
@@ -74,6 +74,34 @@ history. Roadmap → `docs/ROADMAP.md`.
   ports unchanged to N = 2 is the point: it bears on NO group-specific structure.
   Surface #1 stays OPEN; the genuine gap remains the disclaimed
   `Transfer.kotecky_preiss_criterion` `sorry`, untouched.
+- **S4Numerics — four standalone TRUE ARITHMETIC FACTS (bricks, in BRICKS):**
+  `Towers/YM/S4Numerics.lean` lands `c_S4_lt` (∑_{p∈{2,3,19,191}} log p/(p−1)
+  < 5/2), `kEff_le` (10/π ≤ 16/5), `zModes_eq` (15 = 120/2³), `h4Order_factor`
+  (14400 = 2⁶·3²·5²). 4 registered; all `sorry`-free, verified live (raw `lean`,
+  EXIT=0): `c_S4_lt`/`kEff_le` `#print axioms` = classical trio,
+  `zModes_eq`/`h4Order_factor` = `[propext]` only. HONEST: these are bare
+  arithmetic — they construct NO H4 Coxeter group (`h4Order_factor` is a prime
+  factorization of the *integer* 14400, group-theoretically EMPTY), carry NO
+  physical/number-theoretic content, are NOT load-bearing toward any tower, and
+  make NO mass-gap / μ>0 / Surface-#1 / RH / BSD claim. The `linarith` failures
+  fixed by converting decimal `OfScientific` literals to clean rationals first
+  (linarith treats decimals as opaque atoms).
+- **Wall251b_H4 — SU(2) Wilson positivity on the genuine `specialUnitaryGroup`
+  (bricks, in BRICKS):** `Towers/YM/Wall251b_H4.lean` lifts the verified
+  `WilsonPositivitySU2` lemmas onto `Matrix.specialUnitaryGroup (Fin 2) ℂ`:
+  `su2_star_mul_self` (`star ↑g * ↑g = 1`, extracted from membership via
+  `mem_specialUnitaryGroup_iff` + `mem_unitaryGroup_iff'`),
+  `su2_wilson_hs_identity` (`‖↑g − 1‖²_HS = 4 − 2·Re tr ↑g`),
+  `su2_traceRe_le_two`, `su2_traceRe_eq_two_iff`, `su2_plaquetteEnergy_nonneg`,
+  `su2_plaquetteEnergy_pos_iff`. 6 registered; all `sorry`-free, `#print axioms`
+  = classical trio (verified live, raw `lean`, EXIT=0). NOTE: in v4.12.0
+  `specialUnitaryGroup` lives in `Mathlib.LinearAlgebra.UnitaryGroup` (there is
+  NO `Mathlib.LinearAlgebra.Matrix.SpecialUnitaryGroup` module). HONEST: uses
+  ONLY unitarity (det = 1 discarded) — N-generic linear algebra, NOT
+  SU(2)-specific. `su2_plaquetteEnergy_nonneg` is POINTWISE Wilson positivity,
+  NOT Osterwalder–Schrader reflection positivity, NOT a transfer-operator
+  spectral bound, NOT a mass gap. Makes NO mass-gap / μ>0 / Surface-#1 claim;
+  does NOT discharge the `kotecky_preiss_criterion` `sorry`.
 - **YM 249 → 250 — polymer entropy bound landed (brick, in BRICKS):**
   `Towers/YM/EntropyBound.lean` lands `polymer_entropy_bound` — an HONEST
   CONDITIONAL COMBINATOR for the missing combinatorial input to KP convergence.

@@ -49,15 +49,15 @@ INVARIANT-LOCKED:
   * No `sorry` / `admit`.  Intended axiom footprint: the classical trio
     {propext, Classical.choice, Quot.sound}.
 
-VERIFICATION STATUS — **UNVERIFIED** (not yet machine-checked):
-  At the time of writing, the vendored mathlib checkout is in an inconsistent
-  state (lake-manifest rev `809c3fb…` is absent locally; HEAD is `439fde9…`;
-  0 tags; `towers-build` failing), so `lake env lean` cannot be run without
-  risking the olean cache.  Until the pin is restored and this file is
-  compiled with `lake env lean Towers/YM/S4Numerics.lean` and audited with
-  `#print axioms`, it is NOT registered in `lakefile.lean` roots or in the
-  `BRICKS` array of `scripts/check-towers.sh`, and it is NOT a brick.
-  The proofs below are best-effort and may need adjustment on first compile.
+VERIFICATION STATUS — **VERIFIED** (machine-checked, classical-trio clean):
+  Compiled with the v4.12.0 toolchain (`lean Towers/YM/S4Numerics.lean`,
+  EXIT=0) against the vendored mathlib oleans, and audited with
+  `#print axioms`:
+    * `c_S4_lt`, `kEff_le`            →  {propext, Classical.choice, Quot.sound}
+    * `zModes_eq`, `h4Order_factor`   →  {propext} only
+  No `sorryAx`, no user-declared axiom.  Registered in `lakefile.lean` roots
+  and in the `BRICKS` array of `scripts/check-towers.sh`, where the per-brick
+  axiom-footprint gate re-confirms the trio bound on every run.
 -/
 import Mathlib.Data.Complex.ExponentialBounds
 import Mathlib.Data.Real.Pi.Bounds
@@ -148,11 +148,5 @@ def h4OrderLiterature : ℕ := 14400
     This is group-theoretically EMPTY: it does NOT prove `|H4| = 14400`. -/
 theorem h4Order_factor : h4OrderLiterature = 2 ^ 6 * 3 ^ 2 * 5 ^ 2 := by
   norm_num [h4OrderLiterature]
-
--- TEMPORARY axiom probes (removed after verification)
-#print axioms c_S4_lt
-#print axioms kEff_le
-#print axioms zModes_eq
-#print axioms h4Order_factor
 
 end TheoremaAureum.Towers.YM.S4Numerics

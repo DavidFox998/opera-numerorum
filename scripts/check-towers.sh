@@ -2996,6 +2996,40 @@ BRICKS=(
   # cluster-expansion convergence with the SU(2) energy lower
   # bound `Re tr ≥ -2`, neither landed) + correlation
   # inequalities — none landed.
+  # S4Numerics: four STANDALONE TRUE ARITHMETIC FACTS (transparency
+  # record), self-contained on mathlib (no Towers deps). All `sorry`-
+  # free, `decide`/`norm_num`/`linarith`-only. `#print axioms`:
+  #   c_S4_lt, kEff_le        → {propext, Classical.choice, Quot.sound}
+  #   zModes_eq, h4Order_factor → {propext} only
+  # (verified by hand: lean Towers/YM/S4Numerics.lean, EXIT=0). HONEST:
+  # `c_S4_lt` (∑_{p∈{2,3,19,191}} log p/(p-1) < 5/2), `kEff_le` (10/π ≤
+  # 16/5), `zModes_eq` (15 = 120/2³), `h4Order_factor` (14400 =
+  # 2⁶·3²·5²) are bare arithmetic — they construct NO H4 Coxeter group,
+  # carry NO physical/number-theoretic content, and make NO mass-gap /
+  # μ>0 / Surface-#1 / RH / BSD claim. NOT load-bearing toward any tower;
+  # they do NOT discharge the `kotecky_preiss_criterion` sorry.
+  "Towers.YM.S4Numerics|TheoremaAureum.Towers.YM.S4Numerics.c_S4_lt"
+  "Towers.YM.S4Numerics|TheoremaAureum.Towers.YM.S4Numerics.kEff_le"
+  "Towers.YM.S4Numerics|TheoremaAureum.Towers.YM.S4Numerics.zModes_eq"
+  "Towers.YM.S4Numerics|TheoremaAureum.Towers.YM.S4Numerics.h4Order_factor"
+  # Wall251b_H4: SU(2) Wilson positivity lifted onto the GENUINE
+  # `Matrix.specialUnitaryGroup (Fin 2) ℂ` type. Reuses the verified
+  # `WilsonPositivitySU2` lemmas (Hilbert–Schmidt identity) and extracts
+  # `star ↑g * ↑g = 1` from group membership via `mem_specialUnitaryGroup_iff`
+  # + `mem_unitaryGroup_iff'`. All 6 theorems `sorry`-free; `#print axioms`
+  # = classical trio (verified by hand: lean Towers/YM/Wall251b_H4.lean +
+  # #print axioms, EXIT=0). HONEST: uses ONLY unitarity (det = 1 discarded),
+  # so the content is N-generic linear algebra, NOT SU(2)-specific.
+  # `su2_plaquetteEnergy_nonneg` is POINTWISE Wilson positivity — NOT
+  # Osterwalder–Schrader reflection positivity, NOT a transfer-operator
+  # spectral bound, NOT a mass gap. Makes NO mass-gap / μ>0 / Surface-#1 /
+  # RH / BSD claim; does NOT discharge the `kotecky_preiss_criterion` sorry.
+  "Towers.YM.Wall251b_H4|TheoremaAureum.Towers.YM.Wall251b.su2_star_mul_self"
+  "Towers.YM.Wall251b_H4|TheoremaAureum.Towers.YM.Wall251b.su2_wilson_hs_identity"
+  "Towers.YM.Wall251b_H4|TheoremaAureum.Towers.YM.Wall251b.su2_traceRe_le_two"
+  "Towers.YM.Wall251b_H4|TheoremaAureum.Towers.YM.Wall251b.su2_traceRe_eq_two_iff"
+  "Towers.YM.Wall251b_H4|TheoremaAureum.Towers.YM.Wall251b.su2_plaquetteEnergy_nonneg"
+  "Towers.YM.Wall251b_H4|TheoremaAureum.Towers.YM.Wall251b.su2_plaquetteEnergy_pos_iff"
 )
 
 VERIFIER_DIR="$(mktemp -d)"

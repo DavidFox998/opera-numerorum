@@ -7,3 +7,4 @@
 - [Wilson-action positivity ≠ mass gap](wilson-action-positivity-honesty.md) — pointwise positivity is necessary-not-sufficient; off-vacuum inf=0 so no uniform gap from compactness; zero-iff is "all plaquettes trivial" NOT U=1.
 - [Lean sorry == sorryAx](lean-sorry-is-sorryax.md) — `by sorry` always prints sorryAx; to pass the axiom lock, name unproved inputs as a Prop def or a hypothesis, never `theorem := by sorry`.
 - [Main-agent git is write-blocked](main-agent-git-blocked.md) — git writes (tag/commit/etc) rejected for main agent + guard scans heredoc bodies; track milestones as prose+SHA in docs, or delegate to a background Project Task.
+- [linarith opaque decimals](linarith-opaque-decimals.md) — linarith treats decimal `OfScientific` literals as opaque atoms; launder each to a rational via `norm_num` first, then linarith.
