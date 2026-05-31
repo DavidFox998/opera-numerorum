@@ -2854,6 +2854,25 @@ export interface LedgerMonitorOptions {
    */
   isAcknowledged?: (alertId: string) => boolean;
   /**
+   * Task #301: debounce transient integrity failures. A read of the live
+   * `data/hits.txt` taken during an atomic rewrite / regeneration window
+   * can momentarily look truncated or rewritten-in-place even though the
+   * ledger is healthy at rest — producing a spurious alert↔RECOVERED flap.
+   * When `reverifyDelayMs > 0` and a tick comes back non-ok, the monitor
+   * re-reads `buildStatus` after this delay (up to `reverifyAttempts`
+   * times) BEFORE firing; a single clean re-read reclassifies the tick as
+   * ok and suppresses the false-alarm alert (and its paired RECOVERED).
+   * Opt-in: default (unset / 0) keeps unit-test tick timing deterministic
+   * — only the production wiring enables it.
+   */
+  reverifyDelayMs?: number;
+  /**
+   * Task #301: how many times to re-read `buildStatus` (each after
+   * `reverifyDelayMs`) before accepting a non-ok tick as a real failure.
+   * Defaults to 1 when `reverifyDelayMs > 0`.
+   */
+  reverifyAttempts?: number;
+  /**
    * Task #110: called once before the first integrity-check on each
    * tick. When it returns true, the monitor fires a one-shot
    * "sidecar forged" alert through `sink` — this lets the operator
@@ -3215,6 +3234,46 @@ export function startLedgerMonitor(
           "ledger monitor: buildStatus threw, skipping this tick",
         );
         return;
+      }
+      // Task #301: debounce transient integrity failures. A read landing
+      // mid-rewrite (atomic regeneration / checkpoint update of hits.txt)
+      // can momentarily look truncated even though the ledger is healthy
+      // at rest. When re-verify is enabled, re-read after a short delay
+      // before firing; a single clean re-read reclassifies the tick as ok
+      // and suppresses the false-alarm alert (and its paired RECOVERED).
+      // Opt-in (default off) so injected-clock unit tests are unaffected.
+      if (
+        s.status !== "ok" &&
+        opts.reverifyDelayMs != null &&
+        opts.reverifyDelayMs > 0
+      ) {
+        const attempts = Math.max(1, opts.reverifyAttempts ?? 1);
+        for (let attempt = 1; attempt <= attempts; attempt++) {
+          await new Promise<void>((resolve) =>
+            setTimeout(resolve, opts.reverifyDelayMs),
+          );
+          let reread: LedgerIntegrityStatus;
+          try {
+            reread = opts.buildStatus();
+          } catch (err) {
+            log.warn(
+              { err },
+              "ledger monitor: re-verify buildStatus threw; keeping prior non-ok status",
+            );
+            break;
+          }
+          if (reread.status === "ok") {
+            log.info(
+              { failureMode: s.failureMode, attempt },
+              "ledger monitor: transient integrity failure cleared on re-verify; suppressing false-alarm alert",
+            );
+            s = reread;
+            break;
+          }
+          // Still failing — keep the most-recent snapshot and (if more
+          // attempts remain) try again.
+          s = reread;
+        }
       }
       const commonCtx = {
         hits_path: opts.hitsPath,
@@ -3588,6 +3647,11 @@ if (monitorIntervalSeconds != null) {
     hitsPath: defaultChecker.hitsPath,
     checkpointPath: defaultChecker.checkpointPath,
     sidecarPath: `${defaultChecker.hitsPath}.lastok`,
+    // Task #301: re-verify a non-ok tick twice (2s apart) before firing
+    // so a read landing mid-rewrite of hits.txt doesn't flap the public
+    // alert log with spurious truncation alert↔RECOVERED pairs.
+    reverifyDelayMs: 2000,
+    reverifyAttempts: 2,
     consumeBootForgedAlert: defaultChecker.consumeBootForgedAlert,
     consumeForgedAckHistoryDropAlert:
       defaultChecker.consumeForgedAckHistoryDropAlert,

@@ -23,7 +23,7 @@ await db
     leanBinding:
       "theorem GRH_equidistribution (N : ℕ) (χ : DirichletCharacter N) : GRH L(s,χ) ↔ EquidistributedHecke (Λ N)",
     notes:
-      "M-Braid document (submitted May 21, 2026): unconditional GL(2) reformulation of GRH via Arakelov geometry of X₀(N). Reduces RH to spectral theory of the hyperbolic Laplacian on X₀(N). Corollary 1 extends to ζ(s) via X₀(1). M01–M07 chain embedded as proof skeleton with Lean4 stub. M9 and M10 in preparation.",
+      "M-Braid document (submitted May 21, 2026): a PROPOSED GL(2) reformulation of GRH via Arakelov geometry of X₀(N) (paper-level argument, NOT formally verified). It aims to reduce RH to spectral theory of the hyperbolic Laplacian on X₀(N), with Corollary 1 extending to ζ(s) via X₀(1). The M01–M07 chain is a proof skeleton with a Lean4 stub; M9 and M10 in preparation. Status AWAITING — not a machine-checked proof of GRH.",
   })
   .onConflictDoUpdate({
     target: certificatesTable.moduleId,
@@ -45,7 +45,7 @@ await db
       leanBinding:
         "theorem GRH_equidistribution (N : ℕ) (χ : DirichletCharacter N) : GRH L(s,χ) ↔ EquidistributedHecke (Λ N)",
       notes:
-        "M-Braid document (submitted May 21, 2026): unconditional GL(2) reformulation of GRH via Arakelov geometry of X₀(N). Reduces RH to spectral theory of the hyperbolic Laplacian on X₀(N). Corollary 1 extends to ζ(s) via X₀(1). M01–M07 chain embedded as proof skeleton with Lean4 stub. M9 and M10 in preparation.",
+        "M-Braid document (submitted May 21, 2026): a PROPOSED GL(2) reformulation of GRH via Arakelov geometry of X₀(N) (paper-level argument, NOT formally verified). It aims to reduce RH to spectral theory of the hyperbolic Laplacian on X₀(N), with Corollary 1 extending to ζ(s) via X₀(1). The M01–M07 chain is a proof skeleton with a Lean4 stub; M9 and M10 in preparation. Status AWAITING — not a machine-checked proof of GRH.",
     },
   });
 

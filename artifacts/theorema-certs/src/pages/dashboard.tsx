@@ -55,6 +55,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const REBUILD_TOKEN_STORAGE_KEY = "lean-rebuild-token";
+const OPERATOR_MODE_STORAGE_KEY = "theorema-operator-mode";
 const REBUILD_REFEREE_NAME_STORAGE_KEY = "lean-rebuild-referee-name";
 const REBUILD_HISTORY_REFEREE_FILTER_STORAGE_KEY =
   "lean-rebuild-history-referee-filter";
@@ -1252,6 +1253,33 @@ export default function DashboardPage() {
     }
   }, []);
 
+  // Task #301: operator mode. The public dashboard hides all internal
+  // ops tooling (rebuild controls, the live integrity-alert log, sidecar/
+  // forged/stale/reroll detail) so visitors see a clean, calm ledger.
+  // Operators opt in with `?ops=1` (or `?operator=1`); the choice sticks
+  // via localStorage. `?ops=0` exits and clears it.
+  const [operatorMode, setOperatorMode] = useState<boolean>(false);
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("ops") === "0" || params.get("operator") === "0") {
+        window.localStorage.removeItem(OPERATOR_MODE_STORAGE_KEY);
+        setOperatorMode(false);
+        return;
+      }
+      const flag =
+        params.get("ops") === "1" ||
+        params.get("operator") === "1" ||
+        window.localStorage.getItem(OPERATOR_MODE_STORAGE_KEY) === "1";
+      if (flag) {
+        setOperatorMode(true);
+        window.localStorage.setItem(OPERATOR_MODE_STORAGE_KEY, "1");
+      }
+    } catch {
+      // ignore (private mode, SSR, etc.)
+    }
+  }, []);
+
   const handleAckAlert = async (
     alert: { id: string; timestamp: string; message: string },
   ) => {
@@ -1516,6 +1544,8 @@ export default function DashboardPage() {
                     </button>
                   }
                 />
+                {operatorMode && (
+                  <>
                 <button
                   type="button"
                   onClick={() => {
@@ -1573,8 +1603,12 @@ export default function DashboardPage() {
                     {rebuildLogLines.length === 1 ? "" : "s"} so far.
                   </span>
                 ) : null}
+                  </>
+                )}
               </div>
 
+              {operatorMode && (
+                <>
               {(isRebuilding || rebuildLogLines.length > 0) ? (
                 <div
                   className="border border-border bg-black/90 dark:bg-black/70"
@@ -2572,6 +2606,8 @@ export default function DashboardPage() {
                   ) : null}
                 </div>
               ) : null}
+                </>
+              )}
             </>
           ) : (
             <p className="text-xs font-mono text-muted-foreground">
@@ -2625,6 +2661,8 @@ export default function DashboardPage() {
             ) : null}
           </div>
 
+          {operatorMode ? (
+            <>
           {ledgerIntegrity ? (
             <div className="flex items-center gap-2 flex-wrap text-xs font-mono">
               <span className="text-muted-foreground uppercase tracking-wider">
@@ -4569,6 +4607,8 @@ export default function DashboardPage() {
               Checking ledger integrity…
             </p>
           )}
+            </>
+          ) : null}
         </div>
       </Card>
 

@@ -224,11 +224,11 @@ const m10Source = "M10_TheoremaAureum_v1.7|axioms=[]|parent=" + m9ParentSha;
 const m10Sha = sha(m10Source);
 const m10Title = "M10 — TheoremaAureum (Package, axioms = [])";
 const m10Claim =
-  "theorem TheoremaAureum : ∀ N ∈ M9_TABLE, GRH (L_X₀ N). Unconditional. #print axioms TheoremaAureum → [].";
+  "theorem TheoremaAureum : ∀ N ∈ M9_TABLE, GRH (L_X₀ N). The formal scaffold elaborates with #print axioms → [] (classical axioms only). This certifies AXIOM HYGIENE of the package — it is NOT a machine-checked proof of GRH; the GRH (L_X₀ N) targets are placeholder definitions.";
 const m10LeanBinding =
   "theorem TheoremaAureum (N : ℕ) (hN : N ∈ M9_TABLE) : GRH (L_X₀ N) := M9_H2_proved N (M24_READY N hN)";
 const m10Notes =
-  "Final package: 280 GRH theorems for L(s, X₀(N)). The 268 non-CM levels also yield full BSD via C05_Descent (Theorem 1.2). The remaining 12 CM levels reduce BSD to GRH for imaginary quadratic fields of class number 1 (handled separately in M10_CM). Zero axioms beyond ZFC + mathlib — verified by `#print axioms TheoremaAureum → []`.";
+  "Package assembling the M-spine modules for L(s, X₀(N)) across the 280 levels (268 non-CM + 12 CM). The `#print axioms TheoremaAureum → []` result certifies the formal scaffold carries only the classical axiom trio (axiom hygiene) — it does NOT constitute a proof of GRH or BSD. The GRH (L_X₀ N) and BSD propositions referenced here are placeholder definitions, not machine-checked theorems; the underlying Arakelov / Bost–Connes arguments are paper-level and unverified. The GRH/BSD targets stay OPEN.";
 
 await db
   .insert(certificatesTable)

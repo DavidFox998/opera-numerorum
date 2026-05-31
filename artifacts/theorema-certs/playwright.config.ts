@@ -67,6 +67,49 @@ const MANAGED_TEST_IGNORE = process.env.PLAYWRIGHT_DISABLE_MANAGED_IGNORE
   ? []
   : [];
 
+/**
+ * Task #301: the public dashboard now hides every operator-only panel
+ * (Lean rebuild controls, the live ledger-alert wall, and the
+ * sidecar/forged/stale/reroll/monitor integrity detail) behind an
+ * `operatorMode` flag — opted into via `?ops=1`/`?operator=1` or the
+ * `theorema-operator-mode` localStorage key, and cleared via `?ops=0`.
+ *
+ * The entire e2e suite exercises those operator panels (it asserts on
+ * the alert wall, sidecar-ack flows, reroll digest, monitor watchdog,
+ * etc.) and navigates with a bare `page.goto("/")`. Rather than touch
+ * every spec, seed the operator-mode localStorage flag at the single
+ * `use.storageState` opt-in point so the whole harness boots in
+ * operator mode for each origin it may run against (managed Vite port,
+ * the proxy on :80, or an explicit PLAYWRIGHT_BASE_URL override).
+ */
+function originOf(url: string): string | null {
+  try {
+    return new URL(url).origin;
+  } catch {
+    return null;
+  }
+}
+const OPERATOR_STORAGE_ORIGINS = Array.from(
+  new Set(
+    [
+      `http://127.0.0.1:${MANAGED_PORT}`,
+      `http://localhost:${MANAGED_PORT}`,
+      "http://localhost:80",
+      "http://127.0.0.1:80",
+      process.env.PLAYWRIGHT_BASE_URL
+        ? originOf(process.env.PLAYWRIGHT_BASE_URL)
+        : null,
+    ].filter((o): o is string => !!o),
+  ),
+);
+const OPERATOR_STORAGE_STATE = {
+  cookies: [],
+  origins: OPERATOR_STORAGE_ORIGINS.map((origin) => ({
+    origin,
+    localStorage: [{ name: "theorema-operator-mode", value: "1" }],
+  })),
+};
+
 export default defineConfig({
   testDir: "./tests/e2e",
   testIgnore: MANAGED ? MANAGED_TEST_IGNORE : [],
@@ -102,6 +145,8 @@ export default defineConfig({
       process.env.PLAYWRIGHT_BASE_URL ??
       (MANAGED ? `http://127.0.0.1:${MANAGED_PORT}` : "http://localhost:80"),
     trace: "retain-on-failure",
+    // Task #301: boot the harness in operator mode (see comment above).
+    storageState: OPERATOR_STORAGE_STATE,
   },
   ...(MANAGED
     ? {
