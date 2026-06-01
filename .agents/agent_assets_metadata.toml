@@ -258,3 +258,9 @@ id = "AB-g2EfBDWwttHBwEoubn"
 uri = "file://lean-proof-towers/exports/ym-audit-export.meta.json"
 type = "unspecified"
 title = "YM Tower Audit Export — provenance / honesty sidecar"
+
+[[outputs]]
+id = "E9U1ueH2REXaacRWBUFZH"
+uri = "file://lean-proof-towers/exports/KP_Plan_2026-06-01.json"
+type = "unspecified"
+title = "KP_Plan_2026-06-01.json — decomposition plan (read-only record)"
