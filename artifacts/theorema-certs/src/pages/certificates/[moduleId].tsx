@@ -73,6 +73,80 @@ export default function CertificateDetailPage() {
             </p>
           </Card>
 
+          {cert.moduleId === "M3" && (
+            <Card className="p-6 border-primary/50 bg-card" data-testid="card-p5-bridge">
+              <h3 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-4 border-b border-border pb-2">
+                P5 Bridge: 191·κ¹⁶ Approximation
+              </h3>
+              <div className="bg-muted/40 border-l-4 border-primary p-4 font-mono text-sm leading-relaxed space-y-1 overflow-x-auto">
+                <div>q=191 · m=16 · k=4302500806252</div>
+                <div>
+                  | 191·κ¹⁶ − P5 − k·π | ={" "}
+                  <span className="text-primary font-bold">error=0.0382906</span> &lt; 1 ✓
+                </div>
+                <div className="text-muted-foreground">
+                  ratio=9.588e-15 · κ = 4.84330141945946 (15 digits)
+                </div>
+              </div>
+              <p className="font-serif text-sm leading-relaxed text-foreground/85 mt-4">
+                The P5 bridge is a numerical observation, verifiable only at P5 with a
+                15-digit κ. No new mathematics is claimed.
+              </p>
+              <div className="flex flex-wrap items-center gap-3 mt-4 font-mono text-xs">
+                <Link
+                  href="/desert-map#P5"
+                  className="text-primary underline underline-offset-2"
+                  data-testid="link-back-desert-map-p5"
+                >
+                  ← Back to Desert Map · P5
+                </Link>
+                <span className="text-muted-foreground">Related:</span>
+                <Link
+                  href="/certificates/M1"
+                  className="text-primary underline underline-offset-2"
+                  data-testid="link-m3-to-m1"
+                >
+                  M1
+                </Link>
+                <Link
+                  href="/certificates/M4"
+                  className="text-primary underline underline-offset-2"
+                  data-testid="link-m3-to-m4"
+                >
+                  M4
+                </Link>
+                <Link
+                  href="/certificates/M5"
+                  className="text-primary underline underline-offset-2"
+                  data-testid="link-m3-to-m5"
+                >
+                  M5
+                </Link>
+              </div>
+            </Card>
+          )}
+
+          {cert.moduleId === "M1" && (
+            <Card className="p-6 border-border bg-card" data-testid="card-m1-crossref">
+              <h3 className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-4 border-b border-border pb-2">
+                Cross-reference
+              </h3>
+              <p className="font-serif text-sm leading-relaxed text-foreground/85">
+                The classical set S₄ = {"{2, 3, 19, 191}"} anchors the
+                exceptional-prime desert map.
+              </p>
+              <div className="mt-3 font-mono text-xs">
+                <Link
+                  href="/desert-map#S4"
+                  className="text-primary underline underline-offset-2"
+                  data-testid="link-m1-to-desert-map-s4"
+                >
+                  → Desert Map · S₄ classical regime
+                </Link>
+              </div>
+            </Card>
+          )}
+
           <Card className="p-0 border-border bg-card overflow-hidden flex flex-col">
             <div className="p-4 border-b border-border bg-muted/30 flex items-center justify-between">
               <h3 className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">

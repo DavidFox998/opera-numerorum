@@ -40,6 +40,13 @@ function rowClass(k: number): string {
   return "";
 }
 
+// Bridge Status labels: P1-P4 = Exact, P5 = Verified, P6-P20 = Beyond Tolerance.
+function bridgeStatusLabel(status: PrimeRow["bdp"]["status"]): string {
+  if (status === "EXACT") return "Exact";
+  if (status === "VERIFIED") return "Verified";
+  return "Beyond Tolerance";
+}
+
 type Regime = "Classical-Z" | "Bridge" | "Desert";
 
 interface PrimeRow {
@@ -208,17 +215,30 @@ export default function DesertMapPage() {
             <div className="font-mono text-[10px] text-muted-foreground mt-1 break-all">
               sha256 {CERT_PDF_SHA256}
             </div>
+            <div className="font-mono text-[10px] text-muted-foreground mt-1">
+              Bridge defect at P5 = 0.0382906 &lt; 1 (verified, 15-digit κ)
+            </div>
           </div>
         </div>
-        <a
-          href={CERT_PDF_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-3 py-2 border border-primary/50 bg-primary/10 text-primary font-mono text-xs uppercase tracking-wide hover:bg-primary/20 transition-colors shrink-0"
-          data-testid="link-certificate-pdf"
-        >
-          <Download className="w-3.5 h-3.5" /> View PDF
-        </a>
+        <div className="flex flex-col gap-2 shrink-0 sm:items-end">
+          <a
+            href={CERT_PDF_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-3 py-2 border border-primary/50 bg-primary/10 text-primary font-mono text-xs uppercase tracking-wide hover:bg-primary/20 transition-colors"
+            data-testid="link-certificate-pdf"
+          >
+            <Download className="w-3.5 h-3.5" /> View PDF
+          </a>
+          <a
+            href={CERT_PDF_URL}
+            download
+            className="inline-flex items-center gap-2 px-3 py-2 border border-border bg-card text-foreground font-mono text-xs uppercase tracking-wide hover:bg-muted transition-colors"
+            data-testid="link-certificate-pdf-download"
+          >
+            <Download className="w-3.5 h-3.5" /> Certificate PDF
+          </a>
+        </div>
       </Card>
 
       {/* The two concepts, kept distinct -------------------------------- */}
@@ -252,7 +272,7 @@ export default function DesertMapPage() {
 
       {/* Three regimes --------------------------------------------------- */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-5 border-green-500/40 bg-green-500/5">
+        <Card id="S4" className="scroll-mt-24 p-5 border-green-500/40 bg-green-500/5">
           <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-green-700 dark:text-green-400 mb-1">
             P1–P4 · Classical Z
           </div>
@@ -289,7 +309,7 @@ export default function DesertMapPage() {
       </div>
 
       {/* P5 centrepiece -------------------------------------------------- */}
-      <Card className="p-6 border-primary/50 bg-card">
+      <Card id="P5" className="scroll-mt-24 p-6 border-primary/50 bg-card">
         <div className="font-mono text-[11px] text-primary uppercase tracking-[0.18em] mb-4 border-b border-border pb-2">
           The bridge at P5 — verified, with its tolerance
         </div>
@@ -383,8 +403,8 @@ export default function DesertMapPage() {
               <Spokes n={1} label="P5–P20" sub="1 axis" />
             </div>
             <p className="text-center font-serif text-sm text-foreground/80 italic">
-              Only 4 primes satisfy all 12 H4 symmetries. P5 breaks to 1. The
-              desert.
+              Only 4 primes satisfy all 12 H4 symmetries (H4=12). P5 and every
+              prime past it break to a single axis (H4=1). The desert.
             </p>
           </div>
           <div>
@@ -443,6 +463,7 @@ export default function DesertMapPage() {
                 <th className="text-right p-3">wₖ (desert width)</th>
                 <th className="text-right p-3">rₖ</th>
                 <th className="text-left p-3">Regime</th>
+                <th className="text-left p-3">Bridge Status</th>
               </tr>
             </thead>
             <tbody className="font-mono text-xs">
@@ -466,6 +487,19 @@ export default function DesertMapPage() {
                         <span className={`w-1.5 h-1.5 ${rs.dot}`} />
                         {rs.label}
                       </span>
+                    </td>
+                    <td className="p-3 text-foreground">
+                      {p.k === 5 ? (
+                        <Link
+                          href="/certificates/M3"
+                          className="text-primary underline underline-offset-2"
+                          data-testid="link-p5-cert-m3"
+                        >
+                          {bridgeStatusLabel(p.bdp.status)}
+                        </Link>
+                      ) : (
+                        bridgeStatusLabel(p.bdp.status)
+                      )}
                     </td>
                   </tr>
                 );
@@ -501,7 +535,7 @@ export default function DesertMapPage() {
                 >
                   <td className="p-3 text-muted-foreground">P{p.k}</td>
                   <td className="p-3 text-right text-foreground">{p.c_wt_cum}</td>
-                  <td className="p-3 text-right text-muted-foreground">{p.h4_axes_active}</td>
+                  <td className="p-3 text-right text-muted-foreground">{`H4=${p.h4_axes_active}`}</td>
                   <td className="p-3">
                     <StatusChip status={p.bdp.status} />
                   </td>
@@ -583,6 +617,13 @@ export default function DesertMapPage() {
           <ShieldCheck className="w-3.5 h-3.5" /> computed &amp; verifiable data only · no new mathematics claimed
         </div>
       </Card>
+
+      <div
+        className="border-t border-border pt-4 text-xs font-mono text-muted-foreground text-center"
+        data-testid="text-bridge-caveat"
+      >
+        Bridge verifiable only at P5 with 15-digit κ. No new math claimed.
+      </div>
 
       <div className="text-[10px] font-mono text-muted-foreground text-center pt-2">
         Entangled Technologies · exceptional-prime desert map · κ = {meta.kappa} (15 digits)
