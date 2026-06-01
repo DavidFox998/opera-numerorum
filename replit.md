@@ -7,166 +7,45 @@ history. Roadmap → `docs/ROADMAP.md`.
 
 ## Current status — 2026-06-01
 
-- **H1 CONDITIONAL PACKAGING — `Towers/YM/Hw1_Surface.lean` (2026-06-01).** User
-  asked to "prove H1" (`w1 β₀ < 1/7`); the direct proof is infeasible in mathlib
-  v4.12.0 (NO Bessel functions / no `Real.besselI`; NO SU(3) Weyl / Gross–Witten
-  formula; `norm_num` can't decimalise `Real.exp`/Bessel so the `< 1/7` step can't
-  close even in principle; any `sorry` ⟹ `sorryAx`). Per the user's follow-up,
-  H1 is REDUCED to two named OPEN lemmas — the bare `axiom hw1` of the first pass
-  was REMOVED, so the file now has NO `axiom` and is classical trio throughout
-  (over `opaque w1`, `β₀ := 2.079416880124` = CERT_Arb upper endpoint):
-  `w1_eq_weyl I` `[NEEDS_LEMMA]` (Weyl formula `w1 β₀ = weylValue I β₀`),
-  `w1_weyl_beta0_lt I` `[NEEDS_LEMMA]` (K=3 winding sum `weylValue I β₀ < 1/7`),
-  both over the ABSTRACT Bessel stand-in `I` (NOT fabricated) and CERT_Arb-validated
-  only. `w1_beta0_lt_seventh I h_eq h_lt : w1 β₀ < 1/7` = H1 CONDITIONAL on those
-  two (no axiom; trio). `WeylClosedForm`/`weylValue` = the general closed-form
-  shape; `w1_eq_weyl_of_closedForm` bridges it to `w1_eq_weyl` (trio). Genuinely
-  checkable (trio): `cert_value_lt_seventh` (`0.142856757048 < 1/7`) and
-  `beta0_in_cert` (`β₀ ∈ [beta0_lo, beta0_hi]`). The requested `closes_surface_1`
-  was REFUSED as an overstatement → delivered as `lattice_decay_of_weyl_lemmas`,
-  a CONDITIONAL lattice reduction that makes ALL FOUR open inputs explicit (the 2
-  Weyl lemmas + `hOS` + `h_bridge`) and threads them through
-  `Wall256Scaffold.strong_coupling_decay_of_open_inputs`; `w1 < 1/7` is only ONE
-  of THREE open lattice inputs and the conclusion is lattice two-point decay
-  (necessary-not-sufficient for the continuum gap), so it does NOT close Surface
-  #1. Direct-lean EXIT=0 (LEAN_PATH bypass, no `lake env`); all 5 theorems trio;
-  SORRY: 0; NO `axiom`; NOT a brick, NOT a lakefile root. Evidence is OUT-OF-TOWER
+- **H1 AXIOM-DERIVED PACKAGING — `Towers/YM/Hw1_Surface.lean` (2026-06-01).** H1
+  (`w1 β₀ < 1/7`) is DERIVED from two disclosed OPEN `[NEEDS_LEMMA]` axioms (NOT
+  proved). Direct proof infeasible in mathlib v4.12.0 (NO Bessel/`Real.besselI`,
+  NO SU(3) Weyl/Gross–Witten, `norm_num` can't decimalise `Real.exp`/Bessel; any
+  `sorry` ⟹ `sorryAx`), so the two analytic facts are carried as VISIBLE axioms,
+  not hidden in a `sorry`. Over `opaque w1`, `opaque besselI` (Bessel stand-in),
+  `β₀ := 2.079416880124` (CERT_Arb upper endpoint): concrete `def w1_weyl β :=
+  e^{-β}·∑_{k∈ℤ} det[besselI ((i-j)+k) (β/3)]_{3×3}` (Toeplitz det at β/3);
+  `axiom w1_eq_weyl : w1 β₀ = w1_weyl β₀` `[NEEDS_LEMMA]`; `axiom w1_weyl_beta0_lt
+  : w1_weyl β₀ < 1/7` `[NEEDS_LEMMA]`; `theorem hw1 : w1 β₀ < 1/7` (`rw
+  [w1_eq_weyl]; exact w1_weyl_beta0_lt`) — `#print axioms` = trio +
+  `w1_eq_weyl` + `w1_weyl_beta0_lt` exactly. `w1_beta0_lt_seventh := hw1` (alias).
+  Trio-only checkable facts: `cert_value_lt_seventh` (`0.142856757048 < 1/7`),
+  `beta0_in_cert` (`β₀ ∈ [beta0_lo, beta0_hi]`). `lattice_decay_conditional` =
+  the HONEST `closes_surface_1` (REFUSED that name): threads `hw1` + the two
+  further OPEN inputs `hOS`+`h_bridge` through
+  `Wall256Scaffold.strong_coupling_decay_of_open_inputs` to a LATTICE two-point
+  decay shape (necessary-not-sufficient; does NOT close Surface #1). The two
+  axioms are CONSISTENT (`w1`/`besselI` opaque ⟹ model `w1 β₀ = w1_weyl β₀ = 0`).
+  Direct-lean EXIT=0; SORRY: 0; NOT a brick / lakefile root. Evidence OUT-OF-TOWER
   only (CERT_Arb + `w1_repo_normalization.py`). Surface #1 / YM stay OPEN; NO
   mass-gap / μ>0 / Clay claim. Detail → `docs/CHANGELOG.md`.
-- **COMPUTABLE BOST-VIOLATION CHECK — `Towers/BostViolations/Compute.lean`
-  (2026-06-01).** Direction (C) REFUSED, direction (A) DELIVERED. The user's
-  paste of "12 per-discriminant α₀(d) values" was ALL `...` placeholders except
-  `d=32 = 299.31415926535897932384` (= the universal constant α₀=299+π/10, M1,
-  NOT a per-`d` value); the example `27 => 298.1…` has NO source. The attached
-  `alpha_sieve_…pdf` (Fox, "Transcendental Sieve α₀") is a ONE-PAGE abstract —
-  NO per-`d` table, NO embedded primes; it only NAMES `bin/print_S14`, the
-  generator of the SINGLE 14-prime set already in `Defs.S_14`. Repo-wide
-  search reconfirms there is NO per-discriminant α₀(d) family — M1/M3/M4/M5
-  define ONE constant α₀=299+π/10 for the SINGLE exceptional set — so encoding 12
-  distinct α₀(d) would FABRICATE 11 numbers (forbidden). `Alpha0Data.lean` was
-  NOT created. Instead, the honest computable check: `ratLog:ℕ→ℚ` (rounded 3-dp
-  `Real.log` approx, hardcoded rounded constants for 2,3,5,7,11,19,191 +
-  `Nat.log2` fallback for the large S_14 primes),
-  `C_rat S := Σ_{p∈S} ratLog p·p/(p-1)` over ℚ (`Twelve.C` is noncomputable over
-  ℝ), `bostThreshold:=7211/1000` (2√13≈7.2111), `S_of_curve (_X:CM_Curve):=
-  Defs.S_14` (CONSTANT 14-prime certified set for EVERY curve — the source
-  defines ONE exceptional set `S(α₀)`, not a per-`d` family; honors the user's
-  "14-prime data set" ask with REAL S_14),
-  `curves_12 := (exceptional_12.sort (·≤·)).map CM_Curve.mk` (`Finset.toList` is
-  noncomputable in v4.12.0 → sort), `BostViolation`, `BostViolations_12`. `#eval`
-  results: `C_rat S_4 ≈ 11.42` (reproduces M5 C(S_4)≈11.4221), `C_rat S_14 ≈
-  842.42` (all 12 curves identical — constant S_14), `BostViolations_12 = []`
-  (no-violation is ROBUST: ratLog≥0 ⟹ C_rat monotone, S_4⊆S_14). Direct-lean EXIT=0;
-  classical trio; SORRY: 0, no axiom/opaque/sorry; NOT a brick; registered as
-  lakefile root `Towers.BostViolations.Compute`. Per the user's stopping rule
-  (`[]` ⟹ accept no violations in the 12), we STOP — the conjecture
-  `Twelve.TwelveViolation_Surface` stays OPEN and unasserted. Detail →
-  `docs/CHANGELOG.md`.
-- **EXCEPTIONAL-SET SMap BRIDGE — `Towers/Hodge/SMap.lean` (2026-06-01).** Honest
-  cross-reference of `Twelve.lean` with Battle Plan v1.6 Modules 1–5, REAL data
-  only. Ties the 12-curve scaffold to the SINGLE certified α₀ exceptional set:
-  `Sexc := Defs.S_14` (the M4-certified window `S(α₀)∩[1,10^4000]=S_14`),
-  `S_of_curve (_X : CM_Curve) := Sexc` (CONSTANT — the docs define ONE set, not a
-  per-curve family; unused curve arg is explicit `_X`), `C_S4 := Twelve.C
-  Defs.S_4` (noncomputable). M4/M5 results are NAMED ATTESTED Props asserted by
-  NO theorem: `M4_window_eq` (`∀p≤10^4000, S_alpha_0 p ↔ p∈S_14`; inclusive
-  bound matches the `∩[1,10^4000]` window),
-  `M5_BostBound_S4` (`C(S_4)>2√13`), `M5_BostBound_Sexc`. Registered lakefile
-  root `Towers.Hodge.SMap`; direct-lean EXIT=0; classical trio (`Sexc`/
-  `S_of_curve` use the `{propext, Quot.sound}` subset). SORRY: 0, no new axiom,
-  NOT a brick. REFUSED from the drafted spec (impossible or fabricating):
-  `S_of_level d := Finset.filter S_alpha_0 (range 5000)` (S_alpha_0 is a real-π
-  predicate — classically decidable but the `filter` is NONCOMPUTABLE, unusable
-  for `#eval!`; also IGNORES `d`, and `range 5000` ≪ p₅=3.99×10¹² so it could
-  only ever return ⊆ S_4); overwriting `Twelve.S` (honest opaque); `#eval!`/`decide` over
-  `C (S X)` (C is noncomputable over Reals — M5 is an external `arb`
-  certificate). Proves NOTHING; under the real data the violation conjecture has
-  NO support (one set, C only grows: M10 `C(S_5)=40.438`) — it stays OPEN and
-  unasserted. Detail → `docs/CHANGELOG.md`.
-- **EXCEPTIONAL 12-CURVE SET — `Towers/Hodge/Twelve.lean` (2026-06-01).** Real
-  documented CM data only (M10/M13), NO 269. `exceptional_12 : Finset ℕ :=
-  {27,32,36,49,64,81,121,144,169,196,225,256}` (the 12 CM levels `N` of M10/M13
-  Table 1 — the `CM_LIST`; the two NON-square cross-check levels 289,361 are
-  EXCLUDED). `structure CM_Curve where id:ℕ deriving DecidableEq`;
-  `ExceptionalSet₁₂ := exceptional_12.image CM_Curve.mk`; `theorem twelve_card :
-  card = 12 := by decide` (genuine finite fact). `C s := Σ_{p∈s} log p·p/(p-1)`
-  + `BostBound s := C s > 2·√13` (formula ATTESTED in M5
-  `paper/modules/m05-bostbound.tex`). `opaque S : CM_Curve → Finset ℕ` (the
-  per-curve prime set, NOT computed — docs give it numerically only for `S_4`).
-  The violation conjecture is a NAMED OPEN Prop `TwelveViolation_Surface := ∃ X
-  ∈ ExceptionalSet₁₂, ¬ BostBound (S X)`, asserted by NO theorem. Registered as
-  lakefile root `Towers.Hodge.Twelve`; direct-lean EXIT=0; classical trio
-  (`exceptional_12`/`S` use the `{propext, Quot.sound}` subset). REFUSED from the
-  drafted spec (would break the locks): `native_decide` (emits
-  `Lean.ofReduceBool`, off-trio) → `decide`; `theorem twelve_check := by sorry`
-  (emits `sorryAx`) → the named open Prop; `opaque S := sorry` → bodyless
-  `opaque`. SORRY: 0, no new axiom, NOT a brick. Proves NOTHING — no
-  Hodge/BSD/Bost-violation claim; the conjecture stays OPEN. Detail →
-  `docs/CHANGELOG.md`.
-- **EXCEPTIONAL-SET α₀ DATA LAYER — `Towers/Hodge/Defs.lean` (2026-06-01).** Formalization
-  Step 1, user-chosen **Option 2** (number-theory layer only). Pure DEFINITIONS
-  file (no proofs / no computation / no `#eval`): `alpha_0 := 299 + π/10`,
-  `nearestIntDist x := |x - round x|` (distance to nearest integer, NOT abs),
-  `S_alpha_0 p := Nat.Prime p ∧ nearestIntDist (p·α₀) < 1/p`, `S_14 : Finset ℕ`
-  (the REAL 14 certified M4 primes, copied verbatim from
-  `paper/modules/m04-esete4.tex` — `2,3,19,191,3993746143633,…,
-  3494164289073996361661384853541`), `S_4 := {2,3,19,191}`. Registered as
-  lakefile root `Towers.Hodge.Defs`; direct-lean verify EXIT=0; `#print axioms`
-  classical trio (`S_14`/`S_4` use the `{propext, Quot.sound}` subset). SORRY: 0,
-  no new axiom, NOT a brick. DROPPED from the original spec (would not compile /
-  was false): `import Mathlib.NumberTheory.CM` + `CM_Curve` (do NOT exist in
-  v4.12.0), `BostBound`/`ExceptionalSet₂₆₉`/`AnalyticObstruction`/`C`, the three
-  `:= sorry` placeholders (sorry⟹sorryAx), and the fabricated `S_14` list
-  (`379,757,911,…` — NOT in the certificate). Proves NOTHING; asserts NO
-  `S_14 =` exceptional-set equality; NO Hodge/BSD/mass-gap claim. Detail →
-  `docs/CHANGELOG.md`.
-- **TOWER SEPARATION — COMPILING CanonicalSurfaces REGISTRIES (2026-06-01).**
-  Deleted the doc-only `Towers/CanonicalSurfaces.lean` and replaced it with TWO
-  COMPILING registries split by tower: `Towers/YM/CanonicalSurfaces.lean` (`def
-  YM_Clay_Open : Prop` = `(∀ T, MassGap_YM4_Clay_Surface T) ∧
-  kotecky_preiss_criterion_Surface ∧ (∀ d L n [NeZero L][NeZero n] U,
-  YM_mass_gap_Surface …)`) and `Towers/NS/CanonicalSurfaces.lean` (`def NS_Open
-  : Prop` = `(∀ u, enstrophy_bound_global_Surface u) ∧ (∀ s,
-  leray_proj_ker_eq_grad_Surface s)`). Both compile (direct-lean bypass), both
-  `#print axioms` = classical trio, both OPEN (conjunctions of hypotheses,
-  asserted by NO theorem). Added as `lakefile.lean` roots. They only NAME/group
-  the existing open surfaces — discharge NOTHING; NO "YM proven" / "mass gap" /
-  "NS solved" claim. NS file created under an EXPLICIT user unfreeze order,
-  purely additive (NS otherwise still frozen). VACUOUS count UNCHANGED at 11
-  (2 deprecated + 9 flagged) — the false "Vacuous: 0" was REFUSED. SORRY: 0;
-  classical trio. Per-file detail → `docs/CHANGELOG.md`.
-- **VACUOUS SURFACE PURGE + HONEST REGISTRY (2026-05-31).** Audit found 11 of
-  the post-purge named `*_Surface` Props were VACUOUS under the stand-in defs
-  (`spectral_radius_def := 1` / `Decay_constant_real := 1` ⟹ `1 < 1`
-  unsatisfiable; `Plaquette_action_def := 0` / `Polymer_activity_def := 0` etc.
-  ⟹ `0 ≤ 1` trivially true) — they encode nothing. The 2 fully-vacuous files
-  moved to `Towers/Deprecated/` (`UniformGap_Placeholder`, `Perron_Placeholder`;
-  lakefile roots renamed); the other 9 are flagged in-place with a VACUOUS-AUDIT
-  header in `Attempts/{ClusterExpansion,T_g}.lean`. The 6 GENUINE non-trivial
-  open surfaces were indexed in the doc-only `Towers/CanonicalSurfaces.lean`
-  (SUPERSEDED 2026-06-01 by the split compiling registries `Towers/YM/` +
-  `Towers/NS/CanonicalSurfaces.lean` — see top bullet):
-  real-object — NS `Leray.leray_proj_ker_eq_grad`, NS
-  `Enstrophy.enstrophy_bound_global` (simplified `‖u t 0‖` seminorm), YM
-  `Transfer.kotecky_preiss_criterion` (real `T_L`), YM
-  `Transfer.trivial_polymer_set_null` (real `haarN`); shadow-object
-  (necessary-not-sufficient, SCALAR operator) — YM `Clay.MassGap_YM4_Clay`, YM
-  `MassGap574.YM_mass_gap`. Plus 4 abstract placeholder-bundle hypotheses
-  (`OSHilbert`×3, `T_g.Transfer_compact`). NO `iff` / `NSGlobalRegularity` claim
-  — FOUR of the six are YM, only TWO are NS. Registry placed OUTSIDE `Towers/NS/`
-  to respect the NS freeze (it only NAMES surfaces; no import/modification of
-  NS). SORRY: 0; classical trio; every surface stays OPEN.
-- **SORRY PURGE (2026-05-31).** Every live `sorry` proof-term in `Towers/`
-  converted to a named open `Prop` hypothesis (Option B); BSD `axiom`s →
-  hypotheses. Pattern: `theorem foo (a) : Goal := by sorry` ⟹
-  `def Foo_Surface (a) : Prop := Goal` + `theorem foo (a) (h : Foo_Surface a) :
-  Goal := h`. Logical hygiene only — discharges NO surface, proves NO new
-  result. Grep audit across `Towers/`: 0 bare `sorry`, 0 `axiom`, 0 `admit`
-  proof-terms (remaining matches are docstring prose). Dashboard carries the
-  HONEST "Open-surface status" badge (`YM: OPEN (conditional) · HODGE: OPEN via
-  AnalyticObstruction · NS: OPEN · SORRY: 0`). Done under a one-pass user
-  override of the NS freeze + YM locks; those locks remain in force for future
-  work. Per-file detail → `docs/CHANGELOG.md`.
+- **Older 2026-06-01 leaves (full detail → `docs/CHANGELOG.md`):** Bost-violation
+  check `Towers/BostViolations/Compute.lean` (computable `C_rat` over ℚ,
+  `BostViolations_12 = []` — no violations; conjecture stays OPEN); Hodge
+  `SMap.lean` / `Twelve.lean` / `Defs.lean` (12-curve `exceptional_12` + real
+  M4-certified `S_14`, `opaque S` per-curve set; `TwelveViolation_Surface` OPEN,
+  unasserted; α₀ = 299+π/10 is ONE constant, NOT a per-`d` family — no
+  fabrication); compiling `CanonicalSurfaces` registries split `Towers/YM/` +
+  `Towers/NS/` (`YM_Clay_Open`, `NS_Open` — name/group only, discharge nothing).
+  All classical trio, SORRY: 0, prove NOTHING new.
+- **VACUOUS SURFACE PURGE + SORRY PURGE (2026-05-31; detail → `docs/CHANGELOG.md`).**
+  Every live `sorry` proof-term in `Towers/` → named open `Prop` hypothesis
+  (`theorem foo := by sorry` ⟹ `def Foo_Surface : Prop` + `theorem foo (h) := h`);
+  BSD `axiom`s → hypotheses. Audit: 11 named `*_Surface` Props were VACUOUS under
+  stand-in defs (2 fully-vacuous files → `Towers/Deprecated/`, 9 flagged in
+  `Attempts/`); 6 GENUINE open surfaces (4 YM, 2 NS) indexed by the split
+  registries above. Grep: 0 bare `sorry`/`axiom`/`admit` proof-terms. Logical
+  hygiene only — discharges NO surface. SORRY: 0; classical trio.
 - **NS Tower 540 — weak→strong chain, Phases 1–6 COMPLETE, FROZEN at the Clay
   boundary (Status: Open).** Milestone `NS-540-phase6-clay-boundary` @ checkpoint
   `c5f29fb4390e5dda83ffdbfcae5dea2333cf5c12`. Both Clay surfaces stay OPEN:
