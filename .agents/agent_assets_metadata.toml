@@ -246,3 +246,9 @@ id = "lkMFxfecPHnLt4ePgrqu-"
 uri = "file://docs/Wall256_Conditional_Report.pdf"
 type = "pdf"
 title = "Wall256 — SU(3) Strong-Coupling Conditional Reduction (honest report)"
+
+[[outputs]]
+id = "IJnKdqyZ__xdPKiJxz4df"
+uri = "file://lean-proof-towers/exports/ym-audit-export.json"
+type = "unspecified"
+title = "YM Tower Audit Export (machine-ingestible JSON)"
