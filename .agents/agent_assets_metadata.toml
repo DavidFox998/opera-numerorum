@@ -251,7 +251,7 @@ title = "Wall256 — SU(3) Strong-Coupling Conditional Reduction (honest report)
 id = "IJnKdqyZ__xdPKiJxz4df"
 uri = "file://lean-proof-towers/exports/ym-audit-export.json"
 type = "unspecified"
-title = "YM Tower Audit Export (strict-schema contract JSON)"
+title = "YM Tower Audit Export (contract JSON)"
 
 [[outputs]]
 id = "AB-g2EfBDWwttHBwEoubn"
