@@ -17,4 +17,5 @@
 - [Deterministic docs-visual toolchain](docs-visual-toolchain.md) — build figures hand-authored (no AI): DejaVu fonts, verify via ephemeral `uvx cairosvg`, mono lacks long arrows ⟹/⟺ (use ⇒/⇔), honesty review mandatory.
 - [pi/10 exceptional-primes sieve](pi10-exceptional-primes-sieve.md) — enumerate CF convergents+semiconvergents (not random ints) + exact integer test + margin certificate; 20 primes ≤10^4000; BPSW is not a formal proof.
 - [Stale composite-lib .d.ts](stale-composite-lib-dts.md) — leaf artifact typecheck shows phantom TS2305/TS7006 from stale gitignored lib `dist/*.d.ts`; fix is `typecheck:libs`, NOT editing the consumer.
+- [Finset.toList noncomputable v4.12.0](finset-tolist-noncomputable.md) — #eval over a Finset fails ("no executable code"); use `Finset.sort (·≤·)` to materialize a List, not toList.
 - [Explicit 4x4 det in v4.12.0](explicit-matrix-det-v4_12.md) — no det_fin_four; Laplace via PLAIN simp (not simp only)+Fin.succAbove/Fin.lt_def then ring; φ∉spectrum via spectrum.not_mem_iff+isUnit_iff_isUnit_det; `-/` in docstring closes it early.

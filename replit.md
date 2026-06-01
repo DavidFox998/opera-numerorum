@@ -7,6 +7,29 @@ history. Roadmap → `docs/ROADMAP.md`.
 
 ## Current status — 2026-06-01
 
+- **COMPUTABLE BOST-VIOLATION CHECK — `Towers/BostViolations/Compute.lean`
+  (2026-06-01).** Direction (C) REFUSED, direction (A) DELIVERED. The user's
+  paste of "12 per-discriminant α₀(d) values" was ALL `...` placeholders except
+  `d=32 = 299.31415926535897932384` (= the universal constant α₀=299+π/10, M1,
+  NOT a per-`d` value); the example `27 => 298.1…` has NO source. Repo-wide
+  search reconfirms there is NO per-discriminant α₀(d) family — M1/M3/M4/M5
+  define ONE constant α₀=299+π/10 for the SINGLE exceptional set — so encoding 12
+  distinct α₀(d) would FABRICATE 11 numbers (forbidden). `Alpha0Data.lean` was
+  NOT created. Instead, the honest computable (A): `ratLog:ℕ→ℚ` (rounded 3-dp
+  `Real.log` approx, hardcoded rounded constants for 2,3,5,7,11,19,191 +
+  `Nat.log2` fallback),
+  `C_rat S := Σ_{p∈S} ratLog p·p/(p-1)` over ℚ (`Twelve.C` is noncomputable over
+  ℝ), `bostThreshold:=7211/1000` (2√13≈7.2111), `S_of_curve (_X:CM_Curve):=
+  Defs.S_4` (CONSTANT — docs give S_X numerically only for S_4),
+  `curves_12 := (exceptional_12.sort (·≤·)).map CM_Curve.mk` (`Finset.toList` is
+  noncomputable in v4.12.0 → sort), `BostViolation`, `BostViolations_12`. `#eval`
+  results: `C_rat S_4 = 19531103/1710000 ≈ 11.42` (reproduces M5 C(S_4)≈11.4221),
+  all 12 curves identical (≈11.42), `BostViolations_12 = []`. Direct-lean EXIT=0;
+  classical trio; SORRY: 0, no axiom/opaque/sorry; NOT a brick; registered as
+  lakefile root `Towers.BostViolations.Compute`. Per the user's stopping rule
+  (`[]` ⟹ accept no violations in the 12), we STOP — the conjecture
+  `Twelve.TwelveViolation_Surface` stays OPEN and unasserted. Detail →
+  `docs/CHANGELOG.md`.
 - **EXCEPTIONAL-SET SMap BRIDGE — `Towers/Hodge/SMap.lean` (2026-06-01).** Honest
   cross-reference of `Twelve.lean` with Battle Plan v1.6 Modules 1–5, REAL data
   only. Ties the 12-curve scaffold to the SINGLE certified α₀ exceptional set:

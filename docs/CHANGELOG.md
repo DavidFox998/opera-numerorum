@@ -6,6 +6,51 @@ this file is the version history.
 
 ---
 
+## Computable Bost-violation check — `Towers/BostViolations/Compute.lean` (2026-06-01)
+
+A COMPUTABLE (`#eval`-able) rational sanity check of the Bost sum over the REAL
+explicit prime set `S_4 = {2,3,19,191}` (`Defs.S_4`), run across the 12 documented
+CM curves (`Twelve.ExceptionalSet₁₂`). NOT a brick; proves NO theorem; asserts NO
+violation. Direct-lean verify EXIT=0; classical trio; SORRY: 0.
+
+Why direction (C) was REFUSED (no fabrication):
+
+- The user's paste of "12 per-discriminant α₀(d) values" contained only `...`
+  placeholders, except `d=32 = 299.31415926535897932384` — which is just the
+  universal constant α₀ = 299 + π/10 (M1), not a per-`d` value. The template's
+  example `27 => 298.1…` has NO source.
+- Repo-wide search confirms there is NO per-discriminant `α₀(d)` family anywhere.
+  M1/M3/M4/M5 (`paper/modules/m01-alpha0def.tex`, etc.) define ONE constant
+  α₀ = 299 + π/10 for the SINGLE exceptional set. Encoding 12 distinct `α₀(d)`
+  would require fabricating 11 numbers — forbidden by the honesty lock. So
+  `Alpha0Data.lean` was NOT created; no opaque, no `sorry`, no invented data.
+
+What the file does provide (direction A, the honest verification):
+
+- `ratLog : ℕ → ℚ` — rounded (3-dp) rational approximation of `Real.log`,
+  hardcoded rounded constants for the primes in `S_4`/`S_14`
+  (2,3,5,7,11,19,191) + `Nat.log2` fallback.
+  APPROXIMATION ONLY; the certified `C(S_4) > 2√13` is M5's external `arb`
+  certificate, not this `#eval`.
+- `C_rat (S) := Σ_{p∈S} ratLog p · p/(p-1)` over ℚ (computable; `Twelve.C` is
+  noncomputable over ℝ). `#eval C_rat S_4 = 19531103/1710000 ≈ 11.42` — reproduces
+  M5's `C(S_4) ≈ 11.4221` to rounding.
+- `bostThreshold := 7211/1000` (2√13 ≈ 7.2111); the ≈ 11.42 vs ≈ 7.21 margin is far
+  larger than the rounding error, so the test result is rounding-independent.
+- `S_of_curve (_X : CM_Curve) := Defs.S_4` — CONSTANT for every curve (the docs give
+  `S_X` numerically only for `S_4`; explicit unused `_X` flags curve-independence).
+- `curves_12 := (exceptional_12.sort (· ≤ ·)).map CM_Curve.mk` — COMPUTABLE list of
+  the same 12 levels (`Finset.toList` is noncomputable in v4.12.0, so we sort).
+- `BostViolation`, `BostViolations_12 := []` — the honest result: NO violations among
+  the 12 (C only grows: C(S_4)≈11.42, M10 C(S_5)≈40.4, both ≫ 2√13). The conjecture
+  `Twelve.TwelveViolation_Surface` stays OPEN and unasserted.
+
+Registered as lakefile root `Towers.BostViolations.Compute` (NOT in `check-towers.sh`
+BRICKS). Per the user's stopping rule: `#eval BostViolations_12` printed `[]`, so we
+accept no violations in the 12 and stop.
+
+---
+
 ## Exceptional-set SMap bridge — `Towers/Hodge/SMap.lean` (2026-06-01)
 
 Honest cross-reference of `Towers/Hodge/Twelve.lean` with Battle Plan v1.6
