@@ -20,11 +20,24 @@ So for small t, LHS > RHS. No `c>0` works. The `e^{-c/t}` factor is an
 OFF-diagonal (x≠y) phenomenon only.
 
 **Two regimes don't mix:**
-- small-t (t→0⁺): honest shape is `≤ C/t⁴`, NO exponential. TRUE but OPEN —
-  needs a `∑'poly·e^{-t·quad} ≤ C·t⁻ᵏ` tsum-vs-Gaussian-integral / lattice
-  comparison absent from mathlib v4.12.0.
+- small-t (t→0⁺): honest shape is `≤ C/t⁴`, NO exponential. TRUE and **PROVEN**
+  (trio-only, sorry-free) — see below.
 - large-t (t→∞): governed by the **spectral gap** = min non-trivial Casimir;
   decay is `e^{-(minC₂)·t}`, never `e^{-c/t}`.
+
+**Small-t poly bound IS PROVEN — do NOT re-derive.** `Towers/YM/HeatTraceBound.lean`
+proves `heat_trace_poly_bound : ∃C>0, ∀t∈Ioc 0 1, K t ≤ C·t^(-4)` AND the
+named-object corollary `heat_envelope_small_t : ∃C>0, ∀t∈Ioo 0 1,
+Heat_kernel_envelope_real t ≤ C·t^(-4)` (bridged by `K t =
+Heat_kernel_envelope_real t`). Both classical-trio, NOT bricks. The mathlib
+`∑'poly·e^{-t·quad} ≤ C·t⁻ᵏ` gap is CLOSED in-tower via: degree-7 antidiagonal
+envelope (dim is degree 3 ⟹ dim² degree 6, +1 antidiagonal multiplicity ⟹ k⁷;
+any "dim²≤K(m+n)⁴" premise is off by two powers), `gaussian_moment_7`
+(∫₀^∞x⁷e^{-ax²}=3/a⁴ via `integral_rpow_mul_exp_neg_mul_rpow`+Γ(4)=6),
+`y⁵e^{-y}≤120` (`Real.pow_div_factorial_le_exp` n=5), split at N=⌊1/√t⌋+2
+(head ≤64N⁸ via exp≤1; tail via telescoping ∑1/(k+N)³). It is an UPPER bound
+only — no matching lower bound / optimality is claimed; NOT a mass gap, NOT
+Varadhan. YM stays Open.
 
 **Spectral gap (provable, trio-only, landed in `Towers/YM/CasimirGap.lean`):**
 `Casimir_SU3_explicit (m,n) = m²+n²+mn+3m+3n = 3·C₂`; min over `(m,n)≠(0,0)`

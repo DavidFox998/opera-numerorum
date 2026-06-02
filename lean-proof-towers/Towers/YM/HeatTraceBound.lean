@@ -59,6 +59,7 @@ Proof outline.
 
 import Towers.YM.Casimir
 import Towers.YM.WeylDim
+import Towers.YM.PeterWeylHeat
 import Mathlib.Topology.Algebra.InfiniteSum.Ring
 import Mathlib.Algebra.Order.Antidiag.Prod
 import Mathlib.Data.Finset.NatAntidiagonal
@@ -71,6 +72,7 @@ open TheoremaAureum.Towers.YM.ClusterExpansion
 open TheoremaAureum.Towers.YM.PeterWeyl (PeterWeyl_Summable_SU3)
 open TheoremaAureum.Towers.YM.Casimir (Casimir_SU3_explicit_real_ge_quadratic)
 open TheoremaAureum.Towers.YM.WeylDim (dim_SU3 dim_cubic_bound)
+open TheoremaAureum.Towers.YM.PeterWeylHeat (Heat_kernel_envelope_real)
 open Finset
 
 /-! ### Definition of `K (t)` -/
@@ -881,5 +883,50 @@ theorem heat_trace_poly_bound :
   calc K t ≤ ∑' k : ℕ, g k := h_env
     _ ≤ (Chead + Ctail) / t ^ 4 := h_tsum_le
     _ = (Chead + Ctail) * t ^ (-4 : ℝ) := h_rpow_eq
+
+/-! ### H4 — bridge to `Heat_kernel_envelope_real` (small-`t` polynomial bound) -/
+
+/-- The iterated heat-trace `K t` equals the product-form Peter–Weyl envelope
+`Heat_kernel_envelope_real t` (from `Towers/YM/PeterWeylHeat.lean`) for every
+`t > 0`. Both are the same spectral series `(dim λ)² · exp(-t·C₂(λ))` summed
+over `ℕ × ℕ`; `K` is the iterated `∑'_m ∑'_n` form, the envelope is the
+`∑'_{(m,n)}` product form. Bridged via `K_eq_tsum_prod` + `tsum_congr`. -/
+private lemma K_eq_envelope (t : ℝ) (ht : 0 < t) :
+    K t = Heat_kernel_envelope_real t := by
+  rw [K_eq_tsum_prod t ht]
+  unfold Heat_kernel_envelope_real
+  refine tsum_congr (fun mn => ?_)
+  symm
+  show (Weyl_dim_SU3_explicit mn : ℝ) ^ 2 *
+        Real.exp (-(t * (Casimir_SU3_explicit mn : ℝ))) = summand t mn
+  unfold summand
+  have hprod : (mn.1, mn.2) = mn := rfl
+  rw [hprod]
+  congr 1
+  ring
+
+/-- **H4 — honest small-`t` polynomial bound for the SU(3) heat-kernel
+envelope.** There is a constant `C > 0` with
+`Heat_kernel_envelope_real t ≤ C · t^(-4)` for every `t ∈ (0, 1)`.
+
+This is the expected small-`t` polynomial shape (`t^{-4} = t^{-d/2}`,
+`d = dim SU(3) = 8`) — an UPPER bound with exponent 4, NOT a proven optimality
+(no matching lower bound is claimed). Obtained from `heat_trace_poly_bound`
+via `K t = Heat_kernel_envelope_real t`.
+It carries NO exponential `e^{-c/t}` factor: at the identity the heat kernel
+blows up polynomially as `t → 0⁺`, so any `C · e^{-c/t} / t⁴` bound with `c > 0`
+would be FALSE there (the geodesic distance vanishes on the diagonal, so the
+Varadhan factor is `e^0 = 1`). NOT a mass gap, NOT the Varadhan off-diagonal
+asymptotic; YM tower stays `Status: Open`. Classical trio, no `sorry`. -/
+theorem heat_envelope_small_t :
+    ∃ C : ℝ, 0 < C ∧ ∀ t ∈ Set.Ioo (0:ℝ) 1,
+      Heat_kernel_envelope_real t ≤ C * t ^ (-4 : ℝ) := by
+  obtain ⟨C, hC, hbound⟩ := heat_trace_poly_bound
+  refine ⟨C, hC, ?_⟩
+  rintro t ⟨ht0, ht1⟩
+  rw [← K_eq_envelope t ht0]
+  exact hbound t ⟨ht0, ht1.le⟩
+
+-- #print axioms heat_envelope_small_t
 
 end TheoremaAureum.Towers.YM.HeatTraceBound
