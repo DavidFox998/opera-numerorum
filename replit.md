@@ -195,6 +195,14 @@ consuming typecheck reports missing exports rebuild the composite lib
 declarations with `pnpm run typecheck:libs` (its `exports` resolves through the
 project-reference `dist/*.d.ts`, which can go stale).
 
+**`/v2.3` page (`src/pages/v23.tsx`).** The v2.3 "paper" view — three sections:
+Build Table (four H4 modules, real file SHA-256 + honest status
+LOCKED/EMPIRICAL/CONJECTURE), Data (the four `Towers/YM/*.data.json` rendered
+verbatim via `?raw`), Colophon (`docs/COLOPHON.md` verbatim via the `@docs`
+alias). Honesty-locked: C13 law shown as CONJECTURE (6/6 empirical), P5
+`digit_len 14`, H4Core manifest SHA flagged as a RECORD hash (not the file
+hash). Wired in `App.tsx` + sidebar nav.
+
 ## Wall256 — SU(3) conditional reduction (research phase)
 
 `Towers/YM/Wall256_Scaffold.lean` (commit `8eeab54`, tracked on main, NOT a

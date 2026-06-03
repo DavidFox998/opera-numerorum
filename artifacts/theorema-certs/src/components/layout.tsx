@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Database, FileText, Activity, Box, ScrollText, Sigma, Landmark, Infinity, Map } from "lucide-react";
+import { Database, FileText, Activity, Box, ScrollText, Sigma, Landmark, Infinity, Map, BookOpen } from "lucide-react";
 import { useHealthCheck } from "@workspace/api-client-react";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -61,6 +61,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Link href="/lineage" className={`flex items-center gap-3 px-3 py-2 text-sm font-mono transition-colors ${location === "/lineage" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`} data-testid="link-lineage">
             <Landmark className="w-4 h-4" />
             <span>Lineage</span>
+          </Link>
+          <Link href="/v2.3" className={`flex items-center gap-3 px-3 py-2 text-sm font-mono transition-colors ${location === "/v2.3" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`} data-testid="link-v23">
+            <BookOpen className="w-4 h-4" />
+            <span>v2.3 Paper</span>
           </Link>
         </nav>
 

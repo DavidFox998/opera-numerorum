@@ -58,6 +58,9 @@ export default defineConfig({
         "..",
         "lean-proof-towers",
       ),
+      // Repo-level docs (COLOPHON.md, CHANGELOG.md) imported `?raw` for the
+      // v2.3 publication page — single source of truth, no drift.
+      "@docs": path.resolve(import.meta.dirname, "..", "..", "docs"),
     },
     dedupe: ["react", "react-dom"],
   },
