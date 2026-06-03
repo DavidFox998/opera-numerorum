@@ -5,8 +5,22 @@ notes, proof sketches, drift footnotes, env vars, stack, where-things-live,
 gotchas). `replit.md` is the live-ops doc; the CHANGELOG is the version
 history. Roadmap → `docs/ROADMAP.md`.
 
-## Current status — 2026-06-02
+## Current status — 2026-06-03
 
+- **RH growth-contradiction skeleton — `Towers/RH/GrowthContradiction.lean`
+  (2026-06-03; full detail → `docs/CHANGELOG.md`).** Honest recreation of David
+  Fox's flawed RH fragment as a CONDITIONAL REDUCTION: the **genuine** RH
+  (mathlib's `_root_.RiemannHypothesis`, aliased `RiemannHypothesisStmt`; the
+  legacy `Prop := True` stub is untouched + not imported) is DERIVED from two
+  named OPEN hypotheses — `GrowthBound` (`|ζ(½+it)| ≤ C(log t)²`; far stronger
+  than Lindelöf, UNPROVEN + in fact FALSE by Ω-results + RH-circular) and a
+  CONDITIONAL `ZeroRepulsion` — NEITHER discharged. The combinator
+  `riemannHypothesis_of_growth_and_repulsion` is a genuine proof whose only real
+  math is a pure-calculus comparison (`exp_loglog_dominates_sq`); kept
+  non-vacuous by making `ZeroRepulsion` conditional on an off-line zero. Fresh
+  `Towers.RH` namespace; classical trio, `sorry`/`sorryAx`-free; NOT a brick /
+  NOT a lakefile root; direct-lean verified EXIT 0 (tag unresolved → no lake).
+  Proves NOTHING new about RH; NO "RH proved / Lindelöf proved" claim.
 - **BUILD_MANIFEST v2.3 VERIFIED (2026-06-02; author D. Fox, ORCID
   0009-0008-1290-6105).** All four H4 modules re-verified in order A → A.1 → E →
   D: core builds, every leaf compiles EXIT 0, no forbidden terms, `axioms=0`,

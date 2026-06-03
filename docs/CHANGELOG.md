@@ -6,6 +6,47 @@ this file is the version history.
 
 ---
 
+## RH growth-contradiction skeleton — `Towers/RH/GrowthContradiction.lean` (2026-06-03)
+
+Honest Lean recreation of David Fox's flawed RH fragment
+(`attached_assets/main_(31)_1780471893075.tex`) as a CONDITIONAL REDUCTION — the
+**genuine** Riemann Hypothesis (mathlib's `_root_.RiemannHypothesis`, aliased
+`RiemannHypothesisStmt`, NOT the legacy `Prop := True` stub, which is untouched
+and not imported) is DERIVED from two named OPEN hypotheses that are NEVER
+discharged. Fresh `TheoremaAureum.Towers.RH` sub-namespace (mirrors
+`ZeroDensity.lean`); imports the real `riemannZeta`. Classical trio
+`{propext, Classical.choice, Quot.sound}`, `sorry`/`admit`/`sorryAx`/
+`native_decide`-free (verified by appended `#print axioms`). NOT a brick, NOT a
+lakefile root; verified direct (EXIT 0) via a hand-built `LEAN_PATH` over the
+v4.12.0 toolchain (no lake — the `v4.12.0` tag was unresolved, so `lake env`
+would have wiped the oleans). Proves NOTHING new about RH; makes NO "RH proved /
+Lindelöf proved" claim. Milestone is prose only (main-agent git is write-blocked).
+
+**The paper does NOT prove RH (honest assessment, baked into the file banner):**
+
+- `GrowthBound` (`∃ C>0, ∀ t≥2, |ζ(½+it)| ≤ C·(log t)²`) — the paper's growth
+  Lemma. FAR stronger than Lindelöf (`≪ t^ε`), **unproven**, and in fact **FALSE**
+  (classical Ω-results — Titchmarsh §8, Montgomery — show `|ζ(½+it)|` exceeds any
+  fixed power of `log t` infinitely often, so no such `C` exists). Any *true*
+  bound of comparable shape follows from RH, so using it to prove RH is
+  **circular**. The fragment also cites a nonexistent "Lemma 5.1".
+- `ZeroRepulsion` — the "standard zero-repulsion" step, stated CONDITIONALLY (*if*
+  a nontrivial off-line zero exists, *then* `|ζ(½+it)| ≥ exp(c₁ log t/log log t)`
+  for arbitrarily large `t`). Asserted as "standard" in the fragment but not
+  proved there; the precise bound is unavailable in mathlib v4.12.0.
+
+The combinator `riemannHypothesis_of_growth_and_repulsion : GrowthBound →
+ZeroRepulsion → RiemannHypothesisStmt` is a genuine Lean proof, but its only
+substantive math is a pure-calculus comparison `exp_loglog_dominates_sq`:
+`exp(c₁ log t/log log t)` eventually dominates `C·(log t)²` (substitute
+`v = log log t`, reduce to `log C + 2v < c₁ exp v/v`, use `exp v/v² → ∞`). No RH
+content. **Non-vacuity:** `ZeroRepulsion` is deliberately conditional on an
+off-line zero — were it unconditional it would contradict `GrowthBound` outright
+and the combinator would collapse to ex-falso without the calculus lemma; as
+stated the two hypotheses are jointly satisfiable (any world with no off-line
+zeros), so the proof genuinely exercises the comparison. Both hypotheses stay
+OPEN, undischarged — discharging either is mathlib-scale / circular work.
+
 ## H4 strata modules A / A.1 / E / D + BUILD_MANIFEST v2.3 (2026-06-02)
 
 Shared mathlib-free engine + four leaves over the real W(H₄) point-stabilizer
