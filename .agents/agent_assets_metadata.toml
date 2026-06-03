@@ -384,3 +384,27 @@ id = "qXfeWIn8R-94F-3WakCE1"
 uri = "file://experiments/z-proof-dump/UNIFIED_FIT.json"
 type = "unspecified"
 title = "UNIFIED_FIT.json (R² null — no T=0 variance)"
+
+[[outputs]]
+id = "jATuKccQU0RmPV6L0_bRg"
+uri = "file://export/THEOREMA_AUREUM_143_full_repo_export.tar.gz"
+type = "unspecified"
+title = "Theorema Aureum 143 — Full Repo Export (.tar.gz)"
+
+[[outputs]]
+id = "6fH7h6pzXxXu77LBDXSz7"
+uri = "file://export/SHA256SUMS.txt"
+type = "text"
+title = "Per-file SHA256 checksums"
+
+[[outputs]]
+id = "KK62t9fg3Ojnky3hjdztw"
+uri = "file://export/EXPORT_DIAGNOSTIC.md"
+type = "text"
+title = "Export diagnostic (module + validation status)"
+
+[[outputs]]
+id = "2FioKCqVVZuFhCYq0kbpZ"
+uri = "file://export/EXPORT_INDEX.txt"
+type = "text"
+title = "Export index (categories + metadata)"
