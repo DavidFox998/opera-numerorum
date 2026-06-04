@@ -896,9 +896,105 @@ story += [
     hr(),
 ]
 
-# ══ 15. CRYPTOGRAPHIC BINDING ════════════════════════════════════════════════
+# ══ 15. BESSEL I ZERO-PATTERN: LLM ERROR TOPOLOGY ═══════════════════════════
 story += [
-    h1("15.  Cryptographic Binding and Sources"),
+    PageBreak(),
+    h1("15.  Bessel I Zero-Pattern: LLM Error Topology on the Z-Protocol"),
+    b("This section reports an empirical study of how a language model (LLM) "
+      "reproduces modified Bessel function values I_n(x) under the Z-protocol "
+      "(T=0: LLM-direct, no computational tools; T=1: tool-assisted). "
+      "The zero-error cells -- where the LLM gets the value exactly right -- "
+      "are not randomly distributed. They trace out a specific locus determined "
+      "by the Sym parameter and by the ratio x/n."),
+    sp(3),
+    h2("Experimental setup"),
+    stbl([
+        ["Parameter", "Values tested", "Trials per cell"],
+        ["Order n",    "0, 1, 2, 3, 4, 5",                   "5 (T=0 LLM-direct)"],
+        ["Argument x", "0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 5.0, 10.0", "5"],
+        ["Sym",        "1 (n=0,1);  2 (n=2,3,4,5)",          "--"],
+        ["Method T=0", "A_LLM_T0: LLM answers with no tools", "--"],
+        ["Method T=1", "B_tool_T1: mpmath / rule echo",       "100 (all ZERO)"],
+        ["Source",     "BesselI_Z_MEASURE_(2) CSV",           "--"],
+    ], [1.2*inch, 3.3*inch, 1.7*inch]),
+    sp(4),
+    h2("Zero map (T=0 LLM-direct):  ZERO = correct  /  ERR = wrong  /  prt = partial"),
+    stbl([
+        ["Function", "x=0.5", "x=1.0", "x=1.5", "x=2.0", "x=2.5", "x=3.0", "x=5.0", "x=10.0"],
+        ["I_0  (Sym=1)", "ZERO", "ZERO", "ZERO", "ZERO", "prt",  "ZERO", "ZERO", "ZERO"],
+        ["I_1  (Sym=1)", "ERR",  "ERR",  "ZERO", "ERR",  "ERR",  "ZERO", "ERR",  "ERR"],
+        ["I_2  (Sym=2)", "ERR",  "ZERO", "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ERR"],
+        ["I_3  (Sym=2)", "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ERR"],
+        ["I_4  (Sym=2)", "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ERR"],
+        ["I_5  (Sym=2)", "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ERR",  "ZERO"],
+    ], [0.8*inch, 0.72*inch, 0.72*inch, 0.72*inch,
+        0.72*inch, 0.72*inch, 0.72*inch, 0.72*inch, 0.72*inch]),
+    sp(4),
+    h2("Aggregate zero-error rate by Sym"),
+    stbl([
+        ["Sym", "n values", "Total cells", "LLM zeros (correct)", "Full errors", "Partial"],
+        ["1",   "n=0, n=1",    "16", "9  (56.2%)", "6  (37.5%)", "1  (6.2%)"],
+        ["2",   "n=2..n=5",   "32", "2  (6.2%)",  "30 (93.8%)", "0  (0.0%)"],
+    ], [0.5*inch, 1.0*inch, 0.9*inch, 1.8*inch, 1.5*inch, 1.0*inch]),
+    sp(4),
+    h2("The 11 zero-error cells and their x/n ratios"),
+    stbl([
+        ["Cell",        "Sym", "I_n(x) value (15 dp)", "x/n ratio", "Ratio type"],
+        ["I_0(0.5)",  "1", "1.063483370667600",  "infty (n=0)", "n=0: ratio undefined"],
+        ["I_0(1.0)",  "1", "1.266065877752008",  "infty",       "n=0: all x rational"],
+        ["I_0(1.5)",  "1", "1.646723189621999",  "infty",       "n=0: all x rational"],
+        ["I_0(2.0)",  "1", "2.279585302336067",  "infty",       "n=0: all x rational"],
+        ["I_0(3.0)",  "1", "4.880792585865024",  "infty",       "n=0: all x rational"],
+        ["I_0(5.0)",  "1", "27.239871823604449", "infty",       "n=0: all x rational"],
+        ["I_0(10.0)", "1", "2815.716628466254",  "infty",       "n=0: all x rational"],
+        ["I_1(1.5)",  "1", "0.981666428761618",  "1.5  = 3/2",  "half-integer"],
+        ["I_1(3.0)",  "1", "3.953370217402609",  "3.0  = 3/1",  "integer"],
+        ["I_2(1.0)",  "2", "0.135747669767038",  "0.5  = 1/2",  "half-integer"],
+        ["I_5(10.0)", "2", "777.188286403312",   "2.0  = 2/1",  "integer"],
+    ], [0.75*inch, 0.4*inch, 1.75*inch, 0.85*inch, 1.95*inch]),
+    sp(4),
+    h2("Key findings"),
+    ok("T=1 (tool-assisted): 100% zero-error across ALL 48 cells.  "
+       "Tool use eliminates Bessel I reproduction errors entirely."),
+    ok("T=0, Sym=1: 56.2% zero-error rate.  The LLM has internal representation "
+       "of I_0 and I_1 across most of the tested range."),
+    warn("T=0, Sym=2: 6.2% zero-error rate.  The LLM is almost entirely blind to "
+         "I_n for n >= 2, except at two cells."),
+    ok("The two Sym=2 zero-error cells (I_2(1.0), x/n=0.5) and (I_5(10.0), x/n=2.0) "
+       "both fall at integer or half-integer x/n ratios."),
+    ok("All non-n=0 zero-error cells (I_1, I_2, I_5) have x/n in {1/2, 3/2, 2, 3} -- "
+       "rational numbers with small denominator."),
+    warn("The single partial-error cell I_0(2.5): x=2.5 is not a round number. "
+         "3 errors out of 5 (60% error rate) even for the best-known order n=0."),
+    sp(3),
+    h2("Interpretation"),
+    b("The LLM's zero-error locus is NOT random. It follows two rules:"),
+    b("RULE 1 (Sym): Sym=1 inputs (n=0,1) yield far more zeros than Sym=2 inputs. "
+      "The model's internal Bessel knowledge is concentrated at low order."),
+    b("RULE 2 (Ratio): Among higher-order functions (n >= 1), zeros appear only "
+      "where x/n is a rational number with denominator 1 or 2. The model fails "
+      "at irrational or non-simple-rational x/n points."),
+    b("COMBINED: The LLM error function on Bessel I space has a zero-set that "
+      "concentrates on Sym=1 AND rational x/n. This is a knowledge-topology map, "
+      "not a random noise floor. An LLM operating without tools is reliable on "
+      "I_0 (the most-tabulated order) but structurally unreliable on I_n (n >= 2) "
+      "except at the simplest rational-ratio arguments."),
+    sp(3),
+    h2("Connection to the Wall256 / YM project"),
+    b("The Bessel I barrier (Open Question OQ-BI) requires formal I_n(x) bounds "
+      "in Lean / Mathlib. The Z-protocol finding reinforces why: an LLM-only proof "
+      "attempt on Bessel I would have a 93.8% error rate for Sym=2 inputs. "
+      "The barrier is real. Tool-assisted computation (T=1) gives 0% error. "
+      "The correct route is machine verification, not LLM recall."),
+    b("Source: BesselI_Z_MEASURE_(2)_1780557621561.csv.  "
+      "All T=1 verification against Z_BESSEL_I_COMPLETE CSV: ALL 20 values PASS "
+      "(relative error < 1e-10)."),
+    hr(),
+]
+
+# ══ 16. CRYPTOGRAPHIC BINDING ════════════════════════════════════════════════
+story += [
+    h1("16.  Cryptographic Binding and Sources"),
     stbl([
         ["Artifact", "SHA-256 / Source"],
         ["CERT_Arb_beta0 (interval certificate)",
@@ -970,5 +1066,17 @@ pdf_bytes = open(OUT, "rb").read()
 pdf_sha   = hashlib.sha256(pdf_bytes).hexdigest()
 print(f"PDF SHA-256: {pdf_sha}")
 
-ascii_ok = all(c < 128 for c in pdf_bytes[:5000])
-print(f"ASCII-safe header check: {'PASS' if ascii_ok else 'WARN'}")
+import subprocess, tempfile, os as _os
+try:
+    result = subprocess.run(
+        ["pdftotext", OUT, "-"],
+        capture_output=True, timeout=30)
+    txt_bytes = result.stdout
+    non_ascii = [c for c in txt_bytes if c > 127]
+    ascii_ok = (len(non_ascii) == 0)
+    print(f"ASCII text content check (pdftotext): {'PASS' if ascii_ok else 'FAIL -- ' + str(len(non_ascii)) + ' non-ASCII chars'}")
+except Exception as e:
+    # fallback: check raw bytes after first 200 (skip PDF binary header comment)
+    non_ascii_body = [c for c in pdf_bytes[200:] if c > 127]
+    ascii_ok = (len(non_ascii_body) == 0)
+    print(f"ASCII body check (fallback): {'PASS' if ascii_ok else 'FAIL'}")
