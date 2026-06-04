@@ -22,6 +22,13 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 import hashlib, os, json
 
+# ---- Layout option ----
+# "1pp" = one photograph per page, full-page width (~6.5 inch)
+#          ~170 pages, maximum legibility for dense mathematical text
+# "2pp" = two photographs per page, 3.0 inch width (original layout)
+#          ~85 pages, compact
+LAYOUT = "1pp"
+
 OUTPUT = "certificates/Field_Report_Morningstar.pdf"
 
 BLACK  = colors.black
@@ -652,13 +659,22 @@ _sha_handoff_table    = table_sha(handoff_data)
 # =====================================================================
 
 def photo_block(pnum, fn, recovered_time, legible_text, caption_text, sha_val):
-    """Render one photograph section: header + time + image + legible text + caption + SHA."""
+    """Render one photograph section: header + time + image + legible text + caption + SHA.
+
+    In LAYOUT="1pp" mode the image fills the full usable page width (6.5 inch) and a
+    PageBreak is appended after the block so each photograph occupies its own page.
+    In LAYOUT="2pp" mode the original 3.0 inch width is used with no forced page break.
+    """
     img_path = os.path.join(ASSETS, fn)
-    return KeepTogether([
+    if LAYOUT == "1pp":
+        img_width = 6.5 * inch
+    else:
+        img_width = 3.0 * inch
+    block = KeepTogether([
         s(2),
         phdr("PHOTOGRAPH NO. {}   --   RECOVERED: {}".format(pnum, recovered_time)),
         HR(GRAY, 0.3),
-        embed_image(img_path, width=3.0*inch),
+        embed_image(img_path, width=img_width),
         s(2),
         leg_hdr("LEGIBLE TEXT:"),
         leg(legible_text.replace("\n", "  |  ")),
@@ -668,6 +684,9 @@ def photo_block(pnum, fn, recovered_time, legible_text, caption_text, sha_val):
         sm("SHA-256 [computed from file bytes, build time]: {}".format(sha_val)),
         s(4), HR(PARCH, 0.2),
     ])
+    if LAYOUT == "1pp":
+        return [block, PageBreak()]
+    return [block]
 
 
 def build():
@@ -825,8 +844,8 @@ def build():
     for i, (rec, sha_val) in enumerate(zip(PART_I_RECORDS, PART_I_SHAS)):
         fn, rec_time, legible, caption_text = rec
         pnum = i + 1
-        story.append(photo_block(pnum, fn, rec_time, legible, caption_text, sha_val))
-        if (i + 1) % 2 == 0:
+        story.extend(photo_block(pnum, fn, rec_time, legible, caption_text, sha_val))
+        if LAYOUT == "2pp" and (i + 1) % 2 == 0:
             story.append(PageBreak())
 
     story.append(PageBreak())
@@ -856,8 +875,8 @@ def build():
     for i, (rec, sha_val) in enumerate(zip(PART_II_RECORDS, PART_II_SHAS)):
         fn, rec_time, legible, caption_text = rec
         pnum = 20 + i + 1
-        story.append(photo_block(pnum, fn, rec_time, legible, caption_text, sha_val))
-        if (i + 1) % 2 == 0:
+        story.extend(photo_block(pnum, fn, rec_time, legible, caption_text, sha_val))
+        if LAYOUT == "2pp" and (i + 1) % 2 == 0:
             story.append(PageBreak())
 
     story.append(PageBreak())

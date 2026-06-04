@@ -2830,6 +2830,23 @@
       "M8K": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087"
     }
   },
+  "field_report_morningstar": {
+    "title": "Field Report Morningstar -- Recovered Temporal Observation Report",
+    "description": "Two observation windows (Window I: 0708-0712 HRS, Window II: 0729-0733 HRS). 40 photographs. 1-per-page layout at 6.5 inch width for full-resolution legibility of mathematical text. ASCII-only PDF.",
+    "builder": "certificates/build_field_report.py",
+    "output": "certificates/Field_Report_Morningstar.pdf",
+    "sha256_output": "03ca9d1f00dc16e6ba1a2c3c746eecf32d0e9a7b1f31f9bce8d3cc97e9744b44",
+    "sha256_builder": "ba98638f32951a5fc73ed16148f8d3d47fc00625d16dfff259c21fa7821a5abc",
+    "combined_photo_sha256": "3b31bce279b44ef1f933a693b8d8ddc36f1e34866a96f62c2b6684ae90e44bd2",
+    "photographs": 40,
+    "windows": 2,
+    "layout": "1pp",
+    "photo_width_inches": 6.5,
+    "ascii_check": "PASS",
+    "sorry_count": 0,
+    "date": "2026-06-04",
+    "status": "FIELD_REPORT_CERTIFIED"
+  },
   "z_essay_omnibus": {
     "title": "Z Protocol Tower + Time Machine at p5 -- Omnibus PDF",
     "description": "Public submission artifact: Z_Protocol_Tower.pdf (~20 pp) concatenated with Essay_TimeMachine_p5.pdf (~20 pp) using pypdf. 40 pages total. SHA-bound inputs; combined SHA computed at build time.",
