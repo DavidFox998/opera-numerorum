@@ -233,3 +233,9 @@ id = "os-kvcppBQEcyBnXvvBQC"
 uri = "file://lean-proof-towers/LEAN_CHAIN_AUDIT.md"
 type = "text"
 title = "TheoremaAureum143 — Lean Chain Audit (C01–C07)"
+
+[[outputs]]
+id = "I7PsACPLOomqTaM_cXxi8"
+uri = "file://certificates/Canonical_Paper_Corrected.pdf"
+type = "pdf"
+title = "Canonical Paper — Corrected (Opera Numerorum / Battle Plan v1.6)"

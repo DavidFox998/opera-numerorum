@@ -2078,5 +2078,28 @@
       "C07_RH.lean": "0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e"
     },
     "date": "2026-06-03"
+  },
+  "canonical_paper_corrected": {
+    "title": "Canonical Paper -- Corrected Version",
+    "file": "certificates/Canonical_Paper_Corrected.pdf",
+    "sha256": "04a67a0ce252a4ed6b84383934eb76e5191521c2ed4ab2d35f592c86d0df305f",
+    "ascii_check": "PASS",
+    "corrections_applied": {
+      "C1": "Remark 2.2: Q_5=226 (not 1296), bound=82829 (not 474984) [M3 SHA e687bb09]",
+      "C2": "Lemma 3.2: formula log(p)*p/(p-1), C(S4)=11.4221... (not 1.434) [M5 SHA 9df98a39]",
+      "C3": "Remark 5.1: threshold IS met, margin +4.211, GRH for L(s,X0(143)) follows",
+      "C4": "Section 8 Open Item 2 (Level-143 threshold) CLOSED; removed"
+    },
+    "open_items_remaining": [
+      "Lemma 4.1 quantitative bridge: equidistribution to saving delta>0",
+      "Completeness of S_canon beyond p7 (S14 verification in progress)"
+    ],
+    "parent_shas": {
+      "M1": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "M4": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "M5": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "M9_stdout": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6"
+    },
+    "date": "2026-06-04"
   }
 }
