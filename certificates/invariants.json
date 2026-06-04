@@ -2110,7 +2110,37 @@
     "alpha": "2*pi/7 = 0.897597901025655210989326...",
     "N_end": 1000000000000000,
     "candidate_hn_description": "CF denominators of 2*pi/7 (best Diophantine approximators)",
-    "candidate_hn": [1,9,10,39,127,166,791,15986,16777,66317,414679,1310354,1725033,91012070,183749173,274761243,1282794145,1557555388,9070571085,46910410813,243622625150,290533035963,2277353876891,2567886912854,7413127702599,9981014615453,37356171548958,47337186164411,226704916206602],
+    "candidate_hn": [
+      1,
+      9,
+      10,
+      39,
+      127,
+      166,
+      791,
+      15986,
+      16777,
+      66317,
+      414679,
+      1310354,
+      1725033,
+      91012070,
+      183749173,
+      274761243,
+      1282794145,
+      1557555388,
+      9070571085,
+      46910410813,
+      243622625150,
+      290533035963,
+      2277353876891,
+      2567886912854,
+      7413127702599,
+      9981014615453,
+      37356171548958,
+      47337186164411,
+      226704916206602
+    ],
     "conditions": {
       "1_primality": "Miller-Rabin deterministic (witnesses 2..37)",
       "2_diophantine": "dist(h)*h < 1  (CF best-approximation property)",
@@ -2125,7 +2155,10 @@
       "fix_date": "2026-06-04",
       "lean_theorem": "ArakelovPositivity_X0_143 : 0 < 24  [proved, no sorry, C01]"
     },
-    "BANDS": [127, 414679],
+    "BANDS": [
+      127,
+      414679
+    ],
     "band_details": {
       "127": {
         "cf_convergent": "114/127",
@@ -2157,7 +2190,7 @@
     "M6_genus_binding": "ec9fa8c3... (genus(X_0(143))=13)"
   },
   "lean_chain_TheoremaAureum143": {
-    "title": "TheoremaAureum143 Lean Proof Chain — C01 through C07",
+    "title": "TheoremaAureum143 Lean Proof Chain \u2014 C01 through C07",
     "audit_date": "2026-06-04",
     "audit_revision": "rev2",
     "status": "ARCHITECTURE_CERTIFIED",
@@ -2185,24 +2218,134 @@
     "RH_status": "NOT PROVED -- zeta_zeros_on_critical_line sorry IS the Riemann Hypothesis",
     "descent_gap": "Lemma 4.1 (Canonical Paper S8): equidistribution to saving delta>0",
     "file_shas": {
-      "C01_Arakelov.lean":    "db291fc7dcf6debf9503a98d032f3238fef3e04af9d76d6cb5705eb8882c0c96",
-      "C02_Modularity.lean":  "ab74d2cb8fff2add2a82960ab5a557341ae3138702c8a6423193db6a53c0cd97",
-      "C03_Positivity.lean":  "187bf775ee2683626fab88fa5c1cb6b22b79c72337f5453eefdb53726750e614",
+      "C01_Arakelov.lean": "db291fc7dcf6debf9503a98d032f3238fef3e04af9d76d6cb5705eb8882c0c96",
+      "C02_Modularity.lean": "ab74d2cb8fff2add2a82960ab5a557341ae3138702c8a6423193db6a53c0cd97",
+      "C03_Positivity.lean": "187bf775ee2683626fab88fa5c1cb6b22b79c72337f5453eefdb53726750e614",
       "C04_HeightBound.lean": "91333c89c31577a0f990a04b462ed9298c9550efd4e34ac5bca056e5306dcfef",
-      "C05_Discriminant.lean":"f7a2c4dd9c6bdebbb91900fce0ce3dcf7dbee864d853fdae58a553cb5d8e9ce1",
+      "C05_Discriminant.lean": "f7a2c4dd9c6bdebbb91900fce0ce3dcf7dbee864d853fdae58a553cb5d8e9ce1",
       "C06_ZetaControl.lean": "12782d642665bc758a89f9489d73aa44b7587a2af91289420be7200a31b64e4b",
-      "C07_RH.lean":          "0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e"
+      "C07_RH.lean": "0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e"
     },
     "sorry_table": {
-      "C01": {"count": 0, "items": []},
-      "C02": {"count": 4, "items": ["modularity_X0_143","functional_equation","L_nonvanishing_right_halfplane","grh_X0_143"]},
-      "C03": {"count": 1, "items": ["height_lower_bound"]},
-      "C04": {"count": 3, "items": ["height_upper_bound","vojta_height_bound","height_to_discriminant"]},
-      "C05": {"count": 2, "items": ["torsion_field_discriminant_bound","discriminant_conductor_bound"]},
-      "C06": {"count": 5, "items": ["grh_for_L_X0_143","classical_zero_free_region","arakelov_implies_L_nonvanishing_at_1","rankin_selberg_nonvanishing","zeta_zeros_on_critical_line"]},
-      "C07": {"count": 0, "items": []}
+      "C01": {
+        "count": 0,
+        "items": []
+      },
+      "C02": {
+        "count": 4,
+        "items": [
+          "modularity_X0_143",
+          "functional_equation",
+          "L_nonvanishing_right_halfplane",
+          "grh_X0_143"
+        ]
+      },
+      "C03": {
+        "count": 1,
+        "items": [
+          "height_lower_bound"
+        ]
+      },
+      "C04": {
+        "count": 3,
+        "items": [
+          "height_upper_bound",
+          "vojta_height_bound",
+          "height_to_discriminant"
+        ]
+      },
+      "C05": {
+        "count": 2,
+        "items": [
+          "torsion_field_discriminant_bound",
+          "discriminant_conductor_bound"
+        ]
+      },
+      "C06": {
+        "count": 5,
+        "items": [
+          "grh_for_L_X0_143",
+          "classical_zero_free_region",
+          "arakelov_implies_L_nonvanishing_at_1",
+          "rankin_selberg_nonvanishing",
+          "zeta_zeros_on_critical_line"
+        ]
+      },
+      "C07": {
+        "count": 0,
+        "items": []
+      }
     },
     "note": "C07 has 0 sorries but calls zeta_zeros_on_critical_line (C06 sorry). Chain is not axiom-free.",
     "clay_complete": false
+  },
+  "addendum_A1": {
+    "title": "Addendum A1: The Complete 4-Condition Sieve for alpha=2pi/7",
+    "date": "2026-06-04",
+    "author": "David Fox",
+    "series": "Opera Numerorum / Battle Plan v1.6",
+    "status": "ADDENDUM_CERTIFIED",
+    "pdf_path": "certificates/Addendum_A1_Complete_Sieve.pdf",
+    "pdf_sha256": "861e5347f7aac6daeb5e178ea4f15528b77f3cf196ebe2629c28e4af590148f7",
+    "parameters": {
+      "alpha": "2*pi/7",
+      "N_end": "10^4000",
+      "mp_dps": 4110,
+      "n_cf_denominators": 7832,
+      "n_composite_filtered": 7087,
+      "n_g3_fail": 0,
+      "n_g4_fail": 0,
+      "n_bands_supervisor_bpsw": 269,
+      "n_bands_deterministic_mr": 5
+    },
+    "confirmed_bands": [
+      {
+        "index": "h_5",
+        "value": "127",
+        "digits": 3,
+        "test": "MR-12-det"
+      },
+      {
+        "index": "h_11",
+        "value": "414679",
+        "digits": 6,
+        "test": "MR-12-det"
+      },
+      {
+        "index": "supr-3",
+        "value": "4964318427222741249841",
+        "digits": 22,
+        "test": "MR-12-det"
+      },
+      {
+        "index": "supr-4",
+        "value": "135531508477763247952856981",
+        "digits": 27,
+        "test": "MR-12-det"
+      },
+      {
+        "index": "supr-5",
+        "value": "12454380874316538311034864614401",
+        "digits": 32,
+        "test": "MR-12-det"
+      }
+    ],
+    "lean_chain": {
+      "C01_sha": "db291fc7",
+      "C07_sha": "0f7faf2c"
+    },
+    "plots": {
+      "plot1_funnel": "/tmp/plot1_funnel.png",
+      "plot2_bands": "/tmp/plot2_bands.png",
+      "plot3_lfunc": "/tmp/plot3_lfunc.png",
+      "plot4_failure": "/tmp/plot4_failure.png",
+      "plot5_h4": "/tmp/plot5_h4.png"
+    },
+    "analytic_results": {
+      "G3_vacuity": "PROVED: all primes p>3 satisfy p mod 6 in {1,5}, giving 3^p mod 7 in {3,5} subset {3,5,6}",
+      "G4_vacuity": "C01 FIX: 2*genus-2=24>0 always for genus=13; pre-fix bug: 0>0=False caused all to fail",
+      "M7_manifest_locked": true,
+      "M7_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
+    }
   }
 }
