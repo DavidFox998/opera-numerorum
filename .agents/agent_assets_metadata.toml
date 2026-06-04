@@ -245,3 +245,9 @@ id = "bmoDJYrybYqc6x04-Cabv"
 uri = "file://certificates/Addendum_A1_Complete_Sieve.pdf"
 type = "pdf"
 title = "Addendum A1 — The Complete 4-Condition Sieve for α = 2π/7"
+
+[[outputs]]
+id = "d-WjdB914DrFqf-tx8ta0"
+uri = "file://certificates/invariants.json"
+type = "unspecified"
+title = "Opera Numerorum — invariants.json (chain-of-custody record)"
