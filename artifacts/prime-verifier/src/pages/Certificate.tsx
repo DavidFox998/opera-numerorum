@@ -566,6 +566,7 @@ const MODULES = [
     sha: "8015eb4e239faaf66f24a8589c010c4911bc879b098f6488e261efb20ce504c9",
     status: "FIELD_REPORT_CERTIFIED",
     correction: null,
+    apiPdf: "Field_Report_Morningstar.pdf",
   },
   {
     id: "LEMMA76_V17_PDF1",
@@ -838,19 +839,25 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
           <ShaBadge sha={mod.sha} />
         </div>
 
-        {"pdf" in mod && mod.pdf && (
+        {("pdf" in mod && mod.pdf) || ("apiPdf" in mod && mod.apiPdf) ? (
           <a
-            href={`${import.meta.env.BASE_URL}${mod.pdf}`}
-            download={mod.pdf}
+            href={
+              "apiPdf" in mod && mod.apiPdf
+                ? `/api/certs/${mod.apiPdf}`
+                : `${import.meta.env.BASE_URL}${"pdf" in mod ? mod.pdf : ""}`
+            }
+            download={"apiPdf" in mod && mod.apiPdf ? mod.apiPdf : "pdf" in mod ? mod.pdf : undefined}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-700 bg-sky-50 hover:bg-sky-100 border border-sky-200 rounded-md px-3 py-1.5 transition-colors"
           >
             <Download className="w-3 h-3" />
             Download PDF
-            <span className="text-sky-400 font-mono">({mod.pdf})</span>
+            <span className="text-sky-400 font-mono">
+              ({"apiPdf" in mod && mod.apiPdf ? mod.apiPdf : "pdf" in mod ? mod.pdf : ""})
+            </span>
           </a>
-        )}
+        ) : null}
 
         {refs !== undefined && (
           <div className="flex items-center gap-2">
