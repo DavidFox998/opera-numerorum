@@ -898,6 +898,68 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
   );
 }
 
+type BlockColor = "emerald" | "violet" | "sky" | "indigo" | "slate" | "amber" | "rose";
+
+const COLOR_MAP: Record<BlockColor, { border: string; bg: string; label: string; pill: string; zip: string }> = {
+  emerald: { border: "border-emerald-300", bg: "bg-emerald-50/50 dark:bg-emerald-950/20", label: "text-emerald-800 dark:text-emerald-300", pill: "border-emerald-300 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40", zip: "border-emerald-500 bg-emerald-600 hover:bg-emerald-700" },
+  violet:  { border: "border-violet-300",  bg: "bg-violet-50/50 dark:bg-violet-950/20",  label: "text-violet-800 dark:text-violet-300",  pill: "border-violet-300 text-violet-800 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/40",  zip: "border-violet-500 bg-violet-600 hover:bg-violet-700"  },
+  sky:     { border: "border-sky-300",     bg: "bg-sky-50/50 dark:bg-sky-950/20",        label: "text-sky-800 dark:text-sky-300",        pill: "border-sky-300 text-sky-800 dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-900/40",        zip: "border-sky-500 bg-sky-600 hover:bg-sky-700"         },
+  indigo:  { border: "border-indigo-300",  bg: "bg-indigo-50/50 dark:bg-indigo-950/20",  label: "text-indigo-800 dark:text-indigo-300",  pill: "border-indigo-300 text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/40",  zip: "border-indigo-500 bg-indigo-600 hover:bg-indigo-700"  },
+  slate:   { border: "border-slate-300",   bg: "bg-slate-50/50 dark:bg-slate-950/20",    label: "text-slate-700 dark:text-slate-300",    pill: "border-slate-300 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/40",    zip: "border-slate-500 bg-slate-600 hover:bg-slate-700"    },
+  amber:   { border: "border-amber-300",   bg: "bg-amber-50/50 dark:bg-amber-950/20",    label: "text-amber-800 dark:text-amber-300",    pill: "border-amber-300 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40",    zip: "border-amber-500 bg-amber-600 hover:bg-amber-700"    },
+  rose:    { border: "border-rose-300",    bg: "bg-rose-50/50 dark:bg-rose-950/20",      label: "text-rose-800 dark:text-rose-300",      pill: "border-rose-300 text-rose-800 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/40",      zip: "border-rose-500 bg-rose-600 hover:bg-rose-700"      },
+};
+
+function DownloadBlock({
+  color, label, files, zipFile, zipSha,
+}: {
+  color: BlockColor;
+  label: string;
+  files: { fn: string; sz: string; label: string }[];
+  zipFile?: { fn: string; sz: string; label: string };
+  zipSha?: string;
+}) {
+  const c = COLOR_MAP[color];
+  return (
+    <div className={`rounded-xl border-2 ${c.border} ${c.bg} px-5 py-3.5 space-y-2.5`}>
+      <div className={`text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 ${c.label}`}>
+        <Download className="w-3.5 h-3.5 shrink-0" />
+        {label}
+      </div>
+      <div className="flex flex-wrap gap-1.5 text-xs font-mono">
+        {files.map(({ fn, sz, label: lbl }) => (
+          <a
+            key={fn}
+            href={`/api/certs/${fn}`}
+            download={fn}
+            className={`inline-flex items-center gap-1 rounded-md border bg-white dark:bg-black/20 px-2.5 py-1 transition-colors ${c.pill}`}
+          >
+            <Download className="w-2.5 h-2.5 shrink-0" />
+            <span className="font-medium">{lbl}</span>
+            <span className="opacity-60 text-[10px]">{sz}</span>
+          </a>
+        ))}
+        {zipFile && (
+          <a
+            href={`/api/certs/${zipFile.fn}`}
+            download={zipFile.fn}
+            className={`inline-flex items-center gap-1 rounded-md border-2 px-2.5 py-1 text-white transition-colors font-semibold ${c.zip}`}
+          >
+            <Download className="w-2.5 h-2.5 shrink-0" />
+            {zipFile.label}
+            <span className="opacity-70 text-[10px]">{zipFile.sz}</span>
+          </a>
+        )}
+      </div>
+      {zipSha && (
+        <div className="text-[10px] font-mono opacity-50 truncate">
+          ZIP SHA-256: {zipSha}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function CertificatePage() {
   const [auditOpen, setAuditOpen] = useState(false);
 
@@ -920,6 +982,21 @@ export default function CertificatePage() {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-8 space-y-6">
+
+        {/* Personal attribution */}
+        <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40 px-6 py-4 flex flex-col gap-1">
+          <div className="text-base font-semibold text-slate-800 dark:text-slate-100 tracking-tight">
+            David J. Fox
+          </div>
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+            ORCID&nbsp;0009-0008-1290-6105 &nbsp;&middot;&nbsp; Aberdeen / Seattle WA &nbsp;&middot;&nbsp; davidjfox998@gmail.com
+          </div>
+          <div className="text-xs text-slate-600 dark:text-slate-300 italic mt-0.5">
+            Opera Numerorum &mdash; machine-certified cryptographic proof chain for GRH(X&#8320;(143)) and BSD(J&#8320;(143)).
+            Every SHA in this record was computed, never invented.
+          </div>
+        </div>
+
         {/* Manifest banner */}
         <div className="rounded-xl border-2 border-indigo-300 bg-indigo-50/50 dark:bg-indigo-950/20 px-6 py-5 space-y-3">
           <div className="flex items-center gap-3">
@@ -1012,43 +1089,160 @@ export default function CertificatePage() {
           </div>
         </div>
 
-        {/* v1.7-Replicut delivery — download row */}
-        <div className="rounded-xl border-2 border-emerald-300 bg-emerald-50/50 dark:bg-emerald-950/20 px-6 py-4 space-y-3">
-          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-800 dark:text-emerald-300">
-            <Download className="w-4 h-4 shrink-0" />
-            v1.7-Replicut Delivery &mdash; June 4 2026 &nbsp;|&nbsp; SORRY: 0
-          </div>
-          <div className="flex flex-wrap gap-2 text-xs font-mono">
-            {([
-              ["Hodge_CM_Replicit_v17_PDF1.pdf",        "7.0 K", "PDF #1: Hodge Derivations"],
-              ["Rank_Obstructions_Replicit_v17_PDF3.pdf","6.8 K", "PDF #3: Rank Obstructions"],
-              ["Hodge_CM_Replicit_v17_PDF2.pdf",        "6.2 K", "PDF #2: Phase Invariant"],
-              ["Lemma76_Diff_Report_v17.pdf",           "4.6 K", "Diff Report"],
-              ["cm_k3_v17_replicit.sage",               "1.9 K", "SAGE: K3 Invariant"],
-            ] as [string, string, string][]).map(([fn, sz, label]) => (
-              <a
-                key={fn}
-                href={`/api/certs/${fn}`}
-                download={fn}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-white dark:bg-emerald-950/30 px-3 py-1.5 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
-              >
-                <Download className="w-3 h-3" />
-                <span className="font-medium">{label}</span>
-                <span className="text-emerald-500 text-[10px]">{sz}</span>
-              </a>
-            ))}
+        {/* ── 7 downloadable blocks ── */}
+        <div className="space-y-4">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+            <Download className="w-4 h-4" />
+            Downloads &mdash; 7 Blocks &mdash; June 4 2026 &nbsp;|&nbsp; SORRY: 0
+          </h2>
+
+          {/* Block 1 — Hodge & Rank Obstructions v1.7-Replicut */}
+          <DownloadBlock
+            color="emerald"
+            label="Block 1 \u2014 Hodge & Rank Obstructions \u2014 v1.7-Replicut"
+            files={[
+              { fn: "Hodge_CM_Replicit_v17_PDF1.pdf",        sz: "7.0 K",  label: "PDF #1: Hodge Derivations" },
+              { fn: "Rank_Obstructions_Replicit_v17_PDF3.pdf",sz: "6.8 K",  label: "PDF #3: Rank Obstructions" },
+              { fn: "Hodge_CM_Replicit_v17_PDF2.pdf",        sz: "6.2 K",  label: "PDF #2: Phase Invariant" },
+              { fn: "Lemma76_Diff_Report_v17.pdf",           sz: "4.6 K",  label: "Diff Report" },
+              { fn: "cm_k3_v17_replicit.sage",               sz: "1.9 K",  label: "SAGE: K3 Invariant" },
+            ]}
+          />
+
+          {/* Block 2 — Z Protocol */}
+          <DownloadBlock
+            color="violet"
+            label="Block 2 \u2014 Z Protocol Tower"
+            files={[
+              { fn: "Z_Protocol_Tower_v2.pdf", sz: "3.8 M", label: "Z Protocol Tower v2" },
+              { fn: "Z_Protocol_Tower.pdf",    sz: "3.8 M", label: "Z Protocol Tower v1" },
+              { fn: "Z_Essay_Omnibus.pdf",     sz: "14 M",  label: "Z Essay Omnibus" },
+            ]}
+          />
+
+          {/* Block 3 — Morning Star Complete */}
+          <DownloadBlock
+            color="sky"
+            label="Block 3 \u2014 Morning Star Complete"
+            files={[
+              { fn: "Module_M8Q_L7_System.pdf",         sz: "20 M",   label: "M8Q: L7 System" },
+              { fn: "Field_Report_Morningstar.pdf",      sz: "16 M",   label: "Field Report" },
+              { fn: "Module_M8O_L5_Gates.pdf",          sz: "3.9 M",  label: "M8O: L5 Gates" },
+              { fn: "Module_M8P_L6_Clock.pdf",          sz: "1.7 M",  label: "M8P: L6 Clock" },
+              { fn: "Module_M8N_EEQC_v14.pdf",          sz: "262 K",  label: "M8N: EEQC v14" },
+              { fn: "FriendsFamily_MorningStar.pdf",     sz: "650 K",  label: "Friends & Family" },
+              { fn: "Module_M8M_MorningStar_Physics.pdf",sz: "15 K",   label: "M8M: Physics BSM" },
+              { fn: "Module_M8L_MorningStar_Ops.pdf",   sz: "13 K",   label: "M8L: D20 Ops" },
+              { fn: "Module_M8K_FTL_Morningstar.pdf",   sz: "13 K",   label: "M8K: FTL Stack" },
+              { fn: "MorningStar_Engineering_Summary.pdf",sz:"17 K",   label: "Engineering Summary" },
+            ]}
+            zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: "34 MB", label: "Morning Star ZIP" }}
+            zipSha="3d79bd546e35ab7aafa3f12e624b5b351f03c4c5b01aed9aa3fe6ac122e57ad3"
+          />
+
+          {/* Block 4 — Core Certification Chain M1-M8 */}
+          <DownloadBlock
+            color="indigo"
+            label="Block 4 \u2014 Core Certification Chain M1\u2013M8"
+            files={[
+              { fn: "Module_1_Certificate.pdf",   sz: "2.8 K", label: "M1: \u03b1\u2080" },
+              { fn: "Module_2_Certificate.pdf",   sz: "3.0 K", label: "M2: Kappa" },
+              { fn: "Module_3_Certificate.pdf",   sz: "6.7 K", label: "M3: CF \u03c0/10" },
+              { fn: "Module_4_Certificate.pdf",   sz: "8.3 K", label: "M4: S\u2081\u2084 Primes" },
+              { fn: "Module_5_Certificate.pdf",   sz: "5.7 K", label: "M5: Bost Sum" },
+              { fn: "Module_6_Certificate.pdf",   sz: "5.8 K", label: "M6: X\u2080(143) Genus" },
+              { fn: "Module_6_3_Certificate.pdf", sz: "8.2 K", label: "M6.3" },
+              { fn: "Module_7_Certificate.pdf",   sz: "6.6 K", label: "M7: Master Manifest" },
+              { fn: "Module_8_Certificate.pdf",   sz: "12 K",  label: "M8: Hankel Rank" },
+            ]}
+            zipFile={{ fn: "CertificationChain_2026_06_04.zip", sz: "85 KB", label: "Chain + Invariants ZIP" }}
+            zipSha="e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"
+          />
+
+          {/* Block 5 — Extended Theory M8A–M23 */}
+          <DownloadBlock
+            color="slate"
+            label="Block 5 \u2014 Extended Theory M8A\u2013M23"
+            files={[
+              { fn: "Module_M8A_Audit.pdf",        sz: "9.7 K", label: "M8A: Audit" },
+              { fn: "Module_M8C_ZoeMstar.pdf",     sz: "6.1 K", label: "M8C: Zoe M\u2605" },
+              { fn: "Module_M8D_Resonator.pdf",    sz: "6.9 K", label: "M8D: 120-Cell Resonator" },
+              { fn: "Module_M8F_LeanProtocol.pdf", sz: "6.9 K", label: "M8F: Lean Protocol" },
+              { fn: "Module_M8G_Provenance.pdf",   sz: "8.8 K", label: "M8G: Provenance" },
+              { fn: "Module_M8G_Correction.pdf",   sz: "9.2 K", label: "M8G Correction" },
+              { fn: "Module_M8H_G_Amplifier.pdf",  sz: "11 K",  label: "M8H: G Amplifier" },
+              { fn: "Module_M8I_Wormhole.pdf",     sz: "22 K",  label: "M8I: Wormhole Arch" },
+              { fn: "Module_M8J_OQ2_Closure.pdf",  sz: "14 K",  label: "M8J: OQ-2 Closure" },
+              { fn: "Module_9_All_140.pdf",        sz: "13 K",  label: "M9: All 140 GRH" },
+              { fn: "Module_9_Certificate.pdf",    sz: "7.3 K", label: "M9: Certificate" },
+              { fn: "Module_14_S4_Quaternions.pdf",sz: "7.2 K", label: "M14: S\u2084 Quaternions" },
+              { fn: "Module_15_Delta_Boost.pdf",   sz: "8.2 K", label: "M15: Delta Boost" },
+              { fn: "Module_16_c_Bridge.pdf",      sz: "6.0 K", label: "M16: c Bridge" },
+              { fn: "Module_17_Cert_Patch.pdf",    sz: "6.8 K", label: "M17: Cert Patch" },
+              { fn: "Module_18_Resonance_Ladder.pdf",sz:"7.3 K",label: "M18: Resonance Ladder" },
+              { fn: "Module_19_p6_Prediction.pdf", sz: "8.9 K", label: "M19: p\u2086 Prediction" },
+              { fn: "Module_20_p7_Prediction.pdf", sz: "8.1 K", label: "M20: p\u2087 Prediction" },
+              { fn: "Module_21_H4_Invariant.pdf",  sz: "6.5 K", label: "M21: H\u2084 Invariant" },
+              { fn: "Module_22_MStar_Definition.pdf",sz:"6.8 K",label: "M22: M\u2605 Definition" },
+              { fn: "Module_23_BSD_J0_143.pdf",    sz: "5.8 K", label: "M23: BSD J\u2080(143)" },
+              { fn: "Module_10_Genus33.pdf",       sz: "6.6 K", label: "M10: Genus 33" },
+              { fn: "Module_BDP_PhaseReversal.pdf",sz: "15 K",  label: "BDP: Phase Reversal" },
+            ]}
+          />
+
+          {/* Block 6 — Essays & Appendices */}
+          <DownloadBlock
+            color="amber"
+            label="Block 6 \u2014 Essays & Appendices"
+            files={[
+              { fn: "Essay_TimeMachine_p5.pdf",      sz: "9.7 M", label: "Time Machine Essay" },
+              { fn: "OperaNumerorum_Preface.pdf",    sz: "4.0 M", label: "Opera Numerorum Preface" },
+              { fn: "Addendum_A1_Complete_Sieve.pdf",sz: "3.0 M", label: "Addendum A1: Complete Sieve" },
+              { fn: "Wall256_YM_Report.pdf",         sz: "48 K",  label: "Wall-256 YM Report" },
+              { fn: "Error_Symmetry_Essay.pdf",      sz: "17 K",  label: "Error Symmetry Essay" },
+              { fn: "Canonical_Paper_Corrected.pdf", sz: "16 K",  label: "Canonical Paper" },
+              { fn: "OperaNumerorum_ArchiveMap.pdf", sz: "13 K",  label: "Archive Map" },
+              { fn: "FriendsFamily_MillennialMath.pdf",sz:"211 K",label: "Friends & Family: Millennial Math" },
+              { fn: "Tendon_A_Certificate.pdf",      sz: "4.8 K", label: "Tendon A" },
+              { fn: "Tendon_B_Certificate.pdf",      sz: "6.2 K", label: "Tendon B" },
+            ]}
+          />
+
+          {/* Block 7 — Clay Submission */}
+          <DownloadBlock
+            color="rose"
+            label="Block 7 \u2014 Clay Submission Bundle"
+            files={[
+              { fn: "Module_23_BSD_J0_143.pdf",              sz: "5.8 K", label: "M23: BSD J\u2080(143)" },
+              { fn: "Hodge_CM_Replicit_v17_PDF1.pdf",        sz: "7.0 K", label: "Hodge: PDF #1" },
+              { fn: "Hodge_CM_Replicit_v17_PDF2.pdf",        sz: "6.2 K", label: "Hodge: PDF #2" },
+              { fn: "Rank_Obstructions_Replicit_v17_PDF3.pdf",sz:"6.8 K", label: "Rank Obstructions" },
+              { fn: "Lemma76_Diff_Report_v17.pdf",           sz: "4.6 K", label: "Diff Report v1.7" },
+              { fn: "Z_Protocol_Tower_v2.pdf",               sz: "3.8 M", label: "Z Protocol Tower v2" },
+              { fn: "Module_21_H4_Invariant.pdf",            sz: "6.5 K", label: "H\u2084 Invariant" },
+              { fn: "Module_22_MStar_Definition.pdf",        sz: "6.8 K", label: "M\u2605 Definition" },
+              { fn: "Module_9_Certificate.pdf",              sz: "7.3 K", label: "M9: GRH 140 curves" },
+              { fn: "Essay_TimeMachine_p5.pdf",              sz: "9.7 M", label: "Time Machine Essay" },
+            ]}
+            zipFile={{ fn: "ClaySubmission_2026_06_04.zip", sz: "13 MB", label: "Clay Submission ZIP" }}
+            zipSha="4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703"
+          />
+
+          {/* All certs — master archive */}
+          <div className="rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-100/60 dark:bg-slate-800/30 px-5 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div className="text-xs text-slate-600 dark:text-slate-400">
+              <span className="font-semibold">Complete Archive</span> &mdash; all 59 PDFs in one file
+              <span className="ml-2 font-mono text-[10px] text-slate-400">SHA: 548ae72f&hellip;fbb24691</span>
+            </div>
             <a
               href="/api/certs/Opera_Numerorum_All_Certs_2026_06_04.zip"
               download="Opera_Numerorum_All_Certs_2026_06_04.zip"
-              className="inline-flex items-center gap-1.5 rounded-lg border-2 border-emerald-500 bg-emerald-600 dark:bg-emerald-700 px-3 py-1.5 text-white hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-semibold"
+              className="inline-flex items-center gap-1.5 rounded-lg border-2 border-slate-500 bg-slate-700 dark:bg-slate-600 px-4 py-1.5 text-white hover:bg-slate-800 dark:hover:bg-slate-500 transition-colors text-xs font-semibold"
             >
               <Download className="w-3 h-3" />
               All Certs ZIP &mdash; 59 PDFs
-              <span className="text-emerald-200 text-[10px]">60 MB</span>
+              <span className="text-slate-300 text-[10px]">60 MB</span>
             </a>
-          </div>
-          <div className="text-[10px] text-emerald-600 dark:text-emerald-500 font-mono">
-            ZIP SHA-256: 548ae72f90766c8f6c2895991d25ad69eced1c20f9f7e9b867491418fbb24691
           </div>
         </div>
 
