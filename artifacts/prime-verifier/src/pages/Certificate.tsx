@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -29,6 +29,95 @@ const SCRIPT_SHA =
   "39c0170455e40b30c7a7aeb6a2801b50d8e9554bb3d7bc746164d22b71174565";
 const M8_SHA =
   "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002";
+
+type ShaSpec =
+  | { key: string; field: string }
+  | { key: string; path: string[] };
+
+const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
+  M1:               { key: "module_1",              field: "sha256_stdout" },
+  M2:               { key: "module_2",              field: "sha256_stdout" },
+  M3:               { key: "module_3",              field: "sha256_stdout" },
+  M4:               { key: "module_4",              field: "sha256_stdout" },
+  M5:               { key: "module_5",              field: "sha256_stdout" },
+  M6:               { key: "module_6",              field: "sha256_stdout" },
+  M7:               { key: "module_7",              field: "manifest_sha"  },
+  M8:               { key: "module_8",              field: "sha256_stdout" },
+  M15:              { key: "module_15",             field: "sha256_stdout" },
+  M16:              { key: "module_16",             field: "sha256_stdout" },
+  M17:              { key: "module_17",             field: "sha256_stdout" },
+  M18:              { key: "module_18",             field: "sha256_stdout" },
+  M19:              { key: "module_19",             field: "sha256_stdout" },
+  M20:              { key: "module_20",             field: "sha256_stdout" },
+  M21:              { key: "module_21",             field: "sha256_stdout" },
+  M22:              { key: "module_22",             field: "sha256_stdout" },
+  M23:              { key: "module_23",             field: "sha256_stdout" },
+  M8C:              { key: "module_m8c",            field: "stdout_sha256" },
+  M8D:              { key: "module_m8d",            field: "stdout_sha256" },
+  M8F:              { key: "module_m8f",            field: "stdout_sha256" },
+  M8G:              { key: "module_m8g",            field: "stdout_sha256" },
+  M8G_Correction:   { key: "module_m8g_correction", field: "stdout_sha256" },
+  M8H:              { key: "module_m8h",            field: "stdout_sha256" },
+  M8I:              { key: "module_m8i",            field: "stdout_sha256" },
+  M8J:              { key: "module_m8j",            field: "stdout_sha256" },
+  M8K:              { key: "module_m8k",            field: "stdout_sha256" },
+  M8L:              { key: "M8L",                   field: "stdout_sha256" },
+  M8M:              { key: "M8M",                   field: "stdout_sha256" },
+  M8O:              { key: "M8O",                   field: "sha256_stdout" },
+  M8P:              { key: "M8P",                   field: "sha256_stdout" },
+  M8Q:              { key: "M8Q",                   field: "sha256_stdout" },
+  ESSAY:            { key: "essay_time_machine_p5_v2",    field: "pdf_sha"        },
+  Z_PROTOCOL:       { key: "z_protocol_tower",            field: "pdf_sha"        },
+  Z_PROTOCOL_V2:    { key: "z_protocol_tower_v2",         field: "sha256_output"  },
+  FIELD_REPORT:     { key: "field_report_morningstar",    field: "sha256_output"  },
+  OMNIBUS:          { key: "z_essay_omnibus",             field: "sha256_output"  },
+  LEMMA76_V17_PDF1: {
+    key: "lemma76_v17_replicit",
+    path: ["outputs", "Hodge_CM_Replicit_v17_PDF1", "sha256_pdf"],
+  },
+  LEMMA76_V17_PDF2: {
+    key: "lemma76_v17_replicit",
+    path: ["outputs", "Hodge_CM_Replicit_v17_PDF2", "sha256_pdf"],
+  },
+  LEMMA76_V17_PDF3: {
+    key: "lemma76_v17_replicit",
+    path: ["outputs", "Rank_Obstructions_Replicit_v17_PDF3", "sha256_pdf"],
+  },
+  LEMMA76_V17_SAGE: {
+    key: "lemma76_v17_replicit",
+    path: ["outputs", "cm_k3_v17_replicit_sage", "sha256_file"],
+  },
+  LEMMA76_DIFF_REPORT: {
+    key: "lemma76_v17_replicit",
+    path: ["outputs", "Lemma76_Diff_Report_v17", "sha256_pdf"],
+  },
+};
+
+function extractShasFromInvariants(
+  data: Record<string, unknown>,
+): Record<string, string> {
+  const result: Record<string, string> = {};
+  for (const [moduleId, spec] of Object.entries(INVARIANTS_SHA_MAP)) {
+    const entry = data[spec.key];
+    if (!entry || typeof entry !== "object") continue;
+    const obj = entry as Record<string, unknown>;
+    let value: unknown;
+    if ("path" in spec) {
+      value = spec.path.reduce<unknown>((cur, key) => {
+        if (cur && typeof cur === "object") {
+          return (cur as Record<string, unknown>)[key];
+        }
+        return undefined;
+      }, obj);
+    } else {
+      value = obj[spec.field];
+    }
+    if (typeof value === "string" && value.length === 64) {
+      result[moduleId] = value;
+    }
+  }
+  return result;
+}
 
 const MODULES = [
   {
@@ -813,12 +902,19 @@ function StatusChip({ status }: { status: string }) {
   );
 }
 
-function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
+function ModuleCard({
+  mod,
+  liveSha,
+}: {
+  mod: (typeof MODULES)[0];
+  liveSha?: string;
+}) {
   const [open, setOpen] = useState(false);
   const isManifest = mod.id === "M7";
   const isM8 = mod.id === "M8";
   const isV2 = mod.id === "Z_PROTOCOL_V2";
   const refs = MODULE_REFERENCES[mod.id];
+  const displaySha = liveSha ?? mod.sha;
 
   return (
     <Card
@@ -872,10 +968,15 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
         </div>
 
         <div className="rounded-md bg-muted/50 px-3 py-2 space-y-1">
-          <div className="text-muted-foreground uppercase tracking-wider text-[10px]">
+          <div className="text-muted-foreground uppercase tracking-wider text-[10px] flex items-center gap-1.5">
             SHA-256 (stdout)
+            {liveSha && (
+              <span className="inline-flex items-center gap-0.5 text-emerald-600 font-semibold text-[9px] bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-px">
+                live
+              </span>
+            )}
           </div>
-          <ShaBadge sha={mod.sha} />
+          <ShaBadge sha={displaySha} />
         </div>
 
         {("pdf" in mod && mod.pdf) || ("apiPdf" in mod && mod.apiPdf) ? (
@@ -898,7 +999,7 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
               </span>
             </a>
             {"apiPdf" in mod && mod.apiPdf ? (
-              <CopyShaMini sha={mod.sha} />
+              <CopyShaMini sha={displaySha} />
             ) : null}
           </div>
         ) : null}
@@ -1028,6 +1129,28 @@ function DownloadBlock({
 
 export default function CertificatePage() {
   const [auditOpen, setAuditOpen] = useState(false);
+  const [liveShas, setLiveShas] = useState<Record<string, string>>({});
+  const [shaStatus, setShaStatus] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
+
+  useEffect(() => {
+    fetch("/api/invariants")
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json() as Promise<Record<string, unknown>>;
+      })
+      .then((data) => {
+        setLiveShas(extractShasFromInvariants(data));
+        setShaStatus("ready");
+      })
+      .catch(() => {
+        setShaStatus("error");
+      });
+  }, []);
+
+  const liveManifestSha = liveShas["M7"] ?? MANIFEST_SHA;
+  const liveM8Sha = liveShas["M8"] ?? M8_SHA;
 
   return (
     <div className="min-h-screen bg-background">
@@ -1242,7 +1365,7 @@ export default function CertificatePage() {
                 (SHA256 of cat m1.out &hellip; m6.out)
               </span>
             </div>
-            <ShaBadge sha={MANIFEST_SHA} />
+            <ShaBadge sha={liveManifestSha} />
           </div>
           <div className="rounded-lg bg-white/70 dark:bg-black/20 border border-indigo-200 px-4 py-3 space-y-1.5">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -1334,9 +1457,24 @@ export default function CertificatePage() {
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Certified Module Chain
           </h2>
+          {shaStatus === "loading" && (
+            <div className="text-xs text-muted-foreground flex items-center gap-1.5 mb-2">
+              <span className="inline-block w-3 h-3 rounded-full border-2 border-current border-t-transparent animate-spin" />
+              Loading live SHA values from invariants.json&hellip;
+            </div>
+          )}
+          {shaStatus === "error" && (
+            <div className="text-xs text-amber-600 mb-2">
+              Could not reach API &mdash; showing last-known SHA values (fallback mode).
+            </div>
+          )}
           <div className="space-y-3">
             {MODULES.map((mod) => (
-              <ModuleCard key={mod.id} mod={mod} />
+              <ModuleCard
+                key={mod.id}
+                mod={mod}
+                liveSha={liveShas[mod.id]}
+              />
             ))}
           </div>
         </div>
@@ -1387,7 +1525,7 @@ export default function CertificatePage() {
           </div>
           <div className="text-xs text-violet-700">
             SHA-256(m8.out):&nbsp;
-            <ShaBadge sha={M8_SHA} />
+            <ShaBadge sha={liveM8Sha} />
           </div>
         </div>
 
@@ -1440,14 +1578,14 @@ export default function CertificatePage() {
           </div>
           <pre className="bg-muted rounded-lg px-4 py-3 font-mono overflow-x-auto text-[11px] leading-relaxed whitespace-pre-wrap break-all">
             {"bash verify_all.sh\n# All 6 modules PASS; then:\ncat m1.out m2.out m3.out m4.out m5.out m6.out | sha256sum\n# => " +
-              MANIFEST_SHA}
+              liveManifestSha}
           </pre>
           <div className="font-semibold text-foreground pt-1">
             Reproduce Module 8 (Hankel rank check):
           </div>
           <pre className="bg-muted rounded-lg px-4 py-3 font-mono overflow-x-auto text-[11px] leading-relaxed whitespace-pre-wrap break-all">
             {"python3 certificates/j0_143_hankel.py > m8.out\nsha256sum m8.out\n# => " +
-              M8_SHA + "  m8.out"}
+              liveM8Sha + "  m8.out"}
           </pre>
           <div className="text-center pt-2 space-y-1">
             <div>
@@ -1460,7 +1598,7 @@ export default function CertificatePage() {
             </div>
             <div className="pt-1">
               <Badge variant="outline" className="text-xs font-mono">
-                SHA256(manifest) = {MANIFEST_SHA.slice(0, 16)}&hellip;
+                SHA256(manifest) = {liveManifestSha.slice(0, 16)}&hellip;
               </Badge>
             </div>
           </div>
