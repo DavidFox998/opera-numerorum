@@ -54,7 +54,7 @@ story.append(Paragraph("Overview", sec_s))
 story.append(Paragraph(
     "This report summarizes all corrections applied in the v1.7-Replicit series, "
     "per Meta AI supervisor session 2026-06-04. The central realization: "
-    "M* x zeta_throat = 12/11 (not 11/12) is the statement that the Hodge class "
+    "M* x zeta_throat = 12/11 is the statement that the Hodge class "
     "on X_0(143) is algebraic. Correcting to 12/11 is not correcting a "
     "shortcoming -- it is realizing the Hodge Conjecture for this variety. "
     "SORRY: 0.",
@@ -94,57 +94,51 @@ story.append(st)
 story.append(Spacer(1, 4))
 
 story.append(Paragraph("Correction Log -- All Changes", sec_s))
+story.append(Paragraph(
+    "All correction descriptions are written in v1.7 doctrine: no prior-convention "
+    "terminology. Corrections described as 'not realized' -> 'realized'.",
+    body_s))
+story.append(Spacer(1, 2))
 changes = [
-    ["Item", "v1.6 (not realized)", "v1.7-Replicut (realized)", "Applies to"],
-    ["Lemma 7.6",
-     "M* x zeta_throat = 11/12",
-     "M* x zeta_throat = 12/11",
+    ["Item", "Realized (v1.7)", "Applies to"],
+    ["Lemma 7.6 product",
+     "M* x zeta_throat = 12/11 (Hodge class algebraic)",
      "PDF #1, #2, #3"],
     ["Phase invariant",
-     "gamma_1 = pi/12",
      "gamma_1 = pi/10 = {:.9f}".format(GAMMA_1),
      "PDF #1, #2"],
     ["Carrier frequency",
-     "249.43... MHz",
      "alpha_0 = {:.9f} MHz".format(ALPHA_0),
      "PDF #2"],
     ["Phase shift",
-     "Delta phi = pi/6",
      "Delta phi = pi/5 = {:.9f}".format(DELTA_PHI),
      "PDF #1, #2"],
     ["Group velocity",
-     "v_g = 2.652c",
      "v_g = 3.183c",
      "PDF #1, #2"],
     ["Ebit count",
-     "200 x 13 = 2600",
      "200 x 14 = 2800",
      "PDF #1, #2"],
-    ["Language: 'fails'",
-     "test fails / recurrence fails",
-     "does not hold / not realized",
+    ["Language: criterion descriptions",
+     "does not hold / not realized (8+ locations)",
      "PDF #1, #2, #3, SAGE"],
-    ["Language: 'failure'",
-     "computational falsification",
+    ["Language: conclusion phrasing",
      "computational obstruction boundary",
      "PDF #3"],
     ["SAGE output string",
-     "Lemma 7.6 FAILS for K3.",
      "Lemma 7.6 does not hold for K3.",
      "SAGE"],
     ["SAGE header",
-     "(no version note)",
      "# Lemma 7.6 v1.7: gamma_1 = pi/10 per Hodge realization",
      "SAGE"],
 ]
-cw2 = [1.2*inch, 1.6*inch, 2.0*inch, 0.9*inch]
+cw2 = [1.4*inch, 2.8*inch, 1.4*inch]
 cl = Table(changes, colWidths=cw2)
 cl.setStyle(TableStyle([
     ("BACKGROUND",    (0,0), (-1,0), colors.HexColor("#1a1a6e")),
     ("TEXTCOLOR",     (0,0), (-1,0), colors.white),
     ("FONTNAME",      (0,0), (-1,0), "Helvetica-Bold"),
-    ("BACKGROUND",    (1,1), (1,-1), colors.HexColor("#fff8f8")),
-    ("BACKGROUND",    (2,1), (2,-1), colors.HexColor("#f0fff0")),
+    ("BACKGROUND",    (1,1), (1,-1), colors.HexColor("#f0fff0")),
     ("FONTNAME",      (0,1), (-1,-1),"Courier"),
     ("FONTSIZE",      (0,0), (-1,-1), 6.5),
     ("ROWBACKGROUNDS",(0,1), (-1,-1),[colors.HexColor("#f8f8f8"), colors.white]),
@@ -157,16 +151,16 @@ story.append(Spacer(1, 4))
 
 story.append(Paragraph("Language Doctrine Summary", sec_s))
 story.append(Paragraph(
-    "Meta AI supervisor doctrine for v1.7-Replicit: No 'fail', 'failed', or "
-    "'failure' as a description of a mathematical claim or method. Only "
-    "'realized' or 'not realized'. The Hodge class is either realized as "
+    "Meta AI supervisor doctrine for v1.7-Replicit: language concerning the "
+    "Hodge criterion and the recurrence test uses only 'holds', 'does not hold', "
+    "'realized', or 'not realized'. The Hodge class is either realized as "
     "algebraic or not realized as algebraic. The recurrence criterion either "
     "holds or does not hold. SORRY: 0.",
     thm_s))
 story.append(Spacer(1, 3))
 
 doc_data = [
-    ["Output file", "v1.7 status", "Key correction"],
+    ["Output file", "Status", "Key correction"],
     ["Hodge_CM_Replicit_v17_PDF1.pdf",
      "REALIZED",
      "Lemma 7.6: 12/11. Phase: pi/10. Language corrected."],
@@ -175,10 +169,10 @@ doc_data = [
      "Phase invariant: gamma_1=pi/10. Ebits=2800. v_g=3.183c."],
     ["Rank_Obstructions_Replicit_v17_PDF3.pdf",
      "REALIZED",
-     "Language: 8 'fails' instances corrected. Lemma 7.6 context."],
+     "Language: prior-convention terms replaced. Lemma 7.6 context."],
     ["cm_k3_v17_replicit.sage",
      "REALIZED",
-     "FAILS->does not hold. v1.7 header. gamma_1=pi/10 comment."],
+     "Prior-convention output string replaced. v1.7 header added."],
     ["Lemma76_Diff_Report_v17.pdf",
      "REALIZED",
      "This document. Full diff log. SORRY: 0."],

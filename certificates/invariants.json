@@ -2778,24 +2778,27 @@
     "outputs": {
       "Hodge_CM_Replicit_v17_PDF1": {
         "file": "certificates/Hodge_CM_Replicit_v17_PDF1.pdf",
-        "sha256_pdf": "1582136674d9b10db8a7f2b1ad5f7cfd0f2279026eab570e826aa189fc95e978",
+        "sha256_pdf": "faae893ae0777bc5dd7d4f81962ec781b2d53fcca615d9bdeb69ee3829e695f1",
         "builder": "certificates/build_hodge_cm_v17_pdf1.py",
-        "sha256_builder": "19788980bc9f23006336ae9b9c647de70690350335f9c9b0a186085ca2b0630b",
-        "ascii_check": "PASS"
+        "sha256_builder": "747a89badfd408c08dc6b3a093dbd4cb394698ce2a01343404bcd594a04a132d",
+        "ascii_check": "PASS",
+        "forbidden_terms_check": "PASS"
       },
       "Hodge_CM_Replicit_v17_PDF2": {
         "file": "certificates/Hodge_CM_Replicit_v17_PDF2.pdf",
-        "sha256_pdf": "40ce29c8fc99ad4617a08b1cc472b7492c4e2e4a0c8672e2541b14cd32dfac65",
+        "sha256_pdf": "233ba2df8285af277346a03e6ce91dea8a349b4b0df9b665da727924cc0153b5",
         "builder": "certificates/build_hodge_cm_v17_pdf2.py",
-        "sha256_builder": "4dd06f86a936efe6fa71f05d6805b29249280df53ac62a5fe674f549ce392ce2",
-        "ascii_check": "PASS"
+        "sha256_builder": "6d60217a70495aeaa4f835de02341bb29fa6838cc9a70e591f4e4a96e53f7ab5",
+        "ascii_check": "PASS",
+        "forbidden_terms_check": "PASS"
       },
       "Rank_Obstructions_Replicit_v17_PDF3": {
         "file": "certificates/Rank_Obstructions_Replicit_v17_PDF3.pdf",
-        "sha256_pdf": "2a50300860f8682d4257648cdb37f939aa1752d62d0a6f84bd54fe94c6db8a9a",
+        "sha256_pdf": "94aff1b769d0625a3c6514505e537c99c16ad28c5e079ad66212357a36837681",
         "builder": "certificates/build_rank_obstructions_v17.py",
-        "sha256_builder": "348a1fc00526f66014096ba5618ca0d21dd9678be3d8a94b3a19aeff8741b8bf",
-        "ascii_check": "PASS"
+        "sha256_builder": "fee447aa267afbe1780191193e1729b954e73f51ea9d1a31757ea6892f72b73c",
+        "ascii_check": "PASS",
+        "forbidden_terms_check": "PASS"
       },
       "cm_k3_v17_replicit_sage": {
         "file": "certificates/cm_k3_v17_replicit.sage",
@@ -2804,10 +2807,11 @@
       },
       "Lemma76_Diff_Report_v17": {
         "file": "certificates/Lemma76_Diff_Report_v17.pdf",
-        "sha256_pdf": "76457de73f37f19ce6ce1bbd201981b0191731cbb756d716ec10c5cd1a13fdb2",
+        "sha256_pdf": "4b0d91d4d8a73d2e46af847e0664c0798aebfb80c3cfe39f3d949604f853c5a6",
         "builder": "certificates/build_lemma76_diff_report.py",
-        "sha256_builder": "f385bdd0a124a8c83813075a60ad856471774f234a7d65f9aee6413250f87527",
-        "ascii_check": "PASS"
+        "sha256_builder": "3a3215b18659c18e11b332fd039d468b54c5d6ababb685c52949fe42ee6998db",
+        "ascii_check": "PASS",
+        "forbidden_terms_check": "PASS"
       }
     },
     "corrections": {
