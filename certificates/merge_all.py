@@ -82,6 +82,7 @@ def build_cover():
         ("M18", "Resonance Ladder: beta=299+k*pi/10, k in [0.50,3.50]",            "CERTIFIED"),
         ("M19", "Fine zoom k_c=3.183 (geometric proof) + p_6 prediction",          "CERTIFIED"),
         ("M20", "p_7 prediction + self-symmetry + D_eff analysis",                 "CERTIFIED"),
+        ("ESSAY", "The Time Machine at p_5 -- Illustrated Essay (21 pp)",          "ESSAY_CERTIFIED"),
     ]
 
     tdata = [["Module", "Claim", "Status"]] + modules
@@ -115,6 +116,7 @@ def build_cover():
         ["M18", "93d6b554..."],
         ["M19", "1f7f68bd..."],
         ["M20", "f8f45b5b..."],
+        ["ESSAY (PDF SHA)", "bac8642305d582c68e8f30378078d242cd7c87f050f42af10b671f1dbdddda0b"],
     ]
     st = Table(sha_data, colWidths=[1.6*inch, 4.6*inch])
     st.setStyle(TableStyle([
@@ -195,9 +197,11 @@ MODULE_PDFS = [
     ("M20", "certificates/Module_20_p7_Prediction.pdf"),
     ("TA",  "certificates/Tendon_A_Certificate.pdf"),
     ("TB",  "certificates/Tendon_B_Certificate.pdf"),
+    ("ESSAY", "certificates/Essay_TimeMachine_p5.pdf"),
 ]
 
 OUTPUT = "OperaNumerorum_Complete.pdf"
+OUTPUT_BP = "BattlePlan_v1.6_Complete.pdf"
 
 print("Building cover page...")
 build_cover()
@@ -225,9 +229,14 @@ with open(OUTPUT, "wb") as f:
 sha = hashlib.sha256(open(OUTPUT, "rb").read()).hexdigest()
 size_kb = os.path.getsize(OUTPUT) // 1024
 
+import shutil
+shutil.copy2(OUTPUT, OUTPUT_BP)
+sha_bp = hashlib.sha256(open(OUTPUT_BP, "rb").read()).hexdigest()
+
 print()
 print(f"Combined PDF: {OUTPUT}")
 print(f"Size: {size_kb} KB")
 print(f"SHA-256: {sha}")
+print(f"Also written: {OUTPUT_BP}  SHA-256: {sha_bp}")
 print(f"Included: {found}")
 print(f"Skipped:  {skipped}")

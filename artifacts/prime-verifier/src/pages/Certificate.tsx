@@ -14,6 +14,7 @@ import {
   Shield,
   Hash,
   AlertTriangle,
+  BookOpen,
 } from "lucide-react";
 
 const MANIFEST_SHA =
@@ -481,6 +482,24 @@ const MODULES = [
     status: "CERTIFIED",
     correction: null,
   },
+  {
+    id: "ESSAY",
+    title: "The Time Machine at p\u2085 \u2014 Illustrated Essay",
+    claim:
+      "21-page illustrated essay on the discovery of p\u2085 = 3,993,746,143,633. " +
+      "12 certified tables (T1\u2013T12), 3 figures, ASCII icosahedron + 8-braid, " +
+      "Morningstar protocol table, SHA manifest. " +
+      "T1: alpha_0 = 299+pi/10. T2: kappa bound. T3: CF pi/10, Q_5=226. " +
+      "T4: S_14, p_5 certified. T5: C(S_4)=11.4221>2*sqrt(13). T6: genus=13, Bost. " +
+      "T7: Hankel rank=13=g. T8: M8C Zoe-M* bridge, Z=15. T9: M8D 120-cell resonator. " +
+      "T10: M8F 7-layer protocol, all 8 PASS. T11: M8J wormhole tidal=0.0999g<0.1g. " +
+      "T12: Witness ledger (10 screenshots). 12/12 GREEN. SORRY: 0. ASCII: PASS.",
+    source: "certificates/build_essay_time_machine.py",
+    stdout: "certificates/Essay_TimeMachine_p5.pdf",
+    sha: "bac8642305d582c68e8f30378078d242cd7c87f050f42af10b671f1dbdddda0b",
+    status: "ESSAY_CERTIFIED",
+    correction: null,
+  },
 ];
 
 const AUDIT_ROWS = [
@@ -540,6 +559,13 @@ function StatusChip({ status }: { status: string }) {
     return (
       <span className="inline-flex items-center gap-1 text-indigo-600 font-semibold text-xs bg-indigo-50 border border-indigo-200 rounded-full px-2 py-0.5">
         <Lock className="w-3 h-3" /> LOCKED
+      </span>
+    );
+  }
+  if (status === "ESSAY_CERTIFIED") {
+    return (
+      <span className="inline-flex items-center gap-1 text-amber-700 font-semibold text-xs bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">
+        <BookOpen className="w-3 h-3" /> ESSAY
       </span>
     );
   }
