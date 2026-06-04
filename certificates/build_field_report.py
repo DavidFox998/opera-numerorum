@@ -30,10 +30,12 @@ import hashlib, os, json, argparse
 _parser = argparse.ArgumentParser(description="Build Field Report Morningstar PDF")
 _parser.add_argument("--layout", choices=["1pp", "2pp"], default="1pp",
                      help="Page layout: 1pp = one photo per page (default), 2pp = two photos per page")
+_parser.add_argument("--output", default="certificates/Field_Report_Morningstar.pdf",
+                     help="Output PDF path (default: certificates/Field_Report_Morningstar.pdf)")
 _args = _parser.parse_args()
 LAYOUT = _args.layout
 
-OUTPUT = "certificates/Field_Report_Morningstar.pdf"
+OUTPUT = _args.output
 
 BLACK  = colors.black
 IVORY  = colors.HexColor("#f5f0e0")

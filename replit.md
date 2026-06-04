@@ -210,6 +210,7 @@ Full SHA table: `certificates/invariants.json`
 - All C binaries (`bin/print_kappa`, `bin/print_S14`) are pre-compiled. Recompile with `gcc -O3 -std=c11 bin/print_kappa.c -o bin/print_kappa -lm` if needed.
 - `sha256sum` on macOS is `shasum -a 256`. The `verify_all.sh` uses Linux `sha256sum`.
 - `build_field_report.py` layout is controlled via `--layout` argument: `python3 certificates/build_field_report.py --layout 1pp` (default, ~170 pages) or `--layout 2pp` (~85 pages, two photos per page). No source edit needed.
+- `build_field_report.py` output path is controlled via `--output` argument: `python3 certificates/build_field_report.py --output certificates/Field_Report_v2.pdf`. Default is `certificates/Field_Report_Morningstar.pdf`. Combine with `--layout` to generate named variants side-by-side without overwriting each other.
 
 ## Next Paper
 
