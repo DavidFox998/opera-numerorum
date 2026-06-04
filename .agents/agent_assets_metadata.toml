@@ -160,7 +160,7 @@ title = "Opera Numerorum — Complete Certification Record (with M8C)"
 id = "klMSjIZeStNOmTqLUabPs"
 uri = "file://certificates/OperaNumerorum_Preface.pdf"
 type = "pdf"
-title = "Opera Numerorum — Preface (Final, with new opening)"
+title = "Opera Numerorum — Preface"
 
 [[outputs]]
 id = "px9rnQN6qFsKBuqG84dwj"
@@ -239,3 +239,9 @@ id = "I7PsACPLOomqTaM_cXxi8"
 uri = "file://certificates/Canonical_Paper_Corrected.pdf"
 type = "pdf"
 title = "Canonical Paper — Corrected (Opera Numerorum / Battle Plan v1.6)"
+
+[[outputs]]
+id = "bmoDJYrybYqc6x04-Cabv"
+uri = "file://certificates/Addendum_A1_Complete_Sieve.pdf"
+type = "pdf"
+title = "Addendum A1 — The Complete 4-Condition Sieve for α = 2π/7"
