@@ -554,12 +554,14 @@ const MODULES = [
       "Window II (07:29-07:33): Protocol Z operational handoff, Z.1-Z.15 commands. " +
       "table_sha() binding: Table A (Protocol Z parameters), Table B (p5/p6 events), " +
       "Table C (Z.1-Z.15 commands). Per-file witness SHAs for all 40 photographs. " +
+      "table_sha() on Table D (T1-T12 audit): bd3ff880c40b3be20cd0aa43002e051be1ab3a85445df9f6db13a4a357f107a8. " +
+      "Table E (Window II handoff): 01b1a38656e519c584f8d9046d3bbb5d91f728d3b3f717efd4572cc26ae297c6. " +
       "Combined photo SHA-256: 3b31bce279b44ef1f933a693b8d8ddc36f1e34866a96f62c2b6684ae90e44bd2. " +
-      "PDF SHA-256: c65f9e53f346acddeda0234c690fe7fa5bc0995ff58b97b798c6b2fbcd0db7bb. " +
+      "PDF SHA-256: 8015eb4e239faaf66f24a8589c010c4911bc879b098f6488e261efb20ce504c9. " +
       "ASCII check: PASS. File: TA-143. SORRY: 0. Battle Plan v1.6.",
     source: "certificates/build_field_report.py",
     stdout: "certificates/Field_Report_Morningstar.pdf",
-    sha: "c65f9e53f346acddeda0234c690fe7fa5bc0995ff58b97b798c6b2fbcd0db7bb",
+    sha: "8015eb4e239faaf66f24a8589c010c4911bc879b098f6488e261efb20ce504c9",
     status: "FIELD_REPORT_CERTIFIED",
     correction: null,
   },

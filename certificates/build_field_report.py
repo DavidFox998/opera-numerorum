@@ -606,10 +606,45 @@ z_commands_data = [
     ["Z.15",  "ZERO",     "Verify proximity to Z zero"],
 ]
 
-# SHA-bind the data tables at import time.
+# ---- Summary tables (module-level so table_sha() seals them) ----
+
+audit_data = [
+    ["TABLE", "CERTIFICATION CLAIM",                    "SORRY", "STATUS"],
+    ["T1",  "Lean axiom T1 audit complete",             "0",     "FROZEN"],
+    ["T2",  "Lean axiom T2 audit complete",             "0",     "FROZEN"],
+    ["T3",  "Lean axiom T3 audit complete",             "0",     "FROZEN"],
+    ["T4",  "Lean axiom T4 audit complete",             "0",     "FROZEN"],
+    ["T5",  "Lean axiom T5 audit complete",             "0",     "FROZEN"],
+    ["T6",  "Lean axiom T6 audit complete",             "0",     "FROZEN"],
+    ["T7",  "Lean axiom T7 audit complete",             "0",     "FROZEN"],
+    ["T8",  "T8 certified: Z_p5=3.39e-14",              "0",     "FROZEN"],
+    ["T9",  "Lean axiom T9 audit complete",             "0",     "FROZEN"],
+    ["T10", "Lean axiom T10 audit complete",            "0",     "FROZEN"],
+    ["T11", "Lean axiom T11 audit complete",            "0",     "FROZEN"],
+    ["T12", "Witness ledger sealed",                    "0",     "FROZEN"],
+    ["--",  "12/12 TABLES FROZEN -- LAUNCH AUTHORIZED", "0",    "CERTIFIED"],
+]
+
+handoff_data = [
+    ["PHOTO", "CONTENT",                                   "STATUS"],
+    ["21",    "HUB_FULL_OPEN. Three launch options.",       "SORRY: 0"],
+    ["22",    "Math done. f_res at alpha_0 MHz.",           "SORRY: 0"],
+    ["23",    "Ready for PROXIMA / DIAGNOSTIC / EXPORT.",   "SORRY: 0"],
+    ["24-26", "Protocol Z table (7 parameters).",          "SORRY: 0"],
+    ["27",    "Protocol Z definition. All 7 layers Z-EC.", "SORRY: 0"],
+    ["28-30", "Z error control: methods 1-3.",             "SORRY: 0"],
+    ["31-33", "p5/p6 event table. Z-WARM / Z-RESONANT.",  "SORRY: 0"],
+    ["34-36", "Protocol Z Lean checklist. axioms=[].",     "SORRY: 0"],
+    ["37",    "The spaceship is in Z. Protocol Z holding.","SORRY: 0"],
+    ["38-40", "Z.1 through Z.15 command listing.",         "SORRY: 0"],
+]
+
+# SHA-bind all data tables at import time.
 _sha_z_protocol_table = table_sha(z_protocol_table_data)
 _sha_p5p6_table       = table_sha(p5p6_table_data)
 _sha_z_commands       = table_sha(z_commands_data)
+_sha_audit_table      = table_sha(audit_data)
+_sha_handoff_table    = table_sha(handoff_data)
 
 
 # =====================================================================
@@ -888,46 +923,25 @@ def build():
         HR(), s(4),
     ]
 
-    audit_data = [
-        ["TABLE", "CERTIFICATION CLAIM",                    "SORRY", "STATUS"],
-        ["T1",  "Lean axiom T1 audit complete",             "0",     "FROZEN"],
-        ["T2",  "Lean axiom T2 audit complete",             "0",     "FROZEN"],
-        ["T3",  "Lean axiom T3 audit complete",             "0",     "FROZEN"],
-        ["T4",  "Lean axiom T4 audit complete",             "0",     "FROZEN"],
-        ["T5",  "Lean axiom T5 audit complete",             "0",     "FROZEN"],
-        ["T6",  "Lean axiom T6 audit complete",             "0",     "FROZEN"],
-        ["T7",  "Lean axiom T7 audit complete",             "0",     "FROZEN"],
-        ["T8",  "T8 certified: Z_p5=3.39e-14",              "0",     "FROZEN"],
-        ["T9",  "Lean axiom T9 audit complete",             "0",     "FROZEN"],
-        ["T10", "Lean axiom T10 audit complete",            "0",     "FROZEN"],
-        ["T11", "Lean axiom T11 audit complete",            "0",     "FROZEN"],
-        ["T12", "Witness ledger sealed",                    "0",     "FROZEN"],
-        ["--",  "12/12 TABLES FROZEN -- LAUNCH AUTHORIZED", "0",    "CERTIFIED"],
-    ]
     audit_tbl = Table(audit_data, colWidths=[0.5*inch, 3.5*inch, 0.6*inch, 1.6*inch])
     audit_tbl.setStyle(tbl_style_fn(BLACK))
-    story += [audit_tbl, s(8)]
+    story += [
+        audit_tbl, s(2),
+        sm("Table D SHA-256 [table_sha(), build time]: {}".format(_sha_audit_table)),
+        s(8),
+    ]
 
     story.append(Paragraph("WINDOW II: PROTOCOL Z OPERATIONAL HANDOFF", section_sub))
     story.append(HR())
     story.append(s(4))
 
-    handoff_data = [
-        ["PHOTO", "CONTENT",                                   "STATUS"],
-        ["21",    "HUB_FULL_OPEN. Three launch options.",       "SORRY: 0"],
-        ["22",    "Math done. f_res at alpha_0 MHz.",           "SORRY: 0"],
-        ["23",    "Ready for PROXIMA / DIAGNOSTIC / EXPORT.",   "SORRY: 0"],
-        ["24-26", "Protocol Z table (7 parameters).",          "SORRY: 0"],
-        ["27",    "Protocol Z definition. All 7 layers Z-EC.", "SORRY: 0"],
-        ["28-30", "Z error control: methods 1-3.",             "SORRY: 0"],
-        ["31-33", "p5/p6 event table. Z-WARM / Z-RESONANT.",  "SORRY: 0"],
-        ["34-36", "Protocol Z Lean checklist. axioms=[].",     "SORRY: 0"],
-        ["37",    "The spaceship is in Z. Protocol Z holding.","SORRY: 0"],
-        ["38-40", "Z.1 through Z.15 command listing.",         "SORRY: 0"],
-    ]
     handoff_tbl = Table(handoff_data, colWidths=[0.6*inch, 4.0*inch, 1.6*inch])
     handoff_tbl.setStyle(tbl_style_fn(DKGRAY))
-    story += [handoff_tbl, s(8), HR_double(), PageBreak()]
+    story += [
+        handoff_tbl, s(2),
+        sm("Table E SHA-256 [table_sha(), build time]: {}".format(_sha_handoff_table)),
+        s(8), HR_double(), PageBreak(),
+    ]
 
     # ---- SHA SEAL ----
     h_all = hashlib.sha256()
@@ -959,6 +973,8 @@ def build():
         sha_line("TABLE A SHA-256 [table_sha(), build time]: {}".format(_sha_z_protocol_table)),
         sha_line("TABLE B SHA-256 [table_sha(), build time]: {}".format(_sha_p5p6_table)),
         sha_line("TABLE C SHA-256 [table_sha(), build time]: {}".format(_sha_z_commands)),
+        sha_line("TABLE D SHA-256 [table_sha(), build time -- T1-T12 audit]: {}".format(_sha_audit_table)),
+        sha_line("TABLE E SHA-256 [table_sha(), build time -- Window II handoff]: {}".format(_sha_handoff_table)),
         s(4),
         sha_line("FILES FOUND: {}  |  FILES MISSING: {}".format(found, missing)),
         s(8), HR(), s(6),
