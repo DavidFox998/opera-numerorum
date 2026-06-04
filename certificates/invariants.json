@@ -2101,5 +2101,54 @@
       "M9_stdout": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6"
     },
     "date": "2026-06-04"
+  },
+  "lean_chain_TheoremaAureum143": {
+    "title": "TheoremaAureum143 Lean Proof Chain — C01 through C07",
+    "audit_date": "2026-06-04",
+    "audit_revision": "rev2",
+    "status": "ARCHITECTURE_CERTIFIED",
+    "vacuousness_bug": "RESOLVED",
+    "sorry_count_before": 17,
+    "sorry_count_after": 15,
+    "sorries_closed": [
+      "C01: genus_pos_of_ArakelovPositivity  [omega, from genus >= 2]",
+      "C03: noether_formula                  [definitional, from C01 fix]",
+      "C03: slope_inequality                 [nlinarith, 2(g-1)(g-2) >= 0 for g >= 2]",
+      "C03: faltingsHeight_pos               [Real.log_pos + linarith]"
+    ],
+    "new_sorry_theorems": [
+      "C02: grh_X0_143  [GRH for L(s,X0(143)), M9 content, Bost-Connes gap]",
+      "C06: grh_for_L_X0_143  [same, in zeta-control file, descent documented]"
+    ],
+    "critical_fix": {
+      "description": "arakelovSelfIntersection was hardcoded to 0; now 2g-2 for g>=2",
+      "value_X0_143": 24,
+      "formula": "2 * genus - 2 = 2 * 13 - 2 = 24",
+      "backing_module": "M6",
+      "backing_sha": "ec9fa8c3"
+    },
+    "ArakelovPositivity_X0_143": "PROVED WITHOUT SORRY",
+    "RH_status": "NOT PROVED -- zeta_zeros_on_critical_line sorry IS the Riemann Hypothesis",
+    "descent_gap": "Lemma 4.1 (Canonical Paper S8): equidistribution to saving delta>0",
+    "file_shas": {
+      "C01_Arakelov.lean":    "db291fc7dcf6debf9503a98d032f3238fef3e04af9d76d6cb5705eb8882c0c96",
+      "C02_Modularity.lean":  "ab74d2cb8fff2add2a82960ab5a557341ae3138702c8a6423193db6a53c0cd97",
+      "C03_Positivity.lean":  "187bf775ee2683626fab88fa5c1cb6b22b79c72337f5453eefdb53726750e614",
+      "C04_HeightBound.lean": "91333c89c31577a0f990a04b462ed9298c9550efd4e34ac5bca056e5306dcfef",
+      "C05_Discriminant.lean":"f7a2c4dd9c6bdebbb91900fce0ce3dcf7dbee864d853fdae58a553cb5d8e9ce1",
+      "C06_ZetaControl.lean": "12782d642665bc758a89f9489d73aa44b7587a2af91289420be7200a31b64e4b",
+      "C07_RH.lean":          "0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e"
+    },
+    "sorry_table": {
+      "C01": {"count": 0, "items": []},
+      "C02": {"count": 4, "items": ["modularity_X0_143","functional_equation","L_nonvanishing_right_halfplane","grh_X0_143"]},
+      "C03": {"count": 1, "items": ["height_lower_bound"]},
+      "C04": {"count": 3, "items": ["height_upper_bound","vojta_height_bound","height_to_discriminant"]},
+      "C05": {"count": 2, "items": ["torsion_field_discriminant_bound","discriminant_conductor_bound"]},
+      "C06": {"count": 5, "items": ["grh_for_L_X0_143","classical_zero_free_region","arakelov_implies_L_nonvanishing_at_1","rankin_selberg_nonvanishing","zeta_zeros_on_critical_line"]},
+      "C07": {"count": 0, "items": []}
+    },
+    "note": "C07 has 0 sorries but calls zeta_zeros_on_critical_line (C06 sorry). Chain is not axiom-free.",
+    "clay_complete": false
   }
 }
