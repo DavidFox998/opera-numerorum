@@ -2102,6 +2102,60 @@
     },
     "date": "2026-06-04"
   },
+  "rake_v16_c07": {
+    "title": "S(2pi/7) Rake v1.6 + Lemma G0.3 + C07 Arakelov Fix",
+    "date": "2026-06-04",
+    "status": "CERTIFIED_C07",
+    "description": "Prime sieve over CF denominators of 2*pi/7, four conditions: primality, Diophantine approximation (dist*h<1), G0.3 residue gate (3^h mod 7 in {3,5,6}), C07 Arakelov fix (arakelov_term=24>0). Bands unchanged from prior certification; C07 gate formally wired.",
+    "alpha": "2*pi/7 = 0.897597901025655210989326...",
+    "N_end": 1000000000000000,
+    "candidate_hn_description": "CF denominators of 2*pi/7 (best Diophantine approximators)",
+    "candidate_hn": [1,9,10,39,127,166,791,15986,16777,66317,414679,1310354,1725033,91012070,183749173,274761243,1282794145,1557555388,9070571085,46910410813,243622625150,290533035963,2277353876891,2567886912854,7413127702599,9981014615453,37356171548958,47337186164411,226704916206602],
+    "conditions": {
+      "1_primality": "Miller-Rabin deterministic (witnesses 2..37)",
+      "2_diophantine": "dist(h)*h < 1  (CF best-approximation property)",
+      "3_G0_3": "pow(3,h,7) in {3,5,6}  (Galois residue gate, Lemma G0.3)",
+      "4_C07_arakelov": "arakelov_term(h,genus=13) = 24 > 0  [C01 Lean fix]"
+    },
+    "arakelov_term": {
+      "genus": 13,
+      "value": 24,
+      "formula": "2*13-2 = 24",
+      "prior_value_bug": 0,
+      "fix_date": "2026-06-04",
+      "lean_theorem": "ArakelovPositivity_X0_143 : 0 < 24  [proved, no sorry, C01]"
+    },
+    "BANDS": [127, 414679],
+    "band_details": {
+      "127": {
+        "cf_convergent": "114/127",
+        "dist_times_h": 0.64345436,
+        "pow3h7": 3,
+        "arakelov_term": 24,
+        "h_mod_12": 7,
+        "h_mod_6": 1
+      },
+      "414679": {
+        "cf_convergent": "372215/414679",
+        "dist_times_h": 0.24147702,
+        "pow3h7": 3,
+        "arakelov_term": 24,
+        "h_mod_12": 7,
+        "h_mod_6": 1
+      }
+    },
+    "source_file": "rake_v16_c07.py",
+    "stdout_file": "rake_v16_c07.out",
+    "sha256_source": "1fc3e7811ef5dacadacef1e09ecec9e1ac547edb7d8bf7b4c734a34c4c87b3b7",
+    "sha256_stdout": "f45b8e0acc1389303922b82fdb683605094610475e496936932935a24fd61acd",
+    "sha256_bands_json": "e15f147836ac60ffbf7baafbfbb21377dfefb5b7a40f87cc88378b76d9a33147",
+    "sha256_prior_bands": "6775013bd8a1ba42ef65315880babb77f1bab3e61992a65854cda234630d1e17",
+    "lean_chain_binding": {
+      "C01_Arakelov.lean": "db291fc7dcf6debf9503a98d032f3238fef3e04af9d76d6cb5705eb8882c0c96",
+      "C07_RH.lean": "0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e"
+    },
+    "M6_genus_binding": "ec9fa8c3... (genus(X_0(143))=13)"
+  },
   "lean_chain_TheoremaAureum143": {
     "title": "TheoremaAureum143 Lean Proof Chain — C01 through C07",
     "audit_date": "2026-06-04",

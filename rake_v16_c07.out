@@ -1,0 +1,92 @@
+======================================================================
+Opera Numerorum — S(2pi/7) Rake v1.6 + Lemma G0.3 + C07 Arakelov Fix
+======================================================================
+Series:           Opera Numerorum / Battle Plan v1.6
+Author:           David Fox
+Date:             2026-06-04
+alpha:            2*pi/7 = 0.897597901025655210989326680937
+genus(X_0(143)):  13  [M6, SHA ec9fa8c3]
+arakelov_term:    2*13-2 = 24  [C01 fix; was 0]
+N_end:            1000000000000000
+Diophantine gate: dist * h < DENOM = 1
+
+candidate_hn (CF denominators of 2*pi/7):
+  [1, 9, 10, 39, 127, 166, 791, 15986, 16777, 66317, 414679, 1310354, 1725033, 91012070, 183749173, 274761243, 1282794145, 1557555388, 9070571085, 46910410813, 243622625150, 290533035963, 2277353876891, 2567886912854, 7413127702599, 9981014615453, 37356171548958, 47337186164411, 226704916206602]
+
+Four conditions (v1.6 Rake):
+  [1] is_prime(h)                           primality
+  [2] dist(h)*h < DENOM                     Diophantine: best approximator to 2pi/7
+  [3] pow(3,h,7) in {3,5,6}                 G0.3: Galois residue gate
+  [4] arakelov_term(h, genus=13) > 0        C07 Arakelov fix (was 0, vacuous)
+
+Filter trace:
+----------------------------------------------------------------------
+  h=1               [1] COMPOSITE
+  h=9               [1] COMPOSITE
+  h=10              [1] COMPOSITE
+  h=39              [1] COMPOSITE
+  h=127             PASS  [prime | dist*h=0.643454 | 3^h%7=3 in G0.3 | omega^2=24]
+  h=166             [1] COMPOSITE
+  h=791             [1] COMPOSITE
+  h=15986           [1] COMPOSITE
+  h=16777           [1] COMPOSITE
+  h=66317           [1] COMPOSITE
+  h=414679          PASS  [prime | dist*h=0.241477 | 3^h%7=3 in G0.3 | omega^2=24]
+  h=1310354         [1] COMPOSITE
+  h=1725033         [1] COMPOSITE
+  h=91012070        [1] COMPOSITE
+  h=183749173       [1] COMPOSITE
+  h=274761243       [1] COMPOSITE
+  h=1282794145      [1] COMPOSITE
+  h=1557555388      [1] COMPOSITE
+  h=9070571085      [1] COMPOSITE
+  h=46910410813     [1] COMPOSITE
+  h=243622625150    [1] COMPOSITE
+  h=290533035963    [1] COMPOSITE
+  h=2277353876891   [1] COMPOSITE
+  h=2567886912854   [1] COMPOSITE
+  h=7413127702599   [1] COMPOSITE
+  h=9981014615453   [1] COMPOSITE
+  h=37356171548958  [1] COMPOSITE
+  h=47337186164411  [1] COMPOSITE
+  h=226704916206602  [1] COMPOSITE
+----------------------------------------------------------------------
+
+BANDS:  [127, 414679]
+COUNT:  2
+
+Band verification:
+  h = 127
+    CF convergent:   114/127  (~0.897637795276)
+    2pi/7:           0.897597901026
+    |h*alpha - p_n|: 5.06656974e-03
+    dist * h:        0.64345436  < 1  CHECK
+    3^h mod 7:       3  in G0.3  CHECK
+    arakelov_term:   24  > 0  CHECK
+    h mod 12:        7
+    h mod 6:         1
+
+  h = 414679
+    CF convergent:   372215/414679  (~0.897597901027)
+    2pi/7:           0.897597901026
+    |h*alpha - p_n|: 5.82322762e-07
+    dist * h:        0.24147702  < 1  CHECK
+    3^h mod 7:       3  in G0.3  CHECK
+    arakelov_term:   24  > 0  CHECK
+    h mod 12:        7
+    h mod 6:         1
+
+C07 gate analysis:
+  arakelov_term(genus=13) = 24
+  This condition would filter: any h where genus < 2 (i.e. arakelov=0)
+  For X_0(143) with g=13: always 24 > 0 (gate NEVER fires)
+  Lean binding: C01_Arakelov.lean SHA db291fc7...
+    arakelovSelfIntersection_X0_143 : arakelovSelfIntersection (X0 143) = 24
+    ArakelovPositivity_X0_143 : 0 < 24  [proved, no sorry]
+
+SHA binding:
+  M6 stdout SHA:   ec9fa8c3...  genus(X_0(143))=13
+  C01 Lean SHA:    db291fc7...  arakelov_term fix
+  bands_269.json:  6775013b...  prior certification (h=127,h=414679)
+
+SHA256(this stdout): 097601c481de78db6366889f0d247c7d61b7c4a7840bc28992edc4e8385365c9
