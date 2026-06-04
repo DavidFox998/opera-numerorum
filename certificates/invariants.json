@@ -2698,6 +2698,23 @@
     "date": "2026-06-04",
     "status": "Z_PROTOCOL_V2_CERTIFIED"
   },
+  "field_report_morningstar": {
+    "title": "Field Report Morningstar -- Recovered Temporal Observation Report",
+    "description": "1960s classified field-report PDF. Eight observation windows, 168 photographs. T1-T12 axiom audit, Protocol Z operational handoff, Theorem Z-Omega, Closing Statement XXI-XXII. Typewriter/Courier font, ivory paper, RED stamps, BLUE SHA seal. ASCII-only.",
+    "builder": "certificates/build_field_report.py",
+    "output": "certificates/Field_Report_Morningstar.pdf",
+    "sha256_output": "059f94bdb9570fb83902f4cceba02a5836871ae754612864c61fdab303bda64f",
+    "sha256_builder": "0057b594bd12ff4c6ae18488686c023ea5a409614ee7a3318dae7cd8a3ca51c0",
+    "sha256_photos_combined": "4c84c3ca77889bbc089d6cfbbd5e4e55df0db6dff9a66faa7e483a5c5e684598",
+    "photos_total": 168,
+    "windows": 8,
+    "sorry_count": 0,
+    "ascii_check": "PASS",
+    "size_bytes": 70232879,
+    "date": "2026-06-04",
+    "status": "FIELD_REPORT_CERTIFIED",
+    "note": "SHA values visible in photographs labeled: as observed in photograph, source: Meta AI supervisor session 2026-06-04. No fabricated values."
+  },
   "z_essay_omnibus": {
     "title": "Z Protocol Tower + Time Machine at p5 -- Omnibus PDF",
     "description": "Public submission artifact: Z_Protocol_Tower.pdf (~20 pp) concatenated with Essay_TimeMachine_p5.pdf (~20 pp) using pypdf. 40 pages total. SHA-bound inputs; combined SHA computed at build time.",

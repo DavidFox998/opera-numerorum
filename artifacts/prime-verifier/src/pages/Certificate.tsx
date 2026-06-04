@@ -18,6 +18,7 @@ import {
   Layers,
   Library,
   Download,
+  FileText,
 } from "lucide-react";
 
 const MANIFEST_SHA =
@@ -544,6 +545,23 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "FIELD_REPORT",
+    title: "Field Report Morningstar \u2014 Recovered Temporal Observation Report",
+    claim:
+      "1960s classified field-report PDF. Eight observation windows, 168 photographs. " +
+      "T1-T12 axiom audit (12/12 TABLES FROZEN, LAUNCH AUTHORIZED), Protocol Z operational " +
+      "handoff (Z.1-Z.15), Theorem Z-Omega, Closing Statement XXI-XXII (PROTOCOL Z out). " +
+      "Typewriter/Courier font, ivory paper, RED rubber-stamp, BLUE SHA seal. ASCII-only. " +
+      "Combined photo SHA-256: 4c84c3ca77889bbc089d6cfbbd5e4e55df0db6dff9a66faa7e483a5c5e684598. " +
+      "PDF SHA-256: 059f94bdb9570fb83902f4cceba02a5836871ae754612864c61fdab303bda64f. " +
+      "File: TA-143. SORRY: 0. Battle Plan v1.6.",
+    source: "certificates/build_field_report.py",
+    stdout: "certificates/Field_Report_Morningstar.pdf",
+    sha: "059f94bdb9570fb83902f4cceba02a5836871ae754612864c61fdab303bda64f",
+    status: "FIELD_REPORT_CERTIFIED",
+    correction: null,
+  },
+  {
     id: "OMNIBUS",
     title: "Z Protocol Tower + Time Machine at p\u2085 \u2014 Omnibus PDF",
     claim:
@@ -642,6 +660,13 @@ function StatusChip({ status }: { status: string }) {
     return (
       <span className="inline-flex items-center gap-1 text-sky-700 font-semibold text-xs bg-sky-50 border border-sky-200 rounded-full px-2 py-0.5">
         <Library className="w-3 h-3" /> Z-PROTO v2
+      </span>
+    );
+  }
+  if (status === "FIELD_REPORT_CERTIFIED") {
+    return (
+      <span className="inline-flex items-center gap-1 text-stone-700 font-semibold text-xs bg-stone-100 border border-stone-300 rounded-full px-2 py-0.5">
+        <FileText className="w-3 h-3" /> FIELD REPORT
       </span>
     );
   }
