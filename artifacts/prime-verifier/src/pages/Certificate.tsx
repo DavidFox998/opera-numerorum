@@ -542,6 +542,7 @@ const MODULES = [
       "ASCII check: PASS.  SORRY: 0.",
     source: "certificates/build_z_protocol_v2.py",
     stdout: "certificates/Z_Protocol_Tower_v2.pdf",
+    apiPdf: "Z_Protocol_Tower_v2.pdf",
     sha: "4e1ea390ca0bf556881b60acb6a16c7304fa7b045279afe1afd84400eab29df5",
     status: "Z_PROTOCOL_V2_CERTIFIED",
     correction: null,
