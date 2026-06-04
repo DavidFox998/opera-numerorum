@@ -251,3 +251,9 @@ id = "d-WjdB914DrFqf-tx8ta0"
 uri = "file://certificates/invariants.json"
 type = "unspecified"
 title = "Opera Numerorum — invariants.json (chain-of-custody record)"
+
+[[outputs]]
+id = "7KM-4HimGhDnMQruw54WJ"
+uri = "file://OperaNumerorum_records.zip"
+type = "unspecified"
+title = "Opera Numerorum Records — rake_v16_c07.py · .out · bands_269.json · invariants.json"
