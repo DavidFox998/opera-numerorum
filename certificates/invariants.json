@@ -2047,5 +2047,36 @@
     "ascii_check": "PASS",
     "status": "AUDIT_CERTIFIED",
     "date": "2026-05-24"
+  },
+  "lean_chain_c01_c07": {
+    "title": "TheoremaAureum143: Lean Proof Chain C01-C07",
+    "claim": "C07_RH_of_Arakelov: ArakelovPositivity(X0_143) -> RiemannHypothesis. Logical skeleton certified; 17 sorries open; arakelovSelfIntersection placeholder = 0 (vacuousness warning documented).",
+    "chain_dir": "lean-proof-towers/",
+    "audit_file": "lean-proof-towers/LEAN_CHAIN_AUDIT.md",
+    "status": "ARCHITECTURE_CERTIFIED",
+    "sorry_count": 17,
+    "axioms_standard": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "axioms_added": 0,
+    "vacuousness_warning": "arakelovSelfIntersection hardcoded to 0 in C01; ArakelovPositivity currently False; theorem vacuously true until placeholder replaced",
+    "connection_to_python_chain": {
+      "C01_genus_13": "M6 SHA ec9fa8c3...",
+      "C02_L_function": "M23 SHA 4635dab9...",
+      "C06_zeta_control": "M9 SHA 624b93f7...",
+      "C07_GRH_table": "M9-All SHA 5e39f3a9..."
+    },
+    "file_shas": {
+      "C01_Arakelov.lean": "2c2e9ef6e52773fd74ad0dbe35f28a33789c981dd0031df7243426a723645000",
+      "C02_Modularity.lean": "0c8ee7b9ba66bb74f9261e1bfd842b6d3d9873b48e8c6e9eae28111e5f5b15e1",
+      "C03_Positivity.lean": "cfa48eaad7214132535cf7aa3f7aeb2ba8c97358881a8e78a004b9348102e093",
+      "C04_HeightBound.lean": "91333c89c31577a0f990a04b462ed9298c9550efd4e34ac5bca056e5306dcfef",
+      "C05_Discriminant.lean": "f7a2c4dd9c6bdebbb91900fce0ce3dcf7dbee864d853fdae58a553cb5d8e9ce1",
+      "C06_ZetaControl.lean": "915b85adc471246395d27d27aa1f49820d9498d9676ae33634f43bdf1940565b",
+      "C07_RH.lean": "0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e"
+    },
+    "date": "2026-06-03"
   }
 }

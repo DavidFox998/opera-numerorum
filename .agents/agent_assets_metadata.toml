@@ -227,3 +227,9 @@ id = "SgGSvHPXssV1hflA9nOoh"
 uri = "file://certificates/Module_M8A_Audit.pdf"
 type = "pdf"
 title = "Module M8A Audit Certificate — Delta_DS^(4) Correction + 280-Curve Lambda Bounds"
+
+[[outputs]]
+id = "os-kvcppBQEcyBnXvvBQC"
+uri = "file://lean-proof-towers/LEAN_CHAIN_AUDIT.md"
+type = "text"
+title = "TheoremaAureum143 — Lean Chain Audit (C01–C07)"
