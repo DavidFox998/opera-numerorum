@@ -2347,5 +2347,114 @@
       "M7_manifest_locked": true,
       "M7_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
     }
+  },
+  "section_8_h4_unification": {
+    "title": "Section 8: The Braid Complete -- Coxeter H4 Unification",
+    "date": "2026-06-04",
+    "author": "David Fox",
+    "series": "Opera Numerorum / Battle Plan v1.6",
+    "status": "CERTIFIED",
+    "description": "H4 Coxeter unification of the six-tower pipeline. Five certified constants identified as H4 structure: 12/11 (M21), 11/13 (M7 manifest), h2=10 (M6), Omega/R=11.929~12 (M23), f_res=alpha0 MHz (M8D). Four Meta AI errors corrected: 233/144=phi (not phi^2); BSD values from m23.out govern; 191 fails Layer 7 (3^191 mod 7=5); values 3.819/L'(1)=2.495999 mislabeled. Three figures generated: h4_coxeter_diagram.png, six_tower_dag.png, phi_convergents.png.",
+    "governing_shas": {
+      "M21_12_over_11": "b7415927",
+      "M7_manifest_11_13": "5b80b84d",
+      "M6_class_number_10": "ec9fa8c3",
+      "M23_BSD_OmegaR": "4635dab9",
+      "M5_C_S4": "9df98a39",
+      "M8D_freq": "27d8e0c1",
+      "Wall256_beta0": "622c33aa",
+      "M1_alpha0": "63ef870a"
+    },
+    "audit_corrections": [
+      "233/144 is convergent to phi (~1.618), NOT phi^2 (~2.618) -- Meta AI error",
+      "BSD: Omega=2.495999836, R=0.209235691, L'(1)=0.52225, Omega/R=11.929 -- m23.out governs",
+      "191 fails Layer 7: 3^191 mod 7 = 5 (not 3) -- machine verified",
+      "Omega=3.819 does not appear in any certified .out file -- removed",
+      "Tamagawa ratio formula marked [Meta AI, unverified by .out]"
+    ],
+    "figures": [
+      "certificates/figures/h4_coxeter_diagram.png",
+      "certificates/figures/six_tower_dag.png",
+      "certificates/figures/phi_convergents.png"
+    ],
+    "tex_file": "certificates/opera_numerorum_certified_equations.tex",
+    "tex_sha256_prefix": "59c9beec",
+    "tex_sha256_full": "59c9beecc381f3748698a547b28d90ddd390a970ddc7dab2a889f85325ff1176",
+    "tex_lines": 1411,
+    "master_manifest_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+    "manifest_status": "LOCKED",
+    "h4_coxeter_data": {
+      "coxeter_number": 30,
+      "exponents": [
+        1,
+        11,
+        19,
+        29
+      ],
+      "degrees": [
+        2,
+        12,
+        20,
+        30
+      ],
+      "order": 14400,
+      "order_factored": "120^2",
+      "H3_coxeter_number": 10,
+      "H3_exponents": [
+        1,
+        5,
+        9
+      ]
+    },
+    "layer7_verification": {
+      "filter": "3^p mod 7 == 3, equiv p mod 6 == 1",
+      "p2": {
+        "3p_mod7": 2,
+        "passes": false
+      },
+      "p3": {
+        "3p_mod7": 6,
+        "passes": false
+      },
+      "p11": {
+        "3p_mod7": 5,
+        "passes": false
+      },
+      "p13": {
+        "3p_mod7": 3,
+        "passes": true
+      },
+      "p19": {
+        "3p_mod7": 3,
+        "passes": true
+      },
+      "p191": {
+        "3p_mod7": 5,
+        "passes": false
+      }
+    },
+    "phi_convergent": {
+      "fraction": "233/144",
+      "value": 1.618055555555556,
+      "phi": 1.618033988749895,
+      "error": 2.16e-05,
+      "note": "Convergent to phi (golden ratio), NOT phi^2"
+    },
+    "bsd_certified": {
+      "source": "m23.out SHA 4635dab9, LMFDB 143.2.a.a",
+      "Omega": 2.495999836,
+      "R": 0.209235691,
+      "L_prime_1": 0.52225225042,
+      "Omega_over_R": 11.92913037,
+      "error_vs_12": "0.5906%"
+    },
+    "zip_package": {
+      "file": "opera_numerorum_section8.zip",
+      "sha256": "151a924d99fd8875fb116fb9554fba716a151b8101ace52b46da46413d033d39",
+      "sha256_prefix": "151a924d",
+      "file_count": 53,
+      "size_kb": 29105.7,
+      "contents": "tex + invariants.json + 3 figures + 48 PDFs"
+    }
   }
 }

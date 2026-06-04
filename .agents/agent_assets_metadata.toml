@@ -60,6 +60,24 @@ uri = "file://certificates/figures/fig_morningstar_docking.png"
 type = "image"
 title = "Morning Star docking mechanism"
 
+[[generated]]
+id = "RrhRMvH-qFQ2aVuJpSS2E"
+uri = "file://certificates/figures/h4_coxeter_diagram.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Hzpkhgt4YMPbuqHY1294l"
+uri = "file://certificates/figures/six_tower_dag.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "8yYBj-VqhCH81wTaKnzzT"
+uri = "file://certificates/figures/phi_convergents.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "TH6j7YjA_IsBpgJ_BJ6ZX"
 uri = "file://certificates/Tendon_A_Certificate.pdf"
@@ -269,3 +287,9 @@ id = "om6KxDZDAY3yM2yOiDXkj"
 uri = "file://certificates/opera_numerorum_certified_equations.txt"
 type = "text"
 title = "opera_numerorum_certified_equations.tex (download as .txt)"
+
+[[outputs]]
+id = "vTWMIrMTeUiYS49cWwaf7"
+uri = "file://opera_numerorum_section8.zip"
+type = "unspecified"
+title = "Opera Numerorum — Section 8 + Full Chain (ZIP)"
