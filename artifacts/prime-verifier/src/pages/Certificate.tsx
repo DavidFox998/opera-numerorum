@@ -492,11 +492,11 @@ const MODULES = [
       "T1: alpha_0 = 299+pi/10. T2: kappa bound. T3: CF pi/10, Q_5=226. " +
       "T4: S_14, p_5 certified. T5: C(S_4)=11.4221>2*sqrt(13). T6: genus=13, Bost. " +
       "T7: Hankel rank=13=g. T8: M8C Zoe-M* bridge, Z=15. T9: M8D 120-cell resonator. " +
-      "T10: M8F 7-layer protocol, all 8 PASS. T11: M8J wormhole tidal=0.0999g<0.1g. " +
-      "T12: Witness ledger (10 screenshots). 12/12 GREEN. SORRY: 0. ASCII: PASS.",
+      "T10: P_hold 1.40kW->~14.7W(pred). T11: Lean axioms 3x[]. " +
+      "T12: Witness ledger (10 screenshots). SORRY: 0. ASCII: PASS. T7 corrected (p6 removed).",
     source: "certificates/build_essay_time_machine.py",
     stdout: "certificates/Essay_TimeMachine_p5.pdf",
-    sha: "bac8642305d582c68e8f30378078d242cd7c87f050f42af10b671f1dbdddda0b",
+    sha: "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7",
     status: "ESSAY_CERTIFIED",
     correction: null,
   },

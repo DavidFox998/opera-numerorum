@@ -2572,13 +2572,13 @@
       "bdp_lean_skeleton"
     ]
   },
-  "essay_time_machine_p5": {
+  "essay_time_machine_p5_v2": {
     "module": "ESSAY",
     "title": "Opera Numerorum: The Time Machine at p5 -- Illustrated Essay in 12 Tables",
     "file": "certificates/Essay_TimeMachine_p5.pdf",
-    "pdf_sha": "bac8642305d582c68e8f30378078d242cd7c87f050f42af10b671f1dbdddda0b",
+    "pdf_sha": "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7",
     "builder_script": "certificates/build_essay_time_machine.py",
-    "builder_sha": "10970f2a77991a2994e7797ad591901f6181dba0bca3ffab21dc8dbd499ba9dd",
+    "builder_sha": "4fab542fcac8cf6b86a49e9919470f8806e2e7be2fe1a74e190cf3a13dc8d224",
     "ascii_check": "PASS",
     "pages": 21,
     "tables": 12,

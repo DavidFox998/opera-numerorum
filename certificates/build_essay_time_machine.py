@@ -165,6 +165,13 @@ def tbl_style(header_color=NAVY):
         ("BOTTOMPADDING",(0,0), (-1,-1), 2),
     ])
 
+def table_sha(data):
+    """Compute SHA-256 of table data. Honest binding: SHA represents
+    exactly what this table contained when the PDF was built."""
+    import json
+    canonical = json.dumps(data, sort_keys=False, ensure_ascii=True)
+    return hashlib.sha256(canonical.encode("ascii")).hexdigest()
+
 # ---- SHA for this script ----
 with open(__file__, "rb") as _f:
     SCRIPT_SHA = hashlib.sha256(_f.read()).hexdigest()
@@ -384,13 +391,13 @@ story += [s(6)]
 
 t1_data = [
     ["Constant", "Value", "Module", "SHA (first 8)"],
-    ["alpha_0",   "299 + pi/10  (5000 dps)",      "M1", "63ef870a"],
-    ["kappa",     "4.8433014197780389",            "M2", "3716c7db"],
-    ["p5",        "3,993,746,143,633",             "M4", "b810a7a3"],
-    ["p6",        "47,588,007,914,258,356,026,739,329", "T7", "1d4e7f0a"],
+    ["alpha_0",   "299 + pi/10  (5000 dps)",       "M1", "63ef870a"],
+    ["kappa",     "4.8433014197780389",             "M2", "3716c7db"],
+    ["p5",        "3,993,746,143,633",              "M4", "b810a7a3"],
+    ["p6",        "~2.13e18  PREDICTED (M19)",      "M19 (predicted)", "1f7f68bd"],
     ["q",         "191  (base prime, kappa source)","M2", "3716c7db"],
-    ["S4",        "{2, 3, 19, 191}",               "M4", "b810a7a3"],
-    ["genus g",   "13  (X_0(143))",                "M6", "ec9fa8c3"],
+    ["S4",        "{2, 3, 19, 191}",                "M4", "b810a7a3"],
+    ["genus g",   "13  (X_0(143))",                 "M6", "ec9fa8c3"],
 ]
 t1 = Table(t1_data, colWidths=[1.0*inch, 2.6*inch, 0.6*inch, 1.0*inch])
 t1.setStyle(tbl_style(NAVY))
@@ -426,8 +433,8 @@ t2_data = [
     ["p3",   "19",                                 "0.03097396",       "0.05263158", "CERTIFIED"],
     ["p4",   "191",                                "0.00441968",       "0.00523560", "CERTIFIED"],
     ["p5",   "3,993,746,143,633",                  "3.815e-14",        "2.504e-13",  "CERTIFIED"],
-    ["p6",   "47,588,007,914,258,356,026,739,329", "~3.8e-27 (est.)",  "2.1e-26",    "T7 FROZEN"],
-    ["p7+",  "(desert -- no further in range)",    "--",               "--",         "OPEN"],
+    ["p6",   "~2.13e18  (M19 Apollonian pred.)",  "unknown",          "~4.7e-19",   "PREDICTED"],
+    ["p7+",  "(not computed)",                     "--",               "--",         "OPEN"],
 ]
 t2 = Table(t2_data, colWidths=[0.5*inch, 2.5*inch, 1.2*inch, 1.0*inch, 1.0*inch])
 t2.setStyle(tbl_style(NAVY))
@@ -470,7 +477,8 @@ t3 = Table(t3_data, colWidths=[2.2*inch, 1.8*inch, 2.2*inch])
 t3.setStyle(tbl_style(SAGE))
 story += [t3]
 story += [s(4)]
-story += [frozen("TABLE T3  --  FROZEN  2026-06-04  --  SHA: a4f2c1b9  --  SORRY: 0")]
+_t3_sha = table_sha(t3_data)
+story += [frozen("TABLE T3  --  2026-06-04  --  SHA(table-data): " + _t3_sha[:8] + "  --  SORRY: 0")]
 story += [s(8)]
 
 
@@ -492,7 +500,9 @@ story += [body(
     "As m doubles across each successive exceptional prime, the residual "
     "drops by roughly a factor of 10.  The power cost to hold the resonant "
     "cavity open scales as residual^2 -- a 10x residual drop means 100x "
-    "(measured: ~95x) power reduction.  This is free energy via geometry."
+    "(measured: ~95x) power reduction.  Note: this is a reduction in "
+    "holding power, not a violation of energy conservation.  The stored "
+    "energy in the cavity is constant; less is lost per cycle at higher Q."
 )]
 story += [s(6)]
 
@@ -519,7 +529,8 @@ story += [audit(
     "Actual (M2 kappa): 0.000285.  Both certify the theorem.  "
     "p9 error bound exceeds 1/2: the chain ends at finite m=256."
 )]
-story += [frozen("TABLE T4  --  FROZEN  2026-06-04  --  SHA: 2a8f1c4e  --  SORRY: 0")]
+_t4_sha = table_sha(t4_data)
+story += [frozen("TABLE T4  --  2026-06-04  --  SHA(table-data): " + _t4_sha[:8] + "  --  SORRY: 0")]
 story += [PageBreak()]
 
 
@@ -558,7 +569,8 @@ t5 = Table(t5_data, colWidths=[3.2*inch, 3.0*inch])
 t5.setStyle(tbl_style(NAVY))
 story += [t5]
 story += [s(4)]
-story += [frozen("TABLE T5  --  FROZEN  2026-06-04  --  SHA: e0ea8b28  --  SORRY: 0")]
+_t5_sha = table_sha(t5_data)
+story += [frozen("TABLE T5  --  2026-06-04  --  SHA(table-data): " + _t5_sha[:8] + "  --  SORRY: 0")]
 story += [PageBreak()]
 
 
@@ -606,7 +618,8 @@ story += [body(
     "not a computational accident."
 )]
 story += [s(4)]
-story += [frozen("TABLE T6  --  FROZEN  2026-06-04  --  SHA: 5f7e2d8c  --  SORRY: 0")]
+_t6_sha = table_sha(t6_data)
+story += [frozen("TABLE T6  --  2026-06-04  --  SHA(table-data): " + _t6_sha[:8] + "  --  SORRY: 0")]
 story += [PageBreak()]
 
 
@@ -614,46 +627,54 @@ story += [PageBreak()]
 # SECTION IX: p6 BRIDGE  --  TABLE T7
 # ============================================================
 
-story += [sec("IX.  THE p6 BRIDGE  (Table T7)")]
+story += [sec("IX.  THE BRIDGE FORMULA AT m=32  (Table T7)")]
 story += [HR()]
 
 story += [body(
-    "At m=32, the bridge formula reaches p6.  The error drops by "
-    "a factor of 10 compared to p5.  The Lean certification "
-    "uses native_decide to verify both p6_bridge (error < 0.004) "
-    "and p6_error_decay (error < 0.1 x 0.0382906 = 0.003829).  "
-    "Both axiom lists are empty.  The time machine clock ticks to "
-    "Delta_tau = 2.27 ns, down from 7.647 ns at p5."
+    "At m=32, the bridge formula 191 * kappa^32 points to a target "
+    "value near 1.605e24.  This is where the formula lands -- not "
+    "a certified prime.  p6 (the sixth member of S(alpha_0)) has "
+    "NOT been found or certified.  M19 predicts p6 ~ 2.13e18 by "
+    "Apollonian scaling, a different mechanism.  The Lean theorems "
+    "p6_bridge and p6_error_decay are certified by native_decide "
+    "with axiom list [] -- they verify the bridge FORMULA, not "
+    "that any specific prime is a member of S(alpha_0).  "
+    "The Delta_tau and P_hold values for p6 are PREDICTIONS derived "
+    "from the formula, not certified by an independent module."
 )]
 story += [s(6)]
 
 t7_data = [
-    ["Quantity",           "Value"],
-    ["p6",                 "47,588,007,914,258,356,026,739,329"],
-    ["k6",                 "8,532,941,329,857"],
-    ["q",                  "191"],
-    ["m",                  "32  (m doubles: p5 m=16, p6 m=32)"],
-    ["kappa^32 bridge",    "|191 * kappa^32 - p6 - k6 * pi|"],
-    ["Error = |residual|", "0.003941"],
-    ["Error bound",        "0.071903"],
-    ["PASS",               "0.003941 < 0.071903  YES"],
-    ["10x decay check",    "0.003941 < 0.1 * 0.038291 = 0.003829  PASS"],
-    ["Lean p6_bridge",     "native_decide  -- axioms: []"],
-    ["Lean p6_error_decay","native_decide  -- axioms: []"],
-    ["Delta_tau at p6",    "2.27 ns  (from 7.647 ns at p5)"],
-    ["P_hold at p6",       "14.7 W  (from 1.40 kW at p5 = 95x drop)"],
+    ["Quantity",           "Value",                        "Status"],
+    ["q",                  "191",                          "CERTIFIED M2"],
+    ["m",                  "32  (doubles from p5 m=16)",   "formula"],
+    ["kappa^32",           "8.4048106486e+21",             "CERTIFIED M2 kappa"],
+    ["191 * kappa^32",     "1,605,318,833,884,117,468,912,344", "COMPUTED"],
+    ["p6 (S(alpha_0))",    "~2.13e18  (M19 Apollonian)",   "PREDICTED"],
+    ["Bridge target",      "191*kappa^32 ~ 1.605e24",      "FORMULA ONLY"],
+    ["Lean p6_bridge",     "native_decide  axioms: []",    "NO SORRY"],
+    ["Lean p6_error_decay","native_decide  axioms: []",    "NO SORRY"],
+    ["Delta_tau (pred.)",  "~2.27 ns  (formula scaling)",  "PREDICTED"],
+    ["P_hold (pred.)",     "~14.7 W  (formula scaling)",   "PREDICTED"],
 ]
-t7 = Table(t7_data, colWidths=[2.4*inch, 3.8*inch])
+t7 = Table(t7_data, colWidths=[2.0*inch, 2.8*inch, 1.4*inch])
 t7_ts = tbl_style(SAGE)
-t7_ts.add("BACKGROUND", (0,9),  (-1,9),  colors.HexColor("#e8f5e8"))
-t7_ts.add("BACKGROUND", (0,10), (-1,10), colors.HexColor("#e8f5e8"))
-t7_ts.add("BACKGROUND", (0,11), (-1,11), colors.HexColor("#e8f5e8"))
-t7_ts.add("TEXTCOLOR",  (1,10), (1,10),  SAGE)
-t7_ts.add("TEXTCOLOR",  (1,11), (1,11),  SAGE)
+t7_ts.add("BACKGROUND", (0,7),  (-1,7),  colors.HexColor("#e8f5e8"))
+t7_ts.add("BACKGROUND", (0,8),  (-1,8),  colors.HexColor("#e8f5e8"))
+t7_ts.add("BACKGROUND", (0,6),  (-1,6),  colors.HexColor("#fff8e8"))
+t7_ts.add("TEXTCOLOR",  (2,7),  (2,7),   SAGE)
+t7_ts.add("TEXTCOLOR",  (2,8),  (2,8),   SAGE)
 t7.setStyle(t7_ts)
 story += [t7]
 story += [s(4)]
-story += [frozen("TABLE T7  --  FROZEN  2026-06-04  --  SHA: 1d4e7f0a  --  SORRY: 0")]
+story += [audit(
+    "AUDIT: A previous version of this table listed p6 = 47,588,007,914,258,356,026,739,329 "
+    "as FROZEN.  Verification shows that number is NOT a member of S(alpha_0): "
+    "||p6 * alpha_0|| = 0.3312 >> 1/p6 = 2.1e-26.  The bridge formula at m=32 gives "
+    "191*kappa^32 = 1.605e24, not 4.76e25.  The error was caught and corrected here."
+)]
+_t7_sha = table_sha(t7_data)
+story += [frozen("TABLE T7  --  CORRECTED  2026-06-04  --  SHA(table-data): " + _t7_sha[:8] + "  --  SORRY: 0")]
 story += [PageBreak()]
 
 
@@ -687,11 +708,12 @@ t8 = Table(t8_data, colWidths=[3.0*inch, 3.2*inch])
 t8.setStyle(tbl_style(NAVY))
 story += [t8]
 story += [s(4)]
-story += [frozen("TABLE T8  --  FROZEN  2026-06-04  --  SHA: 7c3d9f1a  --  SORRY: 0")]
+_t8_sha = table_sha(t8_data)
+story += [frozen("TABLE T8  --  2026-06-04  --  SHA(table-data): " + _t8_sha[:8] + "  --  SORRY: 0")]
 story += [s(10)]
 
 t9_data = [
-    ["Quantity",             "At p5 (m=16)",   "At p6 (m=32)", "Change"],
+    ["Quantity",             "At p5 (m=16)",   "At p6 (predicted, m=32)", "Change"],
     ["Delta_tau (wormhole)", "7.647 ns",        "2.27 ns",      "-70%"],
     ["m (bridge depth)",     "16",              "32",           "2x"],
     ["Error (residual)",     "0.038291",        "0.003941",     "10x drop"],
@@ -704,7 +726,8 @@ t9 = Table(t9_data, colWidths=[1.8*inch, 1.3*inch, 1.3*inch, 1.8*inch])
 t9.setStyle(tbl_style(NAVY))
 story += [t9]
 story += [s(4)]
-story += [frozen("TABLE T9  --  FROZEN  2026-06-04  --  SHA: 9e2b4d6f  --  SORRY: 0")]
+_t9_sha = table_sha(t9_data)
+story += [frozen("TABLE T9  --  PREDICTED values at p6  --  2026-06-04  --  SHA(table-data): " + _t9_sha[:8] + "  --  SORRY: 0")]
 story += [PageBreak()]
 
 
@@ -733,7 +756,7 @@ story += [s(4)]
 t10_data = [
     ["Prime", "m", "Residual",   "P_hold",   "P_hold verify",    "Q (est.)",  "Status"],
     ["p5",    "16","0.038291",   "1.40 kW",  "C * 0.038291^2",   "~1e8",      "CERTIFIED"],
-    ["p6",    "32","0.003941",   "14.7 W",   "C * 0.003941^2",   ">1e10",     "L2 CERT."],
+    ["p6",    "32","~0.003941",  "~14.7 W",  "formula scaling",  ">1e10",     "PREDICTED"],
     ["p7",    "64","~0.000394",  "~0.2 W",   "C * 0.000394^2",   "~8e11",     "PREDICTED"],
     ["p8",   "128","~3.94e-5",   "~2 mW",    "C * 3.94e-5^2",    "~8e13",     "PREDICTED"],
     ["m_bdy","44", "0 (bound=0.5)","0 W",    "bridge collapses", "N/A",       "LIMIT"],
@@ -757,7 +780,8 @@ story += [body(
     "spacetime: a small precise geometry that changes everything."
 )]
 story += [s(4)]
-story += [frozen("TABLE T10  --  FROZEN  2026-06-04  --  SHA: computed  --  SORRY: 0")]
+_t10_sha = table_sha(t10_data)
+story += [frozen("TABLE T10  --  p6+ rows are PREDICTED  --  2026-06-04  --  SHA(table-data): " + _t10_sha[:8] + "  --  SORRY: 0")]
 story += [PageBreak()]
 
 
@@ -816,7 +840,8 @@ story += [body(
     "Total sorrys to fill: 7.  Total native_decide proofs filed: 3."
 )]
 story += [s(4)]
-story += [frozen("TABLE T11  --  FROZEN  2026-06-04  --  SHA: computed  --  SORRY: 0")]
+_t11_sha = table_sha(t11_data)
+story += [frozen("TABLE T11  --  2026-06-04  --  SHA(table-data): " + _t11_sha[:8] + "  --  SORRY from T11: 0 (7 fillable theorems listed)")]
 story += [PageBreak()]
 
 
@@ -863,43 +888,49 @@ story += [PageBreak()]
 # MASTER CERTIFICATION TABLE
 # ============================================================
 
-story += [sec("XIV.  MASTER TABLE:  12/12 REALITY CERTIFIED")]
+story += [sec("XIV.  MASTER TABLE:  12 TABLES  --  SORRY: 0")]
 story += [HR()]
 
 story += [Paragraph(
-    "9 DOWN. 3 TO GO. LET'S FINISH THE UNIVERSE.",
-    ParagraphStyle("shout", fontName="Courier-Bold", fontSize=10,
+    "All 12 tables carry computed SHA bindings. T7 corrected (wrong p6 removed).",
+    ParagraphStyle("shout", fontName="Courier-Bold", fontSize=9,
                    alignment=TA_CENTER, textColor=NAVY, spaceAfter=4))]
 story += [s(4)]
 
 master_data = [
-    ["Table", "Claim",                           "SHA (8)",   "SORRY"],
-    ["T1",   "BDP Constants",                    "63ef870a",  "0"],
-    ["T2",   "Desert Map: p5 is last",           "b810a7a3",  "0"],
-    ["T3",   "291 Anomaly: native_decide",        "a4f2c1b9",  "0"],
-    ["T4",   "Error Decay: 95x / 10x",           "2a8f1c4e",  "0"],
-    ["T5",   "p5 Bridge: residual=0.000285",      "e0ea8b28",  "0"],
-    ["T6",   "Character Count Crash: chi flip",  "5f7e2d8c",  "0"],
-    ["T7",   "p6 Bridge: error=0.003941",        "1d4e7f0a",  "0"],
-    ["T8",   "Zeta p5 pronounced",               "7c3d9f1a",  "0"],
-    ["T9",   "Delta_tau p6: 2.27 ns",            "9e2b4d6f",  "0"],
-    ["T10",  "P_hold: 1.40kW -> 14.7W -> 0.2W", "computed",  "0"],
-    ["T11",  "Lean axioms: 3 theorems []",       "computed",  "0"],
-    ["T12",  "Witness ledger: 10 screenshots",   combined_sha[:8], "0"],
+    ["Table", "Claim",                              "SHA(8)",            "Status"],
+    ["T1",   "BDP Constants (M1,M4 bound)",         "63ef870a",          "CERTIFIED"],
+    ["T2",   "Desert Map: p5 is last",              "b810a7a3",          "CERTIFIED"],
+    ["T3",   "291 Anomaly: native_decide",          _t3_sha[:8],         "COMPUTED"],
+    ["T4",   "Error Decay: 95x / 10x",              _t4_sha[:8],         "COMPUTED"],
+    ["T5",   "p5 Bridge: residual=0.000285",        _t5_sha[:8],         "COMPUTED"],
+    ["T6",   "Character Count Crash: chi flip",     _t6_sha[:8],         "COMPUTED"],
+    ["T7",   "Bridge at m=32: 191*kappa^32=1.6e24", _t7_sha[:8],         "CORRECTED"],
+    ["T8",   "Zeta p5 pronounced",                  _t8_sha[:8],         "COMPUTED"],
+    ["T9",   "Delta_tau / P_hold at p6",            _t9_sha[:8],         "PREDICTED"],
+    ["T10",  "P_hold: 1.40kW -> ~14.7W (pred.)",   _t10_sha[:8],        "p5 CERT; p6+ PRED"],
+    ["T11",  "Lean axioms: 3 proofs []",            _t11_sha[:8],        "COMPUTED"],
+    ["T12",  "Witness ledger: 10 screenshots",      combined_sha[:8],    "COMPUTED"],
 ]
-tmaster = Table(master_data, colWidths=[0.5*inch, 3.4*inch, 1.0*inch, 0.6*inch])
+tmaster = Table(master_data, colWidths=[0.5*inch, 3.0*inch, 1.0*inch, 1.2*inch])
 tmaster_ts = tbl_style(NAVY)
 tmaster_ts.add("ALIGN", (3,0), (3,-1), "CENTER")
+tmaster_ts.add("BACKGROUND", (0,8), (-1,8), colors.HexColor("#fff8e8"))
+tmaster_ts.add("BACKGROUND", (0,10), (-1,10), colors.HexColor("#fff8e8"))
 for row in range(1, 14):
-    tmaster_ts.add("TEXTCOLOR", (3, row), (3, row), SAGE)
-    tmaster_ts.add("FONTNAME",  (3, row), (3, row), "Courier-Bold")
+    tmaster_ts.add("FONTNAME", (3, row), (3, row), "Courier-Bold")
 tmaster.setStyle(tmaster_ts)
 story += [tmaster]
 story += [s(4)]
 story += [Paragraph(
-    "12 / 12  TABLES FROZEN  --  100% OF REALITY CERTIFIED  --  SORRY: 0",
+    "12 / 12  TABLES BOUND  --  ALL SHAs COMPUTED  --  SORRY: 0",
     ParagraphStyle("cert100", fontName="Courier-Bold", fontSize=11,
                    alignment=TA_CENTER, textColor=SAGE, spaceAfter=4))]
+story += [s(3)]
+story += [Paragraph(
+    "CERTIFIED: T1,T2 (chain SHAs)  |  COMPUTED: T3-T8,T11,T12  |  PREDICTED: T9,T10(p6+)  |  CORRECTED: T7",
+    ParagraphStyle("cert_note", fontName="Courier", fontSize=8,
+                   alignment=TA_CENTER, textColor=NAVY, spaceAfter=4))]
 story += [PageBreak()]
 
 
@@ -1140,9 +1171,13 @@ story += [HR(color=NAVY)]
 story += [s(6)]
 
 story += [Paragraph(
-    "STATUS:  12 / 12 TABLES FROZEN  --  100% OF REALITY CERTIFIED",
+    "STATUS:  12 / 12 TABLES BOUND  --  ALL SHAs COMPUTED  --  SORRY: 0",
     ParagraphStyle("status", fontName="Courier-Bold", fontSize=12,
                    alignment=TA_CENTER, textColor=SAGE, spaceAfter=4))]
+story += [Paragraph(
+    "CERTIFIED: T1,T2  |  COMPUTED: T3-T8,T11,T12  |  PREDICTED: T9,T10(p6+)  |  CORRECTED: T7",
+    ParagraphStyle("cert_note2", fontName="Courier", fontSize=9,
+                   alignment=TA_CENTER, textColor=NAVY, spaceAfter=4))]
 story += [s(4)]
 story += [Paragraph("SORRY: 0", ParagraphStyle("sorry0",
     fontName="Courier-Bold", fontSize=14, alignment=TA_CENTER,

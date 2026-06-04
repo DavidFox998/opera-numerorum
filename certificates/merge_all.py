@@ -116,7 +116,7 @@ def build_cover():
         ["M18", "93d6b554..."],
         ["M19", "1f7f68bd..."],
         ["M20", "f8f45b5b..."],
-        ["ESSAY (PDF SHA)", "bac8642305d582c68e8f30378078d242cd7c87f050f42af10b671f1dbdddda0b"],
+        ["ESSAY (PDF SHA)", "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7"],
     ]
     st = Table(sha_data, colWidths=[1.6*inch, 4.6*inch])
     st.setStyle(TableStyle([
