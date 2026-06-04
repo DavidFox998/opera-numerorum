@@ -2614,9 +2614,9 @@
     "title": "Opera Numerorum: The Z Protocol -- Causality Tower and 120-Cell Architecture",
     "subtitle": "Theorema de Aequidistributione Riemonniana per Braid M. -- MDCCXLIV (2026)",
     "file": "certificates/Z_Protocol_Tower.pdf",
-    "pdf_sha": "63c0c0d86904295aebb44bde70c3826b9c2d963dd54f15b8400178f6e5055444",
+    "pdf_sha": "b65a7b7d3896c84680a139577c4cc2436a5241312886569c00c83fe172090a44",
     "builder_script": "certificates/build_z_protocol.py",
-    "builder_sha": "e5c44dbc1d0c62851c22c0ce20e9a1078bd3c2844e6fc7d129d23137acf12633",
+    "builder_sha": "0ff8ede7adc7068edd29b9f4fe08b2548411aa38479087b803f2dc411338245c",
     "ascii_check": "PASS",
     "sorry_count": 0,
     "date": "2026-06-04",
@@ -2646,7 +2646,7 @@
       "euler_braid_cross_B": "5918263d3d1a0f31731b9392d69619fe7a0955eeb3126d405f70aa537e34da0f",
       "euler_braid_oval_B": "b034ef83352952dc587ed7878997b4e5a2ee4ad3676c757d1be08ec913dff7a7"
     },
-    "witness_combined_sha": "09cd8c8a9720e07f78ecfe7e0c1d6f4b0fb69a47d4fcd0428c0b4a9de4f4451",
+    "witness_combined_sha": "09cd8c8a9720e07f4361d1074a1c1ba416afad4a924227a74374ce245a8a7e4d",
     "certified_values": {
       "Z": "15 = rank(M_ij)",
       "Z_throat": "1 (at r=r_0=3m)",

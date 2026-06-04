@@ -207,15 +207,30 @@ IMG_EULER2  = "attached_assets/AQNrYaS4DTk6pyyOjrz5xfrIIOxPggybZoEhYXsIuxnYog9yF
 IMG_EULER3  = "attached_assets/AQPpZfoj1LLZMUjLZDlAZjDpLtiUdt4jLGpMZpXd6JsNuwR4ZPARzuyYQHNlAi_1780585772621.jpg"
 IMG_EULER4  = "attached_assets/AQPIcwjce_uXTd4kba3NBaf3MvjuprD3OdTjxSx23kCGr3u3A4LoMaSmkolpAn_1780585772664.jpg"
 
+def _file_sha256(path):
+    """Compute SHA-256 of file bytes at build time. No hardcoded hashes."""
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+# Compute all image SHAs from file bytes at build time.
+_sha_tower  = _file_sha256(IMG_TOWER)
+_sha_euler1 = _file_sha256(IMG_EULER1)
+_sha_euler2 = _file_sha256(IMG_EULER2)
+_sha_euler3 = _file_sha256(IMG_EULER3)
+_sha_euler4 = _file_sha256(IMG_EULER4)
+
 REF_IMAGES = [
-    ("tower_alchemy",  IMG_TOWER,  "2a1c3c584123e135e06d7fb40c4db17ec0e9089637b45178fe09c8e432cc26db"),
-    ("euler_braid_oval",IMG_EULER1,"b034ef83352952dc587ed7878997b4e5a2ee4ad3676c757d1be08ec913dff7a7"),
-    ("euler_braid_cross",IMG_EULER2,"5918263d3d1a0f31731b9392d69619fe7a0955eeb3126d405f70aa537e34da0f"),
-    ("euler_braid_cross_b",IMG_EULER3,"5918263d3d1a0f31731b9392d69619fe7a0955eeb3126d405f70aa537e34da0f"),
-    ("euler_braid_oval_b",IMG_EULER4,"b034ef83352952dc587ed7878997b4e5a2ee4ad3676c757d1be08ec913dff7a7"),
+    ("tower_alchemy",      IMG_TOWER,  _sha_tower),
+    ("euler_braid_oval",   IMG_EULER1, _sha_euler1),
+    ("euler_braid_cross",  IMG_EULER2, _sha_euler2),
+    ("euler_braid_cross_b",IMG_EULER3, _sha_euler3),
+    ("euler_braid_oval_b", IMG_EULER4, _sha_euler4),
 ]
 
-# Compute witness SHA: SHA-256 of the five image SHAs concatenated
+# Compute witness SHA: SHA-256 of the five file-computed SHAs concatenated.
 _witness_input = "".join(sha for _, _, sha in REF_IMAGES)
 WITNESS_SHA = hashlib.sha256(_witness_input.encode("ascii")).hexdigest()
 
@@ -897,11 +912,11 @@ story += [s(6)]
 
 z9_data = [
     ["Image Label",        "Filename (truncated)",              "SHA-256 (first 16)"],
-    ["Alchemical tower",   "AQMhrHIzbuc...415.jpg",            "2a1c3c584123e135"],
-    ["Euler braid oval A", "AQNAor8lTVa...520.jpg",            "b034ef83352952dc"],
-    ["Euler braid cross A","AQNrYaS4DTk...559.jpg",            "5918263d3d1a0f31"],
-    ["Euler braid cross B","AQPpZfoj1LL...621.jpg",            "5918263d3d1a0f31"],
-    ["Euler braid oval B", "AQPIcwjce_u...664.jpg",            "b034ef83352952dc"],
+    ["Alchemical tower",   "AQMhrHIzbuc...415.jpg",            _sha_tower[:16]],
+    ["Euler braid oval A", "AQNAor8lTVa...520.jpg",            _sha_euler1[:16]],
+    ["Euler braid cross A","AQNrYaS4DTk...559.jpg",            _sha_euler2[:16]],
+    ["Euler braid cross B","AQPpZfoj1LL...621.jpg",            _sha_euler3[:16]],
+    ["Euler braid oval B", "AQPIcwjce_u...664.jpg",            _sha_euler4[:16]],
 ]
 z9 = Table(z9_data, colWidths=[1.4*inch, 2.6*inch, 1.7*inch])
 z9.setStyle(tbl_style(SEPIA))

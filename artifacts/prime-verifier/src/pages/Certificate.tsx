@@ -518,7 +518,7 @@ const MODULES = [
       "SORRY: 0. ASCII: PASS.",
     source: "certificates/build_z_protocol.py",
     stdout: "certificates/Z_Protocol_Tower.pdf",
-    sha: "63c0c0d86904295aebb44bde70c3826b9c2d963dd54f15b8400178f6e5055444",
+    sha: "b65a7b7d3896c84680a139577c4cc2436a5241312886569c00c83fe172090a44",
     status: "Z_PROTOCOL_CERTIFIED",
     correction: null,
   },
