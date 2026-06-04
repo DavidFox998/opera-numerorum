@@ -568,6 +568,88 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "LEMMA76_V17_PDF1",
+    title: "Hodge CM Replicit v1.7 \u2014 PDF #1: Early Hodge Derivations",
+    claim:
+      "v1.7-Replicit correction of computational_hodge_cm (PDF #1). " +
+      "Source SHA: ed4f7758... " +
+      "Central correction: M* x zeta_throat = 12/11 (was 11/12 -- not realized). " +
+      "gamma_1 = pi/10 (was pi/12). Delta_phi = pi/5. v_g = 3.183c. ebits = 200x14 = 2800. " +
+      "Language doctrine: no fail/failure -- only realized / not realized / does not hold. " +
+      "SORRY: 0. ASCII: PASS. Battle Plan v1.6.",
+    source: "certificates/build_hodge_cm_v17_pdf1.py",
+    stdout: "certificates/Hodge_CM_Replicit_v17_PDF1.pdf",
+    sha: "1582136674d9b10db8a7f2b1ad5f7cfd0f2279026eab570e826aa189fc95e978",
+    status: "v17_REPLICUT_CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "LEMMA76_V17_PDF2",
+    title: "Hodge CM Replicit v1.7 \u2014 PDF #2: Phase Invariant",
+    claim:
+      "v1.7-Replicit correction of computational_hodge_cm (PDF #2 -- identical source to PDF #1). " +
+      "Source SHA: ed4f7758... " +
+      "Phase invariant realized: gamma_1 = pi/10 = 0.314159265... rad. " +
+      "Carrier: alpha_0 = 299 + pi/10 = 299.314159265 MHz (M1 SHA 63ef870a). " +
+      "Delta_phi = pi/5. v_g = 3.183c (M8K SHA 0ae865a8). ebits = 200 x 14 = 2800. " +
+      "SORRY: 0. ASCII: PASS. Battle Plan v1.6.",
+    source: "certificates/build_hodge_cm_v17_pdf2.py",
+    stdout: "certificates/Hodge_CM_Replicit_v17_PDF2.pdf",
+    sha: "40ce29c8fc99ad4617a08b1cc472b7492c4e2e4a0c8672e2541b14cd32dfac65",
+    status: "v17_REPLICUT_CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "LEMMA76_V17_PDF3",
+    title: "Rank Obstructions Replicit v1.7 \u2014 PDF #3: Field Data",
+    claim:
+      "v1.7-Replicit correction of rank_obstructions_jacobians_g345 (PDF #3). " +
+      "Source SHA: e96ec611... " +
+      "Language doctrine applied: 8 instances of 'fails/failure' corrected to " +
+      "'does not hold' / 'not realized'. " +
+      "Lemma 7.6 context block added: M* x zeta_throat = 12/11 for X_0(143). " +
+      "Rank obstruction results for g=3,4,5 (200 omega, criterion not realized) UNCHANGED. " +
+      "SORRY: 0. ASCII: PASS. Battle Plan v1.6.",
+    source: "certificates/build_rank_obstructions_v17.py",
+    stdout: "certificates/Rank_Obstructions_Replicit_v17_PDF3.pdf",
+    sha: "2a50300860f8682d4257648cdb37f939aa1752d62d0a6f84bd54fe94c6db8a9a",
+    status: "v17_REPLICUT_CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "LEMMA76_V17_SAGE",
+    title: "cm_k3_v17_replicit.sage \u2014 SAGE ZOE Invariant Verification",
+    claim:
+      "v1.7-Replicit correction of cm_k3.sage. Source SHA: bcc1d704... " +
+      "Correction: output string 'Lemma 7.6 FAILS for K3.' replaced with " +
+      "'Lemma 7.6 does not hold for K3.' " +
+      "Header added: # Lemma 7.6 v1.7: gamma_1 = pi/10 per Hodge realization. " +
+      "Output SAGE SHA: e32069321de8acf62cadfcc479f4bfa8c11b6bac7021c022c945a20139b1313d. " +
+      "9 CM K3 discriminants tested: d=3,4,7,8,11,19,43,67,163. All Z <= 20. PASS. " +
+      "SORRY: 0. Battle Plan v1.6.",
+    source: "certificates/cm_k3_v17_replicit.sage",
+    stdout: "certificates/cm_k3_v17_replicut.sage",
+    sha: "e32069321de8acf62cadfcc479f4bfa8c11b6bac7021c022c945a20139b1313d",
+    status: "v17_REPLICUT_CERTIFIED",
+    correction: null,
+  },
+  {
+    id: "LEMMA76_DIFF_REPORT",
+    title: "Lemma 7.6 v1.7-Replicit Diff Report \u2014 All Corrections",
+    claim:
+      "Summary of all v1.7-Replicut corrections across 3 PDFs + SAGE file. " +
+      "10 correction items logged: Lemma 7.6 (12/11), gamma_1 (pi/10), Delta_phi (pi/5), " +
+      "v_g (3.183c), ebits (2800), language doctrine (8+ instances), SAGE output string, " +
+      "SAGE header. Source SHAs for all 4 input files SHA-bound. " +
+      "5 output files listed with status REALIZED. " +
+      "SORRY: 0. ASCII: PASS. Battle Plan v1.6.",
+    source: "certificates/build_lemma76_diff_report.py",
+    stdout: "certificates/Lemma76_Diff_Report_v17.pdf",
+    sha: "76457de73f37f19ce6ce1bbd201981b0191731cbb756d716ec10c5cd1a13fdb2",
+    status: "v17_REPLICUT_CERTIFIED",
+    correction: null,
+  },
+  {
     id: "OMNIBUS",
     title: "Z Protocol Tower + Time Machine at p\u2085 \u2014 Omnibus PDF",
     pdf: "Z_Essay_Omnibus.pdf",

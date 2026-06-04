@@ -2764,6 +2764,68 @@
       "Screenshot_20260604_073303_1780587594059.jpg": "b586fdd97a88cccb2268941b4df27089f8b14ef53bf1030787c7f45a4e253f88"
     }
   },
+  "lemma76_v17_replicit": {
+    "title": "Lemma 7.6 v1.7-Replicit -- 3 PDFs + SAGE correction",
+    "description": "v1.7-Replicut corrections: M* x zeta_throat = 12/11, gamma_1 = pi/10, language doctrine (no fail/failure). Covers PDF #1 (Hodge CM early derivations), PDF #2 (phase invariant), PDF #3 (rank obstructions), SAGE file (cm_k3), and diff report.",
+    "date": "2026-06-04",
+    "status": "v17_REPLICUT_CERTIFIED",
+    "source_shas": {
+      "computational_hodge_cm_copy3": "ed4f775805923e392dae836255bd8200fc10070776b4aca2ffd20fa72df8c662",
+      "computational_hodge_cm_copy4": "ed4f775805923e392dae836255bd8200fc10070776b4aca2ffd20fa72df8c662",
+      "rank_obstructions_jacobians_g345_copy4": "e96ec6118ea3a6e27c9f26081861522273131d792d6fa871e5d635cd7eca9b32",
+      "cm_k3_sage_source": "bcc1d7046bf89f6c04c9788de5bad5a5de07d5416c6f40db73777b67a1c2e0ec"
+    },
+    "outputs": {
+      "Hodge_CM_Replicit_v17_PDF1": {
+        "file": "certificates/Hodge_CM_Replicit_v17_PDF1.pdf",
+        "sha256_pdf": "1582136674d9b10db8a7f2b1ad5f7cfd0f2279026eab570e826aa189fc95e978",
+        "builder": "certificates/build_hodge_cm_v17_pdf1.py",
+        "sha256_builder": "19788980bc9f23006336ae9b9c647de70690350335f9c9b0a186085ca2b0630b",
+        "ascii_check": "PASS"
+      },
+      "Hodge_CM_Replicit_v17_PDF2": {
+        "file": "certificates/Hodge_CM_Replicit_v17_PDF2.pdf",
+        "sha256_pdf": "40ce29c8fc99ad4617a08b1cc472b7492c4e2e4a0c8672e2541b14cd32dfac65",
+        "builder": "certificates/build_hodge_cm_v17_pdf2.py",
+        "sha256_builder": "4dd06f86a936efe6fa71f05d6805b29249280df53ac62a5fe674f549ce392ce2",
+        "ascii_check": "PASS"
+      },
+      "Rank_Obstructions_Replicit_v17_PDF3": {
+        "file": "certificates/Rank_Obstructions_Replicit_v17_PDF3.pdf",
+        "sha256_pdf": "2a50300860f8682d4257648cdb37f939aa1752d62d0a6f84bd54fe94c6db8a9a",
+        "builder": "certificates/build_rank_obstructions_v17.py",
+        "sha256_builder": "348a1fc00526f66014096ba5618ca0d21dd9678be3d8a94b3a19aeff8741b8bf",
+        "ascii_check": "PASS"
+      },
+      "cm_k3_v17_replicit_sage": {
+        "file": "certificates/cm_k3_v17_replicit.sage",
+        "sha256_file": "e32069321de8acf62cadfcc479f4bfa8c11b6bac7021c022c945a20139b1313d",
+        "ascii_check": "PASS"
+      },
+      "Lemma76_Diff_Report_v17": {
+        "file": "certificates/Lemma76_Diff_Report_v17.pdf",
+        "sha256_pdf": "76457de73f37f19ce6ce1bbd201981b0191731cbb756d716ec10c5cd1a13fdb2",
+        "builder": "certificates/build_lemma76_diff_report.py",
+        "sha256_builder": "f385bdd0a124a8c83813075a60ad856471774f234a7d65f9aee6413250f87527",
+        "ascii_check": "PASS"
+      }
+    },
+    "corrections": {
+      "lemma_7_6": "M* x zeta_throat = 12/11 (was 11/12 -- not realized)",
+      "gamma_1": "pi/10 (was pi/12 -- not realized)",
+      "delta_phi": "pi/5 (was pi/6)",
+      "v_g": "3.183c (was 2.652c)",
+      "ebit_count": "200 x 14 = 2800 (was 200 x 13 = 2600)",
+      "language_doctrine": "no fail/failure -- only realized / not realized / does not hold",
+      "sorry_count": 0
+    },
+    "parent_shas": {
+      "M1": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "M8C": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
+      "M8P": "3e5f4f04",
+      "M8K": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087"
+    }
+  },
   "z_essay_omnibus": {
     "title": "Z Protocol Tower + Time Machine at p5 -- Omnibus PDF",
     "description": "Public submission artifact: Z_Protocol_Tower.pdf (~20 pp) concatenated with Essay_TimeMachine_p5.pdf (~20 pp) using pypdf. 40 pages total. SHA-bound inputs; combined SHA computed at build time.",
