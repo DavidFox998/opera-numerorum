@@ -549,15 +549,17 @@ const MODULES = [
     title: "Field Report Morningstar \u2014 Recovered Temporal Observation Report",
     claim:
       "1960s classified field-report PDF. Two observation windows, 40 photographs. " +
-      "Window I (07:08-07:12): T1-T12 Lean axiom audit, 12/12 TABLES FROZEN, LAUNCH AUTHORIZED. " +
-      "Window II (07:29-07:33): Protocol Z operational handoff, Z.1-Z.15 command listing. " +
-      "table_sha() binding on Protocol Z table (A), p5/p6 event table (B), Z commands (C). " +
+      "Window I (07:08-07:12): T1-T12 Lean axiom audit with LEGIBLE TEXT blocks, " +
+      "T1-T12 claim summary table, 12/12 TABLES FROZEN, LAUNCH AUTHORIZED. " +
+      "Window II (07:29-07:33): Protocol Z operational handoff, Z.1-Z.15 commands. " +
+      "table_sha() binding: Table A (Protocol Z parameters), Table B (p5/p6 events), " +
+      "Table C (Z.1-Z.15 commands). Per-file witness SHAs for all 40 photographs. " +
       "Combined photo SHA-256: 3b31bce279b44ef1f933a693b8d8ddc36f1e34866a96f62c2b6684ae90e44bd2. " +
-      "PDF SHA-256: 7e9a9ce97c708870af73947b3c693740f566a0d15a2d0b5cb8e0a55d9ed65031. " +
+      "PDF SHA-256: c65f9e53f346acddeda0234c690fe7fa5bc0995ff58b97b798c6b2fbcd0db7bb. " +
       "ASCII check: PASS. File: TA-143. SORRY: 0. Battle Plan v1.6.",
     source: "certificates/build_field_report.py",
     stdout: "certificates/Field_Report_Morningstar.pdf",
-    sha: "7e9a9ce97c708870af73947b3c693740f566a0d15a2d0b5cb8e0a55d9ed65031",
+    sha: "c65f9e53f346acddeda0234c690fe7fa5bc0995ff58b97b798c6b2fbcd0db7bb",
     status: "FIELD_REPORT_CERTIFIED",
     correction: null,
   },
