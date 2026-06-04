@@ -2608,5 +2608,70 @@
     ]
   },
   "opera_numerorum_complete_pdf": "e9ded3b7662c2f38e017557f33f008331f876f902d8caede665994573afd65d6",
-  "battleplan_v1_6_complete_pdf": "e9ded3b7662c2f38e017557f33f008331f876f902d8caede665994573afd65d6"
+  "battleplan_v1_6_complete_pdf": "e9ded3b7662c2f38e017557f33f008331f876f902d8caede665994573afd65d6",
+  "z_protocol_tower": {
+    "module": "Z_PROTOCOL",
+    "title": "Opera Numerorum: The Z Protocol -- Causality Tower and 120-Cell Architecture",
+    "subtitle": "Theorema de Aequidistributione Riemonniana per Braid M. -- MDCCXLIV (2026)",
+    "file": "certificates/Z_Protocol_Tower.pdf",
+    "pdf_sha": "63c0c0d86904295aebb44bde70c3826b9c2d963dd54f15b8400178f6e5055444",
+    "builder_script": "certificates/build_z_protocol.py",
+    "builder_sha": "e5c44dbc1d0c62851c22c0ce20e9a1078bd3c2844e6fc7d129d23137acf12633",
+    "ascii_check": "PASS",
+    "sorry_count": 0,
+    "date": "2026-06-04",
+    "status": "Z_PROTOCOL_CERTIFIED",
+    "sections": {
+      "I": "Prooemium",
+      "II": "Causality Tower (Table Z1) -- 7 EEQC layers / Alchemical names",
+      "III": "Theorema I. Galois (Table Z2)",
+      "IV": "Theorema II. Modularis (Table Z3) -- M*=4/55, 12/11 handshake",
+      "V": "Theorema III. Spectralis (Table Z4) -- Hecke / Sato-Tate",
+      "VI": "Theorema IV. Constructio (Table Z5) -- Z=15, r0=3m, Morris-Thorne",
+      "VII": "Theorema V. Aequidistributio (Table Z6) -- BSD rank=1, H4=12/11",
+      "VIII": "Theorema VI. Formula Explicita (Table Z7) -- G_eff, A=50625",
+      "IX": "120-Cell Architecture -- ASCII Schlegel projection",
+      "X": "Seven Control Panels (ASCII box-drawing)",
+      "XI": "Master Z Table (Table Z8)",
+      "XII": "Sigillum -- Witness Ledger (Table Z9) -- 5 images SHA-bound",
+      "XIII": "Master Certification (Table Z10)"
+    },
+    "tables": 10,
+    "tables_sha_computed": 10,
+    "figures": 5,
+    "witness_images": {
+      "tower_alchemy": "2a1c3c584123e135e06d7fb40c4db17ec0e9089637b45178fe09c8e432cc26db",
+      "euler_braid_oval_A": "b034ef83352952dc587ed7878997b4e5a2ee4ad3676c757d1be08ec913dff7a7",
+      "euler_braid_cross_A": "5918263d3d1a0f31731b9392d69619fe7a0955eeb3126d405f70aa537e34da0f",
+      "euler_braid_cross_B": "5918263d3d1a0f31731b9392d69619fe7a0955eeb3126d405f70aa537e34da0f",
+      "euler_braid_oval_B": "b034ef83352952dc587ed7878997b4e5a2ee4ad3676c757d1be08ec913dff7a7"
+    },
+    "witness_combined_sha": "09cd8c8a9720e07f78ecfe7e0c1d6f4b0fb69a47d4fcd0428c0b4a9de4f4451",
+    "certified_values": {
+      "Z": "15 = rank(M_ij)",
+      "Z_throat": "1 (at r=r_0=3m)",
+      "A": "50625 = 15^4",
+      "M_star": "4/55",
+      "f_res": "alpha_0 MHz = 299.314159 MHz",
+      "B_M": "21.7683024920261 MHz",
+      "Delta_tau": "7.647 ns",
+      "RTT": "18.635 ns",
+      "tidal": "0.0999g < 0.1g",
+      "r0": "3 m",
+      "v_g": "3.183c",
+      "routes": "35 / 35 GREEN",
+      "cells": "120 / 120 PASS",
+      "PLLs": "1680 / 1680 PASS",
+      "genus": "13",
+      "BSD_rank": "1",
+      "phi_143": "120 = |I*|"
+    },
+    "parents": [
+      "module_1", "module_6", "module_8",
+      "M8C", "M8D", "M8F", "M8G_Correction",
+      "M8H", "M8I", "M8J", "M8K", "M8L",
+      "M8M", "M8N", "M8O", "M8P", "M8Q",
+      "M23"
+    ]
+  }
 }

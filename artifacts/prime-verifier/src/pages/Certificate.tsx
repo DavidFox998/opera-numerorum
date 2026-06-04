@@ -500,6 +500,28 @@ const MODULES = [
     status: "ESSAY_CERTIFIED",
     correction: null,
   },
+  {
+    id: "Z_PROTOCOL",
+    title: "The Z Protocol \u2014 Causality Tower and 120-Cell Architecture",
+    claim:
+      "THEOREMA DE AEQUIDISTRIBUTIONE RIEMONNIANA PER BRAID M.  MDCCXLIV (2026). " +
+      "Dual visual register: Euler MDCCXLIV engraving style + Alchemical causality tower. " +
+      "10 tables (Z1-Z10), all SHAs computed at build time. 5 reference images SHA-witnessed. " +
+      "I. Gnosis: f_res=alpha_0 MHz [M1,M8D]. II. Sophia: Z=15=rank(M_ij) [M8G_Corr]. " +
+      "III. Demiurgos: D20 dodecahedron d=6 [M8L]. IV. Constructio: tidal=0.0999g<0.1g [M8J]. " +
+      "V. Pneuma: G_eff=50625*G_0=15^4*G_0 [M8H]. VI. Kenuma: RTT=18.635ns [M8K]. " +
+      "VII. Sphragis: 35 routes GREEN [M8Q]. Apokatastasis: X_0(143) BSD rank=1 [M23]. " +
+      "Sato-Tate equidistribution at the two eyes [M9-All]. " +
+      "Six theorems in Euler Latin: I.Galois / II.Modularis / III.Spectralis / " +
+      "IV.Constructio / V.Aequidistributio / VI.Formula Explicita. " +
+      "120-cell: phi(143)=120=|I*|; 120 cells=120 HEALTH_PASS; no torus. " +
+      "SORRY: 0. ASCII: PASS.",
+    source: "certificates/build_z_protocol.py",
+    stdout: "certificates/Z_Protocol_Tower.pdf",
+    sha: "63c0c0d86904295aebb44bde70c3826b9c2d963dd54f15b8400178f6e5055444",
+    status: "Z_PROTOCOL_CERTIFIED",
+    correction: null,
+  },
 ];
 
 const AUDIT_ROWS = [
