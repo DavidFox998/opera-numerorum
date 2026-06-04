@@ -1014,98 +1014,6 @@ export default function CertificatePage() {
           </div>
         </div>
 
-        {/* Manifest banner */}
-        <div className="rounded-xl border-2 border-indigo-300 bg-indigo-50/50 dark:bg-indigo-950/20 px-6 py-5 space-y-3">
-          <div className="flex items-center gap-3">
-            <Lock className="w-7 h-7 text-indigo-600 shrink-0" />
-            <div>
-              <div className="font-bold text-base text-indigo-800 dark:text-indigo-300">
-                Manifest Locked &mdash; All 6 Modules Verified
-              </div>
-              <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-0.5">
-                DAG: M1 &rarr; M2 &rarr; M3 &rarr; M4 &rarr; M5 &rarr; M6
-                &rarr; M7 [SEALED]
-              </div>
-            </div>
-          </div>
-          <div className="rounded-lg bg-white/70 dark:bg-black/20 border border-indigo-200 px-4 py-3 space-y-1.5">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Hash className="w-3 h-3" />
-              Master manifest SHA-256&nbsp;
-              <span className="italic">
-                (SHA256 of cat m1.out &hellip; m6.out)
-              </span>
-            </div>
-            <ShaBadge sha={MANIFEST_SHA} />
-          </div>
-          <div className="rounded-lg bg-white/70 dark:bg-black/20 border border-indigo-200 px-4 py-3 space-y-1.5">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Hash className="w-3 h-3" />
-              verify_all.sh SHA-256
-            </div>
-            <ShaBadge sha={SCRIPT_SHA} />
-          </div>
-        </div>
-
-        {/* Theorem status */}
-        <div className="rounded-xl border-2 border-emerald-400 bg-emerald-50/60 dark:bg-emerald-950/20 px-6 py-5 space-y-4">
-          <div className="flex items-center gap-3">
-            <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0" />
-            <div className="font-bold text-base text-emerald-800 dark:text-emerald-200">
-              Status: Hodge Class Realized on J&#8320;(143)
-            </div>
-          </div>
-
-          <div className="space-y-2 font-mono text-sm">
-            <div className="rounded-lg bg-white dark:bg-black/30 border border-emerald-200 px-4 py-3 space-y-1">
-              <div className="font-bold text-slate-800 dark:text-slate-100">
-                main_theorem : H2_WeilTransfer &rarr; GRH_X0_143
-              </div>
-              <div className="text-xs text-slate-500">
-                Axiom debt: []
-              </div>
-            </div>
-            <div className="rounded-lg bg-white dark:bg-black/30 border border-emerald-200 px-4 py-3 space-y-1">
-              <div className="font-bold text-emerald-700 dark:text-emerald-300">
-                hodge_realization : H2_WeilTransfer
-              </div>
-              <div className="text-xs text-emerald-600 dark:text-emerald-400">
-                Realized by: M* &times; &zeta;<sub>throat</sub> = 12/11
-              </div>
-              <div className="text-xs text-slate-500">
-                LMFDB Cert: 143.2.a.a &nbsp;|&nbsp; Regulated
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-lg border border-emerald-300 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 space-y-1.5">
-            <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">
-              Realized Invariant: H2_WeilTransfer
-            </div>
-            <div className="text-xs text-emerald-700 dark:text-emerald-400">
-              The chain is closed. H2 is realized. GRH_X0_143 is claimed conditionally on Lean axioms only. No open assumptions.
-            </div>
-            <div className="text-xs font-mono text-emerald-800 dark:text-emerald-300 pt-0.5">
-              Master SHA: 5b80b84d&hellip;f7ebe3c9
-            </div>
-          </div>
-
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50/40 dark:bg-emerald-950/20 px-4 py-3 space-y-1.5">
-            <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">
-              M8 Standalone Result: &omega; algebraic on J&#8320;(143)
-            </div>
-            <div className="text-xs text-emerald-700 dark:text-emerald-400">
-              rank(H&#8321;&#8323;) = g = 13 &rArr; Bost&ndash;Connes divisor class &omega; = c&#8321;(D) is algebraic &middot; LMFDB certified
-            </div>
-            <div className="text-xs text-emerald-700 dark:text-emerald-400 pt-0.5">
-              GRH connection: realized conditionally &mdash; 143.2.a.a has analytic rank 0; &Sha; trivial via Z-Lock 12/11; H&sup2; class algebraic &rArr; EBIT_GREEN realized
-            </div>
-            <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 pt-0.5">
-              GRH_X0_143: realized conditionally &nbsp;&nbsp;&bull;&nbsp;&nbsp; HEALTH_GREEN: realized empirically
-            </div>
-          </div>
-        </div>
-
         {/* ── 7 downloadable blocks ── */}
         <div className="space-y-4">
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
@@ -1260,6 +1168,98 @@ export default function CertificatePage() {
               All Certs ZIP &mdash; 59 PDFs
               <span className="text-slate-300 text-[10px]">60 MB</span>
             </a>
+          </div>
+        </div>
+
+        {/* Manifest banner */}
+        <div className="rounded-xl border-2 border-indigo-300 bg-indigo-50/50 dark:bg-indigo-950/20 px-6 py-5 space-y-3">
+          <div className="flex items-center gap-3">
+            <Lock className="w-7 h-7 text-indigo-600 shrink-0" />
+            <div>
+              <div className="font-bold text-base text-indigo-800 dark:text-indigo-300">
+                Manifest Locked &mdash; All 6 Modules Verified
+              </div>
+              <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-0.5">
+                DAG: M1 &rarr; M2 &rarr; M3 &rarr; M4 &rarr; M5 &rarr; M6
+                &rarr; M7 [SEALED]
+              </div>
+            </div>
+          </div>
+          <div className="rounded-lg bg-white/70 dark:bg-black/20 border border-indigo-200 px-4 py-3 space-y-1.5">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Hash className="w-3 h-3" />
+              Master manifest SHA-256&nbsp;
+              <span className="italic">
+                (SHA256 of cat m1.out &hellip; m6.out)
+              </span>
+            </div>
+            <ShaBadge sha={MANIFEST_SHA} />
+          </div>
+          <div className="rounded-lg bg-white/70 dark:bg-black/20 border border-indigo-200 px-4 py-3 space-y-1.5">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Hash className="w-3 h-3" />
+              verify_all.sh SHA-256
+            </div>
+            <ShaBadge sha={SCRIPT_SHA} />
+          </div>
+        </div>
+
+        {/* Theorem status */}
+        <div className="rounded-xl border-2 border-emerald-400 bg-emerald-50/60 dark:bg-emerald-950/20 px-6 py-5 space-y-4">
+          <div className="flex items-center gap-3">
+            <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0" />
+            <div className="font-bold text-base text-emerald-800 dark:text-emerald-200">
+              Status: Hodge Class Realized on J&#8320;(143)
+            </div>
+          </div>
+
+          <div className="space-y-2 font-mono text-sm">
+            <div className="rounded-lg bg-white dark:bg-black/30 border border-emerald-200 px-4 py-3 space-y-1">
+              <div className="font-bold text-slate-800 dark:text-slate-100">
+                main_theorem : H2_WeilTransfer &rarr; GRH_X0_143
+              </div>
+              <div className="text-xs text-slate-500">
+                Axiom debt: []
+              </div>
+            </div>
+            <div className="rounded-lg bg-white dark:bg-black/30 border border-emerald-200 px-4 py-3 space-y-1">
+              <div className="font-bold text-emerald-700 dark:text-emerald-300">
+                hodge_realization : H2_WeilTransfer
+              </div>
+              <div className="text-xs text-emerald-600 dark:text-emerald-400">
+                Realized by: M* &times; &zeta;<sub>throat</sub> = 12/11
+              </div>
+              <div className="text-xs text-slate-500">
+                LMFDB Cert: 143.2.a.a &nbsp;|&nbsp; Regulated
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-emerald-300 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 space-y-1.5">
+            <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">
+              Realized Invariant: H2_WeilTransfer
+            </div>
+            <div className="text-xs text-emerald-700 dark:text-emerald-400">
+              The chain is closed. H2 is realized. GRH_X0_143 is claimed conditionally on Lean axioms only. No open assumptions.
+            </div>
+            <div className="text-xs font-mono text-emerald-800 dark:text-emerald-300 pt-0.5">
+              Master SHA: 5b80b84d&hellip;f7ebe3c9
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50/40 dark:bg-emerald-950/20 px-4 py-3 space-y-1.5">
+            <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">
+              M8 Standalone Result: &omega; algebraic on J&#8320;(143)
+            </div>
+            <div className="text-xs text-emerald-700 dark:text-emerald-400">
+              rank(H&#8321;&#8323;) = g = 13 &rArr; Bost&ndash;Connes divisor class &omega; = c&#8321;(D) is algebraic &middot; LMFDB certified
+            </div>
+            <div className="text-xs text-emerald-700 dark:text-emerald-400 pt-0.5">
+              GRH connection: realized conditionally &mdash; 143.2.a.a has analytic rank 0; &Sha; trivial via Z-Lock 12/11; H&sup2; class algebraic &rArr; EBIT_GREEN realized
+            </div>
+            <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 pt-0.5">
+              GRH_X0_143: realized conditionally &nbsp;&nbsp;&bull;&nbsp;&nbsp; HEALTH_GREEN: realized empirically
+            </div>
           </div>
         </div>
 
