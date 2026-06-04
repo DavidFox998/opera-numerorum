@@ -489,6 +489,7 @@ const MODULES = [
   {
     id: "ESSAY",
     title: "The Time Machine at p\u2085 \u2014 Illustrated Essay",
+    pdf: "Essay_TimeMachine_p5.pdf",
     claim:
       "21-page illustrated essay on the discovery of p\u2085 = 3,993,746,143,633. " +
       "12 certified tables (T1\u2013T12), 3 figures, ASCII icosahedron + 8-braid, " +
@@ -507,6 +508,7 @@ const MODULES = [
   {
     id: "Z_PROTOCOL",
     title: "The Z Protocol \u2014 Causality Tower and 120-Cell Architecture",
+    pdf: "Z_Protocol_Tower.pdf",
     claim:
       "THEOREMA DE AEQUIDISTRIBUTIONE RIEMONNIANA PER BRAID M.  MDCCXLIV (2026). " +
       "Dual visual register: Euler MDCCXLIV engraving style + Alchemical causality tower. " +
@@ -522,7 +524,7 @@ const MODULES = [
       "SORRY: 0. ASCII: PASS.",
     source: "certificates/build_z_protocol.py",
     stdout: "certificates/Z_Protocol_Tower.pdf",
-    sha: "b65a7b7d3896c84680a139577c4cc2436a5241312886569c00c83fe172090a44",
+    sha: "41187edaca17d76dc5b1a76782f68ea0a41e97d9db5a38113751eca200f41c9f",
     status: "Z_PROTOCOL_CERTIFIED",
     correction: null,
   },
@@ -568,6 +570,7 @@ const MODULES = [
   {
     id: "OMNIBUS",
     title: "Z Protocol Tower + Time Machine at p\u2085 \u2014 Omnibus PDF",
+    pdf: "Z_Essay_Omnibus.pdf",
     claim:
       "Public submission artifact: Z_Protocol_Tower.pdf (20 pp) concatenated with " +
       "Essay_TimeMachine_p5.pdf (20 pp) using pypdf. 40 pages total. 13.31 MB. " +
@@ -674,6 +677,13 @@ function StatusChip({ status }: { status: string }) {
       </span>
     );
   }
+  if (status === "Z_PROTOCOL_CERTIFIED") {
+    return (
+      <span className="inline-flex items-center gap-1 text-sky-700 font-semibold text-xs bg-sky-50 border border-sky-200 rounded-full px-2 py-0.5">
+        <FileText className="w-3 h-3" /> Z PROTOCOL
+      </span>
+    );
+  }
   return (
     <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold text-xs bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">
       <CheckCircle className="w-3 h-3" /> CERTIFIED
@@ -746,14 +756,17 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
           <ShaBadge sha={mod.sha} />
         </div>
 
-        {mod.stdout.endsWith(".pdf") && (
+        {"pdf" in mod && mod.pdf && (
           <a
-            href={`/api/certs/${mod.stdout.split("/").pop()}`}
-            download
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-full px-3 py-1 hover:bg-indigo-100 transition-colors w-fit"
+            href={`${import.meta.env.BASE_URL}${mod.pdf}`}
+            download={mod.pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-700 bg-sky-50 hover:bg-sky-100 border border-sky-200 rounded-md px-3 py-1.5 transition-colors"
           >
             <Download className="w-3 h-3" />
             Download PDF
+            <span className="text-sky-400 font-mono">({mod.pdf})</span>
           </a>
         )}
 
@@ -768,6 +781,7 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
             </span>
           </div>
         )}
+
 
         {mod.correction && (
           <Collapsible open={open} onOpenChange={setOpen}>
