@@ -1,0 +1,9 @@
+{
+  "description": "S(2pi/7) prime convergents, Rake v1.6 + Lemma G0.3",
+  "N_end": 1000000000000000,
+  "bands": [
+    127,
+    414679
+  ],
+  "sha256": "6775013bd8a1ba42ef65315880babb77f1bab3e61992a65854cda234630d1e17"
+}
