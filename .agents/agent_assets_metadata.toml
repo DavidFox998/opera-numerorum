@@ -263,3 +263,9 @@ id = "vLqZw6vseIGg54IVZ3ks1"
 uri = "file://certificates/Wall256_YM_Report.pdf"
 type = "pdf"
 title = "Wall256_YM_Report.pdf"
+
+[[outputs]]
+id = "om6KxDZDAY3yM2yOiDXkj"
+uri = "file://certificates/opera_numerorum_certified_equations.txt"
+type = "text"
+title = "opera_numerorum_certified_equations.tex (download as .txt)"
