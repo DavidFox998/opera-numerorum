@@ -2571,5 +2571,40 @@
       "bdp_lemma4",
       "bdp_lean_skeleton"
     ]
+  },
+  "essay_time_machine_p5": {
+    "module": "ESSAY",
+    "title": "Opera Numerorum: The Time Machine at p5 -- Illustrated Essay in 12 Tables",
+    "file": "certificates/Essay_TimeMachine_p5.pdf",
+    "pdf_sha": "bac8642305d582c68e8f30378078d242cd7c87f050f42af10b671f1dbdddda0b",
+    "builder_script": "certificates/build_essay_time_machine.py",
+    "builder_sha": "10970f2a77991a2994e7797ad591901f6181dba0bca3ffab21dc8dbd499ba9dd",
+    "ascii_check": "PASS",
+    "pages": 21,
+    "tables": 12,
+    "tables_frozen": 12,
+    "sorry_count": 0,
+    "date": "2026-06-04",
+    "status": "ESSAY_CERTIFIED",
+    "illustration_images": {
+      "morningstar_core": "3f9475389f0d85b96289af1475f32e2b6511693482ab0cb9ad3ef20a27ac9b07",
+      "genesis_session_apr28": "8132aa81ed83a93671bfcae129e1e0d659970382b49048b2d5471f3a52a5b9a5",
+      "ms_muse": "8582fb1d770ca2614f8911204ea6cc3647ed5d87bcc1e1e32091660db36e701e"
+    },
+    "witness_ledger_sha": "fc699770d91fbdfc09a9048d2d10af910e9c3950e44567e6198652421b287867",
+    "parents": [
+      "m1_alpha0",
+      "m2_kappa",
+      "m4_s14",
+      "m5_bost",
+      "m6_genus",
+      "m7_manifest",
+      "bdp_lemma1",
+      "bdp_lemma2",
+      "bdp_lemma3",
+      "bdp_lemma4",
+      "bdp_lean_skeleton",
+      "bdp_certificate_pdf"
+    ]
   }
 }

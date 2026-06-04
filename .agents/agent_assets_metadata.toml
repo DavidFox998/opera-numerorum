@@ -299,3 +299,9 @@ id = "8ORT0MsdjvNstkboHZYHW"
 uri = "file://certificates/Module_BDP_PhaseReversal.pdf"
 type = "pdf"
 title = "Module BDP: Bounded Dual Pair Symmetry Certificate"
+
+[[outputs]]
+id = "ANf8wUgE7ikDFbmJ4JuW3"
+uri = "file://certificates/Essay_TimeMachine_p5.pdf"
+type = "pdf"
+title = "Opera Numerorum: The Time Machine at p5"
