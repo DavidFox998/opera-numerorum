@@ -257,3 +257,9 @@ id = "7KM-4HimGhDnMQruw54WJ"
 uri = "file://OperaNumerorum_records.zip"
 type = "unspecified"
 title = "Opera Numerorum Records — rake_v16_c07.py · .out · bands_269.json · invariants.json"
+
+[[outputs]]
+id = "vLqZw6vseIGg54IVZ3ks1"
+uri = "file://certificates/Wall256_YM_Report.pdf"
+type = "pdf"
+title = "Wall256 YM Conditional Reduction Report"

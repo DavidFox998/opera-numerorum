@@ -1,0 +1,40 @@
+=== FORENSIC DUMP COMPLETE - 2026-06-03T13:46:06Z ===
+Workspace: /home/runner/workspace
+
+DELIVERABLES:
+-rw-r--r-- 1 runner runner   25930590 Jun  3 12:19 FORENSIC_MANIFEST_2026-06-03.txt
+-rw-r--r-- 1 runner runner    1050354 Jun  3 12:19 GIT_HISTORY_2026-06-03.txt
+-rw-r--r-- 1 runner runner 2640223782 Jun  3 12:32 TheoremaAureum143_CONTENT_2026-06-03.tar.zst
+-rw-r--r-- 1 runner runner        175 Jun  3 13:46 TheoremaAureum143_CONTENT_2026-06-03.tar.zst.sha512
+-rw-r--r-- 1 runner runner  633487869 Jun  3 12:31 TheoremaAureum143_FULL_HISTORY_2026-06-03.bundle
+-rw-r--r-- 1 runner runner        179 Jun  3 13:46 TheoremaAureum143_FULL_HISTORY_2026-06-03.bundle.sha512
+
+SHA512:
+18e9fdf988522ccf1209cc1a4d74cdd6260198f7966588f8cb208000357f858629e414362b56065342376b43a361b1be336c387698d0ebe0ebdaa5cce91d59a7  TheoremaAureum143_CONTENT_2026-06-03.tar.zst
+1e85a39b7ff328880a6115637ac061d1b57facbfb6654b9ef96a5188eb55039c4039b539da1a1d95d52c9ca80b2b92b669d99f60c262e79b600edcd76821b3ba  TheoremaAureum143_FULL_HISTORY_2026-06-03.bundle
+
+INCLUDED:
+  - TheoremaAureum143_FULL_HISTORY_2026-06-03.bundle : COMPLETE git history (every branch, every commit, all blame).
+  - TheoremaAureum143_CONTENT_2026-06-03.tar.zst : full working tree EXCEPT .git (in the bundle) and regenerable
+    build caches. Includes ALL source, docs, data, reports, provenance,
+    .local agent state, and every hidden config file.
+  - FORENSIC_MANIFEST_2026-06-03.txt : a line for EVERY file on disk, including the omitted caches.
+
+OMITTED FROM TARBALL (regenerable; rebuilds from committed lockfiles):
+  .git (in bundle), node_modules (pnpm-lock.yaml), .lake oleans (lake
+  manifest), .pythonlibs/.cache/__pycache__/.pytest_cache (uv.lock).
+  Reason: environment cannot package ~9-10GB of caches in one archive
+  (2-min shell cap + throttled I/O + 3GB /tmp quota + background jobs
+  killed at turn boundaries). Omitting them loses nothing irreplaceable.
+
+RESTORE (bit-for-bit):
+  1. sha512sum -c TheoremaAureum143_CONTENT_2026-06-03.tar.zst.sha512 TheoremaAureum143_FULL_HISTORY_2026-06-03.bundle.sha512
+  2. mkdir restored && tar --use-compress-program=unzstd -xf TheoremaAureum143_CONTENT_2026-06-03.tar.zst -C restored
+  3. cd restored && git clone ../TheoremaAureum143_FULL_HISTORY_2026-06-03.bundle .gitclone   # full history
+  4. regenerate caches: pnpm install ; lake exe cache get ; uv sync
+
+ITEMS NAMED IN THE REQUEST THAT DO NOT EXIST ON DISK (nothing fabricated):
+  Besel_I/ ; symmetry_error_rate.csv ; Towers/YM/0S/ namespace or a real
+  T_0S operator ; a '661 bricks' set ; a 'phase shift event'/'CANCELLED
+  state' artifact. None are present, so none are in the archive.
+=== DONE ===
