@@ -20,6 +20,7 @@ import {
   Download,
   FileText,
   GitBranch,
+  Copy,
 } from "lucide-react";
 
 const MANIFEST_SHA =
@@ -731,6 +732,30 @@ function ShaBadge({ sha }: { sha: string }) {
   );
 }
 
+function CopyShaMini({ sha }: { sha: string }) {
+  const [copied, setCopied] = useState(false);
+  function copy() {
+    navigator.clipboard.writeText(sha).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  }
+  return (
+    <button
+      onClick={copy}
+      title={`Copy SHA-256 to verify download:\n${sha}`}
+      className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-md px-2 py-1.5 transition-colors font-mono"
+    >
+      <Copy className="w-3 h-3 shrink-0" />
+      {copied ? (
+        <span className="text-emerald-600 font-sans">copied</span>
+      ) : (
+        <span>copy SHA</span>
+      )}
+    </button>
+  );
+}
+
 function StatusChip({ status }: { status: string }) {
   if (status === "LOCKED") {
     return (
@@ -854,23 +879,28 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
         </div>
 
         {("pdf" in mod && mod.pdf) || ("apiPdf" in mod && mod.apiPdf) ? (
-          <a
-            href={
-              "apiPdf" in mod && mod.apiPdf
-                ? `/api/certs/${mod.apiPdf}`
-                : `${import.meta.env.BASE_URL}${"pdf" in mod ? mod.pdf : ""}`
-            }
-            download={"apiPdf" in mod && mod.apiPdf ? mod.apiPdf : "pdf" in mod ? mod.pdf : undefined}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-700 bg-sky-50 hover:bg-sky-100 border border-sky-200 rounded-md px-3 py-1.5 transition-colors"
-          >
-            <Download className="w-3 h-3" />
-            Download PDF
-            <span className="text-sky-400 font-mono">
-              ({"apiPdf" in mod && mod.apiPdf ? mod.apiPdf : "pdf" in mod ? mod.pdf : ""})
-            </span>
-          </a>
+          <div className="flex items-center gap-2 flex-wrap">
+            <a
+              href={
+                "apiPdf" in mod && mod.apiPdf
+                  ? `/api/certs/${mod.apiPdf}`
+                  : `${import.meta.env.BASE_URL}${"pdf" in mod ? mod.pdf : ""}`
+              }
+              download={"apiPdf" in mod && mod.apiPdf ? mod.apiPdf : "pdf" in mod ? mod.pdf : undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-700 bg-sky-50 hover:bg-sky-100 border border-sky-200 rounded-md px-3 py-1.5 transition-colors"
+            >
+              <Download className="w-3 h-3" />
+              Download PDF
+              <span className="text-sky-400 font-mono">
+                ({"apiPdf" in mod && mod.apiPdf ? mod.apiPdf : "pdf" in mod ? mod.pdf : ""})
+              </span>
+            </a>
+            {"apiPdf" in mod && mod.apiPdf ? (
+              <CopyShaMini sha={mod.sha} />
+            ) : null}
+          </div>
         ) : null}
 
         {"sageFile" in mod && mod.sageFile ? (
