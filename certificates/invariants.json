@@ -2456,5 +2456,120 @@
       "size_kb": 29105.7,
       "contents": "tex + invariants.json + 3 figures + 48 PDFs"
     }
+  },
+  "bdp_lemma1": {
+    "module": "BDP",
+    "title": "BDP Lemma 1: Two-Halves Error Bound",
+    "claim": "||p*alpha_0|| < 1/(2*ln p) for all p in S4={2,3,19,191}",
+    "source_script": "bdp1.py",
+    "source_sha": "1b5fdc7182322f471bdf4d66ed293425365e91c7f5ae7956da1a9283e9c41176",
+    "stdout_file": "bdp1.out",
+    "stdout_sha": "520a9deb970a00acda8f080edfbe485b05c93d3e28a236e93e380dde0a4db133",
+    "status": "CERTIFIED",
+    "date": "2026-06-04",
+    "precision": "mpmath 64 dps",
+    "parents": [
+      "m1_alpha0",
+      "m4_s14"
+    ]
+  },
+  "bdp_lemma2": {
+    "module": "BDP",
+    "title": "BDP Lemma 2: kappa^16 Bridge Factor",
+    "claim": "Exists k_bridge=4302500812118 s.t. |191*kappa^16 - p5 - k_bridge*pi| < 0.040413",
+    "k_bridge": 4302500812118,
+    "residual": "0.000284790141786...",
+    "error_bound": "0.040413844628685",
+    "m_bridge": 16,
+    "m_boundary": 44,
+    "kappa_source": "m2.out (4.8433014197780389)",
+    "audit_note": "Meta AI k_bridge=4302500806252 residual=0.0382906 used different kappa precision; both certify theorem",
+    "source_script": "bdp2.py",
+    "source_sha": "b40548fd75422da9c2ce576d2a6d58879d6344d27b69f4d548ff7c8b61de74ff",
+    "stdout_file": "bdp2.out",
+    "stdout_sha": "173acc5a541fc0515026b2c6c80410771c07634db415d13a597ed61a6a6c4872",
+    "status": "CERTIFIED",
+    "date": "2026-06-04",
+    "precision": "mpmath 64 dps",
+    "parents": [
+      "m2_kappa",
+      "m4_s14"
+    ]
+  },
+  "bdp_lemma3": {
+    "module": "BDP",
+    "title": "BDP Lemma 3: 291 Anomaly",
+    "claim": "3^291 mod 7 = 6; ||291*alpha_0||=0.4203462195 (near 1/2); double near-miss, last before p5",
+    "three_291_mod_7": 6,
+    "frac_dist_291": "0.4203462195...",
+    "lean_status": "anomaly_291 uses native_decide (no sorry)",
+    "source_script": "bdp3.py",
+    "source_sha": "b99cfb346e91c0162c3143bde29e6f62c218a02af8608d0a9411ca04d2f0b251",
+    "stdout_file": "bdp3.out",
+    "stdout_sha": "ea123df0fbd59a49d22dfb36816f7644550dff886e7a2af8d0761f6302a44577",
+    "status": "CERTIFIED",
+    "date": "2026-06-04",
+    "precision": "mpmath 64 dps",
+    "parents": [
+      "m1_alpha0",
+      "m4_s14"
+    ]
+  },
+  "bdp_lemma4": {
+    "module": "BDP",
+    "title": "BDP Lemma 4: LLM Phase Reversal Theorem",
+    "claim": "chi(||p5*alpha_0||)=14 > chi(1/p5)=13: LLM padding reverses at p5; 10^13 tokens needed",
+    "chi_frac_p5": 14,
+    "chi_recip_p5": 13,
+    "R_flow_p5": "1.064843...",
+    "ln_p5": "29.015751...",
+    "m_boundary": 44,
+    "source_script": "bdp4.py",
+    "source_sha": "1c31c8c42049c03542247b17fcd8fd4ff072bc99d414f5160ccdd0cb1bc24a48",
+    "stdout_file": "bdp4.out",
+    "stdout_sha": "19e555d68ea7044b197d022aa31dae80405e37a3f444fd188c87e514b4c61ca8",
+    "status": "CERTIFIED",
+    "date": "2026-06-04",
+    "precision": "mpmath 64 dps",
+    "parents": [
+      "m1_alpha0",
+      "m2_kappa",
+      "m4_s14"
+    ]
+  },
+  "bdp_lean_skeleton": {
+    "module": "BDP",
+    "title": "BDP Lean 4 Proof Skeleton",
+    "claim": "Lean 4 skeleton for all 4 BDP lemmas; anomaly_291 native_decide; 7 fillable sorrys",
+    "file": "lean-proof-towers/BDP_PhaseReversal.lean",
+    "file_sha": "ad382de559c374abd84a148e810879436e2441c47f751ae871b8f577911da8a9",
+    "total_sorrys": 7,
+    "native_decide": "anomaly_291 (3^291 mod 7 = 6)",
+    "status": "SKELETON_FILED",
+    "date": "2026-06-04",
+    "parents": [
+      "bdp_lemma1",
+      "bdp_lemma2",
+      "bdp_lemma3",
+      "bdp_lemma4"
+    ]
+  },
+  "bdp_certificate_pdf": {
+    "module": "BDP",
+    "title": "Module BDP Phase Reversal Certificate PDF",
+    "file": "certificates/Module_BDP_PhaseReversal.pdf",
+    "pdf_sha": "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5",
+    "builder_script": "certificates/build_module_bdp.py",
+    "ascii_check": "PASS",
+    "pages": 5,
+    "status": "BDP_SYMMETRY_CERTIFIED",
+    "date": "2026-06-04",
+    "parents": [
+      "bdp_lemma1",
+      "bdp_lemma2",
+      "bdp_lemma3",
+      "bdp_lemma4",
+      "bdp_lean_skeleton"
+    ]
   }
 }

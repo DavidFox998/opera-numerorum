@@ -1,0 +1,2 @@
+- [BDP kappa formula](bdp-kappa-formula.md) — kappa is NOT phi*c(speed of light)/1e8; it is phi(143)*c_lemma/1e10 where c_lemma=403608451.6483666 (Lemma 4.1 conductor constant, 80-bit long double from print_kappa.c)
+- [BDP Lemma 2 audit](bdp-lemma2-audit.md) — Meta AI k_bridge=4302500806252 and residual=0.0382906 used lower-precision kappa; correct values are k_bridge=4302500812118, |residual|=0.000285, error_bound=0.040413
