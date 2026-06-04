@@ -15,6 +15,7 @@ import {
   Hash,
   AlertTriangle,
   BookOpen,
+  Layers,
 } from "lucide-react";
 
 const MANIFEST_SHA =
@@ -522,6 +523,21 @@ const MODULES = [
     status: "Z_PROTOCOL_CERTIFIED",
     correction: null,
   },
+  {
+    id: "OMNIBUS",
+    title: "Z Protocol Tower + Time Machine at p\u2085 \u2014 Omnibus PDF",
+    claim:
+      "Public submission artifact: Z_Protocol_Tower.pdf (20 pp) concatenated with " +
+      "Essay_TimeMachine_p5.pdf (20 pp) using pypdf. 40 pages total. 13.31 MB. " +
+      "Input SHAs bound: Z_Protocol 41187eda..., Essay 458d972e... " +
+      "Combined omnibus SHA-256: 0d7cd160b84acbc67f9dc591ae87131e38402dc24ad0c683aae27a8c00812614. " +
+      "ASCII check: PASS. No fabricated values. Battle Plan v1.6.",
+    source: "certificates/build_z_essay_omnibus.py",
+    stdout: "certificates/Z_Essay_Omnibus.pdf",
+    sha: "0d7cd160b84acbc67f9dc591ae87131e38402dc24ad0c683aae27a8c00812614",
+    status: "OMNIBUS_CERTIFIED",
+    correction: null,
+  },
 ];
 
 const AUDIT_ROWS = [
@@ -588,6 +604,13 @@ function StatusChip({ status }: { status: string }) {
     return (
       <span className="inline-flex items-center gap-1 text-amber-700 font-semibold text-xs bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">
         <BookOpen className="w-3 h-3" /> ESSAY
+      </span>
+    );
+  }
+  if (status === "OMNIBUS_CERTIFIED") {
+    return (
+      <span className="inline-flex items-center gap-1 text-violet-700 font-semibold text-xs bg-violet-50 border border-violet-200 rounded-full px-2 py-0.5">
+        <Layers className="w-3 h-3" /> OMNIBUS
       </span>
     );
   }
