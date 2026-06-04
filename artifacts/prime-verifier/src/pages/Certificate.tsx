@@ -634,6 +634,7 @@ const MODULES = [
       "SORRY: 0. Battle Plan v1.6.",
     source: "certificates/cm_k3_v17_replicit.sage",
     stdout: "certificates/cm_k3_v17_replicit.sage",
+    sageFile: "cm_k3_v17_replicit.sage",
     sha: "e32069321de8acf62cadfcc479f4bfa8c11b6bac7021c022c945a20139b1313d",
     status: "v17_REPLICUT_CERTIFIED",
     correction: null,
@@ -860,6 +861,22 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
             Download PDF
             <span className="text-sky-400 font-mono">
               ({"apiPdf" in mod && mod.apiPdf ? mod.apiPdf : "pdf" in mod ? mod.pdf : ""})
+            </span>
+          </a>
+        ) : null}
+
+        {"sageFile" in mod && mod.sageFile ? (
+          <a
+            href={`/api/certs/${mod.sageFile}`}
+            download={mod.sageFile}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded-md px-3 py-1.5 transition-colors"
+          >
+            <FileText className="w-3 h-3" />
+            View Source
+            <span className="text-teal-400 font-mono">
+              ({mod.sageFile})
             </span>
           </a>
         ) : null}

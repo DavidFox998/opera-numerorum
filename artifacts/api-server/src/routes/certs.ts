@@ -8,8 +8,10 @@ const CERTS_DIR = path.resolve(process.cwd(), "../../certificates");
 
 router.get("/certs/:filename", (req, res) => {
   const filename = path.basename(req.params.filename);
-  if (!filename.endsWith(".pdf")) {
-    res.status(400).json({ error: "Only PDF files are served." });
+  const isPdf = filename.endsWith(".pdf");
+  const isSage = filename.endsWith(".sage");
+  if (!isPdf && !isSage) {
+    res.status(400).json({ error: "Only PDF and SAGE files are served." });
     return;
   }
   const filepath = path.join(CERTS_DIR, filename);
@@ -17,7 +19,11 @@ router.get("/certs/:filename", (req, res) => {
     res.status(404).json({ error: "Certificate not found." });
     return;
   }
-  res.setHeader("Content-Type", "application/pdf");
+  if (isPdf) {
+    res.setHeader("Content-Type", "application/pdf");
+  } else {
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  }
   res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
   res.sendFile(filepath);
 });
