@@ -209,6 +209,7 @@ Full SHA table: `certificates/invariants.json`
 - Module 7 manifest = `SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)` — concatenate actual file contents, not SHA hex strings. The old `manifest.py` used the wrong approach (hex string concatenation) and is deprecated.
 - All C binaries (`bin/print_kappa`, `bin/print_S14`) are pre-compiled. Recompile with `gcc -O3 -std=c11 bin/print_kappa.c -o bin/print_kappa -lm` if needed.
 - `sha256sum` on macOS is `shasum -a 256`. The `verify_all.sh` uses Linux `sha256sum`.
+- `build_field_report.py` layout is controlled via `--layout` argument: `python3 certificates/build_field_report.py --layout 1pp` (default, ~170 pages) or `--layout 2pp` (~85 pages, two photos per page). No source edit needed.
 
 ## Next Paper
 

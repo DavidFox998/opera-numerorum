@@ -20,14 +20,18 @@ from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
                                 KeepTogether)
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
-import hashlib, os, json
+import hashlib, os, json, argparse
 
 # ---- Layout option ----
 # "1pp" = one photograph per page, full-page width (~6.5 inch)
 #          ~170 pages, maximum legibility for dense mathematical text
 # "2pp" = two photographs per page, 3.0 inch width (original layout)
 #          ~85 pages, compact
-LAYOUT = "1pp"
+_parser = argparse.ArgumentParser(description="Build Field Report Morningstar PDF")
+_parser.add_argument("--layout", choices=["1pp", "2pp"], default="1pp",
+                     help="Page layout: 1pp = one photo per page (default), 2pp = two photos per page")
+_args = _parser.parse_args()
+LAYOUT = _args.layout
 
 OUTPUT = "certificates/Field_Report_Morningstar.pdf"
 
