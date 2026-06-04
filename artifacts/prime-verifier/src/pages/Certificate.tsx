@@ -932,11 +932,12 @@ function DownloadBlock({
 }: {
   color: BlockColor;
   label: string;
-  files: { fn: string; sz: string; label: string }[];
+  files: { fn: string; sz: string; label: string; sha?: string }[];
   zipFile?: { fn: string; sz: string; label: string };
   zipSha?: string;
 }) {
   const c = COLOR_MAP[color];
+  const filesWithSha = files.filter((f) => f.sha);
   return (
     <div className={`rounded-xl border-2 ${c.border} ${c.bg} px-5 py-3.5 space-y-2.5`}>
       <div className={`text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 ${c.label}`}>
@@ -968,6 +969,16 @@ function DownloadBlock({
           </a>
         )}
       </div>
+      {filesWithSha.length > 0 && (
+        <div className="space-y-1">
+          {filesWithSha.map(({ fn, label: lbl, sha }) => (
+            <div key={fn} className="text-[10px] font-mono text-muted-foreground">
+              <span className="opacity-70">{lbl} SHA-256:&nbsp;</span>
+              <span className="break-all opacity-60">{sha}</span>
+            </div>
+          ))}
+        </div>
+      )}
       {zipSha && (
         <div className="text-[10px] font-mono opacity-50 truncate">
           ZIP SHA-256: {zipSha}
@@ -1051,7 +1062,7 @@ export default function CertificatePage() {
             label="Block 3 \u2014 Morning Star Complete"
             files={[
               { fn: "Module_M8Q_L7_System.pdf",         sz: "20 M",   label: "M8Q: L7 System" },
-              { fn: "Field_Report_Morningstar.pdf",      sz: "16 M",   label: "Field Report" },
+              { fn: "Field_Report_Morningstar.pdf", sz: "16 M", label: "Field Report \u2014 Full Resolution (40 Photos)", sha: "03ca9d1f00dc16e6ba1a2c3c746eecf32d0e9a7b1f31f9bce8d3cc97e9744b44" },
               { fn: "Module_M8O_L5_Gates.pdf",          sz: "3.9 M",  label: "M8O: L5 Gates" },
               { fn: "Module_M8P_L6_Clock.pdf",          sz: "1.7 M",  label: "M8P: L6 Clock" },
               { fn: "Module_M8N_EEQC_v14.pdf",          sz: "262 K",  label: "M8N: EEQC v14" },
