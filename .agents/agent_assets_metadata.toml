@@ -268,7 +268,7 @@ title = "Addendum A1 — The Complete 4-Condition Sieve for α = 2π/7"
 id = "d-WjdB914DrFqf-tx8ta0"
 uri = "file://certificates/invariants.json"
 type = "unspecified"
-title = "Opera Numerorum — invariants.json (chain-of-custody record)"
+title = "invariants.json — Opera Numerorum chain of custody (57 entries)"
 
 [[outputs]]
 id = "7KM-4HimGhDnMQruw54WJ"
@@ -293,3 +293,9 @@ id = "vTWMIrMTeUiYS49cWwaf7"
 uri = "file://opera_numerorum_section8.zip"
 type = "unspecified"
 title = "Opera Numerorum — Section 8 + Full Chain (ZIP)"
+
+[[outputs]]
+id = "8ORT0MsdjvNstkboHZYHW"
+uri = "file://certificates/Module_BDP_PhaseReversal.pdf"
+type = "pdf"
+title = "Module BDP: Bounded Dual Pair Symmetry Certificate"
