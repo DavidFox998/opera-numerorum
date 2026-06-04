@@ -2674,6 +2674,30 @@
       "M23"
     ]
   },
+  "z_protocol_tower_v2": {
+    "title": "The Z Protocol Tower v2",
+    "description": "Enhanced Z Protocol Tower PDF. v2 adds: (1) ASCII 8-pointed Morning Star sigil on title page and colophon, (2) Source rows in each theorem table Z2-Z7 reading parent module SHA from invariants.json at build time, (3) Sectio XIV bibliography listing 17 parent modules with SHA-256 values. All SHAs read from invariants.json at build time. No fabricated hashes.",
+    "builder": "certificates/build_z_protocol_v2.py",
+    "output": "certificates/Z_Protocol_Tower_v2.pdf",
+    "sha256_output": "4e1ea390ca0bf556881b60acb6a16c7304fa7b045279afe1afd84400eab29df5",
+    "sha256_builder": "4d3777d61f6131bb76a0b4b3647d70e459928b7b6103f81d96bc5cf2221c7496",
+    "ascii_check": "PASS",
+    "sorry_count": 0,
+    "tables": ["Z1","Z2","Z3","Z4","Z5","Z6","Z7","Z8","Z9","Z10","Z14"],
+    "new_in_v2": [
+      "ASCII Morning Star sigil (8-pointed) on title page and colophon",
+      "Source rows in theorem tables Z2-Z7 with SHA citations from invariants.json",
+      "Sectio XIV -- Bibliographia: 17 parent modules with bound SHAs"
+    ],
+    "parent_modules_17": [
+      "module_1","module_5","module_6","module_8",
+      "module_m8c","module_m8d","module_m8f","module_m8g_correction",
+      "module_m8h","module_m8i","module_m8j","module_m8k",
+      "M8L","M8M","M8Q","module_23","M9"
+    ],
+    "date": "2026-06-04",
+    "status": "Z_PROTOCOL_V2_CERTIFIED"
+  },
   "z_essay_omnibus": {
     "title": "Z Protocol Tower + Time Machine at p5 -- Omnibus PDF",
     "description": "Public submission artifact: Z_Protocol_Tower.pdf (~20 pp) concatenated with Essay_TimeMachine_p5.pdf (~20 pp) using pypdf. 40 pages total. SHA-bound inputs; combined SHA computed at build time.",

@@ -16,6 +16,8 @@ import {
   AlertTriangle,
   BookOpen,
   Layers,
+  Library,
+  Download,
 } from "lucide-react";
 
 const MANIFEST_SHA =
@@ -524,6 +526,24 @@ const MODULES = [
     correction: null,
   },
   {
+    id: "Z_PROTOCOL_V2",
+    title: "The Z Protocol Tower v2 \u2014 Morningstar Sigil + Sectio XIV",
+    claim:
+      "OPERA NUMERORUM -- THE Z PROTOCOL v2.  " +
+      "Three enhancements over v1: (1) ASCII 8-pointed Morning Star sigil on title page and colophon. " +
+      "(2) Source rows in each theorem table Z2-Z7 -- SHA-traceable citations read from invariants.json at build time. " +
+      "(3) Sectio XIV -- Bibliographia: all 17 parent modules listed with bound stdout SHA-256 values. " +
+      "Tables Z1-Z10 + Z14.  5 reference images SHA-witnessed.  " +
+      "17 parent modules: M1, M5, M6, M8, M8C, M8D, M8F, M8G_Corr, M8H, M8I, M8J, M8K, M8L, M8M, M8Q, M23, M9. " +
+      "All SHAs read from certificates/invariants.json at build time.  No fabricated hashes.  " +
+      "ASCII check: PASS.  SORRY: 0.",
+    source: "certificates/build_z_protocol_v2.py",
+    stdout: "certificates/Z_Protocol_Tower_v2.pdf",
+    sha: "4e1ea390ca0bf556881b60acb6a16c7304fa7b045279afe1afd84400eab29df5",
+    status: "Z_PROTOCOL_V2_CERTIFIED",
+    correction: null,
+  },
+  {
     id: "OMNIBUS",
     title: "Z Protocol Tower + Time Machine at p\u2085 \u2014 Omnibus PDF",
     claim:
@@ -539,6 +559,10 @@ const MODULES = [
     correction: null,
   },
 ];
+
+const MODULE_REFERENCES: Record<string, number> = {
+  Z_PROTOCOL_V2: 17,
+};
 
 const AUDIT_ROWS = [
   {
@@ -614,6 +638,13 @@ function StatusChip({ status }: { status: string }) {
       </span>
     );
   }
+  if (status === "Z_PROTOCOL_V2_CERTIFIED") {
+    return (
+      <span className="inline-flex items-center gap-1 text-sky-700 font-semibold text-xs bg-sky-50 border border-sky-200 rounded-full px-2 py-0.5">
+        <Library className="w-3 h-3" /> Z-PROTO v2
+      </span>
+    );
+  }
   return (
     <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold text-xs bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">
       <CheckCircle className="w-3 h-3" /> CERTIFIED
@@ -625,6 +656,8 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
   const [open, setOpen] = useState(false);
   const isManifest = mod.id === "M7";
   const isM8 = mod.id === "M8";
+  const isV2 = mod.id === "Z_PROTOCOL_V2";
+  const refs = MODULE_REFERENCES[mod.id];
 
   return (
     <Card
@@ -633,6 +666,8 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
           ? "border-indigo-300 bg-indigo-50/30 dark:bg-indigo-950/10"
           : isM8
           ? "border-violet-300 bg-violet-50/30 dark:bg-violet-950/10"
+          : isV2
+          ? "border-sky-300 bg-sky-50/30 dark:bg-sky-950/10"
           : "border-emerald-200/60"
       }`}
     >
@@ -681,6 +716,29 @@ function ModuleCard({ mod }: { mod: (typeof MODULES)[0] }) {
           </div>
           <ShaBadge sha={mod.sha} />
         </div>
+
+        {mod.stdout.endsWith(".pdf") && (
+          <a
+            href={`/api/certs/${mod.stdout.split("/").pop()}`}
+            download
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-full px-3 py-1 hover:bg-indigo-100 transition-colors w-fit"
+          >
+            <Download className="w-3 h-3" />
+            Download PDF
+          </a>
+        )}
+
+        {refs !== undefined && (
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700 bg-sky-50 border border-sky-200 rounded-full px-3 py-1">
+              <Library className="w-3 h-3" />
+              {refs} parent modules cited
+            </span>
+            <span className="text-xs text-muted-foreground">
+              SHA-bound via invariants.json
+            </span>
+          </div>
+        )}
 
         {mod.correction && (
           <Collapsible open={open} onOpenChange={setOpen}>
