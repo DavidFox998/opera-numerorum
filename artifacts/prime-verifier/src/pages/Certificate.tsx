@@ -19,6 +19,7 @@ import {
   Library,
   Download,
   FileText,
+  GitBranch,
 } from "lucide-react";
 
 const MANIFEST_SHA =
@@ -770,6 +771,13 @@ function StatusChip({ status }: { status: string }) {
     return (
       <span className="inline-flex items-center gap-1 text-sky-700 font-semibold text-xs bg-sky-50 border border-sky-200 rounded-full px-2 py-0.5">
         <FileText className="w-3 h-3" /> Z PROTOCOL
+      </span>
+    );
+  }
+  if (status === "v17_REPLICUT_CERTIFIED") {
+    return (
+      <span className="inline-flex items-center gap-1 text-fuchsia-700 font-semibold text-xs bg-fuchsia-50 border border-fuchsia-300 rounded-full px-2 py-0.5">
+        <GitBranch className="w-3 h-3" /> v1.7 REPLICUT
       </span>
     );
   }
