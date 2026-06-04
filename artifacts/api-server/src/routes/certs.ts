@@ -10,8 +10,9 @@ router.get("/certs/:filename", (req, res) => {
   const filename = path.basename(req.params.filename);
   const isPdf = filename.endsWith(".pdf");
   const isSage = filename.endsWith(".sage");
-  if (!isPdf && !isSage) {
-    res.status(400).json({ error: "Only PDF and SAGE files are served." });
+  const isZip = filename.endsWith(".zip");
+  if (!isPdf && !isSage && !isZip) {
+    res.status(400).json({ error: "Only PDF, SAGE, and ZIP files are served." });
     return;
   }
   const filepath = path.join(CERTS_DIR, filename);
@@ -21,6 +22,8 @@ router.get("/certs/:filename", (req, res) => {
   }
   if (isPdf) {
     res.setHeader("Content-Type", "application/pdf");
+  } else if (isZip) {
+    res.setHeader("Content-Type", "application/zip");
   } else {
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
   }
