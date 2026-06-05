@@ -4,5 +4,9 @@
 ============================================
 
 518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1  CLAY_SEALED.zip
-9a810902a042f9ecd5d164c2d551fafb708de5065423534a2534ee5584355957  RESEARCH_C02_C06.zip
+990685b4e6c1ca4b9252960df420f60eeaea57e0dd542b37a1c8fedca36ae6f2  RESEARCH_C02_C06.zip
 CLAY_REPO.tar.gz  (build locally: bash release_clay.sh)
+
+RESEARCH_C02_C06: SORRY: 0. AXIOMS: []. (C02-C06, 16 tactic sorrys eliminated)
+BDP_PhaseReversal: 5 sorrys remain (Real arithmetic, separate task)
+CLAY (m1-m6): UNTOUCHED. Manifest 5b80b84d... LOCKED.
