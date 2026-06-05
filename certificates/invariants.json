@@ -3174,7 +3174,8 @@
       "M6",
       "M7"
     ],
-    "sha256_pdf": "cede438c0da507d74d1916ff7313b32d79295e70367d923e58579ff4a86b3527",
+    "sha256_pdf": "40e410c620bd8a620ec5f7a2f55c18a1c74bb19920fee52814b72d9cefb417dd",
+    "sha256_source": "a3b596e9ddcb21dcf49aa90263863e70d91646d6c888746fefe34a5ce02e4d5c",
     "sha256_verify_all_sh": "c811d6b125f4d04765e47c77263c85d52d863d816678fbf158bc72c38b03f8a3",
     "master_manifest_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
     "SORRY": 7,

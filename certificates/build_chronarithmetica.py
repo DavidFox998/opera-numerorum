@@ -796,6 +796,8 @@ print("PDF SHA-256:", sha_pdf)
 with open(INV_FILE) as f:
     inv = json.load(f)
 
+sha_src = sha256f(__file__)
+
 inv["chronarithmetica"] = {
     "module": "Chronarithmetica",
     "title": "The Diophantine Protocol of Space-Time at the Phase Boundary",
@@ -809,6 +811,7 @@ inv["chronarithmetica"] = {
     "status": "CHRONARITHMETICA_CERTIFIED",
     "causal_parents": ["M1","M2","M3","M4","M5","M6","M7"],
     "sha256_pdf": sha_pdf,
+    "sha256_source": sha_src,
     "sha256_verify_all_sh": SHA_VERIFY,
     "master_manifest_sha": SHA_MANIFEST,
     "SORRY": 7,
