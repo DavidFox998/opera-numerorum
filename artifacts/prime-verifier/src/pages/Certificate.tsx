@@ -148,6 +148,9 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   SRC_COLANDER:          { key: "colander_diophantine",         field: "sha256" },
   SRC_MODULAR_LINDELOF:  { key: "modular_sieve_lindelof",       field: "sha256" },
   SRC_MODULAR_RH_108:    { key: "modular_sieve_rh_108",         field: "sha256" },
+
+  FIELD_REPORT_1PP:   { key: "field_report_variants", path: ["1pp", "sha256_output"] },
+  FIELD_REPORT_2PP:   { key: "field_report_variants", path: ["2pp", "sha256_output"] },
 };
 
 function extractShasFromInvariants(
@@ -1594,6 +1597,8 @@ export default function CertificatePage() {
             files={[
               { fn: "Module_M8Q_L7_System.pdf",         sz: "20 M",   label: "M8Q: L7 System",                               sha: liveShas["PDF_M8Q"]         ?? "afef73ea1e774797c893ef04fa501a0bd3e349dbf70e1f91a9fce572fee00a63" },
               { fn: "Field_Report_Morningstar.pdf",      sz: "16 M",   label: "Field Report \u2014 Full Resolution (40 Photos)", sha: liveShas["PDF_FIELD_REPORT"] ?? "03ca9d1f00dc16e6ba1a2c3c746eecf32d0e9a7b1f31f9bce8d3cc97e9744b44" },
+              { fn: "Field_Report_1pp.pdf",              sz: "~170 pg", label: "Field Report \u2014 1-up layout (~170 pages)",       sha: liveShas["FIELD_REPORT_1PP"] ?? "5742b6a024bd759235cc037c97586f0856853c3e50009d7a46f1f9f00e14c72e" },
+              { fn: "Field_Report_2pp.pdf",              sz: "~85 pg",  label: "Field Report \u2014 2-up layout (~85 pages)",        sha: liveShas["FIELD_REPORT_2PP"] ?? "1fe87f6c9f6396ad921bcee4ccebc5d4d4a8318d639e7c4d09a2fd0212ab6acd" },
               { fn: "Module_M8O_L5_Gates.pdf",          sz: "3.9 M",  label: "M8O: L5 Gates",                                sha: liveShas["PDF_M8O"]         ?? "c2a3d6c6230a3cd7570de417333d52ba5c66c47965fe688dd0d5b8cec4cea41a" },
               { fn: "Module_M8P_L6_Clock.pdf",          sz: "1.7 M",  label: "M8P: L6 Clock",                                sha: liveShas["PDF_M8P"]         ?? "ab567ebfe70ac2a3d8bd24468c80ae48b95d5963ca08028505342055b71976c7" },
               { fn: "Module_M8N_EEQC_v14.pdf",          sz: "262 K",  label: "M8N: EEQC v14" },
