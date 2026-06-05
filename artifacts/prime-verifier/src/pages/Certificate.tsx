@@ -1228,6 +1228,64 @@ export default function CertificatePage() {
           </div>
         </div>
 
+        {/* ── Certified Bundle Downloads ── */}
+        <div className="border border-blue-700 bg-blue-950/30 rounded-lg p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <Download className="w-4 h-4 text-blue-400" />
+            <h2 className="text-sm font-semibold text-blue-300 uppercase tracking-wider">
+              Certified Archive Downloads
+            </h2>
+          </div>
+          <p className="text-xs text-gray-400">
+            Pick up this session with any agent — or keep a permanent offline record.
+            Both bundles are SHA-256 certified; the Context bundle is the fastest way to resume work.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {/* Context bundle */}
+            <a
+              href="/api/certs/OperaNumerorum_Context.zip"
+              download
+              className="flex flex-col gap-1 bg-gray-900 border border-blue-600 rounded p-3 hover:bg-gray-800 transition-colors group"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-blue-400 text-base">📦</span>
+                <span className="text-xs font-bold text-white group-hover:text-blue-300">
+                  Context Bundle (Agent Handoff)
+                </span>
+              </div>
+              <p className="text-[10px] text-gray-400 leading-relaxed">
+                invariants.json · replit.md · 44 certified .out files · 8 Lean files · causal summary. <span className="text-green-400">~159 KB</span> — best for resuming with any AI.
+              </p>
+              <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
+                SHA: c282497b3c135322c5b953b198a4a68ade3ba21b1334b02f641726061538fa23
+              </span>
+            </a>
+            {/* Full PDF bundle */}
+            <a
+              href="/api/certs/OperaNumerorum_AllCerts.zip"
+              download
+              className="flex flex-col gap-1 bg-gray-900 border border-green-700 rounded p-3 hover:bg-gray-800 transition-colors group"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-green-400 text-base">🗜</span>
+                <span className="text-xs font-bold text-white group-hover:text-green-300">
+                  Full Certificate Archive (All 62 PDFs)
+                </span>
+              </div>
+              <p className="text-[10px] text-gray-400 leading-relaxed">
+                Every certified PDF — M1–M8Q, M9–M23, BDP, Wall256, Z Protocol, Field Report, Canonical Paper + invariants.json. <span className="text-amber-400">~84 MB</span>
+              </p>
+              <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
+                SHA: beffac1294568c89efeb4954b78fc07efd17bf3cd5a46571c344a87b552043c8
+              </span>
+            </a>
+          </div>
+          <p className="text-[10px] text-gray-600 italic">
+            To resume: load the Context Bundle into any agent alongside the causal DAG page URL.
+            All SHAs computed in environment — none fabricated.
+          </p>
+        </div>
+
         {/* ── 7 downloadable blocks ── */}
         <div className="space-y-4">
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">

@@ -2871,5 +2871,33 @@
       "photo_width_inches": 3.0,
       "approx_pages": 85
     }
+  },
+  "bundle_context": {
+    "description": "Agent handoff bundle: invariants.json + replit.md + all .out files + Lean chain + causal summary. No PDFs. For resuming work with any agent.",
+    "file": "OperaNumerorum_Context.zip",
+    "size_bytes": 163252,
+    "sha256": "c282497b3c135322c5b953b198a4a68ade3ba21b1334b02f641726061538fa23",
+    "generated_utc": "2026-06-05T03:02:10.093503Z",
+    "contents": [
+      "invariants.json",
+      "replit.md",
+      "stdout/*.out (44 files)",
+      "lean/*.lean (8 files)",
+      "verify_all.sh",
+      "CAUSAL_SUMMARY.txt"
+    ]
+  },
+  "bundle_all_certs": {
+    "description": "Full certified archive: all 62 PDFs + invariants.json. Complete Opera Numerorum record.",
+    "file": "OperaNumerorum_AllCerts.zip",
+    "size_bytes": 88557980,
+    "size_mb_approx": 84.5,
+    "sha256": "beffac1294568c89efeb4954b78fc07efd17bf3cd5a46571c344a87b552043c8",
+    "generated_utc": "2026-06-05T03:02:10.093733Z",
+    "pdf_count": 62,
+    "contents": [
+      "invariants.json",
+      "PDFs/*.pdf (62 files)"
+    ]
   }
 }
