@@ -22,6 +22,10 @@ import {
   GitBranch,
   Copy,
   RefreshCw,
+  Upload,
+  XCircle,
+  CheckCircle2,
+  Loader2,
 } from "lucide-react";
 
 const MANIFEST_SHA =
@@ -908,6 +912,89 @@ function CopyShaMini({ sha }: { sha: string }) {
   );
 }
 
+type VerifyState = "idle" | "verifying" | "match" | "mismatch";
+
+function VerifyFileButton({ sha }: { sha: string }) {
+  const [state, setState] = useState<VerifyState>("idle");
+
+  async function handleFile(file: File) {
+    setState("verifying");
+    try {
+      const buf = await file.arrayBuffer();
+      const hashBuf = await crypto.subtle.digest("SHA-256", buf);
+      const hex = Array.from(new Uint8Array(hashBuf))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+      setState(hex === sha ? "match" : "mismatch");
+    } catch {
+      setState("idle");
+    }
+  }
+
+  function openPicker() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".pdf,.txt,.out,.json,.zip";
+    input.onchange = () => {
+      if (input.files?.[0]) handleFile(input.files[0]);
+    };
+    input.click();
+  }
+
+  if (state === "match") {
+    return (
+      <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-300 rounded-md px-2 py-1.5">
+        <CheckCircle2 className="w-3 h-3 shrink-0" />
+        SHA match
+        <button
+          onClick={() => setState("idle")}
+          className="ml-1 text-emerald-500 hover:text-emerald-700 transition-colors"
+          aria-label="Reset verification"
+        >
+          ×
+        </button>
+      </span>
+    );
+  }
+
+  if (state === "mismatch") {
+    return (
+      <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700 bg-red-50 border border-red-300 rounded-md px-2 py-1.5">
+        <XCircle className="w-3 h-3 shrink-0" />
+        SHA mismatch
+        <button
+          onClick={() => setState("idle")}
+          className="ml-1 text-red-400 hover:text-red-700 transition-colors"
+          aria-label="Reset verification"
+        >
+          ×
+        </button>
+      </span>
+    );
+  }
+
+  if (state === "verifying") {
+    return (
+      <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 bg-slate-50 border border-slate-200 rounded-md px-2 py-1.5">
+        <Loader2 className="w-3 h-3 shrink-0 animate-spin" />
+        verifying…
+      </span>
+    );
+  }
+
+  return (
+    <button
+      onClick={openPicker}
+      aria-label="Verify downloaded file SHA-256"
+      title="Pick the downloaded file to verify its SHA-256 matches the stored hash"
+      className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-md px-2 py-1.5 transition-colors"
+    >
+      <Upload className="w-3 h-3 shrink-0" />
+      verify file
+    </button>
+  );
+}
+
 function StatusChip({ status }: { status: string }) {
   if (status === "LOCKED") {
     return (
@@ -1067,7 +1154,10 @@ function ModuleCard({
               </span>
             </a>
             {"apiPdf" in mod && mod.apiPdf ? (
-              <CopyShaMini sha={displaySha} />
+              <>
+                <CopyShaMini sha={displaySha} />
+                <VerifyFileButton sha={displaySha} />
+              </>
             ) : null}
           </div>
         ) : null}
