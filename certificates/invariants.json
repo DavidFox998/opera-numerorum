@@ -3058,5 +3058,39 @@
     "file": "ClaySubmission_2026_06_04.zip",
     "sha256": "4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703",
     "size_bytes": 12595598
+  },
+  "module_24": {
+    "tendon": "X",
+    "claim": "H4 Refraction Map: Z-Lock(12CM+140M9+J0(143)), Alpha-Bands(C(S7)=72.208>63.246,g<=1303), S-Bands(5 certified to 10^200,Z=1,M*=12/11), Self-Duality(K_H4=55/4=13.75,f_H4=pi^2*11/120)",
+    "source_file": "certificates/m24_h4_refraction.py",
+    "sha256_source": "e0eea8fda5ece3c55b0271f11dc92e213ccb355237f36bf4fa10f51d2d6ff51d",
+    "sha256_stdout": "0705599957f887e8646bd17e35b874884539a9b71ca342f2f5ecd8c8f2943983",
+    "stdout_file": "m24.out",
+    "sha256_pdf": "b13fdff6ccd6b0c6d22d62c94e735685f20fa1c884d574785c22c1dd01a99bb5",
+    "bands_json": "certificates/bands_M24_CERT.json",
+    "sha256_bands_json": "4dd3d7808bae48adbfb16f2cbe6306d90620865d3c2e1b5b8478a29b8c477aa2",
+    "bands_tex": "certificates/bands_M24_table.tex",
+    "sha256_bands_tex": "0a733c8f96925539d4be3cc75f24a1525776bff9b6a9ff3b6405557b1847620a",
+    "N_routes_found": 5,
+    "theorem_4_1_prediction": 108,
+    "C_S7": "72.2077606110",
+    "g_max": 1303,
+    "K_H4": "55/4 = 13.75",
+    "f_H4": "pi^2*11/120 = 0.904713736766525",
+    "SORRY": 0,
+    "causal_parents": [
+      "module_1",
+      "module_4",
+      "module_5",
+      "module_8",
+      "module_8C",
+      "module_8G_Correction",
+      "module_8K",
+      "module_8L",
+      "module_9_all",
+      "module_21",
+      "A1"
+    ],
+    "status": "H4_REFRACTION_CERTIFIED"
   }
 }

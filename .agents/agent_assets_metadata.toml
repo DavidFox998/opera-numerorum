@@ -425,3 +425,9 @@ id = "Ul5B-v278VE-YEuZwg513"
 uri = "file://attached_assets/generated/cf_staircase.png"
 type = "image"
 title = "CF staircase of 2π/7"
+
+[[outputs]]
+id = "-7pKhNP7_aaRJ-tJRpk6k"
+uri = "file://certificates/Module_24_Certificate.pdf"
+type = "pdf"
+title = "Module 24 Certificate — H4 Refraction Map"
