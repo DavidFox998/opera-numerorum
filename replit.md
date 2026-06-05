@@ -23,6 +23,12 @@ python3 verify/bound_10_4000.py          # M4
 python3 arb_bost.py                      # M5
 python3 x0_143.py                        # M6
 bash verify_all.sh                       # M7 (produces master manifest SHA)
+
+# Rebuild the Morning Star complete ZIP (add new PDFs by editing FILES list):
+bash make_morning_star_zip.sh            # rebuilds MorningStar_Complete_2026_06_04.zip, prints SHA, updates invariants.json
+
+# Rebuild Field Report variants (1pp and 2pp layouts):
+bash make_field_report.sh
 ```
 
 ## Stack

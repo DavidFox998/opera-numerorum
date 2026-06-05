@@ -2947,7 +2947,7 @@
   },
   "cert_arb_beta0_prior": {
     "module": "SOURCE",
-    "title": "CERT_Arb_beta0 (prior version — matches Wall256 Section 16 reference)",
+    "title": "CERT_Arb_beta0 (prior version \u2014 matches Wall256 Section 16 reference)",
     "file": "certificates/CERT_Arb_beta0_prior.pdf",
     "sha256": "b5a9f0a7666a91f283a7d4531ae99dff2097c2cedef10424b77833b7bbc840d3",
     "status": "REFERENCE",
@@ -3041,8 +3041,11 @@
   "bundle_morning_star": {
     "description": "Morning Star complete bundle: all Morning Star PDFs + engineering summary + field reports (includes Field_Report_Morningstar.pdf, Field_Report_1pp.pdf, Field_Report_2pp.pdf).",
     "file": "MorningStar_Complete_2026_06_04.zip",
-    "sha256": "57a27c90e5c1736222da682d9fc4ee66b2a0c59281993d5c2e2488d690c4339c",
-    "size_bytes": 60639840
+    "sha256": "297681d58b0bbc7d1409318386cffe065e2c5f9d7d4dfb02d783d6f941b16b66",
+    "size_bytes": 60631600,
+    "file_count": 21,
+    "generated_utc": "2026-06-05T05:14:34Z",
+    "builder": "make_morning_star_zip.sh"
   },
   "bundle_chain": {
     "description": "Core certification chain M1-M8 PDFs + invariants.json.",
