@@ -3157,5 +3157,37 @@
     "phase_b_cf_dps": 800,
     "phase_b_max_cf_terms": 800,
     "phase_b_max_denom_approx": "1e400"
+  },
+  "chronarithmetica": {
+    "module": "Chronarithmetica",
+    "title": "The Diophantine Protocol of Space-Time at the Phase Boundary",
+    "author": "David Fox",
+    "date": "2026-06-05",
+    "claim": "Consolidation of 9 field-report PDFs. S14={2,3,19,191,p5=3993746143633}. Phase reversal at p5: chi(||p5*alpha0||)=14 > chi(1/p5)=13. 10^13 token crash. Desert certified to 10^13. Protocol Z: zeta function as error-correcting wormhole control.",
+    "status": "CHRONARITHMETICA_CERTIFIED",
+    "causal_parents": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7"
+    ],
+    "sha256_pdf": "cede438c0da507d74d1916ff7313b32d79295e70367d923e58579ff4a86b3527",
+    "sha256_verify_all_sh": "c811d6b125f4d04765e47c77263c85d52d863d816678fbf158bc72c38b03f8a3",
+    "master_manifest_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+    "SORRY": 7,
+    "sorry_note": "7 Lean sorrys: 4 fillable in T11 (lemma1_two_halves_bound, lemma2_kappa16_bridge, llm_phase_reversal_chi, llm_phase_reversal_oom). 3 proved with axiom list []: anomaly_291, p6_bridge, p6_error_decay.",
+    "audit_items": [
+      "verify_all.sh SHA corrected from stale 39c0170... to c811d6b125f4d047... (computed live)",
+      "Bridge Formula T7: p6=47588007914258356026739329 NOT in S(alpha0); AUDIT_CORRECTED",
+      "Source PDF filenames removed per AGENT DIRECTIVE -- canonical source only",
+      "7 Lean sorrys documented: 4 fillable, 3 proved [] in T11",
+      "Photo SHAs isolated to Appendix C only -- NOT in M-chain",
+      "Cut-off Arithmetical Context sentence (Section 3.6) completed from source fragment"
+    ],
+    "ascii_non_ascii_chars": 0,
+    "supersedes": "9 prior field-report PDFs (deprecated)"
   }
 }
