@@ -1179,7 +1179,7 @@ function ModuleCard({
   const refs = MODULE_REFERENCES[mod.id];
   const displaySha = liveSha ?? mod.sha;
   const displayClaim =
-    mod.id === "FIELD_REPORT" && liveSha
+    liveSha && mod.sha && mod.claim.includes(mod.sha)
       ? mod.claim.replace(mod.sha, liveSha)
       : mod.claim;
 
