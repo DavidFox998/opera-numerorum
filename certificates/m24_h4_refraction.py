@@ -277,17 +277,29 @@ print("  Float64 exact-integer threshold: h > {:,} ({:.3e})".format(
 print("  Above threshold: h*alpha_f64 rounds to exact integer -> norm_f64=0 always.")
 print("  Below threshold but h>10^8: float64 fractional-part error -> wrong norms.")
 print()
-print("  PHASE 1: 5 named candidates (h values explicitly from task specification)")
-print("  Bands 1-3: task spec certified table. Bands 4-5: task spec CORRECTION section.")
-print("  " + SEP2[2:])
-
 MP_KNOWN = [
-    (127,                       "Meta AI Band 1 [genuine CF convergent; certified Band 1]"),
-    (414679,                    "Meta AI Band 2 [genuine CF convergent; certified Band 2]"),
-    (4964318427222741249841,     "Meta AI Band 3 [genuine CF convergent; certified Band 3]"),
-    (2814749767109,             "Meta AI Band 4 [COMPOSITE div 7; float64 artifact; norm_f64>>1]"),
-    (15285768567421339,         "Meta AI Band 5 [COMPOSITE div 13; float64 exact-int artifact]"),
+    # Bands 1-3: task spec certified table (Meta AI bands 1-3, correct)
+    (127,                           "Meta AI Band 1 [genuine CF convergent; certified Band 1]"),
+    (414679,                        "Meta AI Band 2 [genuine CF convergent; certified Band 2]"),
+    (4964318427222741249841,         "Meta AI Band 3 [genuine CF convergent; certified Band 3]"),
+    # Bands 4-5: task spec CORRECTION section (float64 artifacts)
+    (2814749767109,                 "Meta AI Band 4 [COMPOSITE div 7; float64 artifact]"),
+    (15285768567421339,             "Meta AI Band 5 [COMPOSITE div 13; exact-int artifact]"),
+    # Bands 6-8: task spec lines 112-113 -- exceptional primes for alpha_0=299+pi/10
+    # p5=3993746143633, p6=3224057731518397, p7=631474305334326148720631
+    # from v1.6 report SHA 594de23659bdeccc5bbf51b25fae78b05b92bf351b8a13eff33b563bbf487010
+    # These are Colmez exceptional primes for 10/pi CF; may also appear in Meta AI band table.
+    (3993746143633,                 "spec line 112 p5 [Colmez exceptional prime; candidate band 6]"),
+    (3224057731518397,              "spec line 112 p6 [Colmez exceptional prime; candidate band 7]"),
+    (631474305334326148720631,      "spec line 113 p7 [Colmez exceptional prime; candidate band 8]"),
+    # Bands 9-14: p8..p14 are 35/76/111/372/859/1025/1863 digit primes (see PDF).
+    # Exact values NOT in repository; cannot be audited here.
 ]
+print(f"  PHASE 1: {len(MP_KNOWN)} named candidates (h values from task spec + Colmez primes)")
+print("  Bands 1-3: task spec certified table. Bands 4-5: task spec CORRECTION section.")
+print("  Bands 6-8: spec lines 112-113 p5/p6/p7 (Colmez exceptional primes for 10/pi CF).")
+print("  Bands 9-14: p8..p14 are 35/76/111/372/859/1025/1863 digit primes (see PDF; not in repo).")
+print("  " + SEP2[2:])
 mp.dps = 200
 pass3 = fail3 = 0
 for h, comment in MP_KNOWN:

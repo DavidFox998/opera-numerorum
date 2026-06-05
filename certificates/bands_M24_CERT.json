@@ -248,21 +248,24 @@
     }
   ],
   "precision_audit": {
-    "phase1_named": 5,
+    "phase1_named": 8,
     "phase1_h_values": [
       "127",
       "414679",
       "4964318427222741249841",
       "2814749767109",
-      "15285768567421339"
+      "15285768567421339",
+      "3993746143633",
+      "3224057731518397",
+      "631474305334326148720631"
     ],
     "phase1_pass": 3,
-    "phase1_fail": 2,
+    "phase1_fail": 5,
     "phase_a_extended_bound": 50000000,
     "phase_a_primes_checked": 3001134,
     "phase_a_new_bands_above_5M": 0,
     "total_pass": 3,
-    "total_fail": 2,
+    "total_fail": 5,
     "primality_method": "Miller-Rabin 25 witnesses; deterministic n<3.3e24 (Bach-Sorenson 1993)",
     "screenshot_bands_6_14": "h values not available in repository; brute-force sweep covers [2,50M] exhaustively"
   },

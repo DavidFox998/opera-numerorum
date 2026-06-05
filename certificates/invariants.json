@@ -3062,13 +3062,13 @@
   "module_24": {
     "module": "M24",
     "title": "H4 Refraction Map: Z-Lock, Alpha-Bands, S-Bands, Self-Duality",
-    "claim": "THEOREM_A: S-bands = prime CF convgt denom of 2pi/7. [CORRECTION: h=29 is prime, norm<1, but NOT a CF convergent denom of 2pi/7; THEOREM_A WITHDRAWN. Bands 1-5 stand as certified CF prime denominators.] Bands 1-5 certified mpmath 400/100 dps: h={127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401}. Phase A brute-force to 50M (3,001,134 primes): 0 new bands. PRECISION_AUDIT: 5 named spec candidates -- 3PASS(h=127,414679,4964318427222741249841) + 2FAIL(h=2814749767109 composite div7; h=15285768567421339 composite div13). THEOREM_4.1: N_routes=120-12=108. f_H4=pi^2*11/120. K_H4=55/4=13.75. C(S7)=72.2077606110 [CORRECTION: spec target 73.891 with p7_grh=62730013457017; certified computed value differs; GRH condition PASS either way], g_max=1303 [CORRECTION: spec target 1364]. Lemma-7.6-v1.7: gamma_1=pi/10 (corrected from pi/12). SORRY: 0.",
+    "claim": "THEOREM_A: S-bands = prime CF convgt denom of 2pi/7. [CORRECTION: h=29 is prime, norm<1, NOT a CF convergent denom; THEOREM_A WITHDRAWN. Bands 1-5 stand as certified CF prime denominators.] Bands 1-5 certified mpmath 400/100 dps: h={127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401}. Phase A brute-force to 50M (3,001,134 primes): 0 new bands. PRECISION_AUDIT (8 named spec candidates): 3PASS(h=127,414679,4964318427222741249841 genuine CF convergents) + 5FAIL(bands4-5 composite; bands6-8 Colmez primes p5/p6/p7 prime but norm>>1). Bands9-14 p8..p14 not in repo (35/76/111/372/859/1025/1863 digit primes; see PDF). THEOREM_4.1: N_routes=120-12=108. f_H4=pi^2*11/120. K_H4=55/4=13.75. C(S7)=72.2077606110 [CORRECTION: spec target 73.891; GRH PASS either way], g_max=1303 [CORRECTION: spec target 1364]. Lemma-7.6-v1.7: gamma_1=pi/10 (corrected from pi/12). SORRY: 0.",
     "source_file": "certificates/m24_h4_refraction.py",
-    "sha256_source": "646886284a1ecf2fb6ba43110073efe13dc75a2e9559d758d8803cd5ea3fac4f",
-    "sha256_stdout": "301dfbc3be8835887f083cd7e9b794f5917724cd41fa08f9501e58acc9b67981",
+    "sha256_source": "0c16c1a3846da8fa2e77591d07e488899edc6abe73b4e0914f3beb2977c21421",
+    "sha256_stdout": "a85f792447b6d968727ddc89d84a1d6192c1139ed54e6ea31489a818d66e623b",
     "stdout_file": "m24.out",
-    "sha256_pdf": "d64f5c2e82a95de0d47ff38ecd2e006ac4a13d0d7f7e43d522506aad07ad6333",
-    "sha256_bands_json": "b9dfb0bea72839194f0b3fd36ccb6df01cb2b729fe296e8b93d891a18809d8ae",
+    "sha256_pdf": "176f4cae78d6184a3f9ef6702683dd1bff8b6a671722b1ad44c738daa7f90683",
+    "sha256_bands_json": "a907dea8fd72572bfc5f59ebea735a638d8a1bddd66a9b83dfe9928204b81b24",
     "sha256_bands_tex": "1a3d3d14835a73c2ea43b30a0de4b3739c38538a4b016ac9fa360d122d0f74b7",
     "bands_json": "certificates/bands_M24_CERT.json",
     "bands_tex": "certificates/bands_M24_table.tex",
@@ -3125,29 +3125,32 @@
         {
           "name": "Module_24_Certificate.pdf",
           "path": "certificates/Module_24_Certificate.pdf",
-          "sha256": "d64f5c2e82a95de0d47ff38ecd2e006ac4a13d0d7f7e43d522506aad07ad6333",
+          "sha256": "176f4cae78d6184a3f9ef6702683dd1bff8b6a671722b1ad44c738daa7f90683",
           "note": "M24 output certificate"
         }
       ]
     },
     "precision_audit": {
-      "phase1_named": 5,
+      "phase1_named": 8,
       "phase1_h_values": [
-        127,
-        414679,
-        4964318427222741249841,
-        2814749767109,
-        15285768567421339
+        "127",
+        "414679",
+        "4964318427222741249841",
+        "2814749767109",
+        "15285768567421339",
+        "3993746143633",
+        "3224057731518397",
+        "631474305334326148720631"
       ],
       "phase1_pass": 3,
-      "phase1_fail": 2,
+      "phase1_fail": 5,
       "phase_a_extended_bound": 50000000,
       "phase_a_primes_checked": 3001134,
       "phase_a_new_bands_above_5M": 0,
       "total_pass": 3,
-      "total_fail": 2,
+      "total_fail": 5,
       "primality_method": "Miller-Rabin 25 witnesses; deterministic n<3.3e24 (Bach-Sorenson 1993)",
-      "screenshot_bands_6_14": "h values not in repository; brute-force sweep [2,50M] exhaustive; 0 new bands"
+      "screenshot_bands_6_14": "h values not available in repository; brute-force sweep covers [2,50M] exhaustively"
     }
   }
 }

@@ -267,38 +267,42 @@ story += [
 ]
 
 # ── WAY 3: S-BANDS ────────────────────────────────────────────────────────────
-story += [
-    sp(8), hr(), h1("3.  Way 3: S-Bands (Combined Brute-Force + CF Sieve)"),
-    b("Sieve definition: prime h with ||h * 2*pi/7|| * h < 1  [mpmath dps>=200]."),
-    b("Phase A: brute-force prime sweep h=2..5,000,000 (all primes checked, mpmath 200 dps)."),
-    b("Phase B: CF convergent denominator sieve h>5,000,000 (mpmath 400 dps, 450 terms, ~10^200)."),
-    sp(4),
-]
-
-# Precision audit box -- all counts pulled from bands_M24_CERT.json precision_audit block
+# Read precision_audit block first — used in both sieve header and audit box below
 _pa = cert.get("precision_audit", {})
-_p1_named  = _pa.get("phase1_named", 5)
+_p1_named  = _pa.get("phase1_named", 8)
 _p1_pass   = _pa.get("phase1_pass", 3)
-_p1_fail   = _pa.get("phase1_fail", 2)
+_p1_fail   = _pa.get("phase1_fail", 5)
 _phA_bound = _pa.get("phase_a_extended_bound", 50_000_000)
 _phA_prime = _pa.get("phase_a_primes_checked", 3_001_134)
 _phA_new   = _pa.get("phase_a_new_bands_above_5M", 0)
 _tot_pass  = _pa.get("total_pass", 3)
-_tot_fail  = _pa.get("total_fail", 2)
+_tot_fail  = _pa.get("total_fail", 5)
 _prim_meth = _pa.get("primality_method", "Miller-Rabin 25 witnesses; deterministic n<3.3e24 (Bach-Sorenson 1993)")
+
+story += [
+    sp(8), hr(), h1("3.  Way 3: S-Bands (Combined Brute-Force + CF Sieve)"),
+    b("Sieve definition: prime h with ||h * 2*pi/7|| * h < 1  [mpmath dps>=200]."),
+    b(f"Phase A: brute-force prime sweep h=2..{_phA_bound:,} (all primes checked, mpmath 200 dps)."),
+    b(f"Phase B: CF convergent denominator sieve h>{_phA_bound:,} (mpmath 400 dps, 450 terms, ~10^200)."),
+    sp(4),
+]
+
+# Precision audit box -- all counts pulled from bands_M24_CERT.json precision_audit block
 audit_data = [[
     Paragraph(
         f"PRECISION AUDIT: Meta AI float64 sieve produced 14 candidate bands. "
-        f"Phase 1 ({_p1_named} named h values from task spec): {_p1_pass} PASS "
-        f"(h=127, 414679, 4964318427222741249841 -- prime, norm_mpmath<1; genuine CF convergents) "
-        f"+ {_p1_fail} FAIL "
-        f"(h=2814749767109 COMPOSITE div 7, norm_f64 artifact; "
-        f"h=15285768567421339 COMPOSITE div 13, exact-int artifact). "
-        f"Phase A extended brute-force to {_phA_bound:,}: {_phA_prime:,} primes checked "
-        f"mpmath 200 dps; {_phA_new} new bands above 5M found (none). "
-        f"Bands 6-14 screenshot: exact h values not in repository; "
-        f"brute-force sweep [2, {_phA_bound:,}] is exhaustive and authoritative in that range. "
-        f"Total from named candidates: {_tot_pass} PASS + {_tot_fail} FAIL. "
+        f"Phase 1 ({_p1_named} named h values from task spec, mpmath 200 dps): "
+        f"{_p1_pass} PASS + {_p1_fail} FAIL. "
+        f"Bands 1-3 PASS: h=127, 414679, 4964318427222741249841 "
+        f"(prime, norm_mpmath<1; genuine CF convergents of 2pi/7). "
+        f"Bands 4-5 FAIL: h=2814749767109 COMPOSITE div 7; "
+        f"h=15285768567421339 COMPOSITE div 13 (float64 exact-int artifacts). "
+        f"Bands 6-8 (spec lines 112-113 Colmez exceptional primes for 10/pi CF) FAIL: "
+        f"h=3993746143633 prime but norm_mpmath=1.14e12>>1; "
+        f"h=3224057731518397 prime but norm=1.38e15>>1; "
+        f"h=631474305334326148720631 prime but norm=9.02e22>>1. "
+        f"Bands 9-14: p8..p14 are 35/76/111/372/859/1025/1863 digit primes (see PDF; not in repo). "
+        f"Phase A brute-force to {_phA_bound:,}: {_phA_prime:,} primes, {_phA_new} new bands. "
         f"Primality: {_prim_meth}. SORRY: 0.",
         sty("AU", fontSize=7.5, leading=11, textColor=colors.HexColor("#4a148c")))
 ]]
@@ -314,13 +318,13 @@ story += [audit_t, sp(6)]
 # Combined sieve method note (replaces Theorem A which was incorrect)
 sieve_note_data = [[
     Paragraph(
-        "SIEVE METHOD: Combined brute-force (Phase A, h<=5e6, EXHAUSTIVE) "
-        "+ CF convergent denominators (Phase B, h>5e6, mpmath 400 dps, NOT exhaustive). "
+        f"SIEVE METHOD: Combined brute-force (Phase A, h<={_phA_bound:,}, EXHAUSTIVE) "
+        f"+ CF convergent denominators (Phase B, h>{_phA_bound:,}, mpmath 400 dps, NOT exhaustive). "
         "THEOREM A WITHDRAWN: claimed S-bands = prime CF convergent denominators is FALSE. "
         "Counterexample: h=29 satisfies ||29*2pi/7||*29=0.880<1 but is NOT a CF convergent "
-        "denominator (Phase A finds it; Phase B would miss it if h>5M). "
+        f"denominator (Phase A finds it; Phase B would miss it if h>{_phA_bound:,}). "
         "COMPLETENESS CAVEAT: Phase B certifies all CF convergent prime denominators of "
-        "2*pi/7 up to ~10^200 (4 found). Non-CF prime h with norm<1 and h>5e6 are NOT "
+        f"2*pi/7 up to ~10^200 (4 found). Non-CF prime h with norm<1 and h>{_phA_bound:,} are NOT "
         "exhaustively checked -- none found but existence cannot be ruled out. "
         "Phase A (brute-force) finds h=2,3,29,127,414679. "
         "Cond3 (3^h mod 7 in {3,5,6}) applies for prime h>3; h=2,3: COND3_N/A.",
@@ -336,7 +340,7 @@ sieve_note_t.setStyle(TableStyle([
 story += [sieve_note_t, sp(6)]
 
 story += [
-    ok(f"SIEVE RESULT: {n_bands} certified S-bands (Phase A {5} brute-force + Phase B CF)"),
+    ok(f"SIEVE RESULT: {n_bands} certified S-bands (Phase A {_phA_bound:,} brute-force + Phase B CF)"),
     sp(4), band_table(cert["bands"]), sp(4),
 ]
 
@@ -360,7 +364,7 @@ thm41_data = [[
         f"rank(H^2_fail) = 12 (12 H2-fail curves from Z-Lock). "
         f"Computational result (combined sieve, Phase A+B): "
         f"N_routes_found = {n_bands}. "
-        f"Phase A exhaustive h<=5e6; Phase B CF sieve to ~10^200 (non-CF primes above 5e6 not exhaustively checked).",
+        f"Phase A exhaustive h<={_phA_bound:,}; Phase B CF sieve to ~10^200 (non-CF primes above {_phA_bound:,} not exhaustively checked).",
         sty("T41", fontSize=8, leading=12, textColor=colors.HexColor("#1a237e")))
 ]]
 thm41_t = Table(thm41_data, colWidths=[6.5*inch])
