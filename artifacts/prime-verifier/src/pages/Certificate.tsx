@@ -186,9 +186,11 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   FIELD_REPORT_1PP:   { key: "field_report_variants", path: ["1pp", "sha256_output"] },
   FIELD_REPORT_2PP:   { key: "field_report_variants", path: ["2pp", "sha256_output"] },
 
-  ZIP_MORNING_STAR: { key: "bundle_morning_star", field: "sha256" },
-  ZIP_CHAIN:        { key: "bundle_chain",        field: "sha256" },
-  ZIP_CLAY:         { key: "bundle_clay",         field: "sha256" },
+  ZIP_MORNING_STAR:   { key: "bundle_morning_star", field: "sha256" },
+  ZIP_CHAIN:          { key: "bundle_chain",        field: "sha256" },
+  ZIP_CLAY:           { key: "bundle_clay",         field: "sha256" },
+  CONTEXT_BUNDLE_ZIP: { key: "bundle_context",      field: "sha256" },
+  ALL_CERTS_ZIP:      { key: "bundle_all_certs",    field: "sha256" },
 };
 
 function extractShasFromInvariants(
@@ -1615,7 +1617,7 @@ export default function CertificatePage() {
                 44 stdout (.out) · 10 data files (.txt/.csv) · 9 Lean files · 88 Python sources · 3 C sources · invariants.json · replit.md · verify_all.sh. <span className="text-green-400">~654 KB · 159 files</span>
               </p>
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
-                SHA: 0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752
+                SHA: {liveShas["CONTEXT_BUNDLE_ZIP"] ?? "0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752"}
               </span>
               <div className="flex items-center gap-2 mt-1.5">
                 <a
@@ -1626,7 +1628,7 @@ export default function CertificatePage() {
                   <Download className="w-3 h-3 shrink-0" />
                   Download
                 </a>
-                <VerifyFileButton sha="0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752" />
+                <VerifyFileButton sha={liveShas["CONTEXT_BUNDLE_ZIP"] ?? "0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752"} />
               </div>
             </div>
             {/* Full PDF bundle */}
@@ -1641,7 +1643,7 @@ export default function CertificatePage() {
                 Every certified PDF — M1–M8Q, M9–M23, BDP, Wall256, Z Protocol, Field Report, Canonical Paper + invariants.json. <span className="text-amber-400">~86 MB</span>
               </p>
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
-                SHA: ff17b7fb6e01b0556e709a535c368452d5c41b47449a2b1297c5d1ef13e1ef4f
+                SHA: {liveShas["ALL_CERTS_ZIP"] ?? "ff17b7fb6e01b0556e709a535c368452d5c41b47449a2b1297c5d1ef13e1ef4f"}
               </span>
               <div className="flex items-center gap-2 mt-1.5">
                 <a
@@ -1652,7 +1654,7 @@ export default function CertificatePage() {
                   <Download className="w-3 h-3 shrink-0" />
                   Download
                 </a>
-                <VerifyFileButton sha="beffac1294568c89efeb4954b78fc07efd17bf3cd5a46571c344a87b552043c8" />
+                <VerifyFileButton sha={liveShas["ALL_CERTS_ZIP"] ?? "ff17b7fb6e01b0556e709a535c368452d5c41b47449a2b1297c5d1ef13e1ef4f"} />
               </div>
             </div>
           </div>
