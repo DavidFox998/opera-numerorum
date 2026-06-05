@@ -3315,5 +3315,115 @@
   "allcerts": {
     "drive_url": "https://drive.google.com/file/d/1tW4teoJjtCuG5x4XfHfBr0Mrdwahqrm7/view?usp=drivesdk",
     "drive_filename": "OperaNumerorum_AllCerts.zip"
+  },
+  "module_25b": {
+    "module": "M25B",
+    "title": "Explicit Hecke Rank Z: 11 PREDICT_FAIL -> CONFIRMED_FAIL",
+    "parent_module": "M25",
+    "claim": "Z_explicit = rank(T_2 on S^2(H^{1,0}(J_0(N)))) = binom(g+1,2) = g(g+1)/2. Weil bound: alpha*beta=2>0 => all Frobenius eigenvalues nonzero => full rank. Gaussian elimination on binom(g+1,2)xbinom(g+1,2) diagonal Hecke matrix. Consistency: CM g=1 -> Z=1; non-CM g=5 -> Z=15 (EXACT MATCH M8C). All 11 Z_explicit>10. rank(H^2_fail)=12. N_routes=108 [unchanged]. SORRY: 0.",
+    "source_file": "certificates/m25b_confirmed_fail.py",
+    "sha256_source": "317fa13b7b2919d9be37b98195c2cad0afd7c8b011f05136a987956dc9d515c4",
+    "sha256_stdout": "581071593fc5de3b48f369c1fb0304a7e36b26268fbca86d3394d69a878447d1",
+    "stdout_file": "m25b.out",
+    "sha256_json": "511eec55e7621fb01bf09d5983a3e1b3d51ee1aa0e54478c3d4b782865c82542",
+    "json_file": "certificates/m25b_confirmed_fail_cert.json",
+    "sha256_pdf": "cb66bd64040a6427840278c0149cbdd040b6f28f2f8b266bbf74a4ef5e3f4edb",
+    "pdf_file": "certificates/Module_25B_Certificate.pdf",
+    "causal_parent_M25_sha": "4fa53d75b2dfad0861966bedbe42f108deca0311fea7836fd063d6429c177231",
+    "causal_parent_M21_sha": "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad",
+    "causal_parent_M8C_sha": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
+    "method": "Z = rank(T_2 on S^2(H^{1,0}(J_0(N)))) = binom(g+1,2). Full rank from Weil bound (Deligne 1974): alpha_{2,f}*beta_{2,f}=2>0. Gaussian elimination on non-zero diagonal binom(g+1,2)^2 matrix confirms full rank. Genus by Diamond-Shurman Thm 3.1.1 (exact integer arithmetic).",
+    "H2_fail_set": {
+      "total": 12,
+      "confirmed": 12,
+      "predicted": 0,
+      "upgrade": "11 PREDICT_FAIL -> CONFIRMED_FAIL",
+      "explicit_z_table": [
+        {
+          "N": 67,
+          "genus": 5,
+          "Z_explicit": 15,
+          "formula": "binom(6,2)"
+        },
+        {
+          "N": 73,
+          "genus": 5,
+          "Z_explicit": 15,
+          "formula": "binom(6,2)"
+        },
+        {
+          "N": 103,
+          "genus": 8,
+          "Z_explicit": 36,
+          "formula": "binom(9,2)"
+        },
+        {
+          "N": 107,
+          "genus": 9,
+          "Z_explicit": 45,
+          "formula": "binom(10,2)"
+        },
+        {
+          "N": 167,
+          "genus": 14,
+          "Z_explicit": 105,
+          "formula": "binom(15,2)"
+        },
+        {
+          "N": 191,
+          "genus": 16,
+          "Z_explicit": 136,
+          "formula": "binom(17,2)"
+        },
+        {
+          "N": 193,
+          "genus": 15,
+          "Z_explicit": 120,
+          "formula": "binom(16,2)"
+        },
+        {
+          "N": 223,
+          "genus": 18,
+          "Z_explicit": 171,
+          "formula": "binom(19,2)"
+        },
+        {
+          "N": 227,
+          "genus": 19,
+          "Z_explicit": 190,
+          "formula": "binom(20,2)"
+        },
+        {
+          "N": 229,
+          "genus": 18,
+          "Z_explicit": 171,
+          "formula": "binom(19,2)"
+        },
+        {
+          "N": 269,
+          "genus": 22,
+          "Z_explicit": 253,
+          "formula": "binom(23,2)"
+        }
+      ]
+    },
+    "theorem_4_1": {
+      "rank_H2_fail": 12,
+      "N_routes": 108,
+      "status": "CONFIRMED_FAIL_COMPLETE"
+    },
+    "consistency": {
+      "CM_genus_1": {
+        "Z": 1,
+        "formula": "binom(2,2)=1",
+        "match": "Z=1 for CM_LIST"
+      },
+      "X5_genus_5": {
+        "Z": 15,
+        "formula": "binom(6,2)=15",
+        "match": "EXACT MATCH M8C"
+      }
+    },
+    "status": "CONFIRMED_FAIL_COMPLETE"
   }
 }
