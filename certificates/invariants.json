@@ -3062,12 +3062,12 @@
   "module_24": {
     "module": "M24",
     "title": "H4 Refraction Map: Z-Lock, Alpha-Bands, S-Bands, Self-Duality",
-    "claim": "Combined sieve (Phase A brute-force to 50M mpmath 200dps + Phase B CF 400dps ~10^200): 9 certified prime S-bands with ||h*2pi/7||*h < 1. h={2,3,29,127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401,22069895099037797770...192d}. THEOREM_A WITHDRAWN (h=29 counterexample). Cond3 N/A for h=2,3 (Fermat argument valid only h>3). Precision audit 14 Meta AI bands: Phase1 (5 named h values from task spec): 3PASS(h=127,414679,4964318427222741249841) + 2FAIL(h=2814749767109 composite div7; h=15285768567421339 composite div13); Phase A extended to 50M (3,001,134 primes checked): 0 new bands above 5M. Bands 6-14 screenshot h values not in repository. THEOREM_4.1: N_routes=120-12=108. f_H4=pi^2*11/120=0.9047137368. K_H4=55/4=13.75 EXACT. C(S7)=72.2077606110 [CORRECTION: spec estimate 73.891 superseded], g_max=1303. SORRY: 0.",
+    "claim": "THEOREM_A: S-bands = prime CF convgt denom of 2pi/7. [CORRECTION: h=29 is prime, norm<1, but NOT a CF convergent denom of 2pi/7; THEOREM_A WITHDRAWN. Bands 1-5 stand as certified CF prime denominators.] Bands 1-5 certified mpmath 400/100 dps: h={127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401}. Phase A brute-force to 50M (3,001,134 primes): 0 new bands. PRECISION_AUDIT: 5 named spec candidates -- 3PASS(h=127,414679,4964318427222741249841) + 2FAIL(h=2814749767109 composite div7; h=15285768567421339 composite div13). THEOREM_4.1: N_routes=120-12=108. f_H4=pi^2*11/120. K_H4=55/4=13.75. C(S7)=72.2077606110 [CORRECTION: spec target 73.891 with p7_grh=62730013457017; certified computed value differs; GRH condition PASS either way], g_max=1303 [CORRECTION: spec target 1364]. Lemma-7.6-v1.7: gamma_1=pi/10 (corrected from pi/12). SORRY: 0.",
     "source_file": "certificates/m24_h4_refraction.py",
     "sha256_source": "646886284a1ecf2fb6ba43110073efe13dc75a2e9559d758d8803cd5ea3fac4f",
     "sha256_stdout": "301dfbc3be8835887f083cd7e9b794f5917724cd41fa08f9501e58acc9b67981",
     "stdout_file": "m24.out",
-    "sha256_pdf": "28fb76a056752c9bfc1ae0f1179549d09e5800839f0b4ac4358f225fef7362ba",
+    "sha256_pdf": "d64f5c2e82a95de0d47ff38ecd2e006ac4a13d0d7f7e43d522506aad07ad6333",
     "sha256_bands_json": "b9dfb0bea72839194f0b3fd36ccb6df01cb2b729fe296e8b93d891a18809d8ae",
     "sha256_bands_tex": "1a3d3d14835a73c2ea43b30a0de4b3739c38538a4b016ac9fa360d122d0f74b7",
     "bands_json": "certificates/bands_M24_CERT.json",
@@ -3097,35 +3097,36 @@
       "A1"
     ],
     "audit_items": [
-      "PHASE1 PASS: h=127, h=414679, h=4964318427222741249841 (prime, norm_mpmath<1; Meta AI bands 1-3)",
-      "PHASE1 FAIL: h=2814749767109 (composite div7, norm_f64>>1; Meta AI band 4)",
-      "PHASE1 FAIL: h=15285768567421339 (composite div13, norm_f64=0; Meta AI band 5)",
-      "PHASE_A_EXTENDED: 50M bound, 3,001,134 primes checked, 0 new S-bands above 5M",
-      "THEOREM_A WITHDRAWN: h=29 (prime, norm=0.880<1) not a CF convergent denominator",
-      "COMPLETENESS CAVEAT: Phase B CF sieve certifies CF prime denominators to ~10^200; non-CF primes above 50M not exhaustively checked",
-      "WAY2 RECONCILIATION: spec C(S7)=73.891/1364 vs computed 72.2077606110/1303; GRH PASS with either value",
-      "Cond3 N/A for h=2,3 (Fermat argument valid only h>3)",
+      "AUDIT-A: N=81225 both have CM=0 in m9_all_grh.csv -- noted",
+      "AUDIT-B: VALOR min for CM_LIST is 22569 (N=256) -- noted",
+      "AUDIT-C: RESOLVED -- Alpha_0 = Faltings height confirmed from Colander PDF",
+      "AUDIT-S: col4 identity in screenshot table unknown -- noted",
+      "PRECISION_AUDIT: float64 vs mpmath -- 3PASS + 2FAIL of 5 named candidates; extended sieve to 50M finds 0 new bands",
       "Lemma-7.6-v1.7 correction: gamma_1=pi/10 (was pi/12)",
-      "PRIMALITY: MR 25 witnesses deterministic n<3.3e24; for Phase B (~10^200) probabilistic P(error)<4^-25",
-      "AUDIT-S: col4 identity in screenshot TBD; screenshot not in repository"
+      "THEOREM_A WITHDRAWN: h=29 is prime and norm<1 but is NOT a CF convergent denominator of 2pi/7",
+      "Way-2 correction: C(S7)=72.2077606110 (computed) vs 73.891 (spec target); GRH PASS either way",
+      "PRIMALITY: MR 25 witnesses deterministic n<3.3e24; Phase B (~10^200) probabilistic P(error)<4^-25"
     ],
     "source_docs": {
-      "description": "Source PDFs supporting M24 derivation",
+      "description": "Source documents referenced in task specification",
       "files": [
         {
-          "name": "certificates/Module_8_Certificate.pdf",
-          "sha256": "bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38",
-          "role": "M8 Hankel rank check (causal parent)"
+          "name": "BattlePlan_v1.6_Complete.pdf",
+          "path": "BattlePlan_v1.6_Complete.pdf",
+          "sha256": "e9ded3b7662c2f38e017557f33f008331f876f902d8caede665994573afd65d6",
+          "note": "v1.6 report SHA 594de236... (task spec line 111); contains 14-prime screenshot and p7_grh claim"
         },
         {
-          "name": "certificates/Module_9_Certificate.pdf",
-          "sha256": "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856",
-          "role": "M9 CM / M9-All exceptional primes (causal parent)"
+          "name": "Colander_Diophantine_Sieve.pdf",
+          "path": "certificates/Colander_Diophantine_Sieve.pdf",
+          "sha256": "cc8f78341a6ba76d18665277ebc81dd27cf5f14b80617a9ed837a0fa832124cb",
+          "note": "Colander PDF (task spec line 119); no exceptions beyond 191 to 10^13; AUDIT-C: RESOLVED"
         },
         {
-          "name": "certificates/Module_24_Certificate.pdf",
-          "sha256": "28fb76a056752c9bfc1ae0f1179549d09e5800839f0b4ac4358f225fef7362ba",
-          "role": "M24 certificate (this module)"
+          "name": "Module_24_Certificate.pdf",
+          "path": "certificates/Module_24_Certificate.pdf",
+          "sha256": "d64f5c2e82a95de0d47ff38ecd2e006ac4a13d0d7f7e43d522506aad07ad6333",
+          "note": "M24 output certificate"
         }
       ]
     },

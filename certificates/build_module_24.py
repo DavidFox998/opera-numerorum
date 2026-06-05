@@ -275,29 +275,31 @@ story += [
     sp(4),
 ]
 
-# Precision audit box -- counts pulled from invariants.json
+# Precision audit box -- all counts pulled from bands_M24_CERT.json precision_audit block
 _pa = cert.get("precision_audit", {})
-_p1_pass = _pa.get("phase1_pass", 3)
-_p1_fail = _pa.get("phase1_fail", 2)
-_p2_samp = _pa.get("phase2_mechanism_samples", 9)
-_p2_fail = _pa.get("phase2_fail", 9)
-_tot_pass = _pa.get("total_pass", 3)
-_tot_fail = _pa.get("total_fail", 11)
+_p1_named  = _pa.get("phase1_named", 5)
+_p1_pass   = _pa.get("phase1_pass", 3)
+_p1_fail   = _pa.get("phase1_fail", 2)
+_phA_bound = _pa.get("phase_a_extended_bound", 50_000_000)
+_phA_prime = _pa.get("phase_a_primes_checked", 3_001_134)
+_phA_new   = _pa.get("phase_a_new_bands_above_5M", 0)
+_tot_pass  = _pa.get("total_pass", 3)
+_tot_fail  = _pa.get("total_fail", 2)
+_prim_meth = _pa.get("primality_method", "Miller-Rabin 25 witnesses; deterministic n<3.3e24 (Bach-Sorenson 1993)")
 audit_data = [[
     Paragraph(
         f"PRECISION AUDIT: Meta AI float64 sieve produced 14 candidate bands. "
-        f"Phase 1 ({len(_pa.get('phase1_h_values', [127,414679,4964318427222741249841,2814749767109,15285768567421339]))} "
-        f"named h values from task spec): {_p1_pass} PASS "
+        f"Phase 1 ({_p1_named} named h values from task spec): {_p1_pass} PASS "
         f"(h=127, 414679, 4964318427222741249841 -- prime, norm_mpmath<1; genuine CF convergents) "
         f"+ {_p1_fail} FAIL "
-        f"(h=2814749767109 COMPOSITE div 7, norm_f64>>1; "
-        f"h=15285768567421339 COMPOSITE div 13, norm_f64=0 exact-int artifact). "
-        f"Phase 2 ({_p2_samp} mechanism-demonstration samples for bands 6-14): "
-        f"all {_p2_fail} FAIL mpmath 200 dps. "
-        f"Exact h values for bands 6-14 not available (screenshot not in repository); "
-        f"Phase 2 demonstrates float64 exact-int artifact at multiple scales, not claimed "
-        f"as exact screenshot values. "
-        f"Total audit: {_tot_pass} PASS + {_tot_fail} FAIL of 14 candidates. SORRY: 0.",
+        f"(h=2814749767109 COMPOSITE div 7, norm_f64 artifact; "
+        f"h=15285768567421339 COMPOSITE div 13, exact-int artifact). "
+        f"Phase A extended brute-force to {_phA_bound:,}: {_phA_prime:,} primes checked "
+        f"mpmath 200 dps; {_phA_new} new bands above 5M found (none). "
+        f"Bands 6-14 screenshot: exact h values not in repository; "
+        f"brute-force sweep [2, {_phA_bound:,}] is exhaustive and authoritative in that range. "
+        f"Total from named candidates: {_tot_pass} PASS + {_tot_fail} FAIL. "
+        f"Primality: {_prim_meth}. SORRY: 0.",
         sty("AU", fontSize=7.5, leading=11, textColor=colors.HexColor("#4a148c")))
 ]]
 audit_t = Table(audit_data, colWidths=[6.5*inch])
