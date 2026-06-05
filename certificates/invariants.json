@@ -2890,16 +2890,16 @@
     }
   },
   "bundle_all_certs": {
-    "description": "Full certified archive: all 72 PDFs + invariants.json. Complete Opera Numerorum record.",
+    "description": "Full certified archive: all 73 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 90150374,
+    "size_bytes": 90153342,
     "size_mb_approx": 86.0,
-    "sha256": "ff17b7fb6e01b0556e709a535c368452d5c41b47449a2b1297c5d1ef13e1ef4f",
-    "generated_utc": "2026-06-05T17:00:00.000000Z",
-    "pdf_count": 72,
+    "sha256": "46c7d21cd4d4aeb2c3a3f4aef7cbbe332d5b06fdea9f5578b0e92aac755dcd76",
+    "generated_utc": "2026-06-05T05:23:45.504866Z",
+    "pdf_count": 73,
     "contents": [
       "invariants.json",
-      "PDFs/*.pdf (72 files)"
+      "PDFs/*.pdf (73 files)"
     ]
   },
   "p5_replacement_c13": {
