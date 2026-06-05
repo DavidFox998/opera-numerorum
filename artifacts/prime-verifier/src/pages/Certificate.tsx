@@ -137,6 +137,17 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   PDF_ADDENDUM:       { key: "addendum_A1",           field: "pdf_sha256"  },
   PDF_CANONICAL:      { key: "canonical_paper_corrected", field: "sha256"  },
   PDF_FIELD_REPORT:   { key: "field_report_morningstar",  field: "sha256_output" },
+
+  SRC_FALTINGS:          { key: "faltings_height_g5",          field: "sha256" },
+  SRC_CERT_ARB_BETA0_V1: { key: "cert_arb_beta0_v1",           field: "sha256" },
+  SRC_CERT_ARB_BETA0:    { key: "cert_arb_beta0",              field: "sha256" },
+  SRC_D4_W1_NEGATIVE:    { key: "d4_w1_negative",              field: "sha256" },
+  SRC_EXCEPTIONAL_PRIME: { key: "exceptional_prime_desert_map", field: "sha256" },
+  SRC_REPLICIT_10T:      { key: "replicit_10trillion",          field: "sha256" },
+  SRC_DIOPHANTINE_RH:    { key: "diophantine_sieve_rh",         field: "sha256" },
+  SRC_COLANDER:          { key: "colander_diophantine",         field: "sha256" },
+  SRC_MODULAR_LINDELOF:  { key: "modular_sieve_lindelof",       field: "sha256" },
+  SRC_MODULAR_RH_108:    { key: "modular_sieve_rh_108",         field: "sha256" },
 };
 
 function extractShasFromInvariants(
@@ -840,6 +851,98 @@ const AUDIT_ROWS = [
     mod: "M6",
     error: "LaTeX claimed h(\u211a(\u221a\u2212143)) = 1",
     fix: "Correct: h(\u2212143) = 10. Theorem stands independently of h.",
+  },
+];
+
+const SOURCE_DOCS: {
+  id: string;
+  title: string;
+  filename: string;
+  claim: string;
+  status: "CERTIFIED" | "REFERENCE";
+  sha: string;
+  auditNote?: string;
+}[] = [
+  {
+    id: "SRC_D4_W1_NEGATIVE",
+    title: "D4 w=1 NEGATIVE Certificate",
+    filename: "D4_w1_NEGATIVE_Certificate.pdf",
+    claim: "Certificate that D4 fails at w=1: the D4 Yang-Mills condition is not satisfied, establishing the NEGATIVE boundary case for the Wall256 tower.",
+    status: "CERTIFIED",
+    sha: "9a794ccf0c707812e6fa3db2095a350f2d5b61a011fcc77e453c548716ac8764",
+  },
+  {
+    id: "SRC_CERT_ARB_BETA0",
+    title: "CERT_Arb_beta0 (interval certificate)",
+    filename: "CERT_Arb_beta0.pdf",
+    claim: "Interval arithmetic certificate for the beta_0 bound used in the Wall256 YM tower.",
+    status: "REFERENCE",
+    sha: "8879175c0bb11d20f71a0b31f221047c58fce489d5465bfda703dfa9a4bab8ae",
+    auditNote: "SHA mismatch with build_wall256_ym.py Section 16 reference (b5a9f0a7...). The uploaded file has a different SHA; Section 16 recorded a prior version. Computed SHA here is the authoritative value for the imported file.",
+  },
+  {
+    id: "SRC_CERT_ARB_BETA0_V1",
+    title: "CERT_Arb_beta0 (variant v1)",
+    filename: "CERT_Arb_beta0_v1.pdf",
+    claim: "Interval certificate for beta_0 bound (variant copy); companion to CERT_Arb_beta0.",
+    status: "REFERENCE",
+    sha: "4648eab7d5abd641d2b8acdfc29399bb9c620c7c45ad750a25401776bb80ec6c",
+  },
+  {
+    id: "SRC_FALTINGS",
+    title: "Faltings Height for Genus-5 Curves",
+    filename: "Faltings_Height_g5.pdf",
+    claim: "Faltings height theory for genus-5 Jacobians; theoretical background for the Zoe invariant and M8C rank obstruction argument.",
+    status: "REFERENCE",
+    sha: "2cda7d7c99983f5e9e0466c13a3be762a6a1a2f00276b6128d3a5845ba3ecb71",
+  },
+  {
+    id: "SRC_EXCEPTIONAL_PRIME",
+    title: "Exceptional-Prime Desert Map",
+    filename: "Exceptional_Prime_Desert_Map.pdf",
+    claim: "Visual and computational map of the exceptional-prime desert for alpha_0 = 299 + pi/10; shows prime gap structure in the CF desert region (191, 82829).",
+    status: "REFERENCE",
+    sha: "f26fa03de51ded4b00293be04f13bfd5019074eaf7ab47234089b0437227a894",
+  },
+  {
+    id: "SRC_REPLICIT_10T",
+    title: "Replicit 10-Trillion Data Log",
+    filename: "Replicit_10trillion_Data_Log.pdf",
+    claim: "Computational data log of the 10-trillion-scale prime sieve run underpinning the Replicut v1.7 results.",
+    status: "REFERENCE",
+    sha: "867fe6ffd31de2c06a463897c49940cd97f2d57c75a47ee0522a0289d0778f44",
+  },
+  {
+    id: "SRC_DIOPHANTINE_RH",
+    title: "Diophantine Sieve: RH Computational Evidence",
+    filename: "Diophantine_Sieve_RH_Computational.pdf",
+    claim: "Computational evidence paper applying the Diophantine sieve to the Riemann Hypothesis; records verified sieve outputs.",
+    status: "REFERENCE",
+    sha: "8806645dcd17117f403501a781978a67db68df116c7ebe553305b0bff9eaa662",
+  },
+  {
+    id: "SRC_COLANDER",
+    title: "Colander: Diophantine Sieve Architecture",
+    filename: "Colander_Diophantine_Sieve.pdf",
+    claim: "Architecture specification for the Colander Diophantine sieve; theoretical framework underlying the RH computational evidence.",
+    status: "REFERENCE",
+    sha: "cc8f78341a6ba76d18665277ebc81dd27cf5f14b80617a9ed837a0fa832124cb",
+  },
+  {
+    id: "SRC_MODULAR_LINDELOF",
+    title: "Finite Modular Sieve Approaching the Lindelof Hypothesis",
+    filename: "Modular_Sieve_Lindelof.pdf",
+    claim: "Paper establishing a finite modular sieve that approaches the Lindelof Hypothesis bound for the Riemann zeta function.",
+    status: "REFERENCE",
+    sha: "8d157b56f5c5a7d1689c884fdd9c04d7d76596cd3b1c1db97be2974dc7fe9c2e",
+  },
+  {
+    id: "SRC_MODULAR_RH_108",
+    title: "Modular Sieve RH Data Set (10^8 range)",
+    filename: "Modular_Sieve_RH_10_8.pdf",
+    claim: "Computational data set verifying the modular sieve against RH for primes up to 10^8; supports the Lindelof and RH sieve papers.",
+    status: "REFERENCE",
+    sha: "cfab72c3b06dc19f01bbc5e193ae40136417c3de4ae764db150844fb33e2168e",
   },
 ];
 
@@ -1854,6 +1957,78 @@ export default function CertificatePage() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+
+        <Separator />
+
+        {/* Source Documents */}
+        <div>
+          <Collapsible defaultOpen={false}>
+            <CollapsibleTrigger className="flex items-center gap-2 text-sm font-semibold text-sky-800 hover:text-sky-900 transition-colors w-full text-left">
+              <BookOpen className="w-4 h-4 shrink-0" />
+              Source Documents &mdash; 10 registered PDFs
+              <ChevronDown className="w-4 h-4 ml-auto transition-transform [[data-state=open]_&]:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="mt-3 space-y-2">
+                {SOURCE_DOCS.map((doc) => {
+                  const liveSha = liveShas[doc.id];
+                  const displaySha = liveSha ?? doc.sha;
+                  return (
+                    <Card key={doc.id} className="shadow-sm border border-sky-200/70 bg-sky-50/20">
+                      <CardContent className="px-4 py-3 space-y-2">
+                        <div className="flex items-start justify-between gap-2 flex-wrap">
+                          <div className="font-semibold text-sm leading-snug">{doc.title}</div>
+                          {doc.status === "CERTIFIED" ? (
+                            <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold text-xs bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 shrink-0">
+                              <CheckCircle className="w-3 h-3" /> CERTIFIED
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-sky-700 font-semibold text-xs bg-sky-50 border border-sky-200 rounded-full px-2 py-0.5 shrink-0">
+                              <FileText className="w-3 h-3" /> REFERENCE
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{doc.claim}</p>
+                        <div className="rounded-md bg-muted/50 px-3 py-2 space-y-1">
+                          <div className="text-muted-foreground uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+                            SHA-256
+                            {liveSha && (
+                              <span className="inline-flex items-center gap-0.5 text-emerald-600 font-semibold text-[9px] bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-px">
+                                live
+                              </span>
+                            )}
+                          </div>
+                          <ShaBadge sha={displaySha} />
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <a
+                            href={`/api/certs/${doc.filename}`}
+                            download={doc.filename}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-700 bg-sky-50 hover:bg-sky-100 border border-sky-200 rounded-md px-3 py-1.5 transition-colors"
+                          >
+                            <Download className="w-3 h-3" />
+                            Download PDF
+                            <span className="text-sky-400 font-mono">({doc.filename})</span>
+                          </a>
+                          <CopyShaMini sha={displaySha} />
+                          <VerifyFileButton sha={displaySha} />
+                        </div>
+                        {doc.auditNote && (
+                          <div className="rounded-md bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900 leading-relaxed flex items-start gap-1.5">
+                            <AlertTriangle className="w-3 h-3 shrink-0 mt-0.5" />
+                            <span><strong>Audit:</strong> {doc.auditNote}</span>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </CollapsibleContent>
           </Collapsible>

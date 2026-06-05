@@ -2924,5 +2924,107 @@
     "audit_1_correction": "P5_replacement = 1000000001083 (PRIME, 13 digits, Sym=1, digit_sum=13)",
     "p5_replacement_stdout_sha": "1799a8169bc5f62ba36fe17dcb7a547bb6cb6f7cde01704c8d41ef717ed7e80c",
     "source": "certificates/build_wall256_ym.py"
+  },
+  "faltings_height_g5": {
+    "module": "SOURCE",
+    "title": "Faltings Height for Genus-5 Curves",
+    "file": "certificates/Faltings_Height_g5.pdf",
+    "sha256": "2cda7d7c99983f5e9e0466c13a3be762a6a1a2f00276b6128d3a5845ba3ecb71",
+    "status": "REFERENCE",
+    "claim": "Faltings height theory for genus-5 Jacobians; theoretical background for Zoe invariant and M8C rank obstruction argument.",
+    "source": "attached_assets/faltings_height_1780629810552.pdf",
+    "imported_utc": "2026-06-05"
+  },
+  "cert_arb_beta0_v1": {
+    "module": "SOURCE",
+    "title": "CERT_Arb_beta0 (variant v1)",
+    "file": "certificates/CERT_Arb_beta0_v1.pdf",
+    "sha256": "4648eab7d5abd641d2b8acdfc29399bb9c620c7c45ad750a25401776bb80ec6c",
+    "status": "REFERENCE",
+    "claim": "Interval certificate for beta_0 bound (variant copy); companion to CERT_Arb_beta0.",
+    "source": "attached_assets/CERT_Arb_beta0_(1)_1780629810600.pdf",
+    "imported_utc": "2026-06-05"
+  },
+  "cert_arb_beta0": {
+    "module": "SOURCE",
+    "title": "CERT_Arb_beta0 (interval certificate)",
+    "file": "certificates/CERT_Arb_beta0.pdf",
+    "sha256": "8879175c0bb11d20f71a0b31f221047c58fce489d5465bfda703dfa9a4bab8ae",
+    "status": "REFERENCE",
+    "claim": "Interval arithmetic certificate for the beta_0 bound used in the Wall256 YM tower.",
+    "source": "attached_assets/CERT_Arb_beta0_1780629810647.pdf",
+    "imported_utc": "2026-06-05",
+    "audit_note": "SHA MISMATCH with build_wall256_ym.py Section 16 reference (b5a9f0a7666a91f283a7d4531ae99dff2097c2cedef10424b77833b7bbc840d3). The uploaded file has a different SHA; the reference SHA in Section 16 was recorded against a prior version of this document. Computed SHA recorded here is the authoritative value for the imported file."
+  },
+  "d4_w1_negative": {
+    "module": "SOURCE",
+    "title": "D4 w=1 NEGATIVE Certificate (2026-06-01)",
+    "file": "certificates/D4_w1_NEGATIVE_Certificate.pdf",
+    "sha256": "9a794ccf0c707812e6fa3db2095a350f2d5b61a011fcc77e453c548716ac8764",
+    "status": "CERTIFIED",
+    "claim": "Certificate that D4 fails at w=1: the D4 Yang-Mills condition is not satisfied, establishing the NEGATIVE boundary case for the Wall256 tower.",
+    "source": "attached_assets/D4_w1_NEGATIVE_Certificate_2026-06-01_1780629810667.pdf",
+    "imported_utc": "2026-06-05",
+    "sha_audit": "CONFIRMED: SHA matches build_wall256_ym.py Section 16 reference exactly (9a794ccf...)."
+  },
+  "exceptional_prime_desert_map": {
+    "module": "SOURCE",
+    "title": "Exceptional-Prime Desert Map (Model 1)",
+    "file": "certificates/Exceptional_Prime_Desert_Map.pdf",
+    "sha256": "f26fa03de51ded4b00293be04f13bfd5019074eaf7ab47234089b0437227a894",
+    "status": "REFERENCE",
+    "claim": "Visual and computational map of the exceptional-prime desert for alpha_0 = 299 + pi/10; shows prime gap structure in the CF desert region (191, 82829).",
+    "source": "attached_assets/Model1_1780629810690.pdf",
+    "imported_utc": "2026-06-05"
+  },
+  "replicit_10trillion": {
+    "module": "SOURCE",
+    "title": "Replicit 10-Trillion Data Log",
+    "file": "certificates/Replicit_10trillion_Data_Log.pdf",
+    "sha256": "867fe6ffd31de2c06a463897c49940cd97f2d57c75a47ee0522a0289d0778f44",
+    "status": "REFERENCE",
+    "claim": "Computational data log of the 10-trillion-scale prime sieve run underpinning the Replicut v1.7 results.",
+    "source": "attached_assets/Replicit_10trillion_Data_Log_1780629810710.pdf",
+    "imported_utc": "2026-06-05"
+  },
+  "diophantine_sieve_rh": {
+    "module": "SOURCE",
+    "title": "Diophantine Sieve: RH Computational Evidence",
+    "file": "certificates/Diophantine_Sieve_RH_Computational.pdf",
+    "sha256": "8806645dcd17117f403501a781978a67db68df116c7ebe553305b0bff9eaa662",
+    "status": "REFERENCE",
+    "claim": "Computational evidence paper applying the Diophantine sieve to the Riemann Hypothesis; records verified sieve outputs.",
+    "source": "attached_assets/download-1_1780629810727.pdf",
+    "imported_utc": "2026-06-05"
+  },
+  "colander_diophantine": {
+    "module": "SOURCE",
+    "title": "Colander: Diophantine Sieve Architecture",
+    "file": "certificates/Colander_Diophantine_Sieve.pdf",
+    "sha256": "cc8f78341a6ba76d18665277ebc81dd27cf5f14b80617a9ed837a0fa832124cb",
+    "status": "REFERENCE",
+    "claim": "Architecture specification for the Colander Diophantine sieve; theoretical framework underlying the RH computational evidence.",
+    "source": "attached_assets/Colander_1780629810745.pdf",
+    "imported_utc": "2026-06-05"
+  },
+  "modular_sieve_lindelof": {
+    "module": "SOURCE",
+    "title": "Finite Modular Sieve Approaching the Lindelof Hypothesis",
+    "file": "certificates/Modular_Sieve_Lindelof.pdf",
+    "sha256": "8d157b56f5c5a7d1689c884fdd9c04d7d76596cd3b1c1db97be2974dc7fe9c2e",
+    "status": "REFERENCE",
+    "claim": "Paper establishing a finite modular sieve that approaches (and under stated conditions achieves) the Lindelof Hypothesis bound for the Riemann zeta function.",
+    "source": "attached_assets/A_Finite_Modular_Sieve_Approaching_the_Lindelof_Hypothesis_1780629810761.pdf",
+    "imported_utc": "2026-06-05"
+  },
+  "modular_sieve_rh_108": {
+    "module": "SOURCE",
+    "title": "Modular Sieve RH Data Set (10^8 range)",
+    "file": "certificates/Modular_Sieve_RH_10_8.pdf",
+    "sha256": "cfab72c3b06dc19f01bbc5e193ae40136417c3de4ae764db150844fb33e2168e",
+    "status": "REFERENCE",
+    "claim": "Computational data set verifying the modular sieve against RH for primes up to 10^8; supports the Lindelof and RH sieve papers.",
+    "source": "attached_assets/Rh_109_data_set_1780629810783.pdf",
+    "imported_utc": "2026-06-05"
   }
 }
