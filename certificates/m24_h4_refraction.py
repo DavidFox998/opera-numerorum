@@ -238,22 +238,23 @@ print()
 
 # ── PRECISION AUDIT: All 14 Meta AI candidates ────────────────────────────────
 #
-# Phase 1 (6 candidates): All h values explicitly named in the task specification.
-#   The 14-candidate list from David's Meta AI screenshot:
-#     h=2, 3, 127, 414679 — genuine S-bands (pass both float64 and mpmath)
-#     h=2814749767109      — float64 CF artifact; COMPOSITE (div 7); norm_f64>>1
-#     h=15285768567421339  — float64 exact-int artifact; COMPOSITE (div 13); norm_f64=0
-#   Task spec names these 6 explicitly; bands 7-14 h values not listed in spec.
+# Phase 1 (5 candidates): h values explicitly named in the task specification.
+#   Bands 1-3 from certified table (genuine CF convergents, Meta AI table bands 1-3).
+#   Bands 4-5 from task spec CORRECTION section (float64 artifacts).
+#   Note: h=2814749767109 is composite (div 7); h=15285768567421339 is composite (div 13).
+#   h=2 and h=3 are genuine S-bands found by Phase A brute-force but are NOT CF
+#   convergent denominators of 2*pi/7 and were not in Meta AI's CF-based sieve.
 #
-# Phase 2 (8 candidates): Mathematically exact reconstruction of bands 7-14.
-#   Float64 exact-integer threshold: alpha_f64 * h rounds to integer when
-#   h > 2^53 / alpha_f64 = 10034781993639654 (~1.003e16).
-#   h=15285768567421339 (~1.529e16) exceeds this threshold: norm_f64=0 trivially.
-#   ALL primes above this threshold have norm_f64=0 (trivially pass float64 sieve).
-#   Bands 7-14 = first 8 primes after h=15285768567421339.  Exact, not arbitrary.
-#   All 8 FAIL mpmath (norm_mpmath >> 1e15).
+# Phase 2 (9 candidates): Mechanism demonstration for bands 6-14.
+#   Exact h values for bands 6-14 from David's screenshot are NOT available in
+#   this repository. Phase 2 demonstrates the float64 exact-integer artifact
+#   mechanism by finding 9 representative primes with norm_f64=0 across multiple
+#   scale ranges. These are presented as mechanism samples, not claimed as exact
+#   screenshot values. All 9 FAIL mpmath (norm_mpmath >> 1).
+#   Float64 threshold: h > 2^53/alpha_f64 = 10034781993639654; above this ALL h
+#   have norm_f64=0.
 #
-# Summary: 14 candidates tested; 4 genuine PASS (h=2,3,127,414679); 10 FAIL.
+# Summary: 5 PASS or FAIL Phase 1 (3 PASS, 2 FAIL) + 9 Phase 2 (0 PASS, 9 FAIL).
 
 import math as _math
 _alpha_f64 = _math.pi * 2 / 7
@@ -271,16 +272,16 @@ print("  Float64 exact-integer threshold: h > {:,} ({:.3e})".format(
 print("  Above threshold: h*alpha_f64 rounds to exact integer -> norm_f64=0 always.")
 print("  Below threshold but h>10^8: float64 fractional-part error -> wrong norms.")
 print()
-print("  PHASE 1: 6 named candidates (h values explicitly from task specification)")
+print("  PHASE 1: 5 named candidates (h values explicitly from task specification)")
+print("  Bands 1-3: task spec certified table. Bands 4-5: task spec CORRECTION section.")
 print("  " + SEP2[2:])
 
 MP_KNOWN = [
-    (2,                 "genuine S-band (Phase A brute-force)"),
-    (3,                 "genuine S-band (Phase A brute-force)"),
-    (127,               "genuine CF convergent (Band 1)"),
-    (414679,            "genuine CF convergent (Band 2)"),
-    (2814749767109,     "COMPOSITE (div 7); float64 CF artifact (spec Band 4)"),
-    (15285768567421339, "COMPOSITE (div 13); float64 exact-int artifact (spec Band 5)"),
+    (127,                       "Meta AI Band 1 [genuine CF convergent; certified Band 1]"),
+    (414679,                    "Meta AI Band 2 [genuine CF convergent; certified Band 2]"),
+    (4964318427222741249841,     "Meta AI Band 3 [genuine CF convergent; certified Band 3]"),
+    (2814749767109,             "Meta AI Band 4 [COMPOSITE div 7; float64 artifact; norm_f64>>1]"),
+    (15285768567421339,         "Meta AI Band 5 [COMPOSITE div 13; float64 exact-int artifact]"),
 ]
 mp.dps = 200
 pass3 = fail3 = 0
@@ -292,45 +293,63 @@ for h, comment in MP_KNOWN:
     verdict = "PASS" if (nm < 1.0 and is_p) else "FAIL"
     if verdict == "PASS": pass3 += 1
     else: fail3 += 1
-    print(f"  h={str(h):<25}  norm_f64={nf:>12.3e}  norm_mpmath={nm:>14.4e}  prime={str(is_p):<5}  {verdict}  [{comment}]")
+    print(f"  h={str(h):<30}  norm_f64={nf:>12.3e}  norm_mpmath={nm:>14.4e}  prime={str(is_p):<5}  {verdict}")
+    print(f"    [{comment}]")
 print()
 
-# Phase 2: Exact reconstruction of Meta AI bands 7-14.
-# All primes h > F64_THRESHOLD have norm_f64 = 0 (exact-integer artifact).
-# Bands 7-14 = first 8 primes above h=15285768567421339.
-print("  PHASE 2: 8 exact-reconstructed candidates (Meta AI bands 7-14)")
-print("  Reconstruction: first 8 primes above h=15285768567421339 (spec Band 6).")
-print("  All have norm_f64=0 (above F64 threshold). Expected: all FAIL mpmath.")
+# Phase 2: Mechanism demonstration for bands 6-14.
+# Exact h values unavailable; demonstrate float64 exact-integer artifact at multiple scales.
+# Find 9 primes with norm_f64=0 (exact-int artifact) at different magnitudes.
+# These are mechanism samples, not claimed to be the exact Meta AI screenshot values.
+print("  PHASE 2: 9 mechanism-demonstration candidates (bands 6-14, exact h unavailable)")
+print("  Approach: find representative primes with norm_f64=0 at multiple scales.")
+print("  These demonstrate the float64 exact-integer artifact; not claimed as exact")
+print("  screenshot values (original screenshot not available in repository).")
 print("  " + SEP2[2:])
 
-_h = 15285768567421339 + 2  # next odd after Band 6
 _found_artifacts = []
+_checked = 0
 mp.dps = 200
-while len(_found_artifacts) < 8:
-    if is_prime(_h):
-        _nf = _f64_norm(_h)
-        _ha = mpf(_h) * ALPHA
-        _nm = float(fabs(_ha - nint(_ha))) * _h
-        _found_artifacts.append((_h, _nf, _nm))
-    _h += 2
+# Search near F64 threshold and above: above threshold ALL primes have norm_f64=0.
+# Use ranges that span multiple decades above threshold to show mechanism at different scales.
+_search_starts = [
+    _F64_THRESHOLD + 3,            # just above threshold
+    _F64_THRESHOLD + 1001,
+    _F64_THRESHOLD + 100003,
+    2 * _F64_THRESHOLD + 1,
+    2 * _F64_THRESHOLD + 10001,
+    5 * _F64_THRESHOLD + 1,
+    5 * _F64_THRESHOLD + 100003,
+    10 * _F64_THRESHOLD + 1,
+    10 * _F64_THRESHOLD + 100007,
+]
+for _start in _search_starts:
+    _h = _start if _start % 2 == 1 else _start + 1
+    # Find first prime at or above _start
+    while not is_prime(_h):
+        _h += 2
+    _nf = _f64_norm(_h)
+    _ha = mpf(_h) * ALPHA
+    _nm = float(fabs(_ha - nint(_ha))) * _h
+    _found_artifacts.append((_h, _nf, _nm))
 
 _fa_pass = _fa_fail = 0
-for _i, (_h2, _nf2, _nm2) in enumerate(_found_artifacts, 7):
+for _i, (_h2, _nf2, _nm2) in enumerate(_found_artifacts, 6):
     _verdict = "PASS" if _nm2 < 1.0 else "FAIL"
     if _verdict == "PASS": _fa_pass += 1
     else: _fa_fail += 1
-    print(f"  [{_i:2d}]  h={str(_h2):<25}  norm_f64={_nf2:>8.3e}  norm_mpmath={_nm2:>14.4e}  {_verdict}  [reconstructed Band {_i}]")
+    _scale = f"~{_h2:.2e}"
+    print(f"  [{_i:2d}]  h={str(_h2):<22}  norm_f64={_nf2:>8.3e}  norm_mpmath={_nm2:>14.4e}  {_verdict}  [mechanism demo {_scale}]")
 print()
-print(f"  Phase 2 result: {_fa_pass} PASS + {_fa_fail} FAIL of 8 reconstructed candidates.")
+print(f"  Phase 2 result: {_fa_pass} PASS + {_fa_fail} FAIL of {len(_found_artifacts)} mechanism samples.")
 print()
-print(f"PRECISION AUDIT SUMMARY: {pass3} PASS + {fail3} FAIL (Phase 1, 6 named)")
-print(f"  + {_fa_pass} PASS + {_fa_fail} FAIL (Phase 2, 8 reconstructed bands 7-14)")
-print(f"  Total: {pass3+_fa_pass} PASS + {fail3+_fa_fail} FAIL of 14 candidates.")
-print(f"  Genuine S-bands: h={{2, 3, 127, 414679}} (prime, norm_mpmath<1)")
-print(f"  Float64 artifacts (FAIL mpmath): h=2814749767109 (composite div 7, norm_f64>>1)")
-print(f"    h=15285768567421339 (composite div 13, norm_f64=0) and all 8 reconstructed.")
-print(f"  AUDIT-S: col4 identity in screenshot TBD. Bands 7-14 exact h values from")
-print(f"   screenshot not available; reconstructed as first 8 primes above Band 6 h.")
+print(f"PRECISION AUDIT SUMMARY: {pass3} PASS + {fail3} FAIL (Phase 1, {len(MP_KNOWN)} named candidates)")
+print(f"  + {_fa_pass} PASS + {_fa_fail} FAIL (Phase 2, {len(_found_artifacts)} mechanism samples for bands 6-14)")
+print(f"  Total: {pass3+_fa_pass} PASS + {fail3+_fa_fail} FAIL of {len(MP_KNOWN)+len(_found_artifacts)} candidates.")
+print(f"  Genuine S-bands in Phase 1: h={{127, 414679, 4964318427222741249841}} (prime, norm_mpmath<1)")
+print(f"  Float64 artifacts: h=2814749767109 (composite div 7), h=15285768567421339 (composite div 13)")
+print(f"  AUDIT-S: col4 identity in screenshot TBD.")
+print(f"  NOTE: Bands 6-14 exact h values from David's screenshot unavailable in repo.")
 print()
 
 # ── Phase A: Brute-force sieve ─────────────────────────────────────────────────
@@ -594,7 +613,7 @@ print(f"Way 3 S-Bands:   Phase A (brute-force to {N_BF:,}): {len(phase_a_bands)}
 print(f"                 Phase B (CF sieve to ~10^200): {len(phase_b_bands)} bands")
 print(f"                 Combined: {N_routes} certified bands total")
 print(f"                 Z=1 ALL. Theorem 4.1 prediction: 108.")
-print(f"                 Precision audit: 3 PASS, 2 FAIL (float64 artifacts)")
+print(f"                 Precision audit: {pass3} PASS Phase1, {fail3} FAIL Phase1; {_fa_pass} PASS Phase2, {_fa_fail} FAIL Phase2")
 print(f"Way 4 H4:        K_H4=55/4=13.75 EXACT. f_H4=pi^2*11/120={float(f_H4):.10f}.")
 print(f"                 v_g=pi*c VERIFIED. gamma_1=pi/10 CORRECTED.")
 print()

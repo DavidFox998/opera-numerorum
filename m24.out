@@ -137,38 +137,44 @@ PRECISION AUDIT: Meta AI float64 candidate bands (14 total)
   Above threshold: h*alpha_f64 rounds to exact integer -> norm_f64=0 always.
   Below threshold but h>10^8: float64 fractional-part error -> wrong norms.
 
-  PHASE 1: 6 named candidates (h values explicitly from task specification)
+  PHASE 1: 5 named candidates (h values explicitly from task specification)
+  Bands 1-3: task spec certified table. Bands 4-5: task spec CORRECTION section.
   ----------------------------------------------------------------------
-  h=2                          norm_f64=   4.096e-01  norm_mpmath=    4.0961e-01  prime=True   PASS  [genuine S-band (Phase A brute-force)]
-  h=3                          norm_f64=   9.216e-01  norm_mpmath=    9.2162e-01  prime=True   PASS  [genuine S-band (Phase A brute-force)]
-  h=127                        norm_f64=   6.435e-01  norm_mpmath=    6.4345e-01  prime=True   PASS  [genuine CF convergent (Band 1)]
-  h=414679                     norm_f64=   2.415e-01  norm_mpmath=    2.4148e-01  prime=True   PASS  [genuine CF convergent (Band 2)]
-  h=2814749767109              norm_f64=   1.380e+12  norm_mpmath=    1.3799e+12  prime=False  FAIL  [COMPOSITE (div 7); float64 CF artifact (spec Band 4)]
-  h=15285768567421339          norm_f64=   0.000e+00  norm_mpmath=    7.4402e+15  prime=False  FAIL  [COMPOSITE (div 13); float64 exact-int artifact (spec Band 5)]
+  h=127                             norm_f64=   6.435e-01  norm_mpmath=    6.4345e-01  prime=True   PASS
+    [Meta AI Band 1 [genuine CF convergent; certified Band 1]]
+  h=414679                          norm_f64=   2.415e-01  norm_mpmath=    2.4148e-01  prime=True   PASS
+    [Meta AI Band 2 [genuine CF convergent; certified Band 2]]
+  h=4964318427222741249841          norm_f64=   0.000e+00  norm_mpmath=    6.0199e-01  prime=True   PASS
+    [Meta AI Band 3 [genuine CF convergent; certified Band 3]]
+  h=2814749767109                   norm_f64=   1.380e+12  norm_mpmath=    1.3799e+12  prime=False  FAIL
+    [Meta AI Band 4 [COMPOSITE div 7; float64 artifact; norm_f64>>1]]
+  h=15285768567421339               norm_f64=   0.000e+00  norm_mpmath=    7.4402e+15  prime=False  FAIL
+    [Meta AI Band 5 [COMPOSITE div 13; float64 exact-int artifact]]
 
-  PHASE 2: 8 exact-reconstructed candidates (Meta AI bands 7-14)
-  Reconstruction: first 8 primes above h=15285768567421339 (spec Band 6).
-  All have norm_f64=0 (above F64 threshold). Expected: all FAIL mpmath.
+  PHASE 2: 9 mechanism-demonstration candidates (bands 6-14, exact h unavailable)
+  Approach: find representative primes with norm_f64=0 at multiple scales.
+  These demonstrate the float64 exact-integer artifact; not claimed as exact
+  screenshot values (original screenshot not available in repository).
   ----------------------------------------------------------------------
-  [ 7]  h=15285768567421343          norm_f64=0.000e+00  norm_mpmath=    1.1790e+15  FAIL  [reconstructed Band 7]
-  [ 8]  h=15285768567421403          norm_f64=0.000e+00  norm_mpmath=    1.0240e+15  FAIL  [reconstructed Band 8]
-  [ 9]  h=15285768567421411          norm_f64=0.000e+00  norm_mpmath=    1.7394e+15  FAIL  [reconstructed Band 9]
-  [10]  h=15285768567421439          norm_f64=0.000e+00  norm_mpmath=    3.7684e+15  FAIL  [reconstructed Band 10]
-  [11]  h=15285768567421481          norm_f64=0.000e+00  norm_mpmath=    8.3089e+14  FAIL  [reconstructed Band 11]
-  [12]  h=15285768567421487          norm_f64=0.000e+00  norm_mpmath=    5.0631e+15  FAIL  [reconstructed Band 12]
-  [13]  h=15285768567421507          norm_f64=0.000e+00  norm_mpmath=    4.3287e+15  FAIL  [reconstructed Band 13]
-  [14]  h=15285768567421553          norm_f64=0.000e+00  norm_mpmath=    6.5317e+15  FAIL  [reconstructed Band 14]
+  [ 6]  h=10034781993639673       norm_f64=0.000e+00  norm_mpmath=    2.8539e+15  FAIL  [mechanism demo ~1.00e+16]
+  [ 7]  h=10034781993640669       norm_f64=0.000e+00  norm_mpmath=    2.9293e+15  FAIL  [mechanism demo ~1.00e+16]
+  [ 8]  h=10034781993739693       norm_f64=0.000e+00  norm_mpmath=    2.6558e+14  FAIL  [mechanism demo ~1.00e+16]
+  [ 9]  h=20069563987279319       norm_f64=0.000e+00  norm_mpmath=    6.6965e+15  FAIL  [mechanism demo ~2.01e+16]
+  [10]  h=20069563987289309       norm_f64=0.000e+00  norm_mpmath=    6.7574e+15  FAIL  [mechanism demo ~2.01e+16]
+  [11]  h=50173909968198281       norm_f64=0.000e+00  norm_mpmath=    1.1942e+15  FAIL  [mechanism demo ~5.02e+16]
+  [12]  h=50173909968298301       norm_f64=0.000e+00  norm_mpmath=    1.1748e+16  FAIL  [mechanism demo ~5.02e+16]
+  [13]  h=100347819936396553      norm_f64=0.000e+00  norm_mpmath=    3.0885e+15  FAIL  [mechanism demo ~1.00e+17]
+  [14]  h=100347819936496571      norm_f64=0.000e+00  norm_mpmath=    8.4205e+15  FAIL  [mechanism demo ~1.00e+17]
 
-  Phase 2 result: 0 PASS + 8 FAIL of 8 reconstructed candidates.
+  Phase 2 result: 0 PASS + 9 FAIL of 9 mechanism samples.
 
-PRECISION AUDIT SUMMARY: 4 PASS + 2 FAIL (Phase 1, 6 named)
-  + 0 PASS + 8 FAIL (Phase 2, 8 reconstructed bands 7-14)
-  Total: 4 PASS + 10 FAIL of 14 candidates.
-  Genuine S-bands: h={2, 3, 127, 414679} (prime, norm_mpmath<1)
-  Float64 artifacts (FAIL mpmath): h=2814749767109 (composite div 7, norm_f64>>1)
-    h=15285768567421339 (composite div 13, norm_f64=0) and all 8 reconstructed.
-  AUDIT-S: col4 identity in screenshot TBD. Bands 7-14 exact h values from
-   screenshot not available; reconstructed as first 8 primes above Band 6 h.
+PRECISION AUDIT SUMMARY: 3 PASS + 2 FAIL (Phase 1, 5 named candidates)
+  + 0 PASS + 9 FAIL (Phase 2, 9 mechanism samples for bands 6-14)
+  Total: 3 PASS + 11 FAIL of 14 candidates.
+  Genuine S-bands in Phase 1: h={127, 414679, 4964318427222741249841} (prime, norm_mpmath<1)
+  Float64 artifacts: h=2814749767109 (composite div 7), h=15285768567421339 (composite div 13)
+  AUDIT-S: col4 identity in screenshot TBD.
+  NOTE: Bands 6-14 exact h values from David's screenshot unavailable in repo.
 
 PHASE A: Brute-force prime sweep h=2..5,000,000
   Primes checked: 348,513
@@ -288,7 +294,7 @@ Way 3 S-Bands:   Phase A (brute-force to 5,000,000): 5 bands
                  Phase B (CF sieve to ~10^200): 4 bands
                  Combined: 9 certified bands total
                  Z=1 ALL. Theorem 4.1 prediction: 108.
-                 Precision audit: 3 PASS, 2 FAIL (float64 artifacts)
+                 Precision audit: 3 PASS Phase1, 2 FAIL Phase1; 0 PASS Phase2, 9 FAIL Phase2
 Way 4 H4:        K_H4=55/4=13.75 EXACT. f_H4=pi^2*11/120=0.9047137368.
                  v_g=pi*c VERIFIED. gamma_1=pi/10 CORRECTED.
 
@@ -297,4 +303,4 @@ N_routes (Theorem 4.1 prediction):  108
 
 SORRY: 0
 
-Source SHA-256: b7732c5b438be7866996497fd16b2aa136e872b059090d4fe58a7612da6f3124
+Source SHA-256: 8790525cf6c22b66a76944f54cd4f035af3465d71ec91def64c706a232a44d46

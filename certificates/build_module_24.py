@@ -386,7 +386,7 @@ story += [sp(2), phys_t, sp(4)]
 # Images
 if os.path.exists(IMG_SBAND):
     story += [sp(4), img(IMG_SBAND, w=6.5*inch, h=2.8*inch),
-              Paragraph("Figure 2: S-band prime spectrum -- five certified primes on the H4 vertex projection arc.",
+              Paragraph("Figure 2: S-band prime spectrum -- certified prime S-bands on the H4 vertex projection arc.",
                         sty("FC2", fontSize=7.5, alignment=TA_CENTER, textColor=colors.HexColor("#444444")))]
 
 # ── WAY 4: H4 REFRACTIONS ─────────────────────────────────────────────────────
