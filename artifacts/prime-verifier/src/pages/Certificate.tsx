@@ -823,6 +823,7 @@ function ShaBadge({ sha }: { sha: string }) {
 
 function CopyShaMini({ sha }: { sha: string }) {
   const [copied, setCopied] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   function copy() {
     navigator.clipboard.writeText(sha).then(() => {
       setCopied(true);
@@ -830,18 +831,38 @@ function CopyShaMini({ sha }: { sha: string }) {
     });
   }
   return (
-    <button
-      onClick={copy}
-      title={`Copy SHA-256 to verify download:\n${sha}`}
-      className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-md px-2 py-1.5 transition-colors font-mono"
-    >
-      <Copy className="w-3 h-3 shrink-0" />
-      {copied ? (
-        <span className="text-emerald-600 font-sans">copied</span>
-      ) : (
-        <span>copy SHA</span>
+    <span className="relative inline-flex">
+      <button
+        onClick={copy}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        onFocus={() => setShowTooltip(true)}
+        onBlur={() => setShowTooltip(false)}
+        aria-label={`Copy SHA-256: ${sha}`}
+        className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-md px-2 py-1.5 transition-colors font-mono"
+      >
+        <Copy className="w-3 h-3 shrink-0" />
+        {copied ? (
+          <span className="text-emerald-600 font-sans">copied</span>
+        ) : (
+          <span>copy SHA</span>
+        )}
+      </button>
+      {showTooltip && (
+        <span
+          role="tooltip"
+          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 w-max max-w-xs pointer-events-none"
+        >
+          <span className="block bg-slate-900 text-slate-100 text-xs font-mono rounded-md px-3 py-2 shadow-lg border border-slate-700 break-all leading-relaxed whitespace-normal">
+            <span className="block text-slate-400 font-sans font-medium mb-1 text-[10px] uppercase tracking-wide">
+              SHA-256
+            </span>
+            {sha}
+          </span>
+          <span className="block w-2.5 h-2.5 bg-slate-900 border-r border-b border-slate-700 rotate-45 mx-auto -mt-1.5" />
+        </span>
       )}
-    </button>
+    </span>
   );
 }
 
