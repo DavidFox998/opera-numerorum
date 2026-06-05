@@ -1,0 +1,27 @@
+Opera Numerorum -- Module A1: S-Bands Sieve
+2*pi/7 CF convergent denominators that are prime
+mpmath dps=400 | max_terms=450 | denominators to ~10^200
+========================================================================
+
+Total certified S-bands: 5
+
+ Band   CF step   Digits        norm   3^h mod 7  h
+------------------------------------------------------------------------
+  [  1]  step=    4       3d    0.643454  3 (PASS)  127
+  [  2]  step=   10       6d    0.241477  3 (PASS)  414679
+  [  3]  step=   47      22d    0.601990  3 (PASS)  4964318427222741249841
+  [  4]  step=   58      27d    0.486066  5 (PASS)  135531508477763247952856981
+  [  5]  step=   71      32d    0.296168  3 (PASS)  12454380874316538311034864614401
+
+========================================================================
+POSITIVITY NOTE: ||q_n*alpha||*q_n < 1 holds for ALL CF convergent
+denominators by the best-approximation property (not an additional filter).
+
+COND 3 NOTE: 3^h mod 7 in {3,5,6} for all prime h > 3 by Fermat + ord_7(3)=6.
+(Cond 3 is automatic; recorded above for completeness.)
+
+RESULT: The S-band spectrum is exactly the set of prime CF convergent
+denominators of 2*pi/7. Within the first 450 CF terms (denom. <= ~10^200),
+there are 5 such primes. This is the certified S-band count to 10^200.
+
+SORRY: 0

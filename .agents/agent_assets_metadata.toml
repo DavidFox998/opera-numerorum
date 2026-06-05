@@ -78,6 +78,66 @@ uri = "file://certificates/figures/phi_convergents.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "X0kjH-gMa9yNtOwjruAYq"
+uri = "file://attached_assets/generated/h4_600cell.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ERqu9rukC9ach2LuuUVPC"
+uri = "file://attached_assets/generated/sbands_spectrum.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "HjfxI0E-oRZE-Iqq1ceXU"
+uri = "file://attached_assets/generated/colmez_desert.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "6gAFNqmoyQSz-7SB98Utp"
+uri = "file://attached_assets/generated/morning_star_dock.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "IlUNb5TFcEnYQ2ofwVlf8"
+uri = "file://attached_assets/generated/h4_refraction.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "HWG7FvkQzC-UtCu06dtaN"
+uri = "file://attached_assets/generated/h4_self_duality.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "zy-rhlVY1teSfhBASGMmf"
+uri = "file://attached_assets/generated/h4_120cell.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "jvFfPOPTN7kntPQhM8qFg"
+uri = "file://attached_assets/generated/opera_numerorum_header.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "zA8wzsCGch4qFTEa3emhb"
+uri = "file://attached_assets/generated/cf_staircase.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "TTdcBv2ChulXahDIYC2Ox"
+uri = "file://attached_assets/generated/ftl_routes.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "TH6j7YjA_IsBpgJ_BJ6ZX"
 uri = "file://certificates/Tendon_A_Certificate.pdf"
@@ -305,3 +365,63 @@ id = "ANf8wUgE7ikDFbmJ4JuW3"
 uri = "file://certificates/Essay_TimeMachine_p5.pdf"
 type = "pdf"
 title = "Opera Numerorum: The Time Machine at p5"
+
+[[outputs]]
+id = "4i-ZRFKMtx8XPjr0CKlxa"
+uri = "file://attached_assets/generated/h4_120cell.png"
+type = "image"
+title = "H₄ 120-cell polytope"
+
+[[outputs]]
+id = "djN-B5-ZYylzVFHHGNlPH"
+uri = "file://attached_assets/generated/h4_600cell.png"
+type = "image"
+title = "H₄ 600-cell (dual)"
+
+[[outputs]]
+id = "RA-Zi_iq5d4L-z832_B8L"
+uri = "file://attached_assets/generated/sbands_spectrum.png"
+type = "image"
+title = "S-band prime spectrum"
+
+[[outputs]]
+id = "ayl4QRh4hHhb8hxKlTV3Y"
+uri = "file://attached_assets/generated/colmez_desert.png"
+type = "image"
+title = "Colmez Desert — S₄ oases"
+
+[[outputs]]
+id = "p-os_-ePbAqDs3u0TNM_j"
+uri = "file://attached_assets/generated/h4_refraction.png"
+type = "image"
+title = "H₄ refraction map (f_H₄)"
+
+[[outputs]]
+id = "QHugfi1FMs4rHC0Qvygfu"
+uri = "file://attached_assets/generated/h4_self_duality.png"
+type = "image"
+title = "H₄ self-duality: 120↔600"
+
+[[outputs]]
+id = "GT6OwP5pJzIZyjEOOX_3q"
+uri = "file://attached_assets/generated/ftl_routes.png"
+type = "image"
+title = "FTL wormhole route network"
+
+[[outputs]]
+id = "3K4TeU6bXYXRiahNCLnJ7"
+uri = "file://attached_assets/generated/morning_star_dock.png"
+type = "image"
+title = "Morning Star docking station"
+
+[[outputs]]
+id = "WkvPmY-TlPu__dSqJctbN"
+uri = "file://attached_assets/generated/opera_numerorum_header.png"
+type = "image"
+title = "Opera Numerorum certificate header"
+
+[[outputs]]
+id = "Ul5B-v278VE-YEuZwg513"
+uri = "file://attached_assets/generated/cf_staircase.png"
+type = "image"
+title = "CF staircase of 2π/7"
