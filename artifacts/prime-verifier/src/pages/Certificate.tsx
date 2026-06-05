@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -21,6 +21,7 @@ import {
   FileText,
   GitBranch,
   Copy,
+  RefreshCw,
 } from "lucide-react";
 
 const MANIFEST_SHA =
@@ -1194,14 +1195,37 @@ function DownloadBlock({
   );
 }
 
+function useRelativeTime(date: Date | null): string {
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    if (!date) return;
+    const id = setInterval(() => setTick((n) => n + 1), 1000);
+    return () => clearInterval(id);
+  }, [date]);
+  if (!date) return "";
+  const secs = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (secs < 5) return "just now";
+  if (secs < 60) return `${secs}s ago`;
+  const mins = Math.floor(secs / 60);
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  return `${hrs}h ago`;
+}
+
 export default function CertificatePage() {
   const [auditOpen, setAuditOpen] = useState(false);
   const [liveShas, setLiveShas] = useState<Record<string, string>>({});
   const [shaStatus, setShaStatus] = useState<"loading" | "ready" | "error">(
     "loading",
   );
+  const [lastSynced, setLastSynced] = useState<Date | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
+  const relativeTime = useRelativeTime(lastSynced);
+
+  const refreshShas = useCallback(() => {
+    setRefreshing(true);
+    setShaStatus("loading");
     fetch("/api/invariants")
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -1210,11 +1234,19 @@ export default function CertificatePage() {
       .then((data) => {
         setLiveShas(extractShasFromInvariants(data));
         setShaStatus("ready");
+        setLastSynced(new Date());
       })
       .catch(() => {
         setShaStatus("error");
+      })
+      .finally(() => {
+        setRefreshing(false);
       });
   }, []);
+
+  useEffect(() => {
+    refreshShas();
+  }, [refreshShas]);
 
   const liveManifestSha = liveShas["M7"] ?? MANIFEST_SHA;
   const liveM8Sha = liveShas["M8"] ?? M8_SHA;
@@ -1595,9 +1627,32 @@ export default function CertificatePage() {
 
         {/* Module cards */}
         <div>
-          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-            Certified Module Chain
-          </h2>
+          <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Certified Module Chain
+            </h2>
+            <div className="flex items-center gap-2">
+              {shaStatus === "ready" && lastSynced && (
+                <span className="text-xs text-muted-foreground">
+                  Last synced: <span className="font-medium">{relativeTime}</span>
+                </span>
+              )}
+              {shaStatus === "error" && (
+                <span className="text-xs text-amber-600">
+                  Fallback mode
+                </span>
+              )}
+              <button
+                onClick={refreshShas}
+                disabled={refreshing}
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed border rounded px-2 py-0.5"
+                title="Re-fetch live SHA values"
+              >
+                <RefreshCw className={`w-3 h-3 ${refreshing ? "animate-spin" : ""}`} />
+                Refresh
+              </button>
+            </div>
+          </div>
           {shaStatus === "loading" && (
             <div className="text-xs text-muted-foreground flex items-center gap-1.5 mb-2">
               <span className="inline-block w-3 h-3 rounded-full border-2 border-current border-t-transparent animate-spin" />
