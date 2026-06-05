@@ -1600,14 +1600,14 @@ export default function CertificatePage() {
               <div className="flex items-center gap-2">
                 <span className="text-green-400 text-base">🗜</span>
                 <span className="text-xs font-bold text-white">
-                  Full Certificate Archive (All 62 PDFs)
+                  Full Certificate Archive (All 72 PDFs)
                 </span>
               </div>
               <p className="text-[10px] text-gray-400 leading-relaxed">
-                Every certified PDF — M1–M8Q, M9–M23, BDP, Wall256, Z Protocol, Field Report, Canonical Paper + invariants.json. <span className="text-amber-400">~84 MB</span>
+                Every certified PDF — M1–M8Q, M9–M23, BDP, Wall256, Z Protocol, Field Report, Canonical Paper + invariants.json. <span className="text-amber-400">~86 MB</span>
               </p>
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
-                SHA: beffac1294568c89efeb4954b78fc07efd17bf3cd5a46571c344a87b552043c8
+                SHA: ff17b7fb6e01b0556e709a535c368452d5c41b47449a2b1297c5d1ef13e1ef4f
               </span>
               <div className="flex items-center gap-2 mt-1.5">
                 <a
