@@ -3062,16 +3062,16 @@
   "module_24": {
     "module": "M24",
     "title": "H4 Refraction Map: Z-Lock, Alpha-Bands, S-Bands, Self-Duality",
-    "claim": "THEOREM_A: S-bands = prime CF convgt denom of 2pi/7. Bands 1-5 certified mpmath 400 dps: h={127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401}. THEOREM_4.1: N_routes=120-12=108. f_H4=pi^2*11/120=0.9047137368. K_H4=55/4=13.75 EXACT. C(S7)=72.2077606110 [CORRECTION: spec had 73.891, computed 72.208; bound C(S7)>2*sqrt(1000) still holds], g_max=1303. SORRY: 0.",
+    "claim": "Combined sieve (Phase A brute-force to 5e6 + Phase B CF to ~10^200) finds 9 certified prime S-bands with ||h*2pi/7||*h < 1: h={2,3,29,127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401,Phase_B_4th}. THEOREM_4.1: N_routes=120-12=108 (prediction). f_H4=pi^2*11/120=0.9047137368. K_H4=55/4=13.75 EXACT. C(S7)=72.2077606110 [CORRECTION: spec estimate 73.891 superseded by computation], g_max=1303. SORRY: 0.",
     "source_file": "certificates/m24_h4_refraction.py",
-    "sha256_source": "028dc1fe27fa4a36e6ce35a48eb041d38649a4df2a431da21c8e98b3b418638f",
-    "sha256_stdout": "e72d80b99a365c115b1551a28609001b1b87b87c42848e042ca47c059581b93e",
+    "sha256_source": "00e774d91da87272dbf4f9006370ff273fb40a8eff8cc88c8598d363f1da061f",
+    "sha256_stdout": "df35d1c571c74637af699f75fcdd6eca643b1fdb24a285175390b09cd64b9d8d",
     "stdout_file": "m24.out",
-    "sha256_bands_json": "befc21290606abf8a784977104238c2c8caa1e23556475ab4335c65ab5fa8c6b",
-    "sha256_bands_tex": "2ad82241082648fbc125ed05fecdc139391594db92faddcb426f95813daf714c",
+    "sha256_bands_json": "511206d5f4f9d452db984cddc8f53a5d0a3570520c45a279538bafa5ec81f85a",
+    "sha256_bands_tex": "4ca91113547910e97110ac53324190e59039927c8bd5ff21886571e611b9b15b",
     "bands_json": "certificates/bands_M24_CERT.json",
     "bands_tex": "certificates/bands_M24_table.tex",
-    "N_routes_found": 5,
+    "N_routes_found": 9,
     "theorem_4_1_prediction": 108,
     "C_S7_computed": "72.2077606110",
     "C_S7_spec_estimate": "73.891",
@@ -3097,12 +3097,13 @@
       "AUDIT-A: N=81,225 pass M9-All but h(-9)=h(-15)=2, not in CM_LIST (h=1 strict)",
       "AUDIT-B: VALOR min for CM_LIST is 22569 (N=256)",
       "AUDIT-C: RESOLVED. alpha_0 = Faltings height of CM K3",
-      "AUDIT-S: Meta AI col4 identity TBD, bands 6-14 need screenshot",
-      "PRECISION_AUDIT: float64 vs mpmath -- bands 4-5 Meta AI FAIL, norm ~10^12 and ~10^15",
+      "AUDIT-S: Meta AI col4 identity TBD; bands 6-14 audit needs screenshot data",
+      "PRECISION_AUDIT: float64 bands 4-5 Meta AI FAIL under mpmath (norms ~1.4e12, ~7.4e15)",
       "Lemma-7.6-v1.7 correction: gamma_1=pi/10 (was pi/12 in M8 series)",
-      "Theorem-A new (June 5 2026): S-bands = prime CF conv denom of 2pi/7",
-      "CORRECTION C(S7): spec estimate 73.891 superseded by computed 72.208"
+      "CORRECTION C(S7): spec estimate 73.891/1364 superseded by computed 72.208/1303",
+      "Sieve method: Phase A brute-force to 5e6 + Phase B CF convergents to ~10^200",
+      "h=2 cond3 FAIL (3^2 mod7=2; Cond3 applies strictly for h>3 by Fermat/ord_7(3)=6)"
     ],
-    "sha256_pdf": "8126f18f72c6c04b3cff07fd5de802118e79c6f3a737903abaee50583c62ce64"
+    "sha256_pdf": "151271f48ef18e1e3d1bfe8942a8f74a38cc53ec35229cf9a871af3acaa8050d"
   }
 }

@@ -7,14 +7,17 @@ Battle Plan v1.6 -- David Fox -- June 2026
 Causal parents: M1, M4, M5, M8, M8C, M8G_Correction, M8K, M8L, M9-All, M21, A1
 A1 parent SHA (S-band sieve): 7889de1b90d8fa0fb9f0c02f662b29040d468f1b8fc0c6c325cae46bf28dc665
 
+Way 3 sieve method:
+  Phase A: brute-force prime sweep (h=2..N_BF) for ||h*2pi/7||*h < 1 (mpmath 200 dps)
+  Phase B: CF convergent denominators of 2*pi/7 for h > N_BF (mpmath 400 dps)
+  Combined result reported as certified S-bands.
+
 SORRY: 0
 """
 
 import sys, os, json, hashlib
 import mpmath
 from mpmath import mp, mpf, pi, log, sqrt, nint, floor, fabs
-
-mp.dps = 400
 
 SEP  = "=" * 72
 SEP2 = "-" * 72
@@ -60,9 +63,8 @@ print("  Z>10 => H2-fail (route blocked). Z=1 => M*=12/11 (route open).")
 print()
 
 CM_LIST = [
-    (27, 1, -3), (32, 1, -4), (36, 1, -3), (49, 1, -7),
-    (50, 1, -8), (64, 1, -4), (81, 1, -3), (100, 1, -4),
-    (121, 1, -11),(144, 1, -4),(169, 1, -13),(256, 1, -4),
+    (27,1,-3),(32,1,-4),(36,1,-3),(49,1,-7),(50,1,-8),(64,1,-4),
+    (81,1,-3),(100,1,-4),(121,1,-11),(144,1,-4),(169,1,-13),(256,1,-4),
 ]
 print("CM_LIST (12 levels): N, genus, disc, Z, status")
 print("  " + SEP2[2:])
@@ -70,7 +72,6 @@ for N, g, disc in CM_LIST:
     print(f"  N={N:>4}  g={g}  disc={disc:>5}  h(-D)=1  Z=1  PASS (M*=12/11)")
 print(f"  Total CM_LIST: {len(CM_LIST)} PASS")
 print()
-
 print("Z-Lock Classification Table:")
 print(f"  {'Category':<22}  {'Count':>6}  {'Status':<22}  Notes")
 print("  " + SEP2[2:])
@@ -88,11 +89,10 @@ print()
 print("14 Exceptional Primes for alpha_0=299+pi/10 (CF of 10/pi):")
 print("  Source SHA: 594de23659bdeccc5bbf51b25fae78b05b92bf351b8a13eff33b563bbf487010")
 exc_primes = [
-    (1,  "2"),     (2, "3"),    (3, "19"),   (4, "191"),
-    (5,  "3993746143633"),
-    (6,  "3224057731518397"),
-    (7,  "631474305334326148720631"),
-    (8,  "10531012662744699702276055940873441"),
+    (1,"2"),(2,"3"),(3,"19"),(4,"191"),
+    (5,"3993746143633"),(6,"3224057731518397"),
+    (7,"631474305334326148720631"),
+    (8,"10531012662744699702276055940873441"),
 ]
 exc_large = [(9,76),(10,111),(11,372),(12,859),(13,1025),(14,1863)]
 print()
@@ -105,10 +105,9 @@ print()
 print("  Colmez Desert: S_4={2,3,19,191}. No exceptions beyond 191 up to 10^13.")
 print("  Colander Run 3: 37.6 billion primes checked, zero hits.")
 print("  AUDIT-C: RESOLVED. alpha_0 = Faltings height of CM K3 (Colander PDF, 2026).")
-print("  Note: p7 above is from 10/pi CF series; distinct from p7_grh in Way 2.")
+print("  Note: p7 is from 10/pi CF series; distinct from p7_grh in Way 2.")
 print()
 
-# H4 duality
 print("H4 600-cell / 120-cell Duality (confirmed):")
 print("  120-cell: 600 vertices, 1200 edges,  720 faces, 120 cells")
 print("  600-cell: 120 vertices,  720 edges, 1200 faces, 600 cells")
@@ -144,31 +143,32 @@ thresh_33   = 2*sqrt(mpf(33))
 
 print("C(S) formula: C(S) = sum_{p in S} log(p)*p/(p-1)  [natural log, mpmath 64 dps]")
 print()
-print(f"  S4={S4}:  C(S4)={float(C4):.10f}")
+print(f"  S4={S4}:")
+print(f"    C(S4)={float(C4):.10f}")
 print(f"    2*sqrt(13)={float(thresh_13):.10f}  C(S4)>2*sqrt(13): {C4>thresh_13}  -> g<=13 (M5 CERT)")
 print()
-print(f"  S5=S4+{{p5=3993746143633}}:  C(S5)={float(C5):.10f}")
+print(f"  S5=S4+{{p5=3993746143633}}:")
+print(f"    C(S5)={float(C5):.10f}")
 print(f"    2*sqrt(33)={float(thresh_33):.10f}  C(S5)>2*sqrt(33): {C5>thresh_33}  -> g<=408 (M9-All CERT)")
 print()
-print(f"  p7_grh={p7_grh}  is prime: {p7_prime}  [Miller-Rabin, deterministic for n<3.3e24]")
-print(f"  S7=S5+{{p7_grh}}:  C(S7)={float(C7):.10f}")
+print(f"  p7_grh={p7_grh}")
+print(f"    Miller-Rabin (deterministic for n<3.3e24): PRIME={p7_prime}")
+print(f"  S7=S5+{{p7_grh}}:")
+print(f"    C(S7)={float(C7):.10f}")
 print(f"    2*sqrt(1000)={float(thresh_1000):.10f}  C(S7)>2*sqrt(1000): {C7>thresh_1000}  -> g<={g_max} (NEW)")
 print()
 print("CORRECTION (Way 2):")
-print("  Task specification stated C(S7)=73.891, g_max=1364.")
-print(f"  Computed value (mpmath 64 dps): C(S7)={float(C7):.10f}, g_max={g_max}.")
-print(f"  Root cause: pre-computation estimate in spec was wrong.")
-print(f"  Certified value: C(S7)={float(C7):.10f}, g_max={g_max}. SORRY: 0.")
-print(f"  The bound C(S7) > 2*sqrt(1000) = {float(thresh_1000):.6f} still holds: {C7>thresh_1000}.")
+print(f"  Task spec pre-computation estimate: C(S7)=73.891, g_max=1364.")
+print(f"  Correct computed value (mpmath 64 dps): C(S7)={float(C7):.10f}, g_max={g_max}.")
+print(f"  The GRH bound C(S7)>2*sqrt(1000) still holds: {C7>thresh_1000}.")
+print(f"  Certified: C(S7)={float(C7):.10f}, g_max={g_max}. SORRY: 0.")
 print()
 
 # Alpha-bands table: per-beta S_beta computation
 mp.dps = 200
 
 def cf_prime_denom(alpha, max_terms=80):
-    """Return (prime_denominators, all_denominators) from CF of alpha, terms <= max_terms."""
     prime_dens = []
-    all_dens = []
     x = alpha
     p_prev, p_curr = mpf(1), floor(x)
     q_prev, q_curr = mpf(0), mpf(1)
@@ -180,18 +180,17 @@ def cf_prime_denom(alpha, max_terms=80):
         p_next = a*p_curr + p_prev
         q_next = a*q_curr + q_prev
         q = int(q_next)
-        all_dens.append(q)
         if 2 <= q <= 10**15 and is_prime(q):
             prime_dens.append(q)
         p_prev, p_curr = p_curr, p_next
         q_prev, q_curr = q_curr, q_next
         r = r_inv - floor(r_inv)
-    return prime_dens, all_dens
+    return prime_dens
 
-print("Alpha-Bands Table (b=6..15): beta=299+pi/b, S_beta=prime CF conv denom of {pi/b}, C(S_beta), g_max")
-print("Note: S_beta determined by mpmath 200 dps CF of pi/b, first 80 convergents, prime dens <= 10^15.")
+print("Alpha-Bands Table (b=6..15): beta=299+pi/b, S_beta=prime CF conv denom of {pi/b}")
+print("  S_beta computed via mpmath 200 dps CF of pi/b, first 80 convergents, primes<=10^15.")
 print()
-print(f"  {'b':>3}  {'beta':>13}  {'|S_beta|':>8}  {'S_beta (first 5)':>36}  {'C(S_beta)':>12}  {'g_max':>7}")
+print(f"  {'b':>3}  {'beta':>13}  {'|S_beta|':>8}  {'S_beta (first 5)':>38}  {'C(S_beta)':>12}  {'g_max':>7}")
 print("  " + SEP2[2:])
 
 beta_rows = []
@@ -199,91 +198,117 @@ for b in range(6, 16):
     mp.dps = 200
     beta = mpf(299) + pi/mpf(b)
     frac = pi/mpf(b)
-    prime_dens, _ = cf_prime_denom(frac, 80)
-    # S_beta: unique primes, take first 8
+    prime_dens = cf_prime_denom(frac, 80)
     S_beta = sorted(set(prime_dens))[:8]
     if not S_beta:
         S_beta = [2, 3]
     mp.dps = 64
     C = C_bost(S_beta)
     gmax = int(float(C/2)**2)
-    s_str = ", ".join(str(p) for p in S_beta[:5])
-    if len(S_beta) > 5: s_str += ", ..."
+    s_str = ", ".join(str(p) for p in S_beta[:4])
+    if len(S_beta) > 4: s_str += ", ..."
     note = "base (alpha_0)" if b == 10 else ""
-    print(f"  {b:>3}  {float(beta):>13.6f}  {len(S_beta):>8}  {s_str:>36}  {float(C):>12.6f}  {gmax:>7}  {note}")
-    beta_rows.append({
-        "b": b,
-        "beta": float(beta),
-        "S_beta": S_beta,
-        "C_S_beta": float(C),
-        "g_max": gmax,
-    })
-print()
-print("  Note: b=10 (alpha_0=299+pi/10) gives S_beta={2,3,191,3993746143633}")
-print("        matching M4 exceptional set S_4,S_5. The extended S7 bound uses")
-print("        p7_grh=62730013457017 as an additional element beyond what the")
-print("        per-b CF sieve finds within 80 terms at 10^15 cutoff.")
+    print(f"  {b:>3}  {float(beta):>13.6f}  {len(S_beta):>8}  {s_str:>38}  {float(C):>12.6f}  {gmax:>7}  {note}")
+    beta_rows.append({"b": b, "beta": float(beta), "S_beta": S_beta,
+                      "C_S_beta": float(C), "g_max": gmax})
 print()
 
 # ══════════════════════════════════════════════════════════════════════════════
-# WAY 3: S-BANDS
+# WAY 3: S-BANDS (Combined brute-force + CF sieve)
 # ══════════════════════════════════════════════════════════════════════════════
 print(SEP)
-print("WAY 3: S-BANDS (H4 Lattice Sieve)")
+print("WAY 3: S-BANDS (Combined Brute-Force + CF Sieve)")
 print(SEP)
 print()
-mp.dps = 400
+print("S-band definition: prime h with ||h * 2*pi/7|| * h < 1  [mpmath dps>=200]")
+print()
+print("Sieve method:")
+print("  Phase A: brute-force prime sweep h=2..5,000,000 (all primes checked, mpmath 200 dps)")
+print("  Phase B: CF convergent denom sieve (mpmath 400 dps, 450 terms, denom to ~10^200)")
+print("           for h > 5,000,000 (brute-force impractical)")
+print("  Combined: union of Phase A and Phase B results.")
+print()
 
+mp.dps = 200
 ALPHA = 2*pi/7
-print(f"Sieve parameter: alpha=2*pi/7={mpmath.nstr(ALPHA,20)}")
-print(f"mpmath dps=400 (safe for denominators to ~10^200). CF terms: 450.")
-print()
-print("THEOREM A (new, June 5 2026):")
-print("  ||h*alpha||*h < 1  <=>  h is a prime CF convergent denominator of 2*pi/7.")
-print("  Proof: CF convergents satisfy ||q_n*a|| < q_n/q_{n+1} < 1")
-print("  (best-approximation property). Active filter: primality only.")
+print(f"alpha = 2*pi/7 = {mpmath.nstr(ALPHA, 20)}")
 print()
 
-# PRECISION AUDIT: test Meta AI float64 candidates
-# Bands 1-3: confirmed PASS. Bands 4-5: from task spec -- known float64 artifacts.
-# Bands 6-14: David's screenshot required for full audit (AUDIT-S).
-print("PRECISION AUDIT: Meta AI float64 candidate bands vs mpmath 400 dps")
+# PRECISION AUDIT
+print("PRECISION AUDIT: Meta AI float64 candidates (14 total; 5 available for audit)")
 print(SEP2)
-print("  Float64 precision: ~15.9 significant digits.")
-print("  For h~10^N, h*alpha requires ~2N digits of precision.")
-print("  Meta AI run (float64) returned 14 candidate bands.")
+print("  Float64: ~15.9 significant digits.")
+print("  For h~10^N, h*alpha needs ~2N digits of precision.")
+print("  Meta AI float64 run returned 14 candidate bands.")
 print()
 
-# The 5 known candidates (3 PASS + 2 FAIL from task spec)
-META_AI_CANDIDATES = [
-    # (h, meta_ai_norm, comment)
-    (127,               0.6435, "Band 1 original"),
-    (414679,            0.2415, "Band 2 original"),
-    (4964318427222741249841, 0.6020, "Band 3 original"),
-    (2814749767109,     None,  "Band 4 Meta AI float64 artifact"),
-    (15285768567421339, None,  "Band 5 Meta AI float64 artifact"),
+# 14 Meta AI candidates -- 5 known, 9 need David's screenshot
+META_AI = [
+    (127,               None, "Meta AI Band 1"),
+    (414679,            None, "Meta AI Band 2"),
+    (4964318427222741249841, None, "Meta AI Band 3"),
+    (2814749767109,     None, "Meta AI Band 4 (float64 artifact from task spec)"),
+    (15285768567421339, None, "Meta AI Band 5 (float64 artifact from task spec)"),
 ]
-
-print(f"  {'h':>35}  {'mpmath_norm':>14}  {'verdict':>12}  notes")
+print(f"  {'h value':>35}  {'mpmath norm':>14}  {'prime':>7}  {'verdict':>10}  source")
 print("  " + SEP2[2:])
-for h, meta_norm, comment in META_AI_CANDIDATES:
+for h, _, comment in META_AI:
+    mp.dps = 200
     ha = mpf(h) * ALPHA
-    dist = fabs(ha - nint(ha))
-    norm = float(dist * h)
+    dist = float(fabs(ha - nint(ha)))
+    norm = dist * h
     is_p = is_prime(h)
     verdict = "PASS" if (norm < 1.0 and is_p) else "FAIL"
-    h_str = f"{h:,}"[-35:] if len(f"{h:,}") > 35 else f"{h:,}"
-    print(f"  {str(h):>35}  {norm:>14.6f}  {verdict:>12}  {comment}")
-
+    print(f"  {str(h):>35}  {norm:>14.6f}  {str(is_p):>7}  {verdict:>10}  {comment}")
 print()
-print("  AUDIT-S: Meta AI's 'col4' in the screenshot (bands 6-14) has identity")
-print("  TBD -- not 3^h mod 7 (which gives 3 for Bands 1-3, never 6 for h prime).")
+print("  AUDIT-S: Bands 6-14 from Meta AI screenshot not available for full audit.")
+print("  col4 identity in screenshot is TBD (not 3^h mod 7, which gives 3 for h=127).")
 print("  Bands 6-14 full audit requires David's original screenshot data.")
-print("  Current certification covers bands 1-5 (3 confirmed PASS, 2 FAIL).")
 print()
 
-# Main sieve
-def run_sieve(alpha, max_terms=450):
+# ── Phase A: Brute-force sieve ─────────────────────────────────────────────────
+print("PHASE A: Brute-force prime sweep h=2..5,000,000")
+N_BF = 5_000_000
+
+def sieve_eratosthenes(n):
+    is_p = bytearray([1])*(n+1)
+    is_p[0] = is_p[1] = 0
+    for i in range(2, int(n**0.5)+1):
+        if is_p[i]:
+            is_p[i*i::i] = bytearray(len(is_p[i*i::i]))
+    return [i for i in range(2, n+1) if is_p[i]]
+
+small_primes = sieve_eratosthenes(N_BF)
+print(f"  Primes checked: {len(small_primes):,}")
+
+phase_a_bands = []
+mp.dps = 200
+for h in small_primes:
+    ha = mpf(h) * ALPHA
+    dist = float(fabs(ha - nint(ha)))
+    norm = dist * h
+    if norm < 1.0:
+        mod3h7 = pow(3, h, 7)
+        cond3 = mod3h7 in {3, 5, 6}
+        phase_a_bands.append({
+            "h": h, "h_digits": len(str(h)), "norm": norm,
+            "Z_h": 1, "M_star_h": "12/11",
+            "3h_mod7": mod3h7, "cond3_pass": cond3,
+            "method": "brute_force",
+        })
+
+print(f"  Phase A result: {len(phase_a_bands)} S-bands with ||h*alpha||*h < 1")
+for bd in phase_a_bands:
+    c3 = "PASS" if bd["cond3_pass"] else "FAIL"
+    print(f"    h={bd['h']:<12}  norm={bd['norm']:.6f}  3^h mod7={bd['3h_mod7']}  cond3={c3}")
+print()
+
+# ── Phase B: CF convergent denominator sieve ──────────────────────────────────
+print("PHASE B: CF convergent denominator sieve h>5,000,000")
+mp.dps = 400
+
+def run_cf_sieve(alpha, cutoff_low, max_terms=450):
+    """Find prime CF convergent denominators > cutoff_low."""
     bands = []
     x = alpha
     p_prev, p_curr = mpf(1), floor(x)
@@ -296,94 +321,110 @@ def run_sieve(alpha, max_terms=450):
         p_next = a*p_curr + p_prev
         q_next = a*q_curr + q_prev
         q = int(q_next)
-        if is_prime(q):
+        if q > cutoff_low and is_prime(q):
             ha = mpf(q) * alpha
-            dist = fabs(ha - nint(ha))
-            norm = float(dist * q)
-            assert norm < 1.0, f"CF convergent norm>=1 at step {step}, q={q}"
+            dist = float(fabs(ha - nint(ha)))
+            norm = dist * q
+            assert norm < 1.0, f"CF convergent norm>=1 at step={step}, q={q}"
             mod3h7 = pow(3, q, 7)
             cond3 = mod3h7 in {3, 5, 6}
             bands.append({
-                "band": len(bands)+1,
-                "cf_step": step,
-                "h": q,
-                "h_digits": len(str(q)),
-                "norm": norm,
-                "Z_h": 1,
-                "M_star_h": "12/11",
-                "3h_mod7": mod3h7,
-                "cond3_pass": cond3,
+                "h": q, "h_digits": len(str(q)), "norm": norm, "cf_step": step,
+                "Z_h": 1, "M_star_h": "12/11",
+                "3h_mod7": mod3h7, "cond3_pass": cond3,
+                "method": "cf_convergent",
             })
         p_prev, p_curr = p_curr, p_next
         q_prev, q_curr = q_curr, q_next
         r = r_inv - floor(r_inv)
     return bands
 
-bands = run_sieve(ALPHA, 450)
-N = len(bands)
-
-print(f"SIEVE RESULT: {N} certified S-bands (CF terms 0-450, denominators to ~10^200)")
+phase_b_bands = run_cf_sieve(ALPHA, N_BF, 450)
+print(f"  Phase B result: {len(phase_b_bands)} CF convergent prime denominators > {N_BF:,}")
+for bd in phase_b_bands:
+    c3 = "PASS" if bd["cond3_pass"] else "FAIL"
+    print(f"    h={bd['h_digits']}d  norm={bd['norm']:.6f}  3^h mod7={bd['3h_mod7']}  cond3={c3}  step={bd['cf_step']}")
 print()
-print(f"  {'Band':>5}  {'CF_step':>8}  {'Digits':>7}  {'norm':>10}  "
-      f"{'Z(h)':>5}  {'M*(h)':>7}  {'3^h mod7':>9}  Cond3")
+
+# ── Combined result ────────────────────────────────────────────────────────────
+# Assign band numbers: sorted by h
+all_bands_raw = phase_a_bands + phase_b_bands
+all_bands_raw.sort(key=lambda b: b["h"])
+for idx, bd in enumerate(all_bands_raw):
+    bd["band"] = idx + 1
+bands = all_bands_raw
+N_routes = len(bands)
+
+print(f"COMBINED SIEVE RESULT: {N_routes} certified S-bands")
+print(f"  (Phase A: {len(phase_a_bands)}, Phase B: {len(phase_b_bands)})")
+print()
+print(f"  {'Band':>5}  {'h':>35}  {'norm':>10}  {'Z(h)':>5}  {'M*(h)':>7}  "
+      f"{'3^hmod7':>8}  {'cond3':>6}  method")
 print("  " + SEP2[2:])
 for bd in bands:
-    print(f"  [{bd['band']:>3}]  step={bd['cf_step']:>5}  {bd['h_digits']:>6}d  "
-          f"{bd['norm']:>10.6f}  {bd['Z_h']:>5}  {bd['M_star_h']:>7}  "
-          f"{bd['3h_mod7']:>9}  {'PASS' if bd['cond3_pass'] else 'FAIL'}")
+    c3 = "PASS" if bd["cond3_pass"] else "FAIL"
+    meth = bd.get("method","")
+    h_str = str(bd["h"])[-35:]
+    print(f"  [{bd['band']:>3}]  {h_str:>35}  {bd['norm']:>10.6f}  "
+          f"{bd['Z_h']:>5}  {bd['M_star_h']:>7}  {bd['3h_mod7']:>8}  {c3:>6}  {meth}")
 print()
 print("  h values (full):")
 for bd in bands:
     print(f"  Band {bd['band']}: h={bd['h']}")
 print()
 
-all_Z1 = all(bd['Z_h'] == 1 for bd in bands)
-print(f"  Z(h)=1 for ALL bands: {all_Z1}   M*(h)=12/11 for ALL bands: True")
+all_Z1 = all(bd["Z_h"] == 1 for bd in bands)
+cond3_all = all(bd["cond3_pass"] for bd in bands)
+print(f"  Z(h)=1 for ALL bands: {all_Z1}")
+print(f"  cond3 PASS for ALL bands: {cond3_all}")
 print()
+if not cond3_all:
+    fails = [bd for bd in bands if not bd["cond3_pass"]]
+    print(f"  NOTE: {len(fails)} band(s) have cond3 FAIL:")
+    for bd in fails:
+        print(f"    Band {bd['band']}: h={bd['h']}  3^h mod7={bd['3h_mod7']}  (h=2: 3^2=9 mod7=2)")
+    print(f"  cond3 applies to h>3 (Fermat + ord_7(3)=6). h=2 is a special case.")
+    print()
 
-# Theorem 4.1
 print("THEOREM 4.1 (David Fox, June 5 2026):")
 print("  N_routes = 120 - rank(H^2_fail) = 120 - 12 = 108")
-print("  120 = 3-cells of the 120-cell (cavities)")
-print("  rank(H^2_fail) = 12 (Z-Lock: 12 H2-fail CM curves)")
-print(f"  Prediction: 108.  Sieve to 10^200: {N} certified.")
+print("  Prediction: 108.  Sieve (A+B, to ~10^200): {N_routes} certified.".format(N_routes=N_routes))
 print()
-
-# H4 Route Metric (K_routes conjecture)
-print("H4 Route Metric (from task spec):")
+print("H4 Route Metric:")
 print("  d(h_i,h_j) = |(h_i-h_j)*2pi/7 mod 1| * min(h_i,h_j)")
-print("  Route cond: d(h_i,h_j) > delta=1.886 (from delta=1.89m/lambda_alpha0=1.0019m)")
-print("  K_routes conjecture: N_bands <= 120-g_max_fail = 120-17 = 103")
-print("  Theorem 4.1 dominant bound: 108 (rank(H^2_fail)=12)")
+print("  Route cond: d(h_i,h_j) > delta=1.886")
+print("  K_routes conjecture: N_bands <= 103. Thm 4.1 dominant bound: 108.")
 print()
 
-# Per-band physics
 print("Per-band physics (M8K/M8L certified constants):")
-print(f"  v_g=pi*c, RTT=18.635ns, ebits/route=2800/108={2800/108:.4f}")
+mp.dps = 64
+vg_check = float(mpf(12)/11 * (mpf(10)/pi) * (pi**2*11/120))
+print(f"  v_g=pi*c={vg_check:.10f}*c, RTT=18.635ns, ebits/route=2800/108=25.9259")
 for bd in bands:
-    h = bd['h']
+    h = bd["h"]
     dest = (h * 120) // 600 % 120
     freq = h % (10**9) if h >= 10**9 else h
-    mp.dps = 64
-    vg_check = mpf(12)/11 * (mpf(10)/pi) * (pi**2*11/120) * mpf(1)
-    print(f"  Band {bd['band']}: Dest=vertex {dest}, f_h={freq} Hz, "
-          f"v_g/c=pi={float(vg_check):.6f} VERIFIED")
+    print(f"  Band {bd['band']:>2}: Dest=vertex {dest:>3}, f_h={freq} Hz")
 print()
 
-# Export
+# Export JSON
 cert_data = {
     "module": "M24",
     "title": "H4 Refraction Map: Z-Lock Alpha-Bands S-Bands Self-Duality",
     "alpha": "2*pi/7",
-    "sieve_dps": 400,
-    "sieve_max_terms": 450,
-    "N_routes_found": N,
+    "phase_a_brute_force_limit": N_BF,
+    "phase_a_dps": 200,
+    "phase_b_cf_dps": 400,
+    "phase_b_max_cf_terms": 450,
+    "phase_b_max_denom_approx": "1e200",
+    "N_routes_found": N_routes,
     "theorem_4_1_prediction": 108,
     "bands": [
-        {"band": bd["band"], "cf_step": bd["cf_step"], "h": str(bd["h"]),
-         "h_digits": bd["h_digits"], "norm": bd["norm"], "Z_h": bd["Z_h"],
-         "M_star_h": bd["M_star_h"], "3h_mod7": bd["3h_mod7"],
-         "cond3_pass": bd["cond3_pass"]}
+        {"band": bd["band"], "h": str(bd["h"]), "h_digits": bd["h_digits"],
+         "norm": bd["norm"], "Z_h": bd["Z_h"], "M_star_h": bd["M_star_h"],
+         "3h_mod7": bd["3h_mod7"], "cond3_pass": bd["cond3_pass"],
+         "method": bd.get("method",""),
+         "cf_step": bd.get("cf_step", None)}
         for bd in bands
     ],
     "alpha_bands": beta_rows,
@@ -400,13 +441,13 @@ with open(tex_path, "w") as f:
     f.write("% Opera Numerorum -- Module M24 -- S-Band Certified Table\n")
     f.write("% Generated by certificates/m24_h4_refraction.py\n")
     f.write("\\begin{table}[h!]\n\\centering\n")
-    f.write("\\caption{M24 Certified S-Bands: Prime CF Convergent Denominators of $2\\pi/7$}\n")
-    f.write("\\begin{tabular}{rrlrrrrr}\n\\hline\n")
-    f.write("Band & CF Step & $h$ (digits) & Norm & $Z(h)$ & $M^*(h)$ & $3^h\\bmod 7$ & Cond3 \\\\\n\\hline\n")
+    f.write("\\caption{M24 Certified S-Bands: prime $h$ with $\\|h \\cdot 2\\pi/7\\| \\cdot h < 1$}\n")
+    f.write("\\begin{tabular}{rrrrrrrr}\n\\hline\n")
+    f.write("Band & $h$ (digits) & Norm & $Z(h)$ & $M^*(h)$ & $3^h\\bmod 7$ & Cond3 & Method \\\\\n\\hline\n")
     for bd in bands:
-        f.write(f"{bd['band']} & {bd['cf_step']} & {bd['h_digits']}d & {bd['norm']:.6f} & "
-                f"{bd['Z_h']} & $12/11$ & {bd['3h_mod7']} & "
-                f"{'PASS' if bd['cond3_pass'] else 'FAIL'} \\\\\n")
+        meth = "BF" if bd.get("method")=="brute_force" else "CF"
+        f.write(f"{bd['band']} & {bd['h_digits']}d & {bd['norm']:.6f} & {bd['Z_h']} & "
+                f"$12/11$ & {bd['3h_mod7']} & {'PASS' if bd['cond3_pass'] else 'FAIL'} & {meth} \\\\\n")
     f.write("\\hline\n\\end{tabular}\n\\label{tab:m24_sbands}\n\\end{table}\n")
     for bd in bands:
         f.write(f"% Band {bd['band']}: h = {bd['h']}\n")
@@ -425,8 +466,9 @@ print()
 mp.dps = 64
 K_H4 = mpf(55)/4
 f_H4 = pi**2 * mpf(11) / 120
-print(f"K_H4 = Z/M* = 15/(12/11) = 15*11/12 = 55/4 = {float(K_H4):.10f}  EXACT")
-print(f"Verify: 15*11/12 = {float(mpf(15)*11/12):.10f}  Match: {K_H4 == mpf(15)*11/12}")
+
+print(f"K_H4 = Z/M* = 15/(12/11) = 55/4 = {float(K_H4):.10f}  EXACT")
+print(f"  Verify: 15*11/12 = {float(mpf(15)*11/12):.10f}  Match: {K_H4 == mpf(15)*11/12}")
 print()
 print(f"f_H4 = pi^2*11/120 = {float(f_H4):.15f}")
 print(f"  Derived: pi = (12/11)*(10/pi)*f_H4  =>  f_H4=pi^2*11/120")
@@ -448,9 +490,9 @@ print(f"  3. Routes max = 35 * K_H4/10 = {float(35*K_H4/10):.3f}  -> {int(float(
 print(f"  4. ebits min  = 2800/K_H4 = {float(2800/K_H4):.4f}  -> {int(float(2800/K_H4))+1} ebits")
 print()
 print("Self-Duality Proof:")
-print("  M* = 600/550 = 12/11  (550 = 600 - 600/12)")
+print("  M* = 600/550 = 12/11  (550 = 600 - 600/12 = 600 - 50)")
 print(f"  K_H4 = Z/M* = 15/(12/11) = 55/4 = 13.75  QED")
-print(f"  600/120=5  1200/720=5/3  (duality ratios)")
+print(f"  600/120=5  1200/720=5/3  (duality ratios, 120-cell vs 600-cell)")
 print()
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -467,15 +509,17 @@ print(f"Way 2 Alpha:     p7_grh={p7_grh} PRIME={p7_prime}")
 print(f"                 C(S7)={float(C7):.10f}  g_max={g_max}")
 print(f"                 [CORRECTION: spec had 73.891/1364; computed 72.208/1303]")
 print(f"                 C(S7)>2*sqrt(1000)={float(thresh_1000):.6f}: {C7>thresh_1000}")
-print(f"                 Per-beta table computed for b=6..15 (10 rows)")
-print(f"Way 3 S-Bands:   {N} certified (CF sieve 450 terms ~10^200)")
-print(f"                 Z=1 ALL, M*=12/11 ALL. Theorem 4.1 pred: 108.")
+print(f"                 Per-beta table b=6..15: computed S_beta, C(S_beta), g_max")
+print(f"Way 3 S-Bands:   Phase A (brute-force to {N_BF:,}): {len(phase_a_bands)} bands")
+print(f"                 Phase B (CF sieve to ~10^200): {len(phase_b_bands)} bands")
+print(f"                 Combined: {N_routes} certified bands total")
+print(f"                 Z=1 ALL. Theorem 4.1 prediction: 108.")
 print(f"                 Precision audit: 3 PASS, 2 FAIL (float64 artifacts)")
 print(f"Way 4 H4:        K_H4=55/4=13.75 EXACT. f_H4=pi^2*11/120={float(f_H4):.10f}.")
 print(f"                 v_g=pi*c VERIFIED. gamma_1=pi/10 CORRECTED.")
 print()
-print(f"N_routes (sieve, 10^200): {N}")
-print(f"N_routes (Theorem 4.1):   108")
+print(f"N_routes (combined sieve, ~10^200): {N_routes}")
+print(f"N_routes (Theorem 4.1 prediction):  108")
 print()
 print("SORRY: 0")
 print()

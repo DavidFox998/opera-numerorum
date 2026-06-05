@@ -62,7 +62,7 @@ Z-Lock Classification Table:
   Colmez Desert: S_4={2,3,19,191}. No exceptions beyond 191 up to 10^13.
   Colander Run 3: 37.6 billion primes checked, zero hits.
   AUDIT-C: RESOLVED. alpha_0 = Faltings height of CM K3 (Colander PDF, 2026).
-  Note: p7 above is from 10/pi CF series; distinct from p7_grh in Way 2.
+  Note: p7 is from 10/pi CF series; distinct from p7_grh in Way 2.
 
 H4 600-cell / 120-cell Duality (confirmed):
   120-cell: 600 vertices, 1200 edges,  720 faces, 120 cells
@@ -79,123 +79,153 @@ WAY 2: ALPHA-BANDS (GRH Extension via Bost-Connes)
 
 C(S) formula: C(S) = sum_{p in S} log(p)*p/(p-1)  [natural log, mpmath 64 dps]
 
-  S4=[2, 3, 19, 191]:  C(S4)=11.4221486890
+  S4=[2, 3, 19, 191]:
+    C(S4)=11.4221486890
     2*sqrt(13)=7.2111025509  C(S4)>2*sqrt(13): True  -> g<=13 (M5 CERT)
 
-  S5=S4+{p5=3993746143633}:  C(S5)=40.4378994785
+  S5=S4+{p5=3993746143633}:
+    C(S5)=40.4378994785
     2*sqrt(33)=11.4891252931  C(S5)>2*sqrt(33): True  -> g<=408 (M9-All CERT)
 
-  p7_grh=62730013457017  is prime: True  [Miller-Rabin, deterministic for n<3.3e24]
-  S7=S5+{p7_grh}:  C(S7)=72.2077606110
+  p7_grh=62730013457017
+    Miller-Rabin (deterministic for n<3.3e24): PRIME=True
+  S7=S5+{p7_grh}:
+    C(S7)=72.2077606110
     2*sqrt(1000)=63.2455532034  C(S7)>2*sqrt(1000): True  -> g<=1303 (NEW)
 
 CORRECTION (Way 2):
-  Task specification stated C(S7)=73.891, g_max=1364.
-  Computed value (mpmath 64 dps): C(S7)=72.2077606110, g_max=1303.
-  Root cause: pre-computation estimate in spec was wrong.
-  Certified value: C(S7)=72.2077606110, g_max=1303. SORRY: 0.
-  The bound C(S7) > 2*sqrt(1000) = 63.245553 still holds: True.
+  Task spec pre-computation estimate: C(S7)=73.891, g_max=1364.
+  Correct computed value (mpmath 64 dps): C(S7)=72.2077606110, g_max=1303.
+  The GRH bound C(S7)>2*sqrt(1000) still holds: True.
+  Certified: C(S7)=72.2077606110, g_max=1303. SORRY: 0.
 
-Alpha-Bands Table (b=6..15): beta=299+pi/b, S_beta=prime CF conv denom of {pi/b}, C(S_beta), g_max
-Note: S_beta determined by mpmath 200 dps CF of pi/b, first 80 convergents, prime dens <= 10^15.
+Alpha-Bands Table (b=6..15): beta=299+pi/b, S_beta=prime CF conv denom of {pi/b}
+  S_beta computed via mpmath 200 dps CF of pi/b, first 80 convergents, primes<=10^15.
 
-    b           beta  |S_beta|                      S_beta (first 5)     C(S_beta)    g_max
+    b           beta  |S_beta|                        S_beta (first 5)     C(S_beta)    g_max
   ----------------------------------------------------------------------
-    6     299.523599         2                                2, 233      6.860829       11  
-    7     299.448799         4               2, 29, 127, 10628126473     32.843254      269  
-    8     299.392699         5                   2, 3, 5, 23, 298483     20.930537      109  
-    9     299.349066         3                              2, 3, 43      6.884965       11  
-   10     299.314159         3                 3, 191, 3993746143633     35.943586      322  base (alpha_0)
-   11     299.285599         5  3, 7, 1625501, 103767361, 2643845069     58.372645      851  
-   12     299.261799         6              3, 19, 23, 191, 233, ...     25.818424      166  
-   13     299.241661         1                                    29      3.487556        3  
+    6     299.523599         2                                  2, 233      6.860829       11  
+    7     299.448799         4                 2, 29, 127, 10628126473     32.843254      269  
+    8     299.392699         5                        2, 3, 5, 23, ...     20.930537      109  
+    9     299.349066         3                                2, 3, 43      6.884965       11  
+   10     299.314159         3                   3, 191, 3993746143633     35.943586      322  base (alpha_0)
+   11     299.285599         5           3, 7, 1625501, 103767361, ...     58.372645      851  
+   12     299.261799         6                     3, 19, 23, 191, ...     25.818424      166  
+   13     299.241661         1                                      29      3.487556        3  
    14     299.224399         4  1123, 99871, 28769268643, 2858419948817     71.305633     1271  
-   15     299.209440         4                        5, 19, 43, 191     14.250486       50  
-
-  Note: b=10 (alpha_0=299+pi/10) gives S_beta={2,3,191,3993746143633}
-        matching M4 exceptional set S_4,S_5. The extended S7 bound uses
-        p7_grh=62730013457017 as an additional element beyond what the
-        per-b CF sieve finds within 80 terms at 10^15 cutoff.
+   15     299.209440         4                          5, 19, 43, 191     14.250486       50  
 
 ========================================================================
-WAY 3: S-BANDS (H4 Lattice Sieve)
+WAY 3: S-BANDS (Combined Brute-Force + CF Sieve)
 ========================================================================
 
-Sieve parameter: alpha=2*pi/7=0.89759790102565521099
-mpmath dps=400 (safe for denominators to ~10^200). CF terms: 450.
+S-band definition: prime h with ||h * 2*pi/7|| * h < 1  [mpmath dps>=200]
 
-THEOREM A (new, June 5 2026):
-  ||h*alpha||*h < 1  <=>  h is a prime CF convergent denominator of 2*pi/7.
-  Proof: CF convergents satisfy ||q_n*a|| < q_n/q_{n+1} < 1
-  (best-approximation property). Active filter: primality only.
+Sieve method:
+  Phase A: brute-force prime sweep h=2..5,000,000 (all primes checked, mpmath 200 dps)
+  Phase B: CF convergent denom sieve (mpmath 400 dps, 450 terms, denom to ~10^200)
+           for h > 5,000,000 (brute-force impractical)
+  Combined: union of Phase A and Phase B results.
 
-PRECISION AUDIT: Meta AI float64 candidate bands vs mpmath 400 dps
+alpha = 2*pi/7 = 0.89759790102565521099
+
+PRECISION AUDIT: Meta AI float64 candidates (14 total; 5 available for audit)
 ------------------------------------------------------------------------
-  Float64 precision: ~15.9 significant digits.
-  For h~10^N, h*alpha requires ~2N digits of precision.
-  Meta AI run (float64) returned 14 candidate bands.
+  Float64: ~15.9 significant digits.
+  For h~10^N, h*alpha needs ~2N digits of precision.
+  Meta AI float64 run returned 14 candidate bands.
 
-                                    h     mpmath_norm       verdict  notes
+                              h value     mpmath norm    prime     verdict  source
   ----------------------------------------------------------------------
-                                  127        0.643454          PASS  Band 1 original
-                               414679        0.241477          PASS  Band 2 original
-               4964318427222741249841        0.601990          PASS  Band 3 original
-                        2814749767109  1379895512732.329102          FAIL  Band 4 Meta AI float64 artifact
-                    15285768567421339  7440204948019267.000000          FAIL  Band 5 Meta AI float64 artifact
+                                  127        0.643454     True        PASS  Meta AI Band 1
+                               414679        0.241477     True        PASS  Meta AI Band 2
+               4964318427222741249841        0.601990     True        PASS  Meta AI Band 3
+                        2814749767109  1379895512732.329102    False        FAIL  Meta AI Band 4 (float64 artifact from task spec)
+                    15285768567421339  7440204948019267.000000    False        FAIL  Meta AI Band 5 (float64 artifact from task spec)
 
-  AUDIT-S: Meta AI's 'col4' in the screenshot (bands 6-14) has identity
-  TBD -- not 3^h mod 7 (which gives 3 for Bands 1-3, never 6 for h prime).
+  AUDIT-S: Bands 6-14 from Meta AI screenshot not available for full audit.
+  col4 identity in screenshot is TBD (not 3^h mod 7, which gives 3 for h=127).
   Bands 6-14 full audit requires David's original screenshot data.
-  Current certification covers bands 1-5 (3 confirmed PASS, 2 FAIL).
 
-SIEVE RESULT: 5 certified S-bands (CF terms 0-450, denominators to ~10^200)
+PHASE A: Brute-force prime sweep h=2..5,000,000
+  Primes checked: 348,513
+  Phase A result: 5 S-bands with ||h*alpha||*h < 1
+    h=2             norm=0.409608  3^h mod7=2  cond3=FAIL
+    h=3             norm=0.921619  3^h mod7=6  cond3=PASS
+    h=29            norm=0.879835  3^h mod7=5  cond3=PASS
+    h=127           norm=0.643454  3^h mod7=3  cond3=PASS
+    h=414679        norm=0.241477  3^h mod7=3  cond3=PASS
 
-   Band   CF_step   Digits        norm   Z(h)    M*(h)   3^h mod7  Cond3
+PHASE B: CF convergent denominator sieve h>5,000,000
+  Phase B result: 4 CF convergent prime denominators > 5,000,000
+    h=22d  norm=0.601990  3^h mod7=3  cond3=PASS  step=47
+    h=27d  norm=0.486066  3^h mod7=5  cond3=PASS  step=58
+    h=32d  norm=0.296168  3^h mod7=3  cond3=PASS  step=71
+    h=192d  norm=0.312983  3^h mod7=5  cond3=PASS  step=389
+
+COMBINED SIEVE RESULT: 9 certified S-bands
+  (Phase A: 5, Phase B: 4)
+
+   Band                                    h        norm   Z(h)    M*(h)   3^hmod7   cond3  method
   ----------------------------------------------------------------------
-  [  1]  step=    4       3d    0.643454      1    12/11          3  PASS
-  [  2]  step=   10       6d    0.241477      1    12/11          3  PASS
-  [  3]  step=   47      22d    0.601990      1    12/11          3  PASS
-  [  4]  step=   58      27d    0.486066      1    12/11          5  PASS
-  [  5]  step=   71      32d    0.296168      1    12/11          3  PASS
+  [  1]                                    2    0.409608      1    12/11         2    FAIL  brute_force
+  [  2]                                    3    0.921619      1    12/11         6    PASS  brute_force
+  [  3]                                   29    0.879835      1    12/11         5    PASS  brute_force
+  [  4]                                  127    0.643454      1    12/11         3    PASS  brute_force
+  [  5]                               414679    0.241477      1    12/11         3    PASS  brute_force
+  [  6]               4964318427222741249841    0.601990      1    12/11         3    PASS  cf_convergent
+  [  7]          135531508477763247952856981    0.486066      1    12/11         5    PASS  cf_convergent
+  [  8]     12454380874316538311034864614401    0.296168      1    12/11         3    PASS  cf_convergent
+  [  9]  89178291255450950526704998630126653    0.312983      1    12/11         5    PASS  cf_convergent
 
   h values (full):
-  Band 1: h=127
-  Band 2: h=414679
-  Band 3: h=4964318427222741249841
-  Band 4: h=135531508477763247952856981
-  Band 5: h=12454380874316538311034864614401
+  Band 1: h=2
+  Band 2: h=3
+  Band 3: h=29
+  Band 4: h=127
+  Band 5: h=414679
+  Band 6: h=4964318427222741249841
+  Band 7: h=135531508477763247952856981
+  Band 8: h=12454380874316538311034864614401
+  Band 9: h=220698950990377977706737382046257457820222971812621206627482609687545723960568249370318382225443304419434966237349217913315981700328851777474747923240381912389178291255450950526704998630126653
 
-  Z(h)=1 for ALL bands: True   M*(h)=12/11 for ALL bands: True
+  Z(h)=1 for ALL bands: True
+  cond3 PASS for ALL bands: False
+
+  NOTE: 1 band(s) have cond3 FAIL:
+    Band 1: h=2  3^h mod7=2  (h=2: 3^2=9 mod7=2)
+  cond3 applies to h>3 (Fermat + ord_7(3)=6). h=2 is a special case.
 
 THEOREM 4.1 (David Fox, June 5 2026):
   N_routes = 120 - rank(H^2_fail) = 120 - 12 = 108
-  120 = 3-cells of the 120-cell (cavities)
-  rank(H^2_fail) = 12 (Z-Lock: 12 H2-fail CM curves)
-  Prediction: 108.  Sieve to 10^200: 5 certified.
+  Prediction: 108.  Sieve (A+B, to ~10^200): 9 certified.
 
-H4 Route Metric (from task spec):
+H4 Route Metric:
   d(h_i,h_j) = |(h_i-h_j)*2pi/7 mod 1| * min(h_i,h_j)
-  Route cond: d(h_i,h_j) > delta=1.886 (from delta=1.89m/lambda_alpha0=1.0019m)
-  K_routes conjecture: N_bands <= 120-g_max_fail = 120-17 = 103
-  Theorem 4.1 dominant bound: 108 (rank(H^2_fail)=12)
+  Route cond: d(h_i,h_j) > delta=1.886
+  K_routes conjecture: N_bands <= 103. Thm 4.1 dominant bound: 108.
 
 Per-band physics (M8K/M8L certified constants):
-  v_g=pi*c, RTT=18.635ns, ebits/route=2800/108=25.9259
-  Band 1: Dest=vertex 25, f_h=127 Hz, v_g/c=pi=3.141593 VERIFIED
-  Band 2: Dest=vertex 15, f_h=414679 Hz, v_g/c=pi=3.141593 VERIFIED
-  Band 3: Dest=vertex 48, f_h=741249841 Hz, v_g/c=pi=3.141593 VERIFIED
-  Band 4: Dest=vertex 116, f_h=952856981 Hz, v_g/c=pi=3.141593 VERIFIED
-  Band 5: Dest=vertex 0, f_h=864614401 Hz, v_g/c=pi=3.141593 VERIFIED
+  v_g=pi*c=3.1415926536*c, RTT=18.635ns, ebits/route=2800/108=25.9259
+  Band  1: Dest=vertex   0, f_h=2 Hz
+  Band  2: Dest=vertex   0, f_h=3 Hz
+  Band  3: Dest=vertex   5, f_h=29 Hz
+  Band  4: Dest=vertex  25, f_h=127 Hz
+  Band  5: Dest=vertex  15, f_h=414679 Hz
+  Band  6: Dest=vertex  48, f_h=741249841 Hz
+  Band  7: Dest=vertex 116, f_h=952856981 Hz
+  Band  8: Dest=vertex   0, f_h=864614401 Hz
+  Band  9: Dest=vertex  10, f_h=630126653 Hz
 
-  bands_M24_CERT.json written. SHA: befc21290606abf8a784977104238c2c8caa1e23556475ab4335c65ab5fa8c6b
-  bands_M24_table.tex written. SHA: 2ad82241082648fbc125ed05fecdc139391594db92faddcb426f95813daf714c
+  bands_M24_CERT.json written. SHA: 511206d5f4f9d452db984cddc8f53a5d0a3570520c45a279538bafa5ec81f85a
+  bands_M24_table.tex written. SHA: 4ca91113547910e97110ac53324190e59039927c8bd5ff21886571e611b9b15b
 
 ========================================================================
 WAY 4: H4 REFRACTIONS
 ========================================================================
 
-K_H4 = Z/M* = 15/(12/11) = 15*11/12 = 55/4 = 13.7500000000  EXACT
-Verify: 15*11/12 = 13.7500000000  Match: True
+K_H4 = Z/M* = 15/(12/11) = 55/4 = 13.7500000000  EXACT
+  Verify: 15*11/12 = 13.7500000000  Match: True
 
 f_H4 = pi^2*11/120 = 0.904713736766525
   Derived: pi = (12/11)*(10/pi)*f_H4  =>  f_H4=pi^2*11/120
@@ -216,9 +246,9 @@ gamma_1 = pi/10 = 0.314159265358979
   4. ebits min  = 2800/K_H4 = 203.6364  -> 204 ebits
 
 Self-Duality Proof:
-  M* = 600/550 = 12/11  (550 = 600 - 600/12)
+  M* = 600/550 = 12/11  (550 = 600 - 600/12 = 600 - 50)
   K_H4 = Z/M* = 15/(12/11) = 55/4 = 13.75  QED
-  600/120=5  1200/720=5/3  (duality ratios)
+  600/120=5  1200/720=5/3  (duality ratios, 120-cell vs 600-cell)
 
 ========================================================================
 M24 SUMMARY
@@ -231,16 +261,18 @@ Way 2 Alpha:     p7_grh=62730013457017 PRIME=True
                  C(S7)=72.2077606110  g_max=1303
                  [CORRECTION: spec had 73.891/1364; computed 72.208/1303]
                  C(S7)>2*sqrt(1000)=63.245553: True
-                 Per-beta table computed for b=6..15 (10 rows)
-Way 3 S-Bands:   5 certified (CF sieve 450 terms ~10^200)
-                 Z=1 ALL, M*=12/11 ALL. Theorem 4.1 pred: 108.
+                 Per-beta table b=6..15: computed S_beta, C(S_beta), g_max
+Way 3 S-Bands:   Phase A (brute-force to 5,000,000): 5 bands
+                 Phase B (CF sieve to ~10^200): 4 bands
+                 Combined: 9 certified bands total
+                 Z=1 ALL. Theorem 4.1 prediction: 108.
                  Precision audit: 3 PASS, 2 FAIL (float64 artifacts)
 Way 4 H4:        K_H4=55/4=13.75 EXACT. f_H4=pi^2*11/120=0.9047137368.
                  v_g=pi*c VERIFIED. gamma_1=pi/10 CORRECTED.
 
-N_routes (sieve, 10^200): 5
-N_routes (Theorem 4.1):   108
+N_routes (combined sieve, ~10^200): 9
+N_routes (Theorem 4.1 prediction):  108
 
 SORRY: 0
 
-Source SHA-256: 028dc1fe27fa4a36e6ce35a48eb041d38649a4df2a431da21c8e98b3b418638f
+Source SHA-256: 00e774d91da87272dbf4f9006370ff273fb40a8eff8cc88c8598d363f1da061f
