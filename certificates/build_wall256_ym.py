@@ -1004,8 +1004,12 @@ story += [
     h1("16.  Cryptographic Binding and Sources"),
     stbl([
         ["Artifact", "SHA-256 / Source"],
-        ["CERT_Arb_beta0 (interval certificate)",
+        ["CERT_Arb_beta0_prior.pdf (interval certificate -- prior version, SHA-bound here)",
          "b5a9f0a7666a91f283a7d4531ae99dff2097c2cedef10424b77833b7bbc840d3"],
+        ["  Provenance note (CERT_Arb_beta0)",
+         "SHA b5a9f0a7... = prior version (CERT_Arb_beta0_prior.pdf); located and "
+         "imported 2026-06-05. SHA 8879175c... = later upload (CERT_Arb_beta0.pdf). "
+         "This report was certified against the prior version; the binding above is correct."],
         ["D4_w1_NEGATIVE_Certificate",
          "9a794ccf0c707812e6fa3db2095a350f2d5b61a011fcc77e453c548716ac8764"],
         ["D1_to_D3_Plan.md",
