@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import CertificatePage from "@/pages/Certificate";
 import LatexPage from "@/pages/Latex";
+import CausalPage from "@/pages/Causal";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient({
@@ -17,6 +18,7 @@ function Router() {
     <Switch>
       <Route path="/" component={CertificatePage} />
       <Route path="/latex" component={LatexPage} />
+      <Route path="/causal" component={CausalPage} />
       <Route component={NotFound} />
     </Switch>
   );

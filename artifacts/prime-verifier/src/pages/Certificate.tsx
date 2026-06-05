@@ -1210,13 +1210,20 @@ export default function CertificatePage() {
             Opera Numerorum &mdash; machine-certified cryptographic proof chain for GRH(X&#8320;(143)) and BSD(J&#8320;(143)).
             Every SHA in this record was computed, never invented.
           </div>
-          <div className="mt-2">
+          <div className="mt-2 flex flex-wrap gap-2">
             <a
               href="latex"
               className="inline-flex items-center gap-1.5 text-xs font-mono bg-gray-900 text-green-400 border border-gray-700 rounded px-3 py-1.5 hover:bg-gray-800 transition-colors"
             >
               <span>{"{ }"}</span>
               <span>View / Copy LaTeX Equations</span>
+            </a>
+            <a
+              href="causal"
+              className="inline-flex items-center gap-1.5 text-xs font-mono bg-gray-900 text-blue-400 border border-gray-700 rounded px-3 py-1.5 hover:bg-gray-800 transition-colors"
+            >
+              <span>⟶</span>
+              <span>Causal DAG — 5 Tower Analysis</span>
             </a>
           </div>
         </div>
