@@ -41,6 +41,38 @@ type ShaSpec =
   | { key: string; field: string }
   | { key: string; path: string[] };
 
+type SizeSpec = { key: string; field: string };
+
+const INVARIANTS_SIZE_MAP: Record<string, SizeSpec> = {
+  ZIP_MORNING_STAR: { key: "bundle_morning_star", field: "size_bytes" },
+  ZIP_CHAIN:        { key: "bundle_chain",        field: "size_bytes" },
+  ZIP_CLAY:         { key: "bundle_clay",         field: "size_bytes" },
+};
+
+function formatBytes(bytes: number): string {
+  const MB = 1024 * 1024;
+  const KB = 1024;
+  if (bytes >= MB) return `${Math.round(bytes / MB)} MB`;
+  if (bytes >= KB) return `${Math.round(bytes / KB)} KB`;
+  return `${bytes} B`;
+}
+
+function extractSizesFromInvariants(
+  data: Record<string, unknown>,
+): Record<string, number> {
+  const result: Record<string, number> = {};
+  for (const [sizeId, spec] of Object.entries(INVARIANTS_SIZE_MAP)) {
+    const entry = data[spec.key];
+    if (!entry || typeof entry !== "object") continue;
+    const obj = entry as Record<string, unknown>;
+    const value = obj[spec.field];
+    if (typeof value === "number" && value > 0) {
+      result[sizeId] = value;
+    }
+  }
+  return result;
+}
+
 const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   M1:               { key: "module_1",              field: "sha256_stdout" },
   M2:               { key: "module_2",              field: "sha256_stdout" },
@@ -1435,6 +1467,7 @@ function useRelativeTime(date: Date | null): string {
 export default function CertificatePage() {
   const [auditOpen, setAuditOpen] = useState(false);
   const [liveShas, setLiveShas] = useState<Record<string, string>>({});
+  const [liveSizes, setLiveSizes] = useState<Record<string, number>>({});
   const [shaStatus, setShaStatus] = useState<"loading" | "ready" | "error">(
     "loading",
   );
@@ -1453,6 +1486,7 @@ export default function CertificatePage() {
       })
       .then((data) => {
         setLiveShas(extractShasFromInvariants(data));
+        setLiveSizes(extractSizesFromInvariants(data));
         setShaStatus("ready");
         setLastSynced(new Date());
       })
@@ -1677,7 +1711,7 @@ export default function CertificatePage() {
               { fn: "Module_M8K_FTL_Morningstar.pdf",   sz: "13 K",   label: "M8K: FTL Stack",                               sha: liveShas["PDF_M8K"]         ?? "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e", fallbackSha: "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e" },
               { fn: "MorningStar_Engineering_Summary.pdf",sz:"17 K",   label: "Engineering Summary" },
             ]}
-            zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: "58 MB", label: "Morning Star ZIP" }}
+            zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: liveSizes["ZIP_MORNING_STAR"] ? formatBytes(liveSizes["ZIP_MORNING_STAR"]) : "58 MB", label: "Morning Star ZIP" }}
             zipSha={liveShas["ZIP_MORNING_STAR"] ?? "57a27c90e5c1736222da682d9fc4ee66b2a0c59281993d5c2e2488d690c4339c"}
             zipFallbackSha="57a27c90e5c1736222da682d9fc4ee66b2a0c59281993d5c2e2488d690c4339c"
           />
@@ -1697,7 +1731,7 @@ export default function CertificatePage() {
               { fn: "Module_7_Certificate.pdf",   sz: "6.6 K", label: "M7: Master Manifest",     sha: liveShas["PDF_M7"]   ?? "28d0b76dd0640f19d72ab69dbf13527ba2d0f5b66d7c884baaf966d8e027c2a5", fallbackSha: "28d0b76dd0640f19d72ab69dbf13527ba2d0f5b66d7c884baaf966d8e027c2a5" },
               { fn: "Module_8_Certificate.pdf",   sz: "12 K",  label: "M8: Hankel Rank",         sha: liveShas["PDF_M8"]   ?? "bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38", fallbackSha: "bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38" },
             ]}
-            zipFile={{ fn: "CertificationChain_2026_06_04.zip", sz: "85 KB", label: "Chain + Invariants ZIP" }}
+            zipFile={{ fn: "CertificationChain_2026_06_04.zip", sz: liveSizes["ZIP_CHAIN"] ? formatBytes(liveSizes["ZIP_CHAIN"]) : "85 KB", label: "Chain + Invariants ZIP" }}
             zipSha={liveShas["ZIP_CHAIN"] ?? "e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"}
             zipFallbackSha="e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"
           />
@@ -1767,7 +1801,7 @@ export default function CertificatePage() {
               { fn: "Module_9_Certificate.pdf",              sz: "7.3 K", label: "M9: GRH 140 curves",   sha: liveShas["PDF_M9"]             ?? "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856", fallbackSha: "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856" },
               { fn: "Essay_TimeMachine_p5.pdf",              sz: "9.7 M", label: "Time Machine Essay",   sha: liveShas["ESSAY"]              ?? "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7", fallbackSha: "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7" },
             ]}
-            zipFile={{ fn: "ClaySubmission_2026_06_04.zip", sz: "13 MB", label: "Clay Submission ZIP" }}
+            zipFile={{ fn: "ClaySubmission_2026_06_04.zip", sz: liveSizes["ZIP_CLAY"] ? formatBytes(liveSizes["ZIP_CLAY"]) : "13 MB", label: "Clay Submission ZIP" }}
             zipSha={liveShas["ZIP_CLAY"] ?? "4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703"}
             zipFallbackSha="4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703"
           />
