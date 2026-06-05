@@ -91,6 +91,47 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
     key: "lemma76_v17_replicit",
     path: ["outputs", "Lemma76_Diff_Report_v17", "sha256_pdf"],
   },
+
+  PDF_M1:             { key: "module_1",              field: "sha256_pdf"  },
+  PDF_M2:             { key: "module_2",              field: "sha256_pdf"  },
+  PDF_M3:             { key: "module_3",              field: "sha256_pdf"  },
+  PDF_M4:             { key: "module_4",              field: "sha256_pdf"  },
+  PDF_M5:             { key: "module_5",              field: "sha256_pdf"  },
+  PDF_M6:             { key: "module_6",              field: "sha256_pdf"  },
+  PDF_M7:             { key: "module_7",              field: "sha256_pdf"  },
+  PDF_M8:             { key: "module_8",              field: "sha256_pdf"  },
+  PDF_M6_3:           { key: "module_6_3",            field: "sha256_pdf"  },
+  PDF_M9:             { key: "M9",                    field: "pdf_sha"     },
+  PDF_M9_ALL:         { key: "module_9_all",          field: "sha256_pdf"  },
+  PDF_M10:            { key: "module_10",             field: "sha256_pdf"  },
+  PDF_M14:            { key: "module_14",             field: "sha256_pdf"  },
+  PDF_M15:            { key: "module_15",             field: "sha256_pdf"  },
+  PDF_M16:            { key: "module_16",             field: "sha256_pdf"  },
+  PDF_M17:            { key: "module_17",             field: "sha256_pdf"  },
+  PDF_M18:            { key: "module_18",             field: "sha256_pdf"  },
+  PDF_M19:            { key: "module_19",             field: "sha256_pdf"  },
+  PDF_M20:            { key: "module_20",             field: "sha256_pdf"  },
+  PDF_M21:            { key: "module_21",             field: "sha256_pdf"  },
+  PDF_M22:            { key: "module_22",             field: "sha256_pdf"  },
+  PDF_M23:            { key: "module_23",             field: "sha256_pdf"  },
+  PDF_M8A:            { key: "module_m8a",            field: "sha256_pdf"  },
+  PDF_M8C:            { key: "module_m8c",            field: "pdf_sha256"  },
+  PDF_M8D:            { key: "module_m8d",            field: "pdf_sha256"  },
+  PDF_M8F:            { key: "module_m8f",            field: "pdf_sha256"  },
+  PDF_M8G_CORRECTION: { key: "module_m8g_correction", field: "pdf_sha256"  },
+  PDF_M8H:            { key: "module_m8h",            field: "pdf_sha256"  },
+  PDF_M8I:            { key: "module_m8i",            field: "pdf_sha256"  },
+  PDF_M8J:            { key: "module_m8j",            field: "pdf_sha256"  },
+  PDF_M8K:            { key: "module_m8k",            field: "pdf_sha256"  },
+  PDF_M8L:            { key: "M8L",                   field: "pdf_sha256"  },
+  PDF_M8M:            { key: "M8M",                   field: "pdf_sha256"  },
+  PDF_M8O:            { key: "M8O",                   field: "sha256_pdf"  },
+  PDF_M8P:            { key: "M8P",                   field: "sha256_pdf"  },
+  PDF_M8Q:            { key: "M8Q",                   field: "sha256_pdf"  },
+  PDF_BDP:            { key: "bdp_certificate_pdf",   field: "pdf_sha"     },
+  PDF_ADDENDUM:       { key: "addendum_A1",           field: "pdf_sha256"  },
+  PDF_CANONICAL:      { key: "canonical_paper_corrected", field: "sha256"  },
+  PDF_FIELD_REPORT:   { key: "field_report_morningstar",  field: "sha256_output" },
 };
 
 function extractShasFromInvariants(
@@ -1298,10 +1339,10 @@ export default function CertificatePage() {
             color="emerald"
             label="Block 1 \u2014 Hodge & Rank Obstructions \u2014 v1.7-Replicut"
             files={[
-              { fn: "Hodge_CM_Replicit_v17_PDF1.pdf",        sz: "7.0 K",  label: "PDF #1: Hodge Derivations",  sha: "faae893ae0777bc5dd7d4f81962ec781b2d53fcca615d9bdeb69ee3829e695f1" },
-              { fn: "Rank_Obstructions_Replicit_v17_PDF3.pdf",sz: "6.8 K",  label: "PDF #3: Rank Obstructions", sha: "94aff1b769d0625a3c6514505e537c99c16ad28c5e079ad66212357a36837681" },
-              { fn: "Hodge_CM_Replicit_v17_PDF2.pdf",        sz: "6.2 K",  label: "PDF #2: Phase Invariant",    sha: "233ba2df8285af277346a03e6ce91dea8a349b4b0df9b665da727924cc0153b5" },
-              { fn: "Lemma76_Diff_Report_v17.pdf",           sz: "4.6 K",  label: "Diff Report",                sha: "4b0d91d4d8a73d2e46af847e0664c0798aebfb80c3cfe39f3d949604f853c5a6" },
+              { fn: "Hodge_CM_Replicit_v17_PDF1.pdf",        sz: "7.0 K",  label: "PDF #1: Hodge Derivations",  sha: liveShas["LEMMA76_V17_PDF1"] ?? "faae893ae0777bc5dd7d4f81962ec781b2d53fcca615d9bdeb69ee3829e695f1" },
+              { fn: "Rank_Obstructions_Replicit_v17_PDF3.pdf",sz: "6.8 K",  label: "PDF #3: Rank Obstructions", sha: liveShas["LEMMA76_V17_PDF3"] ?? "94aff1b769d0625a3c6514505e537c99c16ad28c5e079ad66212357a36837681" },
+              { fn: "Hodge_CM_Replicit_v17_PDF2.pdf",        sz: "6.2 K",  label: "PDF #2: Phase Invariant",    sha: liveShas["LEMMA76_V17_PDF2"] ?? "233ba2df8285af277346a03e6ce91dea8a349b4b0df9b665da727924cc0153b5" },
+              { fn: "Lemma76_Diff_Report_v17.pdf",           sz: "4.6 K",  label: "Diff Report",                sha: liveShas["LEMMA76_DIFF_REPORT"] ?? "4b0d91d4d8a73d2e46af847e0664c0798aebfb80c3cfe39f3d949604f853c5a6" },
               { fn: "cm_k3_v17_replicit.sage",               sz: "1.9 K",  label: "SAGE: K3 Invariant" },
             ]}
           />
@@ -1311,9 +1352,9 @@ export default function CertificatePage() {
             color="violet"
             label="Block 2 \u2014 Z Protocol Tower"
             files={[
-              { fn: "Z_Protocol_Tower_v2.pdf", sz: "3.8 M", label: "Z Protocol Tower v2", sha: "4e1ea390ca0bf556881b60acb6a16c7304fa7b045279afe1afd84400eab29df5" },
-              { fn: "Z_Protocol_Tower.pdf",    sz: "3.8 M", label: "Z Protocol Tower v1", sha: "b65a7b7d3896c84680a139577c4cc2436a5241312886569c00c83fe172090a44" },
-              { fn: "Z_Essay_Omnibus.pdf",     sz: "14 M",  label: "Z Essay Omnibus",      sha: "0d7cd160b84acbc67f9dc591ae87131e38402dc24ad0c683aae27a8c00812614" },
+              { fn: "Z_Protocol_Tower_v2.pdf", sz: "3.8 M", label: "Z Protocol Tower v2", sha: liveShas["Z_PROTOCOL_V2"] ?? "4e1ea390ca0bf556881b60acb6a16c7304fa7b045279afe1afd84400eab29df5" },
+              { fn: "Z_Protocol_Tower.pdf",    sz: "3.8 M", label: "Z Protocol Tower v1", sha: liveShas["Z_PROTOCOL"]    ?? "b65a7b7d3896c84680a139577c4cc2436a5241312886569c00c83fe172090a44" },
+              { fn: "Z_Essay_Omnibus.pdf",     sz: "14 M",  label: "Z Essay Omnibus",      sha: liveShas["OMNIBUS"]       ?? "0d7cd160b84acbc67f9dc591ae87131e38402dc24ad0c683aae27a8c00812614" },
             ]}
           />
 
@@ -1322,15 +1363,15 @@ export default function CertificatePage() {
             color="sky"
             label="Block 3 \u2014 Morning Star Complete"
             files={[
-              { fn: "Module_M8Q_L7_System.pdf",         sz: "20 M",   label: "M8Q: L7 System",                               sha: "afef73ea1e774797c893ef04fa501a0bd3e349dbf70e1f91a9fce572fee00a63" },
-              { fn: "Field_Report_Morningstar.pdf",      sz: "16 M",   label: "Field Report \u2014 Full Resolution (40 Photos)", sha: "03ca9d1f00dc16e6ba1a2c3c746eecf32d0e9a7b1f31f9bce8d3cc97e9744b44" },
-              { fn: "Module_M8O_L5_Gates.pdf",          sz: "3.9 M",  label: "M8O: L5 Gates",                                sha: "c2a3d6c6230a3cd7570de417333d52ba5c66c47965fe688dd0d5b8cec4cea41a" },
-              { fn: "Module_M8P_L6_Clock.pdf",          sz: "1.7 M",  label: "M8P: L6 Clock",                                sha: "ab567ebfe70ac2a3d8bd24468c80ae48b95d5963ca08028505342055b71976c7" },
+              { fn: "Module_M8Q_L7_System.pdf",         sz: "20 M",   label: "M8Q: L7 System",                               sha: liveShas["PDF_M8Q"]         ?? "afef73ea1e774797c893ef04fa501a0bd3e349dbf70e1f91a9fce572fee00a63" },
+              { fn: "Field_Report_Morningstar.pdf",      sz: "16 M",   label: "Field Report \u2014 Full Resolution (40 Photos)", sha: liveShas["PDF_FIELD_REPORT"] ?? "03ca9d1f00dc16e6ba1a2c3c746eecf32d0e9a7b1f31f9bce8d3cc97e9744b44" },
+              { fn: "Module_M8O_L5_Gates.pdf",          sz: "3.9 M",  label: "M8O: L5 Gates",                                sha: liveShas["PDF_M8O"]         ?? "c2a3d6c6230a3cd7570de417333d52ba5c66c47965fe688dd0d5b8cec4cea41a" },
+              { fn: "Module_M8P_L6_Clock.pdf",          sz: "1.7 M",  label: "M8P: L6 Clock",                                sha: liveShas["PDF_M8P"]         ?? "ab567ebfe70ac2a3d8bd24468c80ae48b95d5963ca08028505342055b71976c7" },
               { fn: "Module_M8N_EEQC_v14.pdf",          sz: "262 K",  label: "M8N: EEQC v14" },
               { fn: "FriendsFamily_MorningStar.pdf",     sz: "650 K",  label: "Friends & Family" },
-              { fn: "Module_M8M_MorningStar_Physics.pdf",sz: "15 K",   label: "M8M: Physics BSM",                             sha: "3a4a7b8b78ff1f70f4aa1bfc0d59d575969677f920094ee75775b3231917aa2e" },
-              { fn: "Module_M8L_MorningStar_Ops.pdf",   sz: "13 K",   label: "M8L: D20 Ops",                                 sha: "5b8e683eba8f6b8c768216e8d099e5cf32ee9d312daaf736a40ead8a8622ac06" },
-              { fn: "Module_M8K_FTL_Morningstar.pdf",   sz: "13 K",   label: "M8K: FTL Stack",                               sha: "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e" },
+              { fn: "Module_M8M_MorningStar_Physics.pdf",sz: "15 K",   label: "M8M: Physics BSM",                             sha: liveShas["PDF_M8M"]         ?? "3a4a7b8b78ff1f70f4aa1bfc0d59d575969677f920094ee75775b3231917aa2e" },
+              { fn: "Module_M8L_MorningStar_Ops.pdf",   sz: "13 K",   label: "M8L: D20 Ops",                                 sha: liveShas["PDF_M8L"]         ?? "5b8e683eba8f6b8c768216e8d099e5cf32ee9d312daaf736a40ead8a8622ac06" },
+              { fn: "Module_M8K_FTL_Morningstar.pdf",   sz: "13 K",   label: "M8K: FTL Stack",                               sha: liveShas["PDF_M8K"]         ?? "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e" },
               { fn: "MorningStar_Engineering_Summary.pdf",sz:"17 K",   label: "Engineering Summary" },
             ]}
             zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: "34 MB", label: "Morning Star ZIP" }}
@@ -1342,15 +1383,15 @@ export default function CertificatePage() {
             color="indigo"
             label="Block 4 \u2014 Core Certification Chain M1\u2013M8"
             files={[
-              { fn: "Module_1_Certificate.pdf",   sz: "2.8 K", label: "M1: \u03b1\u2080",          sha: "4dcbb0568fd90fe186305249743b9ed8c63d1f8ed70ea623da8a72517e5b370a" },
-              { fn: "Module_2_Certificate.pdf",   sz: "3.0 K", label: "M2: Kappa",               sha: "2f508b2cb9b36fc755a2848c09ccefe2f1a049d769bac097f1ac1720bdaab36e" },
-              { fn: "Module_3_Certificate.pdf",   sz: "6.7 K", label: "M3: CF \u03c0/10",         sha: "c18f2a05c38e69c8828ba5601da2f58967a49cca4fdf2eff94679dbae7edd517" },
-              { fn: "Module_4_Certificate.pdf",   sz: "8.3 K", label: "M4: S\u2081\u2084 Primes", sha: "09ce496b79ab1c65d53efe6a42287e3428e42f02036ad4316a885ffabc312045" },
-              { fn: "Module_5_Certificate.pdf",   sz: "5.7 K", label: "M5: Bost Sum",            sha: "f9dd4916e2517c8e524a377832d90dc974a2dca0d95bf8c43e054331cc6a4885" },
-              { fn: "Module_6_Certificate.pdf",   sz: "5.8 K", label: "M6: X\u2080(143) Genus",  sha: "304d994ee154eb6fc79c1f8f7538500a12207bc52848a6dc8055726bb15b800e" },
-              { fn: "Module_6_3_Certificate.pdf", sz: "8.2 K", label: "M6.3",                    sha: "19b025686696192089381858485aebb49627fc50c783482c923f1ae20efdb9b0" },
-              { fn: "Module_7_Certificate.pdf",   sz: "6.6 K", label: "M7: Master Manifest",     sha: "28d0b76dd0640f19d72ab69dbf13527ba2d0f5b66d7c884baaf966d8e027c2a5" },
-              { fn: "Module_8_Certificate.pdf",   sz: "12 K",  label: "M8: Hankel Rank",         sha: "bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38" },
+              { fn: "Module_1_Certificate.pdf",   sz: "2.8 K", label: "M1: \u03b1\u2080",          sha: liveShas["PDF_M1"]   ?? "4dcbb0568fd90fe186305249743b9ed8c63d1f8ed70ea623da8a72517e5b370a" },
+              { fn: "Module_2_Certificate.pdf",   sz: "3.0 K", label: "M2: Kappa",               sha: liveShas["PDF_M2"]   ?? "2f508b2cb9b36fc755a2848c09ccefe2f1a049d769bac097f1ac1720bdaab36e" },
+              { fn: "Module_3_Certificate.pdf",   sz: "6.7 K", label: "M3: CF \u03c0/10",         sha: liveShas["PDF_M3"]   ?? "c18f2a05c38e69c8828ba5601da2f58967a49cca4fdf2eff94679dbae7edd517" },
+              { fn: "Module_4_Certificate.pdf",   sz: "8.3 K", label: "M4: S\u2081\u2084 Primes", sha: liveShas["PDF_M4"]   ?? "09ce496b79ab1c65d53efe6a42287e3428e42f02036ad4316a885ffabc312045" },
+              { fn: "Module_5_Certificate.pdf",   sz: "5.7 K", label: "M5: Bost Sum",            sha: liveShas["PDF_M5"]   ?? "f9dd4916e2517c8e524a377832d90dc974a2dca0d95bf8c43e054331cc6a4885" },
+              { fn: "Module_6_Certificate.pdf",   sz: "5.8 K", label: "M6: X\u2080(143) Genus",  sha: liveShas["PDF_M6"]   ?? "304d994ee154eb6fc79c1f8f7538500a12207bc52848a6dc8055726bb15b800e" },
+              { fn: "Module_6_3_Certificate.pdf", sz: "8.2 K", label: "M6.3",                    sha: liveShas["PDF_M6_3"] ?? "19b025686696192089381858485aebb49627fc50c783482c923f1ae20efdb9b0" },
+              { fn: "Module_7_Certificate.pdf",   sz: "6.6 K", label: "M7: Master Manifest",     sha: liveShas["PDF_M7"]   ?? "28d0b76dd0640f19d72ab69dbf13527ba2d0f5b66d7c884baaf966d8e027c2a5" },
+              { fn: "Module_8_Certificate.pdf",   sz: "12 K",  label: "M8: Hankel Rank",         sha: liveShas["PDF_M8"]   ?? "bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38" },
             ]}
             zipFile={{ fn: "CertificationChain_2026_06_04.zip", sz: "85 KB", label: "Chain + Invariants ZIP" }}
             zipSha="e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"
@@ -1361,29 +1402,29 @@ export default function CertificatePage() {
             color="slate"
             label="Block 5 \u2014 Extended Theory M8A\u2013M23"
             files={[
-              { fn: "Module_M8A_Audit.pdf",        sz: "9.7 K", label: "M8A: Audit",              sha: "3567279c610e037d7815afcd7239992ace92fdbbe323272a487e566b4911caec" },
-              { fn: "Module_M8C_ZoeMstar.pdf",     sz: "6.1 K", label: "M8C: Zoe M\u2605",        sha: "9dc46ef8226b1ee7aa0c949b5ab0c923d72d60bdae48e9f5a351e8ec328163f3" },
-              { fn: "Module_M8D_Resonator.pdf",    sz: "6.9 K", label: "M8D: 120-Cell Resonator", sha: "22f1a64239f7b8e0602c95a42e3944a6d8d9a90f24351d39d46228ab365a6ccc" },
-              { fn: "Module_M8F_LeanProtocol.pdf", sz: "6.9 K", label: "M8F: Lean Protocol",      sha: "e81915a4e1487a79de8686abbb32e1b54480a2e5eb98472b2c176b6906704e10" },
+              { fn: "Module_M8A_Audit.pdf",        sz: "9.7 K", label: "M8A: Audit",              sha: liveShas["PDF_M8A"]         ?? "3567279c610e037d7815afcd7239992ace92fdbbe323272a487e566b4911caec" },
+              { fn: "Module_M8C_ZoeMstar.pdf",     sz: "6.1 K", label: "M8C: Zoe M\u2605",        sha: liveShas["PDF_M8C"]         ?? "9dc46ef8226b1ee7aa0c949b5ab0c923d72d60bdae48e9f5a351e8ec328163f3" },
+              { fn: "Module_M8D_Resonator.pdf",    sz: "6.9 K", label: "M8D: 120-Cell Resonator", sha: liveShas["PDF_M8D"]         ?? "22f1a64239f7b8e0602c95a42e3944a6d8d9a90f24351d39d46228ab365a6ccc" },
+              { fn: "Module_M8F_LeanProtocol.pdf", sz: "6.9 K", label: "M8F: Lean Protocol",      sha: liveShas["PDF_M8F"]         ?? "e81915a4e1487a79de8686abbb32e1b54480a2e5eb98472b2c176b6906704e10" },
               { fn: "Module_M8G_Provenance.pdf",   sz: "8.8 K", label: "M8G: Provenance" },
-              { fn: "Module_M8G_Correction.pdf",   sz: "9.2 K", label: "M8G Correction",          sha: "8d7fd668fa8772c6ae5700087f4a2dc48b3a2134d4679dd781e925dd9889bdf5" },
-              { fn: "Module_M8H_G_Amplifier.pdf",  sz: "11 K",  label: "M8H: G Amplifier",        sha: "a3010c4093334a1d6ec014381fc1f7c3d3bb81dbe893158a1c412133f9364c14" },
-              { fn: "Module_M8I_Wormhole.pdf",     sz: "22 K",  label: "M8I: Wormhole Arch",      sha: "06faf631c722d36003ae69e27187201fc48e44489d4b7e33ad76575944de4a98" },
-              { fn: "Module_M8J_OQ2_Closure.pdf",  sz: "14 K",  label: "M8J: OQ-2 Closure",       sha: "48a2ac8b1baad01a4a56e775460c43b96ddae22be2bafd711205e303d65a69d3" },
-              { fn: "Module_9_All_140.pdf",        sz: "13 K",  label: "M9: All 140 GRH",         sha: "03d26e74df4b3d2a512dcf51dd50c5cd0de1d1685526b2934b2eec630810fc41" },
-              { fn: "Module_9_Certificate.pdf",    sz: "7.3 K", label: "M9: Certificate",          sha: "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856" },
-              { fn: "Module_14_S4_Quaternions.pdf",sz: "7.2 K", label: "M14: S\u2084 Quaternions", sha: "4ab49abf06d707f4ca436c250fb38b1a23f493305f3a07e04097f22485978ac9" },
-              { fn: "Module_15_Delta_Boost.pdf",   sz: "8.2 K", label: "M15: Delta Boost",         sha: "6c2595ac7dcdfcf6e77f7981a6b13f02ecc6e0d267a466c0950ba0082bdc8394" },
-              { fn: "Module_16_c_Bridge.pdf",      sz: "6.0 K", label: "M16: c Bridge",            sha: "77a005d529387b35525046931ac20b69a444fb2cea187adb89f8d731cca97f3e" },
-              { fn: "Module_17_Cert_Patch.pdf",    sz: "6.8 K", label: "M17: Cert Patch",          sha: "0044a64038d287118c6df684fcb676d6f30688627b9da989959c728cd7dae957" },
-              { fn: "Module_18_Resonance_Ladder.pdf",sz:"7.3 K",label: "M18: Resonance Ladder",   sha: "09ced8c0152c60f51bca97889c593309a7aa1713c1b36a4a709d4ef68c6983af" },
-              { fn: "Module_19_p6_Prediction.pdf", sz: "8.9 K", label: "M19: p\u2086 Prediction",  sha: "25598fb9fbfe6b6da4759e6f20b34a4996f6b572d854202cf89e596d0a2b53c4" },
-              { fn: "Module_20_p7_Prediction.pdf", sz: "8.1 K", label: "M20: p\u2087 Prediction",  sha: "6d0fbb9ea8b08dddff7a95857616974fcdae1cfde0cb250cf5c5a7d564a4e0cf" },
-              { fn: "Module_21_H4_Invariant.pdf",  sz: "6.5 K", label: "M21: H\u2084 Invariant",   sha: "1ef0b386026730e2c67ab6759106d72e6b51c522cb03fb6877cb08ffc9e7d1a3" },
-              { fn: "Module_22_MStar_Definition.pdf",sz:"6.8 K",label: "M22: M\u2605 Definition",  sha: "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d" },
-              { fn: "Module_23_BSD_J0_143.pdf",    sz: "5.8 K", label: "M23: BSD J\u2080(143)",     sha: "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b" },
-              { fn: "Module_10_Genus33.pdf",       sz: "6.6 K", label: "M10: Genus 33",            sha: "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896" },
-              { fn: "Module_BDP_PhaseReversal.pdf",sz: "15 K",  label: "BDP: Phase Reversal",      sha: "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5" },
+              { fn: "Module_M8G_Correction.pdf",   sz: "9.2 K", label: "M8G Correction",          sha: liveShas["PDF_M8G_CORRECTION"] ?? "8d7fd668fa8772c6ae5700087f4a2dc48b3a2134d4679dd781e925dd9889bdf5" },
+              { fn: "Module_M8H_G_Amplifier.pdf",  sz: "11 K",  label: "M8H: G Amplifier",        sha: liveShas["PDF_M8H"]         ?? "a3010c4093334a1d6ec014381fc1f7c3d3bb81dbe893158a1c412133f9364c14" },
+              { fn: "Module_M8I_Wormhole.pdf",     sz: "22 K",  label: "M8I: Wormhole Arch",      sha: liveShas["PDF_M8I"]         ?? "06faf631c722d36003ae69e27187201fc48e44489d4b7e33ad76575944de4a98" },
+              { fn: "Module_M8J_OQ2_Closure.pdf",  sz: "14 K",  label: "M8J: OQ-2 Closure",       sha: liveShas["PDF_M8J"]         ?? "48a2ac8b1baad01a4a56e775460c43b96ddae22be2bafd711205e303d65a69d3" },
+              { fn: "Module_9_All_140.pdf",        sz: "13 K",  label: "M9: All 140 GRH",         sha: liveShas["PDF_M9_ALL"]      ?? "03d26e74df4b3d2a512dcf51dd50c5cd0de1d1685526b2934b2eec630810fc41" },
+              { fn: "Module_9_Certificate.pdf",    sz: "7.3 K", label: "M9: Certificate",          sha: liveShas["PDF_M9"]          ?? "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856" },
+              { fn: "Module_14_S4_Quaternions.pdf",sz: "7.2 K", label: "M14: S\u2084 Quaternions", sha: liveShas["PDF_M14"]         ?? "4ab49abf06d707f4ca436c250fb38b1a23f493305f3a07e04097f22485978ac9" },
+              { fn: "Module_15_Delta_Boost.pdf",   sz: "8.2 K", label: "M15: Delta Boost",         sha: liveShas["PDF_M15"]         ?? "6c2595ac7dcdfcf6e77f7981a6b13f02ecc6e0d267a466c0950ba0082bdc8394" },
+              { fn: "Module_16_c_Bridge.pdf",      sz: "6.0 K", label: "M16: c Bridge",            sha: liveShas["PDF_M16"]         ?? "77a005d529387b35525046931ac20b69a444fb2cea187adb89f8d731cca97f3e" },
+              { fn: "Module_17_Cert_Patch.pdf",    sz: "6.8 K", label: "M17: Cert Patch",          sha: liveShas["PDF_M17"]         ?? "0044a64038d287118c6df684fcb676d6f30688627b9da989959c728cd7dae957" },
+              { fn: "Module_18_Resonance_Ladder.pdf",sz:"7.3 K",label: "M18: Resonance Ladder",   sha: liveShas["PDF_M18"]         ?? "09ced8c0152c60f51bca97889c593309a7aa1713c1b36a4a709d4ef68c6983af" },
+              { fn: "Module_19_p6_Prediction.pdf", sz: "8.9 K", label: "M19: p\u2086 Prediction",  sha: liveShas["PDF_M19"]         ?? "25598fb9fbfe6b6da4759e6f20b34a4996f6b572d854202cf89e596d0a2b53c4" },
+              { fn: "Module_20_p7_Prediction.pdf", sz: "8.1 K", label: "M20: p\u2087 Prediction",  sha: liveShas["PDF_M20"]         ?? "6d0fbb9ea8b08dddff7a95857616974fcdae1cfde0cb250cf5c5a7d564a4e0cf" },
+              { fn: "Module_21_H4_Invariant.pdf",  sz: "6.5 K", label: "M21: H\u2084 Invariant",   sha: liveShas["PDF_M21"]         ?? "1ef0b386026730e2c67ab6759106d72e6b51c522cb03fb6877cb08ffc9e7d1a3" },
+              { fn: "Module_22_MStar_Definition.pdf",sz:"6.8 K",label: "M22: M\u2605 Definition",  sha: liveShas["PDF_M22"]         ?? "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d" },
+              { fn: "Module_23_BSD_J0_143.pdf",    sz: "5.8 K", label: "M23: BSD J\u2080(143)",     sha: liveShas["PDF_M23"]         ?? "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b" },
+              { fn: "Module_10_Genus33.pdf",       sz: "6.6 K", label: "M10: Genus 33",            sha: liveShas["PDF_M10"]         ?? "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896" },
+              { fn: "Module_BDP_PhaseReversal.pdf",sz: "15 K",  label: "BDP: Phase Reversal",      sha: liveShas["PDF_BDP"]         ?? "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5" },
             ]}
           />
 
@@ -1392,12 +1433,12 @@ export default function CertificatePage() {
             color="amber"
             label="Block 6 \u2014 Essays & Appendices"
             files={[
-              { fn: "Essay_TimeMachine_p5.pdf",      sz: "9.7 M", label: "Time Machine Essay",              sha: "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7" },
+              { fn: "Essay_TimeMachine_p5.pdf",      sz: "9.7 M", label: "Time Machine Essay",              sha: liveShas["ESSAY"]          ?? "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7" },
               { fn: "OperaNumerorum_Preface.pdf",    sz: "4.0 M", label: "Opera Numerorum Preface" },
-              { fn: "Addendum_A1_Complete_Sieve.pdf",sz: "3.0 M", label: "Addendum A1: Complete Sieve", sha: "861e5347f7aac6daeb5e178ea4f15528b77f3cf196ebe2629c28e4af590148f7" },
+              { fn: "Addendum_A1_Complete_Sieve.pdf",sz: "3.0 M", label: "Addendum A1: Complete Sieve", sha: liveShas["PDF_ADDENDUM"]   ?? "861e5347f7aac6daeb5e178ea4f15528b77f3cf196ebe2629c28e4af590148f7" },
               { fn: "Wall256_YM_Report.pdf",         sz: "48 K",  label: "Wall-256 YM Report" },
               { fn: "Error_Symmetry_Essay.pdf",      sz: "17 K",  label: "Error Symmetry Essay" },
-              { fn: "Canonical_Paper_Corrected.pdf", sz: "16 K",  label: "Canonical Paper",              sha: "04a67a0ce252a4ed6b84383934eb76e5191521c2ed4ab2d35f592c86d0df305f" },
+              { fn: "Canonical_Paper_Corrected.pdf", sz: "16 K",  label: "Canonical Paper",              sha: liveShas["PDF_CANONICAL"]  ?? "04a67a0ce252a4ed6b84383934eb76e5191521c2ed4ab2d35f592c86d0df305f" },
               { fn: "OperaNumerorum_ArchiveMap.pdf", sz: "13 K",  label: "Archive Map" },
               { fn: "FriendsFamily_MillennialMath.pdf",sz:"211 K",label: "Friends & Family: Millennial Math" },
               { fn: "Tendon_A_Certificate.pdf",      sz: "4.8 K", label: "Tendon A" },
@@ -1410,16 +1451,16 @@ export default function CertificatePage() {
             color="rose"
             label="Block 7 \u2014 Clay Submission Bundle"
             files={[
-              { fn: "Module_23_BSD_J0_143.pdf",              sz: "5.8 K", label: "M23: BSD J\u2080(143)",    sha: "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b" },
-              { fn: "Hodge_CM_Replicit_v17_PDF1.pdf",        sz: "7.0 K", label: "Hodge: PDF #1",         sha: "faae893ae0777bc5dd7d4f81962ec781b2d53fcca615d9bdeb69ee3829e695f1" },
-              { fn: "Hodge_CM_Replicit_v17_PDF2.pdf",        sz: "6.2 K", label: "Hodge: PDF #2",         sha: "233ba2df8285af277346a03e6ce91dea8a349b4b0df9b665da727924cc0153b5" },
-              { fn: "Rank_Obstructions_Replicit_v17_PDF3.pdf",sz:"6.8 K", label: "Rank Obstructions",    sha: "94aff1b769d0625a3c6514505e537c99c16ad28c5e079ad66212357a36837681" },
-              { fn: "Lemma76_Diff_Report_v17.pdf",           sz: "4.6 K", label: "Diff Report v1.7",     sha: "4b0d91d4d8a73d2e46af847e0664c0798aebfb80c3cfe39f3d949604f853c5a6" },
-              { fn: "Z_Protocol_Tower_v2.pdf",               sz: "3.8 M", label: "Z Protocol Tower v2",  sha: "4e1ea390ca0bf556881b60acb6a16c7304fa7b045279afe1afd84400eab29df5" },
-              { fn: "Module_21_H4_Invariant.pdf",            sz: "6.5 K", label: "H\u2084 Invariant",     sha: "1ef0b386026730e2c67ab6759106d72e6b51c522cb03fb6877cb08ffc9e7d1a3" },
-              { fn: "Module_22_MStar_Definition.pdf",        sz: "6.8 K", label: "M\u2605 Definition",   sha: "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d" },
-              { fn: "Module_9_Certificate.pdf",              sz: "7.3 K", label: "M9: GRH 140 curves",   sha: "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856" },
-              { fn: "Essay_TimeMachine_p5.pdf",              sz: "9.7 M", label: "Time Machine Essay",   sha: "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7" },
+              { fn: "Module_23_BSD_J0_143.pdf",              sz: "5.8 K", label: "M23: BSD J\u2080(143)",    sha: liveShas["PDF_M23"]            ?? "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b" },
+              { fn: "Hodge_CM_Replicit_v17_PDF1.pdf",        sz: "7.0 K", label: "Hodge: PDF #1",         sha: liveShas["LEMMA76_V17_PDF1"]    ?? "faae893ae0777bc5dd7d4f81962ec781b2d53fcca615d9bdeb69ee3829e695f1" },
+              { fn: "Hodge_CM_Replicit_v17_PDF2.pdf",        sz: "6.2 K", label: "Hodge: PDF #2",         sha: liveShas["LEMMA76_V17_PDF2"]    ?? "233ba2df8285af277346a03e6ce91dea8a349b4b0df9b665da727924cc0153b5" },
+              { fn: "Rank_Obstructions_Replicit_v17_PDF3.pdf",sz:"6.8 K", label: "Rank Obstructions",    sha: liveShas["LEMMA76_V17_PDF3"]    ?? "94aff1b769d0625a3c6514505e537c99c16ad28c5e079ad66212357a36837681" },
+              { fn: "Lemma76_Diff_Report_v17.pdf",           sz: "4.6 K", label: "Diff Report v1.7",     sha: liveShas["LEMMA76_DIFF_REPORT"] ?? "4b0d91d4d8a73d2e46af847e0664c0798aebfb80c3cfe39f3d949604f853c5a6" },
+              { fn: "Z_Protocol_Tower_v2.pdf",               sz: "3.8 M", label: "Z Protocol Tower v2",  sha: liveShas["Z_PROTOCOL_V2"]       ?? "4e1ea390ca0bf556881b60acb6a16c7304fa7b045279afe1afd84400eab29df5" },
+              { fn: "Module_21_H4_Invariant.pdf",            sz: "6.5 K", label: "H\u2084 Invariant",     sha: liveShas["PDF_M21"]            ?? "1ef0b386026730e2c67ab6759106d72e6b51c522cb03fb6877cb08ffc9e7d1a3" },
+              { fn: "Module_22_MStar_Definition.pdf",        sz: "6.8 K", label: "M\u2605 Definition",   sha: liveShas["PDF_M22"]            ?? "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d" },
+              { fn: "Module_9_Certificate.pdf",              sz: "7.3 K", label: "M9: GRH 140 curves",   sha: liveShas["PDF_M9"]             ?? "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856" },
+              { fn: "Essay_TimeMachine_p5.pdf",              sz: "9.7 M", label: "Time Machine Essay",   sha: liveShas["ESSAY"]              ?? "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7" },
             ]}
             zipFile={{ fn: "ClaySubmission_2026_06_04.zip", sz: "13 MB", label: "Clay Submission ZIP" }}
             zipSha="4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703"
