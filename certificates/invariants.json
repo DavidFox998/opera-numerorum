@@ -2901,7 +2901,9 @@
     "contents": [
       "invariants.json",
       "PDFs/*.pdf (77 files)"
-    ]
+    ],
+    "drive_url": "https://drive.google.com/file/d/1-ZzOhlJzDB4B80gmF_jyDz4XyKzym8tO/view?usp=drivesdk",
+    "drive_filename": "OperaNumerorum_AllCerts.zip"
   },
   "p5_replacement_c13": {
     "module": "AUDIT-1 CORRECTION",
@@ -3046,7 +3048,9 @@
     "size_bytes": 67211957,
     "file_count": 23,
     "generated_utc": "2026-06-05T22:49:56Z",
-    "builder": "make_morning_star_zip.sh"
+    "builder": "make_morning_star_zip.sh",
+    "drive_url": "https://drive.google.com/file/d/18cJi0AqC-lvajxzxdc2pl_VzBNhn6ht5/view?usp=drivesdk",
+    "drive_filename": "MorningStar_Complete_2026_06_04.zip"
   },
   "bundle_chain": {
     "description": "Core certification chain M1-M8 PDFs + invariants.json.",
@@ -3311,7 +3315,7 @@
     "supersedes": "9 prior field-report PDFs (deprecated)"
   },
   "allcerts": {
-    "drive_url": "https://drive.google.com/file/d/1tW4teoJjtCuG5x4XfHfBr0Mrdwahqrm7/view?usp=drivesdk",
+    "drive_url": "https://drive.google.com/file/d/1-ZzOhlJzDB4B80gmF_jyDz4XyKzym8tO/view?usp=drivesdk",
     "drive_filename": "OperaNumerorum_AllCerts.zip"
   },
   "module_25b": {
