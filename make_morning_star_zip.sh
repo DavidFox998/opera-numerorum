@@ -47,6 +47,9 @@ FILES=(
     Module_M8P_L6_Clock.pdf
     Module_M8Q_L7_System.pdf
 
+    # Module 24 certificate (H4 Refraction Map)
+    Module_24_Certificate.pdf
+
     # Engineering summary
     MorningStar_Engineering_Summary.pdf
 )

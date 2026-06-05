@@ -2891,16 +2891,16 @@
     }
   },
   "bundle_all_certs": {
-    "description": "Full certified archive: all 73 PDFs + invariants.json. Complete Opera Numerorum record.",
+    "description": "Full certified archive: all 74 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 90153342,
-    "size_mb_approx": 86.0,
-    "sha256": "46c7d21cd4d4aeb2c3a3f4aef7cbbe332d5b06fdea9f5578b0e92aac755dcd76",
-    "generated_utc": "2026-06-05T05:23:45.504866Z",
-    "pdf_count": 73,
+    "size_bytes": 96724860,
+    "size_mb_approx": 92.2,
+    "sha256": "9745e4bd1b6e59fb310170f9c6a8010d0e9ed1ba8d53eeb61aec777b79987b7c",
+    "generated_utc": "2026-06-05T21:01:40.658266Z",
+    "pdf_count": 74,
     "contents": [
       "invariants.json",
-      "PDFs/*.pdf (73 files)"
+      "PDFs/*.pdf (74 files)"
     ]
   },
   "p5_replacement_c13": {
@@ -3042,10 +3042,10 @@
   "bundle_morning_star": {
     "description": "Morning Star complete bundle: all Morning Star PDFs + engineering summary + field reports (includes Field_Report_Morningstar.pdf, Field_Report_1pp.pdf, Field_Report_2pp.pdf).",
     "file": "MorningStar_Complete_2026_06_04.zip",
-    "sha256": "297681d58b0bbc7d1409318386cffe065e2c5f9d7d4dfb02d783d6f941b16b66",
-    "size_bytes": 60631600,
-    "file_count": 21,
-    "generated_utc": "2026-06-05T05:14:34Z",
+    "sha256": "5aed117197ed49b27e8d699bde042d80913e59c572525f79a644d7922f0d118b",
+    "size_bytes": 67200851,
+    "file_count": 22,
+    "generated_utc": "2026-06-05T21:01:26Z",
     "builder": "make_morning_star_zip.sh"
   },
   "bundle_chain": {
