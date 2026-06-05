@@ -1786,7 +1786,7 @@ export default function CertificatePage() {
                 Every certified PDF — M1–M8Q, M9–M23, BDP, Wall256, Z Protocol, Field Report, Canonical Paper + invariants.json. <span className="text-amber-400">~92 MB</span>
               </p>
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
-                SHA: {liveShas["ALL_CERTS_ZIP"] ?? "cb7230276044763923493208c1b4806313dafc9a3edaa672cf074921ca7131c0"}
+                SHA: {liveShas["ALL_CERTS_ZIP"] ?? "ccc6a5fce6e0813d0c4025510efbb409055cf5a10ec3f7fb6dffbd6fed8d1474"}
               </span>
               <div className="flex items-center gap-2 mt-1.5">
                 <a
@@ -1797,7 +1797,7 @@ export default function CertificatePage() {
                   <Download className="w-3 h-3 shrink-0" />
                   Download
                 </a>
-                <VerifyFileButton sha={liveShas["ALL_CERTS_ZIP"] ?? "cb7230276044763923493208c1b4806313dafc9a3edaa672cf074921ca7131c0"} />
+                <VerifyFileButton sha={liveShas["ALL_CERTS_ZIP"] ?? "ccc6a5fce6e0813d0c4025510efbb409055cf5a10ec3f7fb6dffbd6fed8d1474"} />
               </div>
             </div>
           </div>

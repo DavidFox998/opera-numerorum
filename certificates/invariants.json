@@ -2893,10 +2893,10 @@
   "bundle_all_certs": {
     "description": "Full certified archive: all 77 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 96769119,
+    "size_bytes": 96769111,
     "size_mb_approx": 92.3,
-    "sha256": "cb7230276044763923493208c1b4806313dafc9a3edaa672cf074921ca7131c0",
-    "generated_utc": "2026-06-05T23:15:49.872237Z",
+    "sha256": "ccc6a5fce6e0813d0c4025510efbb409055cf5a10ec3f7fb6dffbd6fed8d1474",
+    "generated_utc": "2026-06-05T23:55:24.718313Z",
     "pdf_count": 77,
     "contents": [
       "invariants.json",
@@ -3042,10 +3042,10 @@
   "bundle_morning_star": {
     "description": "Morning Star complete bundle: all Morning Star PDFs + engineering summary + field reports (includes Field_Report_Morningstar.pdf, Field_Report_1pp.pdf, Field_Report_2pp.pdf).",
     "file": "MorningStar_Complete_2026_06_04.zip",
-    "sha256": "b765b3d2ac0829079e5000e975f80c171fc95643dbf60e691997f4fa04b51319",
-    "size_bytes": 67211957,
-    "file_count": 23,
-    "generated_utc": "2026-06-05T23:15:33Z",
+    "sha256": "9c49088a78d467d776974a5e31869df4de47b25ec0948d9bfac9ecd0c0db9c8c",
+    "size_bytes": 67220048,
+    "file_count": 24,
+    "generated_utc": "2026-06-05T23:55:11Z",
     "builder": "make_morning_star_zip.sh"
   },
   "bundle_chain": {
