@@ -19,6 +19,7 @@
       "M_star_h": "12/11",
       "3h_mod7": 2,
       "cond3_pass": null,
+      "cond3_str": "N/A",
       "method": "brute_force",
       "cf_step": null
     },
@@ -31,6 +32,7 @@
       "M_star_h": "12/11",
       "3h_mod7": 6,
       "cond3_pass": null,
+      "cond3_str": "N/A",
       "method": "brute_force",
       "cf_step": null
     },
@@ -43,6 +45,7 @@
       "M_star_h": "12/11",
       "3h_mod7": 5,
       "cond3_pass": true,
+      "cond3_str": "PASS",
       "method": "brute_force",
       "cf_step": null
     },
@@ -55,6 +58,7 @@
       "M_star_h": "12/11",
       "3h_mod7": 3,
       "cond3_pass": true,
+      "cond3_str": "PASS",
       "method": "brute_force",
       "cf_step": null
     },
@@ -67,6 +71,7 @@
       "M_star_h": "12/11",
       "3h_mod7": 3,
       "cond3_pass": true,
+      "cond3_str": "PASS",
       "method": "brute_force",
       "cf_step": null
     },
@@ -79,6 +84,7 @@
       "M_star_h": "12/11",
       "3h_mod7": 3,
       "cond3_pass": true,
+      "cond3_str": "PASS",
       "method": "cf_convergent",
       "cf_step": 47
     },
@@ -91,6 +97,7 @@
       "M_star_h": "12/11",
       "3h_mod7": 5,
       "cond3_pass": true,
+      "cond3_str": "PASS",
       "method": "cf_convergent",
       "cf_step": 58
     },
@@ -103,6 +110,7 @@
       "M_star_h": "12/11",
       "3h_mod7": 3,
       "cond3_pass": true,
+      "cond3_str": "PASS",
       "method": "cf_convergent",
       "cf_step": 71
     },
@@ -115,6 +123,7 @@
       "M_star_h": "12/11",
       "3h_mod7": 5,
       "cond3_pass": true,
+      "cond3_str": "PASS",
       "method": "cf_convergent",
       "cf_step": 389
     }

@@ -492,6 +492,7 @@ cert_data = {
         {"band": bd["band"], "h": str(bd["h"]), "h_digits": bd["h_digits"],
          "norm": bd["norm"], "Z_h": bd["Z_h"], "M_star_h": bd["M_star_h"],
          "3h_mod7": bd["3h_mod7"], "cond3_pass": bd["cond3_pass"],
+         "cond3_str": bd.get("cond3_str") or ("PASS" if bd["cond3_pass"] else "FAIL"),
          "method": bd.get("method",""),
          "cf_step": bd.get("cf_step", None)}
         for bd in bands
@@ -515,8 +516,9 @@ with open(tex_path, "w") as f:
     f.write("Band & $h$ (digits) & Norm & $Z(h)$ & $M^*(h)$ & $3^h\\bmod 7$ & Cond3 & Method \\\\\n\\hline\n")
     for bd in bands:
         meth = "BF" if bd.get("method")=="brute_force" else "CF"
+        c3_tex = bd.get("cond3_str") or ("PASS" if bd["cond3_pass"] else "FAIL")
         f.write(f"{bd['band']} & {bd['h_digits']}d & {bd['norm']:.6f} & {bd['Z_h']} & "
-                f"$12/11$ & {bd['3h_mod7']} & {'PASS' if bd['cond3_pass'] else 'FAIL'} & {meth} \\\\\n")
+                f"$12/11$ & {bd['3h_mod7']} & {c3_tex} & {meth} \\\\\n")
     f.write("\\hline\n\\end{tabular}\n\\label{tab:m24_sbands}\n\\end{table}\n")
     for bd in bands:
         f.write(f"% Band {bd['band']}: h = {bd['h']}\n")

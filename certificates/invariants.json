@@ -3064,12 +3064,12 @@
     "title": "H4 Refraction Map: Z-Lock, Alpha-Bands, S-Bands, Self-Duality",
     "claim": "Combined sieve (Phase A brute-force to 5e6 mpmath 200dps + Phase B CF 400dps ~10^200): 9 certified prime S-bands with ||h*2pi/7||*h < 1. h={2,3,29,127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401,22069895099037797770...192d}. THEOREM_A WITHDRAWN (h=29 counterexample). Cond3 N/A for h=2,3 (Fermat ord_7(3)=6 applies h>3). Precision audit 14 Meta AI bands: Phase1 3PASS+2FAIL (known h values); Phase2 9 reconstructed float64 artifacts all FAIL mpmath. THEOREM_4.1: N_routes=120-12=108. f_H4=pi^2*11/120=0.9047137368. K_H4=55/4=13.75 EXACT. C(S7)=72.2077606110 [CORRECTION: spec estimate 73.891 superseded], g_max=1303. SORRY: 0.",
     "source_file": "certificates/m24_h4_refraction.py",
-    "sha256_source": "cf62f5c286d95e05ef0251311fd53a7c6fa109850f8fc6adefca08b3b7e7ef64",
-    "sha256_stdout": "73be6bbf8b2dad58833435d3f6faa0c6f7bee9a77db31b3cbea366e621471e86",
+    "sha256_source": "c5462d1e657306de13cf44c09f47a0e2537fea8c1584f82a14cc073fc6e4d5dd",
+    "sha256_stdout": "3a410e4c1a33a54e2846c97d032a312e3b58bf2a9a43d7d2f5684d568f57bc70",
     "stdout_file": "m24.out",
-    "sha256_pdf": "ebf825bd5805d897f776f9a41092d3c545ef67b7348877c6b97d22d435023445",
-    "sha256_bands_json": "96b7758436d71918732060528a7acfaa3b345188829d9d8621b6b3180d413158",
-    "sha256_bands_tex": "e042413704c8eb43612890211cd0dd17327fe4c858188a6f49388fee69e58fe2",
+    "sha256_pdf": "69857a8cf0532d426ca1a25095ca892595b409e91929038ee3c63bca082f99f4",
+    "sha256_bands_json": "d1ea4a28378fdbf2f94d78bd291770797f7aea9819923c9bd1065629d76f8c02",
+    "sha256_bands_tex": "1a3d3d14835a73c2ea43b30a0de4b3739c38538a4b016ac9fa360d122d0f74b7",
     "bands_json": "certificates/bands_M24_CERT.json",
     "bands_tex": "certificates/bands_M24_table.tex",
     "N_routes_found": 9,
@@ -3108,6 +3108,26 @@
       "Lemma-7.6-v1.7 correction: gamma_1=pi/10 (was pi/12 in M8 series)",
       "CORRECTION C(S7): spec estimate 73.891/1364 superseded by computed 72.208/1303",
       "Sieve method: Phase A brute-force to 5e6 (finds h=2,3,29,127,414679) + Phase B CF convergents to ~10^200 (finds 4 large bands)"
-    ]
+    ],
+    "source_docs": {
+      "description": "Source PDFs supporting M24 derivation",
+      "files": [
+        {
+          "name": "certificates/Module_8_Certificate.pdf",
+          "sha256": "bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38",
+          "role": "M8 Hankel rank check (causal parent)"
+        },
+        {
+          "name": "certificates/Module_9_Certificate.pdf",
+          "sha256": "98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856",
+          "role": "M9 CM / M9-All exceptional primes (causal parent)"
+        },
+        {
+          "name": "certificates/Module_24_Certificate.pdf",
+          "sha256": "69857a8cf0532d426ca1a25095ca892595b409e91929038ee3c63bca082f99f4",
+          "role": "M24 certificate (this module)"
+        }
+      ]
+    }
   }
 }
