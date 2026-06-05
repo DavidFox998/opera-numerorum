@@ -3026,5 +3026,20 @@
     "claim": "Computational data set verifying the modular sieve against RH for primes up to 10^8; supports the Lindelof and RH sieve papers.",
     "source": "attached_assets/Rh_109_data_set_1780629810783.pdf",
     "imported_utc": "2026-06-05"
+  },
+  "bundle_morning_star": {
+    "description": "Morning Star complete bundle: all Morning Star PDFs + engineering summary + field reports.",
+    "file": "MorningStar_Complete_2026_06_04.zip",
+    "sha256": "3d79bd546e35ab7aafa3f12e624b5b351f03c4c5b01aed9aa3fe6ac122e57ad3"
+  },
+  "bundle_chain": {
+    "description": "Core certification chain M1-M8 PDFs + invariants.json.",
+    "file": "CertificationChain_2026_06_04.zip",
+    "sha256": "e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"
+  },
+  "bundle_clay": {
+    "description": "Clay Submission bundle: M23 BSD + Hodge/Rank Replicut v1.7 PDFs + Z Protocol Tower v2 + supporting modules.",
+    "file": "ClaySubmission_2026_06_04.zip",
+    "sha256": "4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703"
   }
 }

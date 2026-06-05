@@ -151,6 +151,10 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
 
   FIELD_REPORT_1PP:   { key: "field_report_variants", path: ["1pp", "sha256_output"] },
   FIELD_REPORT_2PP:   { key: "field_report_variants", path: ["2pp", "sha256_output"] },
+
+  ZIP_MORNING_STAR: { key: "bundle_morning_star", field: "sha256" },
+  ZIP_CHAIN:        { key: "bundle_chain",        field: "sha256" },
+  ZIP_CLAY:         { key: "bundle_clay",         field: "sha256" },
 };
 
 function extractShasFromInvariants(
@@ -1609,7 +1613,7 @@ export default function CertificatePage() {
               { fn: "MorningStar_Engineering_Summary.pdf",sz:"17 K",   label: "Engineering Summary" },
             ]}
             zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: "34 MB", label: "Morning Star ZIP" }}
-            zipSha="3d79bd546e35ab7aafa3f12e624b5b351f03c4c5b01aed9aa3fe6ac122e57ad3"
+            zipSha={liveShas["ZIP_MORNING_STAR"] ?? "3d79bd546e35ab7aafa3f12e624b5b351f03c4c5b01aed9aa3fe6ac122e57ad3"}
           />
 
           {/* Block 4 — Core Certification Chain M1-M8 */}
@@ -1628,7 +1632,7 @@ export default function CertificatePage() {
               { fn: "Module_8_Certificate.pdf",   sz: "12 K",  label: "M8: Hankel Rank",         sha: liveShas["PDF_M8"]   ?? "bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38" },
             ]}
             zipFile={{ fn: "CertificationChain_2026_06_04.zip", sz: "85 KB", label: "Chain + Invariants ZIP" }}
-            zipSha="e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"
+            zipSha={liveShas["ZIP_CHAIN"] ?? "e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"}
           />
 
           {/* Block 5 — Extended Theory M8A–M23 */}
@@ -1697,7 +1701,7 @@ export default function CertificatePage() {
               { fn: "Essay_TimeMachine_p5.pdf",              sz: "9.7 M", label: "Time Machine Essay",   sha: liveShas["ESSAY"]              ?? "458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7" },
             ]}
             zipFile={{ fn: "ClaySubmission_2026_06_04.zip", sz: "13 MB", label: "Clay Submission ZIP" }}
-            zipSha="4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703"
+            zipSha={liveShas["ZIP_CLAY"] ?? "4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703"}
           />
 
           {/* All certs — master archive */}
