@@ -178,7 +178,7 @@ story += [
     Paragraph("Opera Numerorum: Machine Certification for GRH(X_0(143)) and BSD(J_0(143))", sub_sty),
     hr(thick=1.5, c="#1a237e"), sp(2),
     ok("STATUS: H4_REFRACTION_CERTIFIED.  SORRY: 0."),
-    ok(f"S-Bands: {n_bands} certified (combined brute-force+CF sieve to ~10^200).  Theorem 4.1: N_routes=108 (prediction)."),
+    ok(f"S-Bands: {n_bands} certified (combined brute-force+CF sieve to ~10^400).  Theorem 4.1: N_routes=108 (prediction)."),
     ok("Z(h)=1 for all bands.  M*(h)=12/11 for all bands.  K_H4=55/4=13.75 EXACT."),
     sp(4),
     Paragraph("STDOUT SHA-256", sha_sty),
@@ -283,7 +283,7 @@ story += [
     sp(8), hr(), h1("3.  Way 3: S-Bands (Combined Brute-Force + CF Sieve)"),
     b("Sieve definition: prime h with ||h * 2*pi/7|| * h < 1  [mpmath dps>=200]."),
     b(f"Phase A: brute-force prime sweep h=2..{_phA_bound:,} (all primes checked, mpmath 200 dps)."),
-    b(f"Phase B: CF convergent denominator sieve h>{_phA_bound:,} (mpmath 400 dps, 450 terms, ~10^200)."),
+    b(f"Phase B: CF convergent denominator sieve h>{_phA_bound:,} (mpmath 800 dps, 800 terms, ~10^400)."),
     sp(4),
 ]
 
@@ -319,13 +319,16 @@ story += [audit_t, sp(6)]
 sieve_note_data = [[
     Paragraph(
         f"SIEVE METHOD: Combined brute-force (Phase A, h<={_phA_bound:,}, EXHAUSTIVE) "
-        f"+ CF convergent denominators (Phase B, h>{_phA_bound:,}, mpmath 400 dps, NOT exhaustive). "
+        f"+ CF convergent denominators (Phase B, h>{_phA_bound:,}, mpmath 800 dps, NOT exhaustive). "
         "THEOREM A WITHDRAWN: claimed S-bands = prime CF convergent denominators is FALSE. "
         "Counterexample: h=29 satisfies ||29*2pi/7||*29=0.880<1 but is NOT a CF convergent "
         f"denominator (Phase A finds it; Phase B would miss it if h>{_phA_bound:,}). "
         "COMPLETENESS CAVEAT: Phase B certifies all CF convergent prime denominators of "
-        f"2*pi/7 up to ~10^200 (4 found). Non-CF prime h with norm<1 and h>{_phA_bound:,} are NOT "
+        f"2*pi/7 up to ~10^400 (5 found at 800 dps). Non-CF prime h with norm<1 and h>{_phA_bound:,} are NOT "
         "exhaustively checked -- none found but existence cannot be ruled out. "
+        "PRECISION CORRECTION: Prior 400-dps run (450 terms) reported spurious band at step=389 (192d h); "
+        "not reproduced at 800 dps -- precision artifact of lower-precision CF expansion; removed. "
+        "New bands certified at step=613 (298d) and step=751 (360d). "
         "Phase A (brute-force) finds h=2,3,29,127,414679. "
         "Cond3 (3^h mod 7 in {3,5,6}) applies for prime h>3; h=2,3: COND3_N/A.",
         sty("SM", fontSize=8, leading=12, textColor=colors.HexColor("#0d47a1")))
@@ -364,7 +367,7 @@ thm41_data = [[
         f"rank(H^2_fail) = 12 (12 H2-fail curves from Z-Lock). "
         f"Computational result (combined sieve, Phase A+B): "
         f"N_routes_found = {n_bands}. "
-        f"Phase A exhaustive h<={_phA_bound:,}; Phase B CF sieve to ~10^200 (non-CF primes above {_phA_bound:,} not exhaustively checked).",
+        f"Phase A exhaustive h<={_phA_bound:,}; Phase B CF sieve to ~10^400 at 800 dps (non-CF primes above {_phA_bound:,} not exhaustively checked).",
         sty("T41", fontSize=8, leading=12, textColor=colors.HexColor("#1a237e")))
 ]]
 thm41_t = Table(thm41_data, colWidths=[6.5*inch])
@@ -478,11 +481,11 @@ story += [
     pre(f"                 14 exceptional primes p1=2 ... p14 [1863 digits]"),
     pre(f"Way 2 Alpha:     p7_grh=62730013457017 PRIME=True"),
     pre(f"                 C(S7)=72.2077606110 > 63.246 -> g<=1303 GRH PASS"),
-    pre(f"Way 3 S-Bands:   {n_bands} certified bands (CF sieve, 450 terms, ~10^200)"),
+    pre(f"Way 3 S-Bands:   {n_bands} certified bands (CF sieve, 800 terms, 800 dps, ~10^400)"),
     pre(f"                 Z(h)=1 ALL, M*(h)=12/11 ALL. Thm 4.1 pred: 108."),
     pre(f"Way 4 H4:        K_H4=55/4=13.75 EXACT. f_H4=pi^2*11/120=0.9047."),
     pre(f"                 v_g=pi*c VERIFIED. gamma_1=pi/10 CORRECTED."),
-    pre(f"N_routes (sieve, 10^200): {n_bands}"),
+    pre(f"N_routes (sieve, 10^400): {n_bands}"),
     pre(f"N_routes (Thm 4.1 pred):  108"),
     sp(4),
     ok("SORRY: 0"),

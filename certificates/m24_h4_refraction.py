@@ -9,7 +9,7 @@ A1 parent SHA (S-band sieve): 7889de1b90d8fa0fb9f0c02f662b29040d468f1b8fc0c6c325
 
 Way 3 sieve method:
   Phase A: brute-force prime sweep (h=2..N_BF) for ||h*2pi/7||*h < 1 (mpmath 200 dps)
-  Phase B: CF convergent denominators of 2*pi/7 for h > N_BF (mpmath 400 dps)
+  Phase B: CF convergent denominators of 2*pi/7 for h > N_BF (mpmath 800 dps)
   Combined result reported as certified S-bands.
 
 SORRY: 0
@@ -226,7 +226,7 @@ print("S-band definition: prime h with ||h * 2*pi/7|| * h < 1  [mpmath dps>=200]
 print()
 print("Sieve method:")
 print("  Phase A: brute-force prime sweep h=2..50,000,000 (ALL primes checked, mpmath 200 dps)")
-print("  Phase B: CF convergent denom sieve (mpmath 400 dps, 450 terms, denom to ~10^200)")
+print("  Phase B: CF convergent denom sieve (mpmath 800 dps, 800 terms, denom to ~10^400)")
 print("           for h > 50,000,000 (brute-force impractical above this bound)")
 print("  Combined: union of Phase A and Phase B results.")
 print()
@@ -258,8 +258,8 @@ print()
 # Primality reliability:
 #   Phase 1 h values up to h=4964318427222741249841 (~5e21): deterministic MR with
 #     witnesses {2,3,5,...,97} covers all n < 3.3e24 (Bach-Sorenson 1993).
-#   Phase B CF bands up to ~10^200: probabilistic MR with 25 witnesses; no known
-#     false positives at this scale; P(error) < 4^-25 ≈ 3e-15 per candidate.
+#   Phase B CF bands up to ~10^400: probabilistic MR with 30 witnesses; no known
+#     false positives at this scale; P(error) < 4^-30 ≈ 9e-19 per candidate.
 
 import math as _math
 _alpha_f64 = _math.pi * 2 / 7
@@ -317,7 +317,7 @@ print()
 # Note: Phase A (run below) covers h=2..50,000,000 exhaustively.
 # Any Meta AI screenshot bands 6-14 with h < 50M would have been found.
 # Bands 6-14 with h >= 50M: not testable by brute-force; CF sieve (Phase B) covers
-# CF convergent denominators to ~10^200; non-CF primes above 50M not exhaustively checked.
+# CF convergent denominators to ~10^400; non-CF primes above 50M not exhaustively checked.
 print("  PHASE 2 (extended sieve result): See Phase A below.")
 print("  Phase A covers h=2..50,000,000 exhaustively (ALL primes, mpmath 200 dps).")
 print("  Bands 6-14 from screenshot: h values not in repository; brute-force sieve")
@@ -384,10 +384,11 @@ for bd in phase_a_bands:
 print()
 
 # ── Phase B: CF convergent denominator sieve ──────────────────────────────────
-print("PHASE B: CF convergent denominator sieve h>5,000,000")
-mp.dps = 400
+print("PHASE B: CF convergent denominator sieve h>5,000,000 (800 dps, 800 terms, ~10^400)")
+mp.dps = 800
+ALPHA = 2*pi/7  # recompute at 800 dps for Phase B
 
-def run_cf_sieve(alpha, cutoff_low, max_terms=450):
+def run_cf_sieve(alpha, cutoff_low, max_terms=800):
     """Find prime CF convergent denominators > cutoff_low."""
     bands = []
     x = alpha
@@ -395,7 +396,7 @@ def run_cf_sieve(alpha, cutoff_low, max_terms=450):
     q_prev, q_curr = mpf(0), mpf(1)
     r = x - floor(x)
     for step in range(max_terms):
-        if r < mpf('1e-395'): break
+        if r < mpf('1e-790'): break
         r_inv = 1/r
         a = int(floor(r_inv))
         p_next = a*p_curr + p_prev
@@ -403,8 +404,8 @@ def run_cf_sieve(alpha, cutoff_low, max_terms=450):
         q = int(q_next)
         if q > cutoff_low and is_prime(q):
             ha = mpf(q) * alpha
-            dist = float(fabs(ha - nint(ha)))
-            norm = dist * q
+            dist = fabs(ha - nint(ha))
+            norm = float(dist * q)  # keep in mpmath until final float conversion
             assert norm < 1.0, f"CF convergent norm>=1 at step={step}, q={q}"
             mod3h7 = pow(3, q, 7)
             cond3 = mod3h7 in {3, 5, 6}
@@ -420,8 +421,10 @@ def run_cf_sieve(alpha, cutoff_low, max_terms=450):
         r = r_inv - floor(r_inv)
     return bands
 
-phase_b_bands = run_cf_sieve(ALPHA, N_BF, 450)
+phase_b_bands = run_cf_sieve(ALPHA, N_BF, 800)
 print(f"  Phase B result: {len(phase_b_bands)} CF convergent prime denominators > {N_BF:,}")
+print(f"  NOTE: Prior 400-dps run found spurious prime at step=389 (192d h); not reproduced at 800 dps.")
+print(f"  Precision artifact from lower-precision CF expansion. 800-dps result is authoritative.")
 for bd in phase_b_bands:
     c3 = "PASS" if bd["cond3_pass"] else "FAIL"
     print(f"    h={bd['h_digits']}d  norm={bd['norm']:.6f}  3^h mod7={bd['3h_mod7']}  cond3={c3}  step={bd['cf_step']}")
@@ -470,7 +473,7 @@ print()
 
 print("THEOREM 4.1 (David Fox, June 5 2026):")
 print("  N_routes = 120 - rank(H^2_fail) = 120 - 12 = 108")
-print("  Prediction: 108.  Sieve (A+B, to ~10^200): {N_routes} certified.".format(N_routes=N_routes))
+print("  Prediction: 108.  Sieve (A+B, to ~10^400): {N_routes} certified.".format(N_routes=N_routes))
 print()
 print("H4 Route Metric:")
 print("  d(h_i,h_j) = |(h_i-h_j)*2pi/7 mod 1| * min(h_i,h_j)")
@@ -496,9 +499,9 @@ cert_data = {
     "alpha": "2*pi/7",
     "phase_a_brute_force_limit": N_BF,
     "phase_a_dps": 200,
-    "phase_b_cf_dps": 400,
-    "phase_b_max_cf_terms": 450,
-    "phase_b_max_denom_approx": "1e200",
+    "phase_b_cf_dps": 800,
+    "phase_b_max_cf_terms": 800,
+    "phase_b_max_denom_approx": "1e400",
     "N_routes_found": N_routes,
     "theorem_4_1_prediction": 108,
     "bands": [
@@ -608,7 +611,7 @@ print(f"                 [CORRECTION: spec had 73.891/1364; computed 72.208/1303
 print(f"                 C(S7)>2*sqrt(1000)={float(thresh_1000):.6f}: {C7>thresh_1000}")
 print(f"                 Per-beta table b=6..15: computed S_beta, C(S_beta), g_max")
 print(f"Way 3 S-Bands:   Phase A (brute-force to {N_BF:,}): {len(phase_a_bands)} bands")
-print(f"                 Phase B (CF sieve to ~10^200): {len(phase_b_bands)} bands")
+print(f"                 Phase B (CF sieve to ~10^400, 800 dps): {len(phase_b_bands)} bands")
 print(f"                 Combined: {N_routes} certified bands total")
 print(f"                 Z=1 ALL. Theorem 4.1 prediction: 108.")
 print(f"                 Precision audit Phase1: {pass3} PASS, {fail3} FAIL ({len(MP_KNOWN)} named candidates)")
@@ -616,7 +619,7 @@ print(f"                 Extended sieve [2,{N_BF:,}]: {len(phase_a_bands)} total
 print(f"Way 4 H4:        K_H4=55/4=13.75 EXACT. f_H4=pi^2*11/120={float(f_H4):.10f}.")
 print(f"                 v_g=pi*c VERIFIED. gamma_1=pi/10 CORRECTED.")
 print()
-print(f"N_routes (combined sieve, ~10^200): {N_routes}")
+print(f"N_routes (combined sieve, ~10^400): {N_routes}")
 print(f"N_routes (Theorem 4.1 prediction):  108")
 print()
 print("SORRY: 0")

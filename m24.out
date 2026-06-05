@@ -125,7 +125,7 @@ S-band definition: prime h with ||h * 2*pi/7|| * h < 1  [mpmath dps>=200]
 
 Sieve method:
   Phase A: brute-force prime sweep h=2..50,000,000 (ALL primes checked, mpmath 200 dps)
-  Phase B: CF convergent denom sieve (mpmath 400 dps, 450 terms, denom to ~10^200)
+  Phase B: CF convergent denom sieve (mpmath 800 dps, 800 terms, denom to ~10^400)
            for h > 50,000,000 (brute-force impractical above this bound)
   Combined: union of Phase A and Phase B results.
 
@@ -184,15 +184,18 @@ PHASE A: Brute-force prime sweep h=2..50,000,000 (extended, ALL primes checked)
     h=127           norm=0.643454  3^h mod7=3  cond3=PASS
     h=414679        norm=0.241477  3^h mod7=3  cond3=PASS
 
-PHASE B: CF convergent denominator sieve h>5,000,000
-  Phase B result: 4 CF convergent prime denominators > 50,000,000
+PHASE B: CF convergent denominator sieve h>5,000,000 (800 dps, 800 terms, ~10^400)
+  Phase B result: 5 CF convergent prime denominators > 50,000,000
+  NOTE: Prior 400-dps run found spurious prime at step=389 (192d h); not reproduced at 800 dps.
+  Precision artifact from lower-precision CF expansion. 800-dps result is authoritative.
     h=22d  norm=0.601990  3^h mod7=3  cond3=PASS  step=47
     h=27d  norm=0.486066  3^h mod7=5  cond3=PASS  step=58
     h=32d  norm=0.296168  3^h mod7=3  cond3=PASS  step=71
-    h=192d  norm=0.312983  3^h mod7=5  cond3=PASS  step=389
+    h=298d  norm=0.110464  3^h mod7=3  cond3=PASS  step=613
+    h=360d  norm=0.212370  3^h mod7=3  cond3=PASS  step=751
 
-COMBINED SIEVE RESULT: 9 certified S-bands
-  (Phase A: 5, Phase B: 4)
+COMBINED SIEVE RESULT: 10 certified S-bands
+  (Phase A: 5, Phase B: 5)
 
    Band                                    h        norm   Z(h)    M*(h)   3^hmod7   cond3  method
   ----------------------------------------------------------------------
@@ -204,7 +207,8 @@ COMBINED SIEVE RESULT: 9 certified S-bands
   [  6]               4964318427222741249841    0.601990      1    12/11         3    PASS  cf_convergent
   [  7]          135531508477763247952856981    0.486066      1    12/11         5    PASS  cf_convergent
   [  8]     12454380874316538311034864614401    0.296168      1    12/11         3    PASS  cf_convergent
-  [  9]  89178291255450950526704998630126653    0.312983      1    12/11         5    PASS  cf_convergent
+  [  9]  42994863497186150438847299257843043    0.110464      1    12/11         3    PASS  cf_convergent
+  [ 10]  04368482250199486982129909744327553    0.212370      1    12/11         3    PASS  cf_convergent
 
   h values (full):
   Band 1: h=2
@@ -215,7 +219,8 @@ COMBINED SIEVE RESULT: 9 certified S-bands
   Band 6: h=4964318427222741249841
   Band 7: h=135531508477763247952856981
   Band 8: h=12454380874316538311034864614401
-  Band 9: h=220698950990377977706737382046257457820222971812621206627482609687545723960568249370318382225443304419434966237349217913315981700328851777474747923240381912389178291255450950526704998630126653
+  Band 9: h=2541641966768787975589125141346598505091379974272520157947364219394063271449412930804225462640038636683730577539765393301928691580669987119931942571316099921263025526833046535494850671687909981799999836196808658209587016056318159707923908730494460961319184600594742994863497186150438847299257843043
+  Band 10: h=752817678704786017288773204041285239631074072706846862881555699222714888826551260534168098938136896190269282269934116600896355393888942376695357295094805264583252819678405300203254751307118494232914179473688075573462371700596571476212131477503662003124082822067324584332358090352785025873005405042672124770842794663044545809804368482250199486982129909744327553
 
   Z(h)=1 for ALL bands: True
   cond3 PASS for all applicable bands (h>3): True
@@ -225,7 +230,7 @@ COMBINED SIEVE RESULT: 9 certified S-bands
 
 THEOREM 4.1 (David Fox, June 5 2026):
   N_routes = 120 - rank(H^2_fail) = 120 - 12 = 108
-  Prediction: 108.  Sieve (A+B, to ~10^200): 9 certified.
+  Prediction: 108.  Sieve (A+B, to ~10^400): 10 certified.
 
 H4 Route Metric:
   d(h_i,h_j) = |(h_i-h_j)*2pi/7 mod 1| * min(h_i,h_j)
@@ -242,10 +247,11 @@ Per-band physics (M8K/M8L certified constants):
   Band  6: Dest=vertex  48, f_h=741249841 Hz
   Band  7: Dest=vertex 116, f_h=952856981 Hz
   Band  8: Dest=vertex   0, f_h=864614401 Hz
-  Band  9: Dest=vertex  10, f_h=630126653 Hz
+  Band  9: Dest=vertex   8, f_h=257843043 Hz
+  Band 10: Dest=vertex 110, f_h=744327553 Hz
 
-  bands_M24_CERT.json written. SHA: a907dea8fd72572bfc5f59ebea735a638d8a1bddd66a9b83dfe9928204b81b24
-  bands_M24_table.tex written. SHA: 1a3d3d14835a73c2ea43b30a0de4b3739c38538a4b016ac9fa360d122d0f74b7
+  bands_M24_CERT.json written. SHA: 0578f41cd6c561ce2df9f0c66bd57e7a3e3b1f93e68b933518f99c8a11d99bb3
+  bands_M24_table.tex written. SHA: f55a406b3436fdc2912b1ff86aa8860fe036af6cf707f10beb8efe6a3c5c1bee
 
 ========================================================================
 WAY 4: H4 REFRACTIONS
@@ -290,17 +296,17 @@ Way 2 Alpha:     p7_grh=62730013457017 PRIME=True
                  C(S7)>2*sqrt(1000)=63.245553: True
                  Per-beta table b=6..15: computed S_beta, C(S_beta), g_max
 Way 3 S-Bands:   Phase A (brute-force to 50,000,000): 5 bands
-                 Phase B (CF sieve to ~10^200): 4 bands
-                 Combined: 9 certified bands total
+                 Phase B (CF sieve to ~10^400, 800 dps): 5 bands
+                 Combined: 10 certified bands total
                  Z=1 ALL. Theorem 4.1 prediction: 108.
                  Precision audit Phase1: 3 PASS, 5 FAIL (8 named candidates)
                  Extended sieve [2,50,000,000]: 5 total S-bands found (Phase A result)
 Way 4 H4:        K_H4=55/4=13.75 EXACT. f_H4=pi^2*11/120=0.9047137368.
                  v_g=pi*c VERIFIED. gamma_1=pi/10 CORRECTED.
 
-N_routes (combined sieve, ~10^200): 9
+N_routes (combined sieve, ~10^400): 10
 N_routes (Theorem 4.1 prediction):  108
 
 SORRY: 0
 
-Source SHA-256: 0c16c1a3846da8fa2e77591d07e488899edc6abe73b4e0914f3beb2977c21421
+Source SHA-256: c58051daed88a69f33afac5ff020d1289ec81c8ae8b3c74e2365fda6c0cd047d
