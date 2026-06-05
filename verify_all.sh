@@ -43,6 +43,11 @@ if [ ! -d "$FIELD_REPORT_ASSETS" ]; then
   echo "WARNING: $FIELD_REPORT_ASSETS/ directory not found -- skipping field report build."
   FIELD_REPORT_SKIP=1
 fi
+if ! python3 -c "import reportlab" 2>/dev/null; then
+  echo "WARNING: Python package 'reportlab' is not installed -- skipping field report build."
+  echo "         Install with: pip install reportlab"
+  FIELD_REPORT_SKIP=1
+fi
 
 if [ "$FIELD_REPORT_SKIP" -eq 0 ]; then
   echo "Pre-flight OK. Proceeding with field report build."

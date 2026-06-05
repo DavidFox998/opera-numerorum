@@ -10,6 +10,12 @@
 
 set -e
 
+if ! python3 -c "import reportlab" 2>/dev/null; then
+  echo "WARNING: Python package 'reportlab' is not installed -- cannot build field report."
+  echo "         Install with: pip install reportlab"
+  exit 1
+fi
+
 OUT_1PP="certificates/Field_Report_1pp.pdf"
 OUT_2PP="certificates/Field_Report_2pp.pdf"
 INVARIANTS="certificates/invariants.json"
