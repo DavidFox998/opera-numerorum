@@ -869,6 +869,30 @@ const MODULE_REFERENCES: Record<string, number> = {
   Z_PROTOCOL_V2: 17,
 };
 
+const MODULE_STATIC_SHA: Record<string, string> = Object.fromEntries(
+  MODULES.filter((m) => m.sha).map((m) => [m.id, m.sha as string]),
+);
+
+function applyLiveShasToClaimText(
+  claim: string,
+  liveShas: Record<string, string>,
+): string {
+  let result = claim;
+  for (const [moduleId, liveValue] of Object.entries(liveShas)) {
+    const staticSha = MODULE_STATIC_SHA[moduleId];
+    if (!staticSha || !liveValue || liveValue === staticSha) continue;
+    if (result.includes(staticSha)) {
+      result = result.split(staticSha).join(liveValue);
+    }
+    const staticPrefix = staticSha.substring(0, 8) + "...";
+    const livePrefix = liveValue.substring(0, 8) + "...";
+    if (staticPrefix !== livePrefix && result.includes(staticPrefix)) {
+      result = result.split(staticPrefix).join(livePrefix);
+    }
+  }
+  return result;
+}
+
 const AUDIT_ROWS = [
   {
     mod: "M3",
@@ -1200,10 +1224,10 @@ function StatusChip({ status }: { status: string }) {
 
 function ModuleCard({
   mod,
-  liveSha,
+  liveShas,
 }: {
   mod: (typeof MODULES)[0];
-  liveSha?: string;
+  liveShas?: Record<string, string>;
 }) {
   const [open, setOpen] = useState(false);
   const isManifest = mod.id === "M7";
@@ -1211,11 +1235,11 @@ function ModuleCard({
   const isV2 = mod.id === "Z_PROTOCOL_V2";
   const isReplicut = mod.status === "v17_REPLICUT_CERTIFIED";
   const refs = MODULE_REFERENCES[mod.id];
+  const liveSha = liveShas?.[mod.id];
   const displaySha = liveSha ?? mod.sha;
-  const displayClaim =
-    liveSha && mod.sha && mod.claim.includes(mod.sha)
-      ? mod.claim.replace(mod.sha, liveSha)
-      : mod.claim;
+  const displayClaim = liveShas
+    ? applyLiveShasToClaimText(mod.claim, liveShas)
+    : mod.claim;
 
   return (
     <Card
@@ -1985,7 +2009,7 @@ export default function CertificatePage() {
               <ModuleCard
                 key={mod.id}
                 mod={mod}
-                liveSha={liveShas[mod.id]}
+                liveShas={liveShas}
               />
             ))}
           </div>
