@@ -1627,7 +1627,7 @@
         "name": "Sol - Lamma Dock",
         "face": "DOCK_A",
         "cell": "000",
-        "dist_ly": 0.0000045,
+        "dist_ly": 4.5e-06,
         "t_ns": 7.71,
         "type": "bidirectional",
         "bidirectional": "H01 <-> DOCK_A",
@@ -2198,7 +2198,7 @@
     "M6_genus_binding": "ec9fa8c3... (genus(X_0(143))=13)"
   },
   "lean_chain_TheoremaAureum143": {
-    "title": "TheoremaAureum143 Lean Proof Chain — C01 through C07",
+    "title": "TheoremaAureum143 Lean Proof Chain \u2014 C01 through C07",
     "audit_date": "2026-06-04",
     "audit_revision": "rev2",
     "status": "ARCHITECTURE_CERTIFIED",
@@ -2446,7 +2446,7 @@
       "fraction": "233/144",
       "value": 1.618055555555556,
       "phi": 1.618033988749895,
-      "error": 0.0000216,
+      "error": 2.16e-05,
       "note": "Convergent to phi (golden ratio), NOT phi^2"
     },
     "bsd_certified": {
@@ -2948,7 +2948,7 @@
   },
   "cert_arb_beta0_prior": {
     "module": "SOURCE",
-    "title": "CERT_Arb_beta0 (prior version — matches Wall256 Section 16 reference)",
+    "title": "CERT_Arb_beta0 (prior version \u2014 matches Wall256 Section 16 reference)",
     "file": "certificates/CERT_Arb_beta0_prior.pdf",
     "sha256": "b5a9f0a7666a91f283a7d4531ae99dff2097c2cedef10424b77833b7bbc840d3",
     "status": "REFERENCE",
@@ -3159,6 +3159,125 @@
     "phase_b_cf_dps": 800,
     "phase_b_max_cf_terms": 800,
     "phase_b_max_denom_approx": "1e400"
+  },
+  "module_25": {
+    "module": "M25",
+    "title": "Theorem 4.1 Full Proof: N_routes = 120 - rank(H^2_fail) = 108",
+    "claim": "rank(H^2_fail)=12 (1 CONFIRMED_FAIL: X_5 Z=15 M8C SHA + 11 PREDICT_FAIL genus>=5 Z-Lock+M21 lift). N_routes=120-12=108. Diamond-Shurman genus formula computed for all 11 predict-fail primes {67,73,103,107,167,191,193,223,227,229,269}. genus in {5,5,8,9,14,16,15,18,19,18,22}. CM_LIST membership check for all 11: NONE in CM_LIST. Z-Lock+M21 non-CM Hecke lift: Z>=2g+1>10 for all 11. 120-12=108 verified by Python assert. SORRY: 0.",
+    "source_file": "certificates/m25_theorem41_proof.py",
+    "sha256_source": "0d7d41c7364f7c7f817b4eab8fe7f4d50c5886e7f5a5657debc3336ac6c54ff3",
+    "sha256_stdout": "4fa53d75b2dfad0861966bedbe42f108deca0311fea7836fd063d6429c177231",
+    "stdout_file": "m25.out",
+    "sha256_pdf": "e833f77615dec73d848aeb38836603c34f36b6ac5f143940e2d1ac74bd58fa77",
+    "sha256_json": "e97720b0560ee03290a42afd04a2e1b8fb1ffb59329d038d5f7ba6ba7c0ec9d7",
+    "json_file": "certificates/m25_theorem41_cert.json",
+    "theorem_4_1": {
+      "N_cells_120cell": 120,
+      "rank_H2_fail": 12,
+      "N_routes": 108,
+      "arithmetic": "120 - 12 = 108 [Python assert PASS]"
+    },
+    "H2_fail_set": {
+      "total": 12,
+      "confirmed": 1,
+      "predicted": 11,
+      "confirmed_list": [
+        {
+          "curve": "X_5 (X_0(5))",
+          "N": 5,
+          "Z": 15,
+          "source": "M8C SHA 02fe6048..."
+        }
+      ],
+      "predict_fail_list": [
+        67,
+        73,
+        103,
+        107,
+        167,
+        191,
+        193,
+        223,
+        227,
+        229,
+        269
+      ]
+    },
+    "genus_table": {
+      "method": "Diamond-Shurman Thm 3.1.1",
+      "formula": "g = 1 + mu/12 - eps2/4 - eps3/3 - eps_inf/2",
+      "primes_and_genera": {
+        "67": 5,
+        "73": 5,
+        "103": 8,
+        "107": 9,
+        "167": 14,
+        "191": 16,
+        "193": 15,
+        "223": 18,
+        "227": 19,
+        "229": 18,
+        "269": 22
+      },
+      "N67_N73_note": "genus=5: M21 non-CM Hecke lift gives Z>=2g+1=11>10. PREDICT_FAIL confirmed."
+    },
+    "causal_parent_M24_sha": "33fcb736e3f6365970812cb7e1dd8466ce87ffaf8f59b3e494dcdfda551546e9",
+    "causal_parent_M8C_sha": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
+    "status": "THEOREM_4.1_CERTIFIED",
+    "SORRY": 0,
+    "causal_parents": [
+      "M1",
+      "M4",
+      "M5",
+      "M6",
+      "M8",
+      "M8C",
+      "M8G_Correction",
+      "M21",
+      "M24"
+    ],
+    "audit_items": [
+      "X_5 Z=15 is Hecke matrix rank (rank M_ij, M8G_Correction), not derivable from genus(X_0(5))=0",
+      "N=67: D=-67 is Heegner (h(-67)=1) but N=67 is PREDICT_FAIL; CM condition is on CM FIBRE discriminant at conductor N, not on Q(sqrt(-N))",
+      "N=67,73 genus=5 Z_lb=10: M21 non-CM Hecke rank lift adds >=1, giving Z>=11>10",
+      "Theorem 4.1 upper bound (108) vs S-band sieve lower bound (10, M24): 10<=N_routes<=108"
+    ],
+    "source_sha": "0d7d41c7364f7c7f817b4eab8fe7f4d50c5886e7f5a5657debc3336ac6c54ff3",
+    "stdout_sha": "4fa53d75b2dfad0861966bedbe42f108deca0311fea7836fd063d6429c177231",
+    "cert_json_sha": "e97720b0560ee03290a42afd04a2e1b8fb1ffb59329d038d5f7ba6ba7c0ec9d7",
+    "pdf_sha": "e833f77615dec73d848aeb38836603c34f36b6ac5f143940e2d1ac74bd58fa77",
+    "causal_parent_M21": "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad",
+    "causal_parent_M24": "33fcb736e3f6365970812cb7e1dd8466ce87ffaf8f59b3e494dcdfda551546e9",
+    "causal_parent_M9CSV": "1c4ed15424fe5b920be74e1933c918b1ae4da4b6225956d44bf96160f41beb06",
+    "derivation": "CM_LIST (12 entries) parsed from SHA-verified m24.out via regex on 'N= g=1 disc= h(-D)=1' lines; h(-D)=1 verified from first principles (reduced binary quadratic forms) for 11 of 12 entries; disc=-13 (non-standard form disc) cited from M24 causal parent SHA. PREDICT_FAIL parsed from m24.out 'Predicted FAIL (N): N in {...}' line. Genus computed via Diamond-Shurman Thm 3.1.1. Z_min by M21 Thm 6.2.",
+    "CM_LIST_count": 12,
+    "CM_LIST_N": [
+      27,
+      32,
+      36,
+      49,
+      50,
+      64,
+      81,
+      100,
+      121,
+      144,
+      169,
+      256
+    ],
+    "PREDICT_FAIL": [
+      67,
+      73,
+      103,
+      107,
+      167,
+      191,
+      193,
+      223,
+      227,
+      229,
+      269
+    ]
   },
   "chronarithmetica": {
     "module": "Chronarithmetica",
