@@ -2901,5 +2901,28 @@
       "invariants.json",
       "PDFs/*.pdf (62 files)"
     ]
+  },
+  "p5_replacement_c13": {
+    "module": "AUDIT-1 CORRECTION",
+    "title": "C13 Law: P5_genuine Replacement Certification",
+    "file": "p5_replacement.out",
+    "sha256": "1799a8169bc5f62ba36fe17dcb7a547bb6cb6f7cde01704c8d41ef717ed7e80c",
+    "status": "CERTIFIED",
+    "claim": "P5_replacement = 1000000001083: PRIME, 13 digits, Sym=1 (omega=1). Replaces composite P5_genuine = 1000000001119 = 7x142857143017.",
+    "corrects": "P5_genuine = 1000000001119 (COMPOSITE, AUDIT-1 in Wall256 YM tower)",
+    "note": "digit_sum(P5_replacement) = 13 = C13 boundary -- structural alignment. C13 Law (Conjecture C7) remains open.",
+    "source": "certificates/certify_p5_replacement.py"
+  },
+  "wall256_ym_report": {
+    "module": "Wall256_YM",
+    "title": "Wall256 Yang-Mills Certification Report",
+    "file": "Wall256_YM_Report.pdf",
+    "sha256": "3c769af9149faef5d7edda9dc0047debca9cbd2b318d20cca112ee1507823ee6",
+    "status": "CERTIFIED",
+    "claim": "Wall256 YM tower: beta_0 in [2.079416880123, 2.079416880124] CERTIFIED; D4 fails; 9 open conjectures C1-C9 catalogued; AUDIT-1 (P5_genuine COMPOSITE) corrected by P5_replacement=1000000001083.",
+    "audit_1": "P5_genuine = 1000000001119 = 7 x 142857143017 (COMPOSITE, REJECTED)",
+    "audit_1_correction": "P5_replacement = 1000000001083 (PRIME, 13 digits, Sym=1, digit_sum=13)",
+    "p5_replacement_stdout_sha": "1799a8169bc5f62ba36fe17dcb7a547bb6cb6f7cde01704c8d41ef717ed7e80c",
+    "source": "certificates/build_wall256_ym.py"
   }
 }

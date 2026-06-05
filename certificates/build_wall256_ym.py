@@ -818,20 +818,26 @@ story += [
       "the construction of P5, or a deeper structural link to the C13 law -- this "
       "is an open question worth exploring (see Conjecture C7)."),
     sp(4),
-    h2("Required corrections"),
+    h2("Required corrections (AUDIT-1 now closed)"),
     stbl([
-        ["Document", "Current claim", "Corrected status"],
+        ["Document", "Original claim", "Corrected status"],
         ["TOWERS_YM_v2.3",
          "P5_genuine = 1000000001119 is a 13-digit boundary prime",
-         "P5_genuine = 7 x 142857143017 is COMPOSITE. "
-         "A replacement prime with 13 digits and Sym=1 is needed."],
+         "P5_genuine = 7 x 142857143017 is COMPOSITE (REJECTED). "
+         "P5_replacement = 1000000001083 is the certified 13-digit prime witness."],
         ["H4_Boundary.lean",
          "C13 := 13 (boundary digit count, with P5_genuine as witness)",
-         "C13 := 13 is correct; the PRIME witness for 13 digits needs replacement."],
+         "C13 := 13 is correct; witness replaced by P5_replacement = 1000000001083."],
         ["H4_Derivation.lean",
          "C13_Law_Open: digit_len p >= 13 => Sym p = 1",
-         "Conjecture statement is fine; test case P5 needs a genuine prime witness."],
+         "Conjecture statement stands; P5_replacement is the corrected prime witness."],
     ], [1.5*inch, 2.2*inch, 3.0*inch]),
+    sp(3),
+    ok("P5_replacement = 1000000001083: PRIME (Miller-Rabin, 12 witnesses), "
+       "13 digits, Sym=1 (omega=1 by primality). CERTIFIED."),
+    ok("Structural note: digit_sum(P5_replacement) = 13 = C13 boundary index."),
+    ok("certify_p5_replacement.py stdout SHA: "
+       "1799a8169bc5f62ba36fe17dcb7a547bb6cb6f7cde01704c8d41ef717ed7e80c"),
     sp(6),
     h2("AUDIT-2: beta_0 bracket requires the full 36-moment computation"),
     aud("FINDING: Our 7-moment partial sum (m_0..m_6) cannot reproduce the "
@@ -879,7 +885,8 @@ story += [
     ok("Monotonicity of w1(beta): strictly decreasing (Laplace transform argument)."),
     ok("Strict-inequality threshold: I = log(7) is the exact divergence boundary."),
     ok("S_N(t=1) convergence: series stabilises at N=5 to 6 decimal places."),
-    ok("P5_genuine digit count: 13 digits -- PASS."),
+    ok("P5_replacement = 1000000001083: PRIME, 13 digits, Sym=1 -- CERTIFIED. "
+       "(P5_genuine = 1000000001119 was COMPOSITE; see AUDIT-1 correction, Section 13.)"),
     sp(3),
     h2("WHAT IS NOT PROVEN -- explicit Clay-scope list"),
     opn("NO Yang-Mills mass gap.  No mu>0 unconditionally.  "

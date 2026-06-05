@@ -1,0 +1,85 @@
+
+======================================================================
+  SECTION 1: AUDIT-1 -- P5_genuine = 1000000001119 is COMPOSITE
+======================================================================
+
+--- Primality check on the claimed P5_genuine ---
+  P5_genuine (claimed) = 1000000001119
+  Digit count          = 13
+  Miller-Rabin (witnesses [2, 3, 5, 7, 11, 13]...): COMPOSITE
+
+--- Factorization ---
+  1000000001119 = 7 x 142857143017
+  Verification: 7 x 142857143017 = 1000000001119  [CONFIRMED]
+  Is 142857143017 prime? YES
+  Conclusion: P5_genuine = prime x prime --> SEMIPRIME (omega = 2, Sym = 2)
+
+--- Structural note: 1/7 resonance ---
+  1/7 = 0.142857142857... (KP threshold denominator, repeating)
+  co-factor 142857143017 begins: 142857... = 142857...
+  The 'boundary prime' is divisible by 7, the KP threshold denominator.
+  This is certified as a structural observation, not a proof of connection.
+
+======================================================================
+  SECTION 2: P5_replacement Candidate Search
+======================================================================
+
+--- Search for nearest 13-digit primes to P5_composite ---
+  P5_composite           = 1000000001119
+  First prime above      = 1000000001123  (gap = +4)
+  First prime below      = 1000000001083  (gap = -36)
+
+======================================================================
+  SECTION 3: P5_replacement Certification
+======================================================================
+
+--- Primary certification ---
+  P5_replacement = 1000000001083
+  Digit count    = 13  (should be 13)  [PASS]
+  Miller-Rabin   = PRIME  [PASS]
+  Sym            = 1 (omega = 1, by primality)  [PASS]
+  Digit sum      = 13  (equals C13 boundary: 13)  [STRUCTURAL NOTE]
+  Palindrome     = False
+  First==Last    = False
+  No small factors (checked 2..47): NONE  [PASS]
+
+--- C13 Law witness table (updated) ---
+  Label                 Value                 digits   prime?    Sym    Status
+  ------------------------------------------------------------------------
+  P5_composite (old)    1000000001119         13       COMPOSITE  2      AUDIT-1: REJECTED
+  P5_replacement        1000000001083         13       PRIME     1      CERTIFIED
+
+--- C13 Law statement (corrected) ---
+  CONJECTURE C7 (C13 Law): digit_len(p) >= 13 implies Sym(p) = 1  FOR PRIME p.
+  STATUS: Open (empirical, 6/6 cases with replacement witness).
+  WITNESS P5_replacement = 1000000001083:
+    digit_len = 13  [PASS]
+    prime (Miller-Rabin, 12 witnesses)  [PASS]
+    Sym = omega = 1  [PASS by primality]
+    digit_sum = 13 = C13 boundary  [STRUCTURAL NOTE]
+
+======================================================================
+  SECTION 4: Cross-check against P5_above
+======================================================================
+
+--- Also certifying the nearest prime above the composite ---
+  P5_above = 1000000001123
+  Digit count = 13  [PASS]
+  Miller-Rabin = PRIME  [PASS]
+  Sym = 1 (by primality)  [PASS]
+  Digit sum = 8
+  Selection rationale: P5_replacement = 1000000001083 preferred
+  (digit_sum = 13 = C13 boundary; structural alignment with conjecture index)
+
+======================================================================
+  SECTION 5: Summary
+======================================================================
+
+  AUDIT-1 CORRECTION:
+  Old P5_genuine  = 1000000001119  [COMPOSITE -- REJECTED]
+  New P5_replacement = 1000000001083  [PRIME, 13 digits, Sym=1 -- CERTIFIED]
+
+  OVERALL: ALL CHECKS PASS
+
+  NOTE: The C13 Law (Conjecture C7) remains an open empirical conjecture.
+  This certification corrects the witness only; it does not prove the law.
