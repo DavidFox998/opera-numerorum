@@ -3067,7 +3067,7 @@
     "sha256_source": "8790525cf6c22b66a76944f54cd4f035af3465d71ec91def64c706a232a44d46",
     "sha256_stdout": "710d08e9747e99f3e6a60f8eaa74e4f00114a9ff015070c25bff0572b5b5269e",
     "stdout_file": "m24.out",
-    "sha256_pdf": "bb6ad153582148225aedd8428b154de535b270e0a37d6b155f37b749d7c90d1d",
+    "sha256_pdf": "ad7b267a0fc5c146b802733e0cf0cdf6e32da196d79bf528229b33b75da4844a",
     "sha256_bands_json": "d1ea4a28378fdbf2f94d78bd291770797f7aea9819923c9bd1065629d76f8c02",
     "sha256_bands_tex": "1a3d3d14835a73c2ea43b30a0de4b3739c38538a4b016ac9fa360d122d0f74b7",
     "bands_json": "certificates/bands_M24_CERT.json",

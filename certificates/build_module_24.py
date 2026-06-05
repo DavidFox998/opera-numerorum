@@ -275,19 +275,29 @@ story += [
     sp(4),
 ]
 
-# Precision audit box
+# Precision audit box -- counts pulled from invariants.json
+_pa = cert.get("precision_audit", {})
+_p1_pass = _pa.get("phase1_pass", 3)
+_p1_fail = _pa.get("phase1_fail", 2)
+_p2_samp = _pa.get("phase2_mechanism_samples", 9)
+_p2_fail = _pa.get("phase2_fail", 9)
+_tot_pass = _pa.get("total_pass", 3)
+_tot_fail = _pa.get("total_fail", 11)
 audit_data = [[
     Paragraph(
-        "PRECISION AUDIT: Meta AI float64 sieve produced 14 candidate bands. "
-        "Phase 1 (6 named h values from task spec): 4 PASS (h=2, 3, 127, 414679 -- genuine S-bands) "
-        "+ 2 FAIL (h=2814749767109 COMPOSITE div 7, norm_f64>>1; "
-        "h=15285768567421339 COMPOSITE div 13, norm_f64=0 exact-int artifact). "
-        "Phase 2 (8 exact-reconstructed bands 7-14): all 8 FAIL mpmath 200 dps. "
-        "Reconstruction: first 8 primes above h=15285768567421339 (all above F64 "
-        "threshold 10034781993639654 = 2^53/alpha_f64); above threshold norm_f64=0 always. "
-        "Bands 7-14 exact h values from David's screenshot not available in repository; "
-        "reconstruction is mathematically exact (all primes above F64 threshold trivially "
-        "pass float64 sieve). Total audit: 4 PASS + 10 FAIL of 14 candidates. SORRY: 0.",
+        f"PRECISION AUDIT: Meta AI float64 sieve produced 14 candidate bands. "
+        f"Phase 1 ({len(_pa.get('phase1_h_values', [127,414679,4964318427222741249841,2814749767109,15285768567421339]))} "
+        f"named h values from task spec): {_p1_pass} PASS "
+        f"(h=127, 414679, 4964318427222741249841 -- prime, norm_mpmath<1; genuine CF convergents) "
+        f"+ {_p1_fail} FAIL "
+        f"(h=2814749767109 COMPOSITE div 7, norm_f64>>1; "
+        f"h=15285768567421339 COMPOSITE div 13, norm_f64=0 exact-int artifact). "
+        f"Phase 2 ({_p2_samp} mechanism-demonstration samples for bands 6-14): "
+        f"all {_p2_fail} FAIL mpmath 200 dps. "
+        f"Exact h values for bands 6-14 not available (screenshot not in repository); "
+        f"Phase 2 demonstrates float64 exact-int artifact at multiple scales, not claimed "
+        f"as exact screenshot values. "
+        f"Total audit: {_tot_pass} PASS + {_tot_fail} FAIL of 14 candidates. SORRY: 0.",
         sty("AU", fontSize=7.5, leading=11, textColor=colors.HexColor("#4a148c")))
 ]]
 audit_t = Table(audit_data, colWidths=[6.5*inch])
@@ -346,9 +356,9 @@ thm41_data = [[
         f"N_routes = 120 - rank(H^2_fail) = 120 - 12 = 108. "
         f"Where 120 = 3-cells of the 120-cell (resonator cavities), "
         f"rank(H^2_fail) = 12 (12 H2-fail curves from Z-Lock). "
-        f"Computational result (combined sieve, Phase A+B, to ~10^200): "
+        f"Computational result (combined sieve, Phase A+B): "
         f"N_routes_found = {n_bands}. "
-        f"Remaining bands (if any) have h > 10^200.",
+        f"Phase A exhaustive h<=5e6; Phase B CF sieve to ~10^200 (non-CF primes above 5e6 not exhaustively checked).",
         sty("T41", fontSize=8, leading=12, textColor=colors.HexColor("#1a237e")))
 ]]
 thm41_t = Table(thm41_data, colWidths=[6.5*inch])
