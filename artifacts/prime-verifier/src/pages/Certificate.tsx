@@ -91,6 +91,7 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   M21:              { key: "module_21",             field: "sha256_stdout" },
   M22:              { key: "module_22",             field: "sha256_stdout" },
   M23:              { key: "module_23",             field: "sha256_stdout" },
+  M24:              { key: "module_24",             field: "sha256_stdout" },
   M8C:              { key: "module_m8c",            field: "stdout_sha256" },
   M8D:              { key: "module_m8d",            field: "stdout_sha256" },
   M8F:              { key: "module_m8f",            field: "stdout_sha256" },
@@ -153,6 +154,7 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   PDF_M21:            { key: "module_21",             field: "sha256_pdf"  },
   PDF_M22:            { key: "module_22",             field: "sha256_pdf"  },
   PDF_M23:            { key: "module_23",             field: "sha256_pdf"  },
+  PDF_M24:            { key: "module_24",             field: "sha256_pdf"  },
   PDF_M8A:            { key: "module_m8a",            field: "sha256_pdf"  },
   PDF_M8C:            { key: "module_m8c",            field: "pdf_sha256"  },
   PDF_M8D:            { key: "module_m8d",            field: "pdf_sha256"  },
@@ -366,6 +368,26 @@ const MODULES = [
     sha: "4635dab9a10a97faf78de01fd31b681f2a04df667d6c603c07ffefaf5d928b81",
     status: "CERTIFIED",
     correction: null,
+  },
+  {
+    id: "M24",
+    title: "H\u2084 Refraction Map: Z-Lock, Alpha-Bands, S-Bands, Self-Duality",
+    claim:
+      "THEOREM_A WITHDRAWN (h=29 prime and norm<1 but NOT a CF convergent denom of 2\u03c0/7). " +
+      "Bands 1-5 certified CF prime denominators of 2\u03c0/7 at 800 dps (800 terms, ~10\u2070\u2075): " +
+      "h={127, 414679, 4964318427222741249841, 135531508477763247952856981, 12454380874316538311034864614401}. " +
+      "Phase A brute-force to 50M (3,001,134 primes): 0 new bands. " +
+      "PRECISION_AUDIT: 3PASS (h=127, 414679, band-3) + 5FAIL (bands 4-5 composite; bands 6-8 Colmez primes but norm>>1). " +
+      "Bands 9-14 p8..p14 not in repo (35/76/111/372/859/1025/1863 digit primes; see PDF). " +
+      "THEOREM_4.1: N_routes = 120 \u2212 12 = 108. f_H4 = \u03c0\u00b7\u00b2\u00b711/120. K_H4 = 55/4 = 13.75. " +
+      "C(S7) = 72.2077606110 [spec 73.891; GRH PASS either way]. g_max = 1303 [spec 1364]. " +
+      "Lemma-7.6-v1.7: \u03b3\u2081 = \u03c0/10 (corrected from \u03c0/12). SORRY: 0.",
+    source: "certificates/m24_h4_refraction.py",
+    stdout: "m24.out",
+    sha: "33fcb736e3f6365970812cb7e1dd8466ce87ffaf8f59b3e494dcdfda551546e9",
+    status: "H4_REFRACTION_CERTIFIED",
+    correction:
+      "THEOREM_A withdrawn: h=29 is prime and norm(h)=0.880<1 but h=29 is NOT a CF convergent denominator of 2\u03c0/7. Bands 1-5 stand. C(S7)=72.2077 (spec 73.891), g_max=1303 (spec 1364) \u2014 GRH PASS either way. \u03b3\u2081=\u03c0/10 corrected from \u03c0/12.",
   },
   {
     id: "M8C",
@@ -1762,10 +1784,10 @@ export default function CertificatePage() {
             zipFallbackSha="e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"
           />
 
-          {/* Block 5 — Extended Theory M8A–M23 */}
+          {/* Block 5 — Extended Theory M8A–M24 */}
           <DownloadBlock
             color="slate"
-            label="Block 5 \u2014 Extended Theory M8A\u2013M23"
+            label="Block 5 \u2014 Extended Theory M8A\u2013M24"
             files={[
               { fn: "Module_M8A_Audit.pdf",        sz: "9.7 K", label: "M8A: Audit",              sha: liveShas["PDF_M8A"]         ?? "3567279c610e037d7815afcd7239992ace92fdbbe323272a487e566b4911caec", fallbackSha: "3567279c610e037d7815afcd7239992ace92fdbbe323272a487e566b4911caec" },
               { fn: "Module_M8C_ZoeMstar.pdf",     sz: "6.1 K", label: "M8C: Zoe M\u2605",        sha: liveShas["PDF_M8C"]         ?? "9dc46ef8226b1ee7aa0c949b5ab0c923d72d60bdae48e9f5a351e8ec328163f3", fallbackSha: "9dc46ef8226b1ee7aa0c949b5ab0c923d72d60bdae48e9f5a351e8ec328163f3" },
@@ -1788,6 +1810,7 @@ export default function CertificatePage() {
               { fn: "Module_21_H4_Invariant.pdf",  sz: "6.5 K", label: "M21: H\u2084 Invariant",   sha: liveShas["PDF_M21"]         ?? "1ef0b386026730e2c67ab6759106d72e6b51c522cb03fb6877cb08ffc9e7d1a3", fallbackSha: "1ef0b386026730e2c67ab6759106d72e6b51c522cb03fb6877cb08ffc9e7d1a3" },
               { fn: "Module_22_MStar_Definition.pdf",sz:"6.8 K",label: "M22: M\u2605 Definition",  sha: liveShas["PDF_M22"]         ?? "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d", fallbackSha: "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d" },
               { fn: "Module_23_BSD_J0_143.pdf",    sz: "5.8 K", label: "M23: BSD J\u2080(143)",     sha: liveShas["PDF_M23"]         ?? "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b", fallbackSha: "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b" },
+              { fn: "Module_24_Certificate.pdf",   sz: "7.0 K", label: "M24: H\u2084 Refraction Map",  sha: liveShas["PDF_M24"]         ?? "664348526e81a1ca6fb1e2f5c09f06d6e5566ffe1ea9e89aaf03809f3f55dc73", fallbackSha: "664348526e81a1ca6fb1e2f5c09f06d6e5566ffe1ea9e89aaf03809f3f55dc73" },
               { fn: "Module_10_Genus33.pdf",       sz: "6.6 K", label: "M10: Genus 33",            sha: liveShas["PDF_M10"]         ?? "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896", fallbackSha: "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896" },
               { fn: "Module_BDP_PhaseReversal.pdf",sz: "15 K",  label: "BDP: Phase Reversal",      sha: liveShas["PDF_BDP"]         ?? "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5", fallbackSha: "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5" },
             ]}
