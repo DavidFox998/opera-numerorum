@@ -1066,6 +1066,10 @@ function ModuleCard({
   const isReplicut = mod.status === "v17_REPLICUT_CERTIFIED";
   const refs = MODULE_REFERENCES[mod.id];
   const displaySha = liveSha ?? mod.sha;
+  const displayClaim =
+    mod.id === "FIELD_REPORT" && liveSha
+      ? mod.claim.replace(mod.sha, liveSha)
+      : mod.claim;
 
   return (
     <Card
@@ -1104,7 +1108,7 @@ function ModuleCard({
       </CardHeader>
       <CardContent className="px-5 pb-4 space-y-3">
         <p className="text-sm text-muted-foreground leading-relaxed">
-          {mod.claim}
+          {displayClaim}
         </p>
 
         <div className="grid grid-cols-2 gap-2 text-xs">
