@@ -38,6 +38,8 @@ SHA_TEX    = sha(TEX_FILE)
 with open(JSON_FILE) as f:
     cert = json.load(f)
 
+n_bands = cert["N_routes_found"]
+
 doc = SimpleDocTemplate(OUT, pagesize=LETTER,
                         leftMargin=0.75*inch, rightMargin=0.75*inch,
                         topMargin=0.65*inch, bottomMargin=0.65*inch)
@@ -89,17 +91,19 @@ def img(path, w=6.5*inch, h=None):
     return Image(path, width=W, height=H)
 
 def band_table(bands):
-    data = [["Band", "CF step", "h (digits)", "norm", "Z(h)", "M*(h)", "3^h mod 7", "Cond3"]]
+    data = [["Band", "Method", "h (digits)", "norm", "Z(h)", "M*(h)", "3^h mod 7", "Cond3"]]
     for bd in bands:
+        c3 = bd.get("cond3_str") or ("PASS" if bd.get("cond3_pass") else "FAIL")
+        meth = "BF" if bd.get("method") == "brute_force" else "CF"
         data.append([
             str(bd["band"]),
-            str(bd["cf_step"]),
+            meth,
             f"{bd['h_digits']}d",
             f"{bd['norm']:.6f}",
             str(bd["Z_h"]),
             bd["M_star_h"],
             str(bd["3h_mod7"]),
-            "PASS" if bd["cond3_pass"] else "FAIL",
+            c3,
         ])
     ts = TableStyle([
         ("BACKGROUND", (0,0), (-1,0), colors.HexColor("#1a237e")),
@@ -174,7 +178,7 @@ story += [
     Paragraph("Opera Numerorum: Machine Certification for GRH(X_0(143)) and BSD(J_0(143))", sub_sty),
     hr(thick=1.5, c="#1a237e"), sp(2),
     ok("STATUS: H4_REFRACTION_CERTIFIED.  SORRY: 0."),
-    ok("S-Bands: 5 certified (CF sieve to 10^200).  Theorem 4.1: N_routes=108 (prediction)."),
+    ok(f"S-Bands: {n_bands} certified (combined brute-force+CF sieve to ~10^200).  Theorem 4.1: N_routes=108 (prediction)."),
     ok("Z(h)=1 for all bands.  M*(h)=12/11 for all bands.  K_H4=55/4=13.75 EXACT."),
     sp(4),
     Paragraph("STDOUT SHA-256", sha_sty),
@@ -260,19 +264,23 @@ story += [
 
 # ── WAY 3: S-BANDS ────────────────────────────────────────────────────────────
 story += [
-    sp(8), hr(), h1("3.  Way 3: S-Bands (H4 Lattice Sieve)"),
-    b("Sieve: CF convergent denominators of alpha=2*pi/7, filtered to primes. "
-      "mpmath 400 dps. 450 CF terms. Denominators to ~10^200."),
+    sp(8), hr(), h1("3.  Way 3: S-Bands (Combined Brute-Force + CF Sieve)"),
+    b("Sieve definition: prime h with ||h * 2*pi/7|| * h < 1  [mpmath dps>=200]."),
+    b("Phase A: brute-force prime sweep h=2..5,000,000 (all primes checked, mpmath 200 dps)."),
+    b("Phase B: CF convergent denominator sieve h>5,000,000 (mpmath 400 dps, 450 terms, ~10^200)."),
     sp(4),
 ]
 
 # Precision audit box
 audit_data = [[
     Paragraph(
-        "PRECISION AUDIT: The Meta AI float64 sieve produced 14 candidate bands. "
-        "Float64 gives ~15.9 significant digits; for h~10^N, h*alpha requires ~2N digits. "
-        "Bands 4-14 from that run FAIL under mpmath (norms 10^12 to 10^49, not <1). "
-        "Only mpmath 400 dps results are certified here. SORRY: 0.",
+        "PRECISION AUDIT: Meta AI float64 sieve produced 14 candidate bands. "
+        "Phase 1 (5 known h values from spec): 3 PASS (h=127, 414679, 4964318427222741249841) "
+        "+ 2 FAIL (h=2814749767109 norm~1.38e12; h=15285768567421339 norm~7.44e15 -- "
+        "both are float64 artifacts: exact-integer rounding or CF precision loss). "
+        "Phase 2 (9 reconstructed float64 artifacts): all FAIL under mpmath 200 dps. "
+        "Float64 exact-integer pattern: h*float64(alpha) rounds to integer -> norm_f64=0 "
+        "is a false positive for many large primes. SORRY: 0.",
         sty("AU", fontSize=7.5, leading=11, textColor=colors.HexColor("#4a148c")))
 ]]
 audit_t = Table(audit_data, colWidths=[6.5*inch])
@@ -284,27 +292,28 @@ audit_t.setStyle(TableStyle([
 ]))
 story += [audit_t, sp(6)]
 
-# Theorem A
-thm_data = [[
+# Combined sieve method note (replaces Theorem A which was incorrect)
+sieve_note_data = [[
     Paragraph(
-        "THEOREM A (new, June 2026): "
-        "||h*alpha||*h < 1  <=>  h is a prime CF convergent denominator of 2*pi/7. "
-        "Proof: CF convergents satisfy ||q_n*a|| < q_n/q_{n+1} < 1 "
-        "(best-approximation property). Active filter: primality only.",
-        sty("TH", fontSize=8, leading=12, textColor=colors.HexColor("#0d47a1")))
+        "SIEVE METHOD: Combined brute-force (Phase A, h<=5e6) + CF convergent denominators "
+        "(Phase B, h>5e6, mpmath 400 dps). "
+        "NOTE: Theorem A (claimed S-bands = prime CF convergent denominators) is WITHDRAWN. "
+        "Counterexample: h=29 satisfies ||29*2pi/7||*29=0.880<1 but is NOT a CF convergent "
+        "denominator. Brute force correctly finds h=2,3,29,127,414679 in Phase A. "
+        "Cond3 (3^h mod 7 in {3,5,6}) applies for prime h>3; h=2,3 are classified COND3_N/A.",
+        sty("SM", fontSize=8, leading=12, textColor=colors.HexColor("#0d47a1")))
 ]]
-thm_t = Table(thm_data, colWidths=[6.5*inch])
-thm_t.setStyle(TableStyle([
+sieve_note_t = Table(sieve_note_data, colWidths=[6.5*inch])
+sieve_note_t.setStyle(TableStyle([
     ("BACKGROUND",(0,0),(-1,-1),colors.HexColor("#e3f2fd")),
     ("BOX",(0,0),(-1,-1),1.2,colors.HexColor("#1565c0")),
     ("TOPPADDING",(0,0),(-1,-1),6),("BOTTOMPADDING",(0,0),(-1,-1),6),
     ("LEFTPADDING",(0,0),(-1,-1),8),("RIGHTPADDING",(0,0),(-1,-1),8),
 ]))
-story += [thm_t, sp(6)]
+story += [sieve_note_t, sp(6)]
 
-n_bands = cert["N_routes_found"]
 story += [
-    ok(f"SIEVE RESULT: {n_bands} certified S-bands within CF terms 0-450 (denom <= ~10^200)"),
+    ok(f"SIEVE RESULT: {n_bands} certified S-bands (Phase A {5} brute-force + Phase B CF)"),
     sp(4), band_table(cert["bands"]), sp(4),
 ]
 
@@ -322,12 +331,13 @@ story += [
 # Theorem 4.1 box
 thm41_data = [[
     Paragraph(
-        "THEOREM 4.1 (David Fox, June 5 2026): "
-        "N_routes = 120 - rank(H^2_fail) = 120 - 12 = 108. "
-        "Where 120 = 3-cells of the 120-cell (resonator cavities), "
-        "rank(H^2_fail) = 12 (12 H2-fail curves from Z-Lock). "
-        "Computational result to 10^200: N_routes_found = 5. "
-        "Remaining bands (if any) have h > 10^200.",
+        f"THEOREM 4.1 (David Fox, June 5 2026): "
+        f"N_routes = 120 - rank(H^2_fail) = 120 - 12 = 108. "
+        f"Where 120 = 3-cells of the 120-cell (resonator cavities), "
+        f"rank(H^2_fail) = 12 (12 H2-fail curves from Z-Lock). "
+        f"Computational result (combined sieve, Phase A+B, to ~10^200): "
+        f"N_routes_found = {n_bands}. "
+        f"Remaining bands (if any) have h > 10^200.",
         sty("T41", fontSize=8, leading=12, textColor=colors.HexColor("#1a237e")))
 ]]
 thm41_t = Table(thm41_data, colWidths=[6.5*inch])

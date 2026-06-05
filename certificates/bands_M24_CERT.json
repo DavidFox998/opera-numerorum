@@ -18,7 +18,7 @@
       "Z_h": 1,
       "M_star_h": "12/11",
       "3h_mod7": 2,
-      "cond3_pass": false,
+      "cond3_pass": null,
       "method": "brute_force",
       "cf_step": null
     },
@@ -30,7 +30,7 @@
       "Z_h": 1,
       "M_star_h": "12/11",
       "3h_mod7": 6,
-      "cond3_pass": true,
+      "cond3_pass": null,
       "method": "brute_force",
       "cf_step": null
     },

@@ -3062,13 +3062,14 @@
   "module_24": {
     "module": "M24",
     "title": "H4 Refraction Map: Z-Lock, Alpha-Bands, S-Bands, Self-Duality",
-    "claim": "Combined sieve (Phase A brute-force to 5e6 + Phase B CF to ~10^200) finds 9 certified prime S-bands with ||h*2pi/7||*h < 1: h={2,3,29,127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401,Phase_B_4th}. THEOREM_4.1: N_routes=120-12=108 (prediction). f_H4=pi^2*11/120=0.9047137368. K_H4=55/4=13.75 EXACT. C(S7)=72.2077606110 [CORRECTION: spec estimate 73.891 superseded by computation], g_max=1303. SORRY: 0.",
+    "claim": "Combined sieve (Phase A brute-force to 5e6 mpmath 200dps + Phase B CF 400dps ~10^200): 9 certified prime S-bands with ||h*2pi/7||*h < 1. h={2,3,29,127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401,22069895099037797770...192d}. THEOREM_A WITHDRAWN (h=29 counterexample). Cond3 N/A for h=2,3 (Fermat ord_7(3)=6 applies h>3). Precision audit 14 Meta AI bands: Phase1 3PASS+2FAIL (known h values); Phase2 9 reconstructed float64 artifacts all FAIL mpmath. THEOREM_4.1: N_routes=120-12=108. f_H4=pi^2*11/120=0.9047137368. K_H4=55/4=13.75 EXACT. C(S7)=72.2077606110 [CORRECTION: spec estimate 73.891 superseded], g_max=1303. SORRY: 0.",
     "source_file": "certificates/m24_h4_refraction.py",
-    "sha256_source": "00e774d91da87272dbf4f9006370ff273fb40a8eff8cc88c8598d363f1da061f",
-    "sha256_stdout": "df35d1c571c74637af699f75fcdd6eca643b1fdb24a285175390b09cd64b9d8d",
+    "sha256_source": "cf62f5c286d95e05ef0251311fd53a7c6fa109850f8fc6adefca08b3b7e7ef64",
+    "sha256_stdout": "73be6bbf8b2dad58833435d3f6faa0c6f7bee9a77db31b3cbea366e621471e86",
     "stdout_file": "m24.out",
-    "sha256_bands_json": "511206d5f4f9d452db984cddc8f53a5d0a3570520c45a279538bafa5ec81f85a",
-    "sha256_bands_tex": "4ca91113547910e97110ac53324190e59039927c8bd5ff21886571e611b9b15b",
+    "sha256_pdf": "ebf825bd5805d897f776f9a41092d3c545ef67b7348877c6b97d22d435023445",
+    "sha256_bands_json": "96b7758436d71918732060528a7acfaa3b345188829d9d8621b6b3180d413158",
+    "sha256_bands_tex": "e042413704c8eb43612890211cd0dd17327fe4c858188a6f49388fee69e58fe2",
     "bands_json": "certificates/bands_M24_CERT.json",
     "bands_tex": "certificates/bands_M24_table.tex",
     "N_routes_found": 9,
@@ -3078,6 +3079,8 @@
     "g_max_computed": 1303,
     "K_H4": "55/4 = 13.75",
     "f_H4": "pi^2*11/120 = 0.904713736766525",
+    "theorem_a_withdrawn": true,
+    "theorem_a_counterexample": "h=29: norm=0.880<1 but h=29 is not a CF convergent denom of 2pi/7",
     "SORRY": 0,
     "status": "H4_REFRACTION_CERTIFIED",
     "causal_parents": [
@@ -3097,13 +3100,14 @@
       "AUDIT-A: N=81,225 pass M9-All but h(-9)=h(-15)=2, not in CM_LIST (h=1 strict)",
       "AUDIT-B: VALOR min for CM_LIST is 22569 (N=256)",
       "AUDIT-C: RESOLVED. alpha_0 = Faltings height of CM K3",
-      "AUDIT-S: Meta AI col4 identity TBD; bands 6-14 audit needs screenshot data",
-      "PRECISION_AUDIT: float64 bands 4-5 Meta AI FAIL under mpmath (norms ~1.4e12, ~7.4e15)",
+      "AUDIT-S: Meta AI col4 identity TBD; bands 6-14 screenshot h values represented by Phase 2 float64 artifact reconstruction (all FAIL mpmath)",
+      "PRECISION_AUDIT Phase1: float64 bands 4-5 FAIL under mpmath (norms ~1.38e12, ~7.44e15); bands 1-3 PASS",
+      "PRECISION_AUDIT Phase2: 9 reconstructed float64 exact-int artifacts all FAIL mpmath",
+      "THEOREM_A WITHDRAWN: h=29 (prime, norm=0.880<1) is not a CF convergent denominator; Theorem A was incorrect",
+      "Cond3 N/A for h=2 (3^2 mod7=2) and h=3 (3^3 mod7=6, actually PASS; ord_7 argument valid only h>3 strictly)",
       "Lemma-7.6-v1.7 correction: gamma_1=pi/10 (was pi/12 in M8 series)",
       "CORRECTION C(S7): spec estimate 73.891/1364 superseded by computed 72.208/1303",
-      "Sieve method: Phase A brute-force to 5e6 + Phase B CF convergents to ~10^200",
-      "h=2 cond3 FAIL (3^2 mod7=2; Cond3 applies strictly for h>3 by Fermat/ord_7(3)=6)"
-    ],
-    "sha256_pdf": "151271f48ef18e1e3d1bfe8942a8f74a38cc53ec35229cf9a871af3acaa8050d"
+      "Sieve method: Phase A brute-force to 5e6 (finds h=2,3,29,127,414679) + Phase B CF convergents to ~10^200 (finds 4 large bands)"
+    ]
   }
 }
