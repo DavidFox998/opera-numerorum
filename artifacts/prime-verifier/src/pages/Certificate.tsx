@@ -913,6 +913,7 @@ function ModuleCard({
   const isManifest = mod.id === "M7";
   const isM8 = mod.id === "M8";
   const isV2 = mod.id === "Z_PROTOCOL_V2";
+  const isReplicut = mod.status === "v17_REPLICUT_CERTIFIED";
   const refs = MODULE_REFERENCES[mod.id];
   const displaySha = liveSha ?? mod.sha;
 
@@ -925,6 +926,8 @@ function ModuleCard({
           ? "border-violet-300 bg-violet-50/30 dark:bg-violet-950/10"
           : isV2
           ? "border-sky-300 bg-sky-50/30 dark:bg-sky-950/10"
+          : isReplicut
+          ? "border-fuchsia-300 bg-fuchsia-50/30 dark:bg-fuchsia-950/10"
           : "border-emerald-200/60"
       }`}
     >
@@ -937,6 +940,8 @@ function ModuleCard({
                   ? "bg-indigo-100 text-indigo-700"
                   : isM8
                   ? "bg-violet-100 text-violet-700"
+                  : isReplicut
+                  ? "bg-fuchsia-100 text-fuchsia-700"
                   : "bg-emerald-100 text-emerald-700"
               }`}
             >
