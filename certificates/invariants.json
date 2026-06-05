@@ -2893,17 +2893,15 @@
   "bundle_all_certs": {
     "description": "Full certified archive: all 77 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 96769106,
+    "size_bytes": 96769119,
     "size_mb_approx": 92.3,
-    "sha256": "3e8ad862cfedf76bc3218747b095d7427b74418f5e6eb7d2522fe7222bb9fc45",
-    "generated_utc": "2026-06-05T22:50:10.469536Z",
+    "sha256": "cb7230276044763923493208c1b4806313dafc9a3edaa672cf074921ca7131c0",
+    "generated_utc": "2026-06-05T23:15:49.872237Z",
     "pdf_count": 77,
     "contents": [
       "invariants.json",
       "PDFs/*.pdf (77 files)"
-    ],
-    "drive_url": "https://drive.google.com/file/d/1-ZzOhlJzDB4B80gmF_jyDz4XyKzym8tO/view?usp=drivesdk",
-    "drive_filename": "OperaNumerorum_AllCerts.zip"
+    ]
   },
   "p5_replacement_c13": {
     "module": "AUDIT-1 CORRECTION",
@@ -3047,10 +3045,8 @@
     "sha256": "b765b3d2ac0829079e5000e975f80c171fc95643dbf60e691997f4fa04b51319",
     "size_bytes": 67211957,
     "file_count": 23,
-    "generated_utc": "2026-06-05T22:49:56Z",
-    "builder": "make_morning_star_zip.sh",
-    "drive_url": "https://drive.google.com/file/d/18cJi0AqC-lvajxzxdc2pl_VzBNhn6ht5/view?usp=drivesdk",
-    "drive_filename": "MorningStar_Complete_2026_06_04.zip"
+    "generated_utc": "2026-06-05T23:15:33Z",
+    "builder": "make_morning_star_zip.sh"
   },
   "bundle_chain": {
     "description": "Core certification chain M1-M8 PDFs + invariants.json.",

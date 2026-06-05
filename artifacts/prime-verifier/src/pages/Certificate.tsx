@@ -1708,7 +1708,7 @@ export default function CertificatePage() {
                 Every certified PDF — M1–M8Q, M9–M23, BDP, Wall256, Z Protocol, Field Report, Canonical Paper + invariants.json. <span className="text-amber-400">~92 MB</span>
               </p>
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
-                SHA: {liveShas["ALL_CERTS_ZIP"] ?? "3e8ad862cfedf76bc3218747b095d7427b74418f5e6eb7d2522fe7222bb9fc45"}
+                SHA: {liveShas["ALL_CERTS_ZIP"] ?? "cb7230276044763923493208c1b4806313dafc9a3edaa672cf074921ca7131c0"}
               </span>
               <div className="flex items-center gap-2 mt-1.5">
                 <a
@@ -1719,7 +1719,7 @@ export default function CertificatePage() {
                   <Download className="w-3 h-3 shrink-0" />
                   Download
                 </a>
-                <VerifyFileButton sha={liveShas["ALL_CERTS_ZIP"] ?? "3e8ad862cfedf76bc3218747b095d7427b74418f5e6eb7d2522fe7222bb9fc45"} />
+                <VerifyFileButton sha={liveShas["ALL_CERTS_ZIP"] ?? "cb7230276044763923493208c1b4806313dafc9a3edaa672cf074921ca7131c0"} />
               </div>
             </div>
           </div>
@@ -1778,9 +1778,9 @@ export default function CertificatePage() {
               { fn: "Module_M8K_FTL_Morningstar.pdf",   sz: "13 K",   label: "M8K: FTL Stack",                               sha: liveShas["PDF_M8K"]         ?? "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e", fallbackSha: "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e" },
               { fn: "MorningStar_Engineering_Summary.pdf",sz:"17 K",   label: "Engineering Summary" },
             ]}
-            zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: liveSizes["ZIP_MORNING_STAR"] ? formatBytes(liveSizes["ZIP_MORNING_STAR"]) : "58 MB", label: "Morning Star ZIP" }}
-            zipSha={liveShas["ZIP_MORNING_STAR"] ?? "57a27c90e5c1736222da682d9fc4ee66b2a0c59281993d5c2e2488d690c4339c"}
-            zipFallbackSha="57a27c90e5c1736222da682d9fc4ee66b2a0c59281993d5c2e2488d690c4339c"
+            zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: liveSizes["ZIP_MORNING_STAR"] ? formatBytes(liveSizes["ZIP_MORNING_STAR"]) : "64 MB", label: "Morning Star ZIP" }}
+            zipSha={liveShas["ZIP_MORNING_STAR"] ?? "b765b3d2ac0829079e5000e975f80c171fc95643dbf60e691997f4fa04b51319"}
+            zipFallbackSha="b765b3d2ac0829079e5000e975f80c171fc95643dbf60e691997f4fa04b51319"
           />
 
           {/* Block 4 — Core Certification Chain M1-M8 */}
