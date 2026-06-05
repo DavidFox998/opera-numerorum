@@ -1677,9 +1677,9 @@ export default function CertificatePage() {
               { fn: "Module_M8K_FTL_Morningstar.pdf",   sz: "13 K",   label: "M8K: FTL Stack",                               sha: liveShas["PDF_M8K"]         ?? "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e", fallbackSha: "72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e" },
               { fn: "MorningStar_Engineering_Summary.pdf",sz:"17 K",   label: "Engineering Summary" },
             ]}
-            zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: "34 MB", label: "Morning Star ZIP" }}
-            zipSha={liveShas["ZIP_MORNING_STAR"] ?? "3d79bd546e35ab7aafa3f12e624b5b351f03c4c5b01aed9aa3fe6ac122e57ad3"}
-            zipFallbackSha="3d79bd546e35ab7aafa3f12e624b5b351f03c4c5b01aed9aa3fe6ac122e57ad3"
+            zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: "58 MB", label: "Morning Star ZIP" }}
+            zipSha={liveShas["ZIP_MORNING_STAR"] ?? "57a27c90e5c1736222da682d9fc4ee66b2a0c59281993d5c2e2488d690c4339c"}
+            zipFallbackSha="57a27c90e5c1736222da682d9fc4ee66b2a0c59281993d5c2e2488d690c4339c"
           />
 
           {/* Block 4 — Core Certification Chain M1-M8 */}

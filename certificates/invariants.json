@@ -3028,9 +3028,9 @@
     "imported_utc": "2026-06-05"
   },
   "bundle_morning_star": {
-    "description": "Morning Star complete bundle: all Morning Star PDFs + engineering summary + field reports.",
+    "description": "Morning Star complete bundle: all Morning Star PDFs + engineering summary + field reports (includes Field_Report_Morningstar.pdf, Field_Report_1pp.pdf, Field_Report_2pp.pdf).",
     "file": "MorningStar_Complete_2026_06_04.zip",
-    "sha256": "3d79bd546e35ab7aafa3f12e624b5b351f03c4c5b01aed9aa3fe6ac122e57ad3"
+    "sha256": "57a27c90e5c1736222da682d9fc4ee66b2a0c59281993d5c2e2488d690c4339c"
   },
   "bundle_chain": {
     "description": "Core certification chain M1-M8 PDFs + invariants.json.",
