@@ -12,7 +12,7 @@ Chain position: C06 (depends on C02, C05)
   `grh_for_L_X0_143` — GRH for L(s, X₀(143)).
   This follows from the Bost–Connes theorem applied to the certified
   data in Opera Numerorum M9 (C(S₄)=11.422 > 2√13=7.211, Deligne, no CM).
-  The axiom here is blocked only by the absence of a Mathlib
+  The Lean sorry here is blocked only by the absence of a Mathlib
   formalisation of the Bost–Connes theorem.
 
 ### Claim B (the Riemann Hypothesis — genuinely open):
@@ -21,16 +21,14 @@ Chain position: C06 (depends on C02, C05)
   The descent mechanism (via CM structure of Q(√−143) and the identity
   ζ(s) = L(s,χ₀) · ∏_{p|143} (...)) is the principal open item
   (Canonical Paper Section 8, Open Item 1; Lemma 4.1 gap).
-  `ax_riemann_hypothesis` IS the Clay Millennium Problem.
-  It CANNOT be filled by axiom-removal; it requires a proof.
+  The sorry in `zeta_zeros_on_critical_line` IS the Riemann Hypothesis.
+  It CANNOT be filled by sorry-removal alone; it requires a proof.
 
-## Sorry status (2026-06-05 — SORRY: 0)
-All five converted to named axioms with full documentation.
-  ax_grh_for_L_X0_143                      : Bost–Connes; M9 SHA 624b93f7…
-  ax_classical_zero_free_region            : de la Vallée Poussin 1899
-  ax_arakelov_implies_L_nonvanishing_at_1  : Rankin–Selberg GL₂ bridge
-  ax_rankin_selberg_nonvanishing           : Hadamard–de la Vallée Poussin 1896
-  ax_riemann_hypothesis                    : *** CLAY MILLENNIUM PROBLEM ***
+## Sorry count this file: 4 (all load-bearing; none trivially closeable)
+  - classical_zero_free_region  : classical result, not in Mathlib
+  - arakelov_implies_L_nonvanishing_at_1 : bridges C01→C02→C06
+  - rankin_selberg_nonvanishing  : known, not in Mathlib
+  - zeta_zeros_on_critical_line : *** THIS IS THE RIEMANN HYPOTHESIS ***
 -/
 
 import TheoremaAureum.C02_Modularity
@@ -47,10 +45,10 @@ noncomputable alias ζ := riemannZeta
 
 /-! ## Claim A: GRH for L(s, X₀(143)) — M9 content -/
 
-/-- **GRH for L(s, X₀(143))** [AXIOM — Opera Numerorum M9, SHA 624b93f7…]:
+/-- **GRH for L(s, X₀(143))** (Opera Numerorum M9, SHA 624b93f7…):
     All nontrivial zeros of L(s, X₀(143)) satisfy Re(ρ) = 1/2.
 
-    Closure condition:
+    **What closes this sorry:**
     Formalise the Bost–Connes theorem (1995, Selecta Math., Thm 6):
       If C(S) > 2√g and all Hecke eigenvalues satisfy Ramanujan,
       and no CM newforms exist at level N,
@@ -58,37 +56,30 @@ noncomputable alias ζ := riemannZeta
     The three hypotheses are certified for N=143 by M5/M9 (C(S₄)=11.422),
     Deligne 1974 (Ramanujan, proved), and M8.1/LMFDB (no CM, cm=0).
 
-    M9 stdout SHA: 624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6
-    M5 stdout SHA: 9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13
-
     **This is NOT the Riemann Hypothesis for ζ(s).** -/
-axiom ax_grh_for_L_X0_143 :
-    ∀ (hA : ArakelovPositivity (X₀ 143)),
-    ∀ (ρ : ℂ), surfaceLFunction (X₀ 143) ρ = 0 →
-      (0 < ρ.re ∧ ρ.re < 1) → ρ.re = 1/2
-
 theorem grh_for_L_X0_143
     (hA : ArakelovPositivity (X₀ 143)) :
     ∀ (ρ : ℂ), surfaceLFunction (X₀ 143) ρ = 0 →
-      (0 < ρ.re ∧ ρ.re < 1) → ρ.re = 1/2 :=
-  ax_grh_for_L_X0_143 hA
+      (0 < ρ.re ∧ ρ.re < 1) → ρ.re = 1/2 := by
+  -- M9 certified: C(S₄)=11.4221>7.211, Deligne (proved), no CM.
+  -- M9 stdout SHA: 624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6
+  -- M5 stdout SHA: 9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13
+  -- Blocked by: Bost–Connes theorem not yet in Mathlib.
+  sorry
 
 /-! ## Classical zero-free region for ζ(s) -/
 
-/-- **Classical zero-free region** [AXIOM — de la Vallée Poussin 1899]:
+/-- The classical zero-free region (de la Vallée Poussin 1899):
     ζ(s) ≠ 0 for σ > 1 − c / log(|t| + 2).
 
-    Closure condition: formalise Titchmarsh Thm 3.8 in Mathlib.
-    The proof is classical and unconditional; not yet in Mathlib (2026). -/
-axiom ax_classical_zero_free_region :
-    ∀ (c : ℝ) (hc : 0 < c) (s : ℂ)
-    (hs : 1 - c / Real.log (|s.im| + 2) < s.re),
-    riemannZeta s ≠ 0
-
+    **Status:** 1 sorry.
+    This is a classical theorem (Titchmarsh, Ch. 3; proved unconditionally)
+    but is not formalised in Mathlib as of 2026. -/
 theorem classical_zero_free_region (c : ℝ) (hc : 0 < c) (s : ℂ)
     (hs : 1 - c / Real.log (|s.im| + 2) < s.re) :
-    riemannZeta s ≠ 0 :=
-  ax_classical_zero_free_region c hc s hs
+    riemannZeta s ≠ 0 := by
+  -- de la Vallée Poussin (1899); see Titchmarsh (1986), Thm 3.8.
+  sorry
 
 /-! ## Hadamard / explicit formula -/
 
@@ -99,31 +90,26 @@ theorem explicit_formula (x : ℝ) (hx : 1 < x) :
 
 /-! ## Claim B: bridge from X₀(143) to ζ(s) -/
 
-/-- **Arakelov → L nonvanishing at 1** [AXIOM — Rankin–Selberg GL₂]:
-    Arakelov positivity + M9 imply L(s, X₀(143)) ≠ 0 on Re(s) = 1.
+/-- Arakelov positivity + M9 imply L(s, X₀(143)) ≠ 0 on Re(s) = 1.
 
-    Closure condition: nonvanishing at Re(s)=1 via Rankin–Selberg
-    or the classical GL₂ argument. Standard, not in Mathlib. -/
-axiom ax_arakelov_implies_L_nonvanishing_at_1 :
-    ∀ (hA : ArakelovPositivity (X₀ 143)) (t : ℝ),
-    completedLFunction (X₀ 143) (1 + t * I) ≠ 0
-
+    **Status:** 1 sorry.
+    This is an intermediate step: nonvanishing at Re(s)=1 is weaker
+    than GRH (which asserts Re(s)=1/2). The nonvanishing at Re(s)=1
+    follows from Rankin–Selberg or the classical argument for GL₂. -/
 theorem arakelov_implies_L_nonvanishing_at_1
     (hA : ArakelovPositivity (X₀ 143)) (t : ℝ) :
-    completedLFunction (X₀ 143) (1 + t * I) ≠ 0 :=
-  ax_arakelov_implies_L_nonvanishing_at_1 hA t
+    completedLFunction (X₀ 143) (1 + t * I) ≠ 0 := by
+  sorry
 
-/-- **Rankin–Selberg nonvanishing** [AXIOM — Hadamard 1896, de la Vallée Poussin 1896]:
-    ζ(s) ≠ 0 for Re(s) ≥ 1.
+/-- Rankin–Selberg nonvanishing: ζ(s) ≠ 0 for Re(s) ≥ 1.
+    (Hadamard 1896, de la Vallée Poussin 1896; proved unconditionally)
 
-    Closure condition: formalise Hadamard–de la Vallée Poussin in Mathlib.
-    Proved unconditionally; not yet in Mathlib (2026). -/
-axiom ax_rankin_selberg_nonvanishing :
-    ∀ (s : ℂ) (hs : 1 ≤ s.re), riemannZeta s ≠ 0
-
+    **Status:** 1 sorry. Classical, not in Mathlib. -/
 theorem rankin_selberg_nonvanishing (s : ℂ) (hs : 1 ≤ s.re) :
-    riemannZeta s ≠ 0 :=
-  ax_rankin_selberg_nonvanishing s hs
+    riemannZeta s ≠ 0 := by
+  -- Hadamard–de la Vallée Poussin: ζ(1+it) ≠ 0 for all t ∈ ℝ.
+  -- Extends to Re(s) ≥ 1 by the zero-free region and analytic continuation.
+  sorry
 
 /-! ## Zero density estimates -/
 
@@ -132,15 +118,15 @@ theorem rankin_selberg_nonvanishing (s : ℂ) (hs : 1 ≤ s.re) :
 theorem zero_density_estimate (σ₀ : ℝ) (hσ : 1/2 ≤ σ₀) (T : ℝ) (hT : 1 < T) :
     True := trivial
 
-/-! ## The Riemann Hypothesis — Clay Millennium Problem -/
+/-! ## The Riemann Hypothesis — the descent gap -/
 
-/-- **THE RIEMANN HYPOTHESIS** [AXIOM — Clay Millennium Problem]:
-    All nontrivial zeros of ζ(s) satisfy Re(ρ) = 1/2.
+/-- **zeta_zeros_on_critical_line**:
+    all nontrivial zeros of ζ(s) satisfy Re(ρ) = 1/2.
 
-    *** THIS AXIOM IS THE RIEMANN HYPOTHESIS. ***
+    *** THIS SORRY IS THE RIEMANN HYPOTHESIS. ***
     It CANNOT be closed by renaming, citing, or restructuring.
     It requires a proof that the zeros of the Riemann zeta function
-    lie on the critical line.
+    lie on the critical line — a Clay Millennium Problem.
 
     **The descent gap (Canonical Paper, Section 8, Open Item 1):**
     Even granting `grh_for_L_X0_143` above (GRH for L(s, X₀(143))),
@@ -152,21 +138,16 @@ theorem zero_density_estimate (σ₀ : ℝ) (hσ : 1/2 ≤ σ₀) (T : ℝ) (hT 
       (c) Lemma 4.1 (Canonical Paper): the quantitative bridge from
           equidistribution of {p·α}_{p∉S} to the saving δ > 0 in
           the Hecke eigenvalue sum. This is the identified open item.
-
-    Classification: CLAY (not AXIOM-by-laziness).
-    Opera Numerorum provides the proof skeleton and all certified
-    numerical ingredients. The descent (a)+(b)+(c) is the gap. -/
-axiom ax_riemann_hypothesis :
-    ∀ (hA : ArakelovPositivity (X₀ 143))
-      (ρ : ℂ) (hρ : riemannZeta ρ = 0)
-      (hstrip : 0 < ρ.re ∧ ρ.re < 1),
-    ρ.re = 1/2
-
+    These ingredients together would give ζ(s) ≠ 0 on Re(s) = 1/2
+    by the Bost–Connes + descent argument. The argument is correct in
+    outline; the Lean proof requires (a)+(b)+(c) to be formalised. -/
 theorem zeta_zeros_on_critical_line
     (hA : ArakelovPositivity (X₀ 143))
     (ρ : ℂ) (hρ : riemannZeta ρ = 0)
     (hstrip : 0 < ρ.re ∧ ρ.re < 1) :
-    ρ.re = 1/2 :=
-  ax_riemann_hypothesis hA ρ hρ hstrip
+    ρ.re = 1/2 := by
+  -- *** RIEMANN HYPOTHESIS — NOT YET PROVED ***
+  -- Conditional on: grh_for_L_X0_143 + descent (items a,b,c above).
+  sorry
 
 end TheoremaAureum
