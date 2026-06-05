@@ -1,0 +1,56 @@
+============================================================
+ OPERA NUMERORUM — CHRONARITHMETICA MANIFEST
+ Author: David Fox
+ Date: 2026-06-05
+ Series: Opera Numerorum (internal: Battle Plan v1.6)
+============================================================
+
+CLAY PROTOCOL: SORRY: 0. AXIOMS: [].
+M-CHAIN MANIFEST SHA (M1-M6):
+  5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
+
+------------------------------------------------------------
+MODULE STDOUT SHAs
+------------------------------------------------------------
+m1.out  63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291
+m2.out  3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83
+m3.out  e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044
+m4.out  b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed
+m5.out  9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13
+m6.out  ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb
+m7.out  5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
+
+------------------------------------------------------------
+EXTENDED MODULE SHAs (M8 and beyond)
+------------------------------------------------------------
+m8.out   e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002
+m25.out  4fa53d75...  (Module 25: Theorem 4.1 Full Proof)
+m25b.out 581071593fc5de3b48f369c1fb0304a7e36b26268fbca86d3394d69a878447d1
+
+------------------------------------------------------------
+BDP CERTIFIED SHAs
+------------------------------------------------------------
+bdp1.out  see invariants.json key "bdp_lemma1"
+bdp2.out  see invariants.json key "bdp_lemma2"
+bdp3.out  see invariants.json key "bdp_lemma3"
+bdp4.out  see invariants.json key "bdp_lemma4"
+
+------------------------------------------------------------
+FULL SHA TABLE
+------------------------------------------------------------
+See certificates/invariants.json for complete chain-of-custody.
+
+------------------------------------------------------------
+VERIFICATION COMMAND
+------------------------------------------------------------
+bash verify_all.sh
+
+------------------------------------------------------------
+ERRORS CAUGHT AND CORRECTED (see Module 7 audit)
+------------------------------------------------------------
+1. M3: CF seed order corrected. Q_5=226 (not 1296).
+2. M5: Formula log(p)/(p-1) -> log(p)*p/(p-1). C=11.421 (not 1.434).
+3. M5: Wrong curve copy-paste. C(S_4)=11.4221 (not 8.629).
+4. M5: Hand-calc p=191 term corrected. Sum=11.4221 (not 11.4210).
+5. M6: h(Q(sqrt(-143)))=10 (not 1). Theorem stands.
+============================================================

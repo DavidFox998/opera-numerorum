@@ -2,3 +2,4 @@ certificates/Field_Report_Morningstar.pdf filter=lfs diff=lfs merge=lfs -text
 certificates/Opera_Numerorum_All_Certs_2026_06_04.zip filter=lfs diff=lfs merge=lfs -text
 certificates/OperaNumerorum_AllCerts.zip filter=lfs diff=lfs merge=lfs -text
 certificates/MorningStar_Complete_2026_06_04.zip filter=lfs diff=lfs merge=lfs -text
+CLAY_REPO.tar.gz filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,79 @@
+@echo off
+setlocal enabledelayedexpansion
+
+echo ============================================
+echo  CHRONARITHMETICA CLAY RELEASE SCRIPT
+echo  DO NOT EDIT. DO NOT ADD FILES.
+echo  MANIFEST: 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
+echo ============================================
+echo.
+
+:: 1. VERIFY CLAY IS CLEAN BEFORE WE SHIP
+echo [1/5] Verifying M-CHAIN CLAY... SORRY: 0. AXIOMS: []
+call verify_all.sh
+if %ERRORLEVEL% NEQ 0 (
+    echo ERROR: verify_all.sh failed. CLAY IS NOT CLEAN. ABORT.
+    pause
+    exit /b 1
+)
+
+lean BDP_PhaseReversal.lean > lean_check.txt
+findstr /C:"sorry" lean_check.txt >nul
+if %ERRORLEVEL% EQU 0 (
+    echo ERROR: Found sorry in BDP_PhaseReversal.lean. ABORT.
+    pause
+    exit /b 1
+)
+echo CLAY VERIFIED. SORRY: 0. AXIOMS: [].
+echo.
+
+:: 2. BUILD BLOCK 1: CLAY_SEALED.zip - ZERO SORRYS
+echo [2/5] Building CLAY_SEALED.zip...
+if exist CLAY_SEALED.zip del CLAY_SEALED.zip
+
+powershell -Command "Compress-Archive -Path m1.out,m2.out,m3.out,m4.out,m5.out,m6.out,m7.out,BDP_PhaseReversal.lean,bdp1.out,bdp2.out,bdp3.out,bdp4.out,Chronarithmetica.tex,Chronarithmetica.pdf,file942726605959752683.pdf,verify_all.sh,README_VERIFY.md,MANIFEST.txt -DestinationPath CLAY_SEALED.zip -Force"
+
+echo CLAY_SEALED.zip created.
+echo.
+
+:: 3. BUILD BLOCK 2: CLAY_REPO.tar.gz - REPRODUCIBLE
+echo [3/5] Building CLAY_REPO.tar.gz...
+if exist CLAY_REPO.tar.gz del CLAY_REPO.tar.gz
+git archive --format=tar.gz --prefix=CLAY_REPO/ HEAD -o CLAY_REPO.tar.gz
+echo CLAY_REPO.tar.gz created.
+echo.
+
+:: 4. BUILD BLOCK 3: RESEARCH_C02_C06.zip - 24 SORRYS, SEPARATE
+echo [4/5] Building RESEARCH_C02_C06.zip...
+if exist RESEARCH_C02_C06.zip del RESEARCH_C02_C06.zip
+powershell -Command "Compress-Archive -Path C02*.lean,C03*.lean,C04*.lean,C05*.lean,C06*.lean -DestinationPath RESEARCH_C02_C06.zip -Force"
+echo RESEARCH_C02_C06.zip created.
+echo.
+
+:: 5. FINAL CHECKSUMS FOR GOOGLE DRIVE
+echo [5/5] Generating SHA256 for Drive upload verification...
+echo ============================================ > SHIP_CHECKSUMS.txt
+echo  CHRONARITHMETICA 2026-06-05 RELEASE >> SHIP_CHECKSUMS.txt
+echo  MANIFEST: 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9 >> SHIP_CHECKSUMS.txt
+echo ============================================ >> SHIP_CHECKSUMS.txt
+echo. >> SHIP_CHECKSUMS.txt
+certutil -hashfile CLAY_SEALED.zip SHA256 >> SHIP_CHECKSUMS.txt
+echo. >> SHIP_CHECKSUMS.txt
+certutil -hashfile CLAY_REPO.tar.gz SHA256 >> SHIP_CHECKSUMS.txt
+echo. >> SHIP_CHECKSUMS.txt
+certutil -hashfile RESEARCH_C02_C06.zip SHA256 >> SHIP_CHECKSUMS.txt
+
+echo.
+echo ============================================
+echo  DONE. 3 FILES READY FOR GOOGLE DRIVE:
+echo ============================================
+echo  1. CLAY_SEALED.zip      - For reviewers. SORRY: 0.
+echo  2. CLAY_REPO.tar.gz     - For reproducers. Git history.
+echo  3. RESEARCH_C02_C06.zip - For collaborators. SORRY: 24.
+echo.
+echo  UPLOAD ALL 3 TO: Google Drive /Chronarithmetica/2026-06-05/
+echo  ALSO UPLOAD: SHIP_CHECKSUMS.txt
+echo.
+echo  RULE: NEVER MIX CLAY AND RESEARCH.
+echo ============================================
+pause

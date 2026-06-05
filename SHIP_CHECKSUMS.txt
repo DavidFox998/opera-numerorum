@@ -1,0 +1,8 @@
+============================================
+ CHRONARITHMETICA 2026-06-05 RELEASE
+ MANIFEST: 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
+============================================
+
+518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1  CLAY_SEALED.zip
+9a810902a042f9ecd5d164c2d551fafb708de5065423534a2534ee5584355957  RESEARCH_C02_C06.zip
+CLAY_REPO.tar.gz  (build locally: bash release_clay.sh)
