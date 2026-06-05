@@ -1570,14 +1570,10 @@ export default function CertificatePage() {
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {/* Context bundle */}
-            <a
-              href="/api/certs/OperaNumerorum_Context.zip"
-              download
-              className="flex flex-col gap-1 bg-gray-900 border border-blue-600 rounded p-3 hover:bg-gray-800 transition-colors group"
-            >
+            <div className="flex flex-col gap-1 bg-gray-900 border border-blue-600 rounded p-3">
               <div className="flex items-center gap-2">
                 <span className="text-blue-400 text-base">📦</span>
-                <span className="text-xs font-bold text-white group-hover:text-blue-300">
+                <span className="text-xs font-bold text-white">
                   Context Bundle (Agent Handoff)
                 </span>
               </div>
@@ -1587,16 +1583,23 @@ export default function CertificatePage() {
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
                 SHA: 0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752
               </span>
-            </a>
+              <div className="flex items-center gap-2 mt-1.5">
+                <a
+                  href="/api/certs/OperaNumerorum_Context.zip"
+                  download
+                  className="inline-flex items-center gap-1 text-xs font-medium text-blue-300 hover:text-blue-100 border border-blue-600 rounded-md px-2.5 py-1 bg-blue-900/30 hover:bg-blue-800/40 transition-colors"
+                >
+                  <Download className="w-3 h-3 shrink-0" />
+                  Download
+                </a>
+                <VerifyFileButton sha="0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752" />
+              </div>
+            </div>
             {/* Full PDF bundle */}
-            <a
-              href="/api/certs/OperaNumerorum_AllCerts.zip"
-              download
-              className="flex flex-col gap-1 bg-gray-900 border border-green-700 rounded p-3 hover:bg-gray-800 transition-colors group"
-            >
+            <div className="flex flex-col gap-1 bg-gray-900 border border-green-700 rounded p-3">
               <div className="flex items-center gap-2">
                 <span className="text-green-400 text-base">🗜</span>
-                <span className="text-xs font-bold text-white group-hover:text-green-300">
+                <span className="text-xs font-bold text-white">
                   Full Certificate Archive (All 62 PDFs)
                 </span>
               </div>
@@ -1606,7 +1609,18 @@ export default function CertificatePage() {
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
                 SHA: beffac1294568c89efeb4954b78fc07efd17bf3cd5a46571c344a87b552043c8
               </span>
-            </a>
+              <div className="flex items-center gap-2 mt-1.5">
+                <a
+                  href="/api/certs/OperaNumerorum_AllCerts.zip"
+                  download
+                  className="inline-flex items-center gap-1 text-xs font-medium text-green-300 hover:text-green-100 border border-green-700 rounded-md px-2.5 py-1 bg-green-900/30 hover:bg-green-800/40 transition-colors"
+                >
+                  <Download className="w-3 h-3 shrink-0" />
+                  Download
+                </a>
+                <VerifyFileButton sha="beffac1294568c89efeb4954b78fc07efd17bf3cd5a46571c344a87b552043c8" />
+              </div>
+            </div>
           </div>
           <p className="text-[10px] text-gray-600 italic">
             To resume: load the Context Bundle into any agent alongside the causal DAG page URL.
