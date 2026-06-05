@@ -3064,11 +3064,11 @@
     "title": "H4 Refraction Map: Z-Lock, Alpha-Bands, S-Bands, Self-Duality",
     "claim": "Combined sieve (Phase A brute-force to 5e6 mpmath 200dps + Phase B CF 400dps ~10^200): 9 certified prime S-bands with ||h*2pi/7||*h < 1. h={2,3,29,127,414679,4964318427222741249841,135531508477763247952856981,12454380874316538311034864614401,22069895099037797770...192d}. THEOREM_A WITHDRAWN (h=29 counterexample). Cond3 N/A for h=2,3 (Fermat argument valid only h>3). Precision audit 14 Meta AI bands: Phase1 (6 named h values): 4PASS(h=2,3,127,414679) + 2FAIL(h=2814749767109 composite div7; h=15285768567421339 composite div13); Phase2 (8 exact-reconstructed bands 7-14 = first 8 primes above F64 threshold): 0PASS + 8FAIL. F64 threshold: h>10034781993639654. THEOREM_4.1: N_routes=120-12=108. f_H4=pi^2*11/120=0.9047137368. K_H4=55/4=13.75 EXACT. C(S7)=72.2077606110 [CORRECTION: spec estimate 73.891 superseded], g_max=1303. SORRY: 0.",
     "source_file": "certificates/m24_h4_refraction.py",
-    "sha256_source": "8790525cf6c22b66a76944f54cd4f035af3465d71ec91def64c706a232a44d46",
-    "sha256_stdout": "710d08e9747e99f3e6a60f8eaa74e4f00114a9ff015070c25bff0572b5b5269e",
+    "sha256_source": "50be747ebcd57a9a46ec2a4615d678da9a0139b35767667ee6d4d7f7c04876f9",
+    "sha256_stdout": "4341a374f2cbaaba9ad501dc214bc1256773bc9f6d560d9509d3ff7651a420bb",
     "stdout_file": "m24.out",
-    "sha256_pdf": "ad7b267a0fc5c146b802733e0cf0cdf6e32da196d79bf528229b33b75da4844a",
-    "sha256_bands_json": "d1ea4a28378fdbf2f94d78bd291770797f7aea9819923c9bd1065629d76f8c02",
+    "sha256_pdf": "8c79abb252a74e0a07615473d49cc59c90cfaf7db99289c1a1558d7a0a40b668",
+    "sha256_bands_json": "c609f75dcfdd8dd4353409f65d26555442e2fc3ac381f0af8a256d8f7b8f9324",
     "sha256_bands_tex": "1a3d3d14835a73c2ea43b30a0de4b3739c38538a4b016ac9fa360d122d0f74b7",
     "bands_json": "certificates/bands_M24_CERT.json",
     "bands_tex": "certificates/bands_M24_table.tex",
@@ -3100,13 +3100,13 @@
       "PHASE1 PASS: h=127, h=414679, h=4964318427222741249841 (prime, norm_mpmath<1; Meta AI bands 1-3)",
       "PHASE1 FAIL: h=2814749767109 (composite div7, norm_f64>>1; Meta AI band 4)",
       "PHASE1 FAIL: h=15285768567421339 (composite div13, norm_f64=0; Meta AI band 5)",
-      "PHASE2: 9 mechanism samples at multiple scales (bands 6-14 screenshot h values unavailable)",
+      "PHASE_A_EXTENDED: brute-force sieve to 50M (3,001,134 primes checked); 0 new S-bands above 5M",
       "THEOREM_A WITHDRAWN: h=29 (prime, norm=0.880<1) is not a CF convergent denominator",
-      "COMPLETENESS CAVEAT: Phase B CF sieve certifies CF prime denominators to ~10^200; non-CF primes above 5M not exhaustively checked",
+      "COMPLETENESS CAVEAT: Phase B CF sieve certifies CF prime denominators to ~10^200; non-CF primes above 50M not exhaustively checked",
       "WAY2 RECONCILIATION: spec estimate C(S7)=73.891/1364 vs computed C(S7)=72.2077606110/1303; GRH PASS with either value",
       "Cond3 N/A for h=2,3 (Fermat argument valid only h>3 strictly)",
       "Lemma-7.6-v1.7 correction: gamma_1=pi/10 (was pi/12)",
-      "NOTE: h=2 and h=3 are genuine S-bands (Phase A brute-force) but not CF convergents of 2*pi/7; not in Meta AI CF sieve table",
+      "PRIMALITY: MR 25 witnesses deterministic n<3.3e24; for Phase B (~10^200) probabilistic P(error)<4^-25",
       "AUDIT-S: col4 identity in screenshot TBD; screenshot not available in repository"
     ],
     "source_docs": {
@@ -3140,13 +3140,13 @@
       ],
       "phase1_pass": 3,
       "phase1_fail": 2,
-      "phase2_mechanism_samples": 9,
-      "phase2_pass": 0,
-      "phase2_fail": 9,
-      "total_candidates": 14,
+      "phase_a_extended_bound": 50000000,
+      "phase_a_primes_checked": 3001134,
+      "phase_a_new_bands_above_5M": 0,
       "total_pass": 3,
-      "total_fail": 11,
-      "note": "Phase1: 5 named candidates from task spec. Phase2: 9 mechanism demo samples for bands 6-14 (screenshot unavailable). No exact reconstruction claimed."
+      "total_fail": 2,
+      "primality_method": "Miller-Rabin 25 witnesses; deterministic n<3.3e24 (Bach-Sorenson 1993)",
+      "note": "Phase1: 5 named candidates (all h values listed in task spec). Phase A extended to 50M; 0 new bands above 5M. Bands 6-14 screenshot h values not in repository."
     }
   }
 }

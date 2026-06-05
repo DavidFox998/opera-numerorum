@@ -2,7 +2,7 @@
   "module": "M24",
   "title": "H4 Refraction Map: Z-Lock Alpha-Bands S-Bands Self-Duality",
   "alpha": "2*pi/7",
-  "phase_a_brute_force_limit": 5000000,
+  "phase_a_brute_force_limit": 50000000,
   "phase_a_dps": 200,
   "phase_b_cf_dps": 400,
   "phase_b_max_cf_terms": 450,
