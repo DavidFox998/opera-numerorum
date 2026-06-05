@@ -28,6 +28,8 @@ import {
   Loader2,
 } from "lucide-react";
 
+const POLL_INTERVAL_MS = 60_000;
+
 const MANIFEST_SHA =
   "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9";
 const SCRIPT_SHA =
@@ -1466,6 +1468,41 @@ export default function CertificatePage() {
     refreshShas();
   }, [refreshShas]);
 
+  useEffect(() => {
+    let timerId: ReturnType<typeof setInterval> | null = null;
+
+    function start() {
+      if (timerId !== null) return;
+      timerId = setInterval(() => {
+        if (!document.hidden) refreshShas();
+      }, POLL_INTERVAL_MS);
+    }
+
+    function stop() {
+      if (timerId !== null) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+    }
+
+    function handleVisibility() {
+      if (document.hidden) {
+        stop();
+      } else {
+        refreshShas();
+        start();
+      }
+    }
+
+    if (!document.hidden) start();
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [refreshShas]);
+
   const liveManifestSha = liveShas["M7"] ?? MANIFEST_SHA;
   const liveM8Sha = liveShas["M8"] ?? M8_SHA;
 
@@ -1856,8 +1893,14 @@ export default function CertificatePage() {
             </h2>
             <div className="flex items-center gap-2">
               {shaStatus === "ready" && lastSynced && (
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-muted-foreground flex items-center gap-1.5">
                   Last synced: <span className="font-medium">{relativeTime}</span>
+                  <span
+                    className="inline-flex items-center gap-0.5 text-emerald-600 font-semibold text-[9px] bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-px"
+                    title={`Auto-refreshes every ${POLL_INTERVAL_MS / 1000}s (pauses when tab is hidden)`}
+                  >
+                    auto
+                  </span>
                 </span>
               )}
               {shaStatus === "error" && (
