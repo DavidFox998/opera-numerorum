@@ -92,6 +92,7 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   M22:              { key: "module_22",             field: "sha256_stdout" },
   M23:              { key: "module_23",             field: "sha256_stdout" },
   M24:              { key: "module_24",             field: "sha256_stdout" },
+  M25:              { key: "module_25",             field: "sha256_stdout" },
   M8C:              { key: "module_m8c",            field: "stdout_sha256" },
   M8D:              { key: "module_m8d",            field: "stdout_sha256" },
   M8F:              { key: "module_m8f",            field: "stdout_sha256" },
@@ -155,6 +156,7 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   PDF_M22:            { key: "module_22",             field: "sha256_pdf"  },
   PDF_M23:            { key: "module_23",             field: "sha256_pdf"  },
   PDF_M24:            { key: "module_24",             field: "sha256_pdf"  },
+  PDF_M25:            { key: "module_25",             field: "sha256_pdf"  },
   PDF_M8A:            { key: "module_m8a",            field: "sha256_pdf"  },
   PDF_M8C:            { key: "module_m8c",            field: "pdf_sha256"  },
   PDF_M8D:            { key: "module_m8d",            field: "pdf_sha256"  },
@@ -388,6 +390,23 @@ const MODULES = [
     status: "H4_REFRACTION_CERTIFIED",
     correction:
       "THEOREM_A withdrawn: h=29 is prime and norm(h)=0.880<1 but h=29 is NOT a CF convergent denominator of 2\u03c0/7. Bands 1-5 stand. C(S7)=72.2077 (spec 73.891), g_max=1303 (spec 1364) \u2014 GRH PASS either way. \u03b3\u2081=\u03c0/10 corrected from \u03c0/12.",
+  },
+  {
+    id: "M25",
+    title: "Theorem 4.1 Full Proof: N_routes = 120 \u2212 rank(H\u00b2_fail) = 108",
+    claim:
+      "rank(H\u00b2_fail)=12 (1 CONFIRMED_FAIL: X_5 Z=15 M8C SHA + 11 PREDICT_FAIL genus\u22655 Z-Lock+M21 lift). " +
+      "N_routes=120\u221212=108. Diamond\u2013Shurman genus formula computed for all 11 predict-fail primes " +
+      "{67,73,103,107,167,191,193,223,227,229,269}. genus \u2208 {5,5,8,9,14,16,15,18,19,18,22}. " +
+      "CM_LIST membership check for all 11: NONE in CM_LIST. " +
+      "Z-Lock+M21 non-CM Hecke lift: Z\u22652g+1>10 for all 11. " +
+      "120\u221212=108 verified by Python assert. SORRY: 0.",
+    source: "certificates/m25_theorem41_proof.py",
+    stdout: "m25.out",
+    sha: "4fa53d75b2dfad0861966bedbe42f108deca0311fea7836fd063d6429c177231",
+    status: "THEOREM_4.1_CERTIFIED",
+    apiPdf: "Module_25_Certificate.pdf",
+    correction: null,
   },
   {
     id: "M8C",
@@ -1784,10 +1803,10 @@ export default function CertificatePage() {
             zipFallbackSha="e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"
           />
 
-          {/* Block 5 — Extended Theory M8A–M24 */}
+          {/* Block 5 — Extended Theory M8A–M25 */}
           <DownloadBlock
             color="slate"
-            label="Block 5 \u2014 Extended Theory M8A\u2013M24"
+            label="Block 5 \u2014 Extended Theory M8A\u2013M25"
             files={[
               { fn: "Module_M8A_Audit.pdf",        sz: "9.7 K", label: "M8A: Audit",              sha: liveShas["PDF_M8A"]         ?? "3567279c610e037d7815afcd7239992ace92fdbbe323272a487e566b4911caec", fallbackSha: "3567279c610e037d7815afcd7239992ace92fdbbe323272a487e566b4911caec" },
               { fn: "Module_M8C_ZoeMstar.pdf",     sz: "6.1 K", label: "M8C: Zoe M\u2605",        sha: liveShas["PDF_M8C"]         ?? "9dc46ef8226b1ee7aa0c949b5ab0c923d72d60bdae48e9f5a351e8ec328163f3", fallbackSha: "9dc46ef8226b1ee7aa0c949b5ab0c923d72d60bdae48e9f5a351e8ec328163f3" },
@@ -1811,6 +1830,7 @@ export default function CertificatePage() {
               { fn: "Module_22_MStar_Definition.pdf",sz:"6.8 K",label: "M22: M\u2605 Definition",  sha: liveShas["PDF_M22"]         ?? "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d", fallbackSha: "3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d" },
               { fn: "Module_23_BSD_J0_143.pdf",    sz: "5.8 K", label: "M23: BSD J\u2080(143)",     sha: liveShas["PDF_M23"]         ?? "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b", fallbackSha: "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b" },
               { fn: "Module_24_Certificate.pdf",   sz: "7.0 K", label: "M24: H\u2084 Refraction Map",  sha: liveShas["PDF_M24"]         ?? "664348526e81a1ca6fb1e2f5c09f06d6e5566ffe1ea9e89aaf03809f3f55dc73", fallbackSha: "664348526e81a1ca6fb1e2f5c09f06d6e5566ffe1ea9e89aaf03809f3f55dc73" },
+              { fn: "Module_25_Certificate.pdf",   sz: "14.6 K",label: "M25: Theorem 4.1 Full Proof", sha: liveShas["PDF_M25"]         ?? "e833f77615dec73d848aeb38836603c34f36b6ac5f143940e2d1ac74bd58fa77", fallbackSha: "e833f77615dec73d848aeb38836603c34f36b6ac5f143940e2d1ac74bd58fa77" },
               { fn: "Module_10_Genus33.pdf",       sz: "6.6 K", label: "M10: Genus 33",            sha: liveShas["PDF_M10"]         ?? "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896", fallbackSha: "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896" },
               { fn: "Module_BDP_PhaseReversal.pdf",sz: "15 K",  label: "BDP: Phase Reversal",      sha: liveShas["PDF_BDP"]         ?? "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5", fallbackSha: "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5" },
             ]}
