@@ -236,7 +236,7 @@ Per-band physics (M8K/M8L certified constants):
   Band  8: Dest=vertex   0, f_h=864614401 Hz
   Band  9: Dest=vertex  10, f_h=630126653 Hz
 
-  bands_M24_CERT.json written. SHA: c609f75dcfdd8dd4353409f65d26555442e2fc3ac381f0af8a256d8f7b8f9324
+  bands_M24_CERT.json written. SHA: b9dfb0bea72839194f0b3fd36ccb6df01cb2b729fe296e8b93d891a18809d8ae
   bands_M24_table.tex written. SHA: 1a3d3d14835a73c2ea43b30a0de4b3739c38538a4b016ac9fa360d122d0f74b7
 
 ========================================================================
@@ -295,4 +295,4 @@ N_routes (Theorem 4.1 prediction):  108
 
 SORRY: 0
 
-Source SHA-256: 50be747ebcd57a9a46ec2a4615d678da9a0139b35767667ee6d4d7f7c04876f9
+Source SHA-256: 646886284a1ecf2fb6ba43110073efe13dc75a2e9559d758d8803cd5ea3fac4f

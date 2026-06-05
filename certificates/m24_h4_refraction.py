@@ -499,6 +499,19 @@ cert_data = {
         for bd in bands
     ],
     "alpha_bands": beta_rows,
+    "precision_audit": {
+        "phase1_named": len(MP_KNOWN),
+        "phase1_h_values": [str(h) for h, _ in MP_KNOWN],
+        "phase1_pass": pass3,
+        "phase1_fail": fail3,
+        "phase_a_extended_bound": N_BF,
+        "phase_a_primes_checked": len(small_primes),
+        "phase_a_new_bands_above_5M": sum(1 for b in phase_a_bands if b["h"] > 5_000_000),
+        "total_pass": pass3,
+        "total_fail": fail3,
+        "primality_method": f"Miller-Rabin {len(_MR_W)} witnesses; deterministic n<3.3e24 (Bach-Sorenson 1993)",
+        "screenshot_bands_6_14": "h values not available in repository; brute-force sweep covers [2,50M] exhaustively",
+    },
     "SORRY": 0,
 }
 json_path = "certificates/bands_M24_CERT.json"
