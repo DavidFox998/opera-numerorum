@@ -1295,10 +1295,10 @@ export default function CertificatePage() {
                 </span>
               </div>
               <p className="text-[10px] text-gray-400 leading-relaxed">
-                invariants.json · replit.md · 44 certified .out files · 8 Lean files · causal summary. <span className="text-green-400">~159 KB</span> — best for resuming with any AI.
+                44 stdout (.out) · 10 data files (.txt/.csv) · 9 Lean files · 88 Python sources · 3 C sources · invariants.json · replit.md · verify_all.sh. <span className="text-green-400">~654 KB · 159 files</span>
               </p>
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
-                SHA: c282497b3c135322c5b953b198a4a68ade3ba21b1334b02f641726061538fa23
+                SHA: 0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752
               </span>
             </a>
             {/* Full PDF bundle */}

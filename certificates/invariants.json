@@ -2873,19 +2873,21 @@
     }
   },
   "bundle_context": {
-    "description": "Agent handoff bundle: invariants.json + replit.md + all .out files + Lean chain + causal summary. No PDFs. For resuming work with any agent.",
+    "description": "Agent handoff bundle: all certified stdout (.out), data (.txt/.csv), Lean chain, C sources, 88 Python sources, invariants.json, replit.md, verify_all.sh.",
     "file": "OperaNumerorum_Context.zip",
-    "size_bytes": 163252,
-    "sha256": "c282497b3c135322c5b953b198a4a68ade3ba21b1334b02f641726061538fa23",
-    "generated_utc": "2026-06-05T03:02:10.093503Z",
-    "contents": [
-      "invariants.json",
-      "replit.md",
-      "stdout/*.out (44 files)",
-      "lean/*.lean (8 files)",
-      "verify_all.sh",
-      "CAUSAL_SUMMARY.txt"
-    ]
+    "size_bytes": 670677,
+    "size_kb": 654,
+    "sha256": "0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752",
+    "generated_utc": "2026-06-05T03:05:29.389076Z",
+    "file_count": 159,
+    "contents": {
+      "stdout_out_files": 44,
+      "data_txt_csv": 10,
+      "lean_files": 9,
+      "c_sources": 3,
+      "python_sources": 88,
+      "root_files": 4
+    }
   },
   "bundle_all_certs": {
     "description": "Full certified archive: all 62 PDFs + invariants.json. Complete Opera Numerorum record.",
