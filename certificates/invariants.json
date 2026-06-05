@@ -2945,6 +2945,17 @@
     "source": "attached_assets/CERT_Arb_beta0_(1)_1780629810600.pdf",
     "imported_utc": "2026-06-05"
   },
+  "cert_arb_beta0_prior": {
+    "module": "SOURCE",
+    "title": "CERT_Arb_beta0 (prior version — matches Wall256 Section 16 reference)",
+    "file": "certificates/CERT_Arb_beta0_prior.pdf",
+    "sha256": "b5a9f0a7666a91f283a7d4531ae99dff2097c2cedef10424b77833b7bbc840d3",
+    "status": "REFERENCE",
+    "claim": "Prior version of the CERT_Arb_beta0 interval certificate. This is the exact file that Wall256_YM_Report.pdf Section 16 was certified against. SHA matches the Section 16 binding record exactly.",
+    "source": "attached_assets/CERT_Arb_beta0_(2)_1780557438479.pdf",
+    "imported_utc": "2026-06-05",
+    "sha_audit": "RESOLVED: SHA b5a9f0a7... confirmed. The Wall256 Section 16 binding is correct; it was recorded against this prior version. The newer file (CERT_Arb_beta0.pdf, SHA 8879175c...) is a later upload and does not invalidate the certified report."
+  },
   "cert_arb_beta0": {
     "module": "SOURCE",
     "title": "CERT_Arb_beta0 (interval certificate)",
@@ -2954,7 +2965,7 @@
     "claim": "Interval arithmetic certificate for the beta_0 bound used in the Wall256 YM tower.",
     "source": "attached_assets/CERT_Arb_beta0_1780629810647.pdf",
     "imported_utc": "2026-06-05",
-    "audit_note": "SHA MISMATCH with build_wall256_ym.py Section 16 reference (b5a9f0a7666a91f283a7d4531ae99dff2097c2cedef10424b77833b7bbc840d3). The uploaded file has a different SHA; the reference SHA in Section 16 was recorded against a prior version of this document. Computed SHA recorded here is the authoritative value for the imported file."
+    "audit_note": "MISMATCH RESOLVED (2026-06-05). The prior version (SHA b5a9f0a7...) has been located and imported as CERT_Arb_beta0_prior.pdf. That prior version is the exact file referenced in Wall256_YM_Report.pdf Section 16; the report's cryptographic binding is correct. This file (SHA 8879175c...) is a newer version uploaded in Task #60 and does not replace the certified prior version for chain-of-custody purposes."
   },
   "d4_w1_negative": {
     "module": "SOURCE",
