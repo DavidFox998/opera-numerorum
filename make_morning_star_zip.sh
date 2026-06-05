@@ -50,6 +50,9 @@ FILES=(
     # Module 24 certificate (H4 Refraction Map)
     Module_24_Certificate.pdf
 
+    # Module 25 certificate
+    Module_25_Certificate.pdf
+
     # Engineering summary
     MorningStar_Engineering_Summary.pdf
 )
