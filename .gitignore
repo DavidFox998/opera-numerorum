@@ -47,3 +47,13 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Large ZIP archives (stored on Google Drive — too big for GitHub)
+certificates/MorningStar_Complete_2026_06_04.zip
+certificates/OperaNumerorum_AllCerts.zip
+certificates/Opera_Numerorum_All_Certs_2026_06_04.zip
+certificates/ClaySubmission_2026_06_04.zip
+OperaNumerorum_CompleteArchive.zip
+OperaNumerorum_CompleteArchive\ \(copy\).zip
+OperaNumerorum_records.zip
+opera_numerorum_section8.zip
