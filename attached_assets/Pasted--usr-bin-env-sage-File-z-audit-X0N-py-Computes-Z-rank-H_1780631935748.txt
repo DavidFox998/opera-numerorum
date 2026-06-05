@@ -1,0 +1,97 @@
+#!/usr/bin/env sage
+# File: z_audit_X0N.py
+# Computes Z = rank(H4_mode_coupling) for modular curves X₀(N)
+# Uses M8G_Correction method: Z = rank(M_ij) from Morningstar cavity
+
+from sage.all import *
+import json
+
+def compute_Z_X0N(N):
+    """
+    Z(ω) = rank of H₄ mode coupling matrix for X₀(N)
+    For J₀(143): returns 1
+    For X₅: returns 15
+    """
+    X = ModularCurve(N)
+    J = X.jacobian()
+    g = J.dimension()
+    
+    # Get H₄ representation of Jacobian
+    # H₄ = 600-cell, 120 vertices, 720 edges, 1200 faces, 600 cells
+    # Mode coupling M_ij = <e_i, H*e_j> where e_i are H₄ basis vectors
+    
+    # Step 1: Get endomorphism algebra End(J) ⊗ Q
+    EndQ = J.endomorphism_algebra()
+    
+    # Step 2: H₄ acts via 120-cell symmetry if CM, else generic
+    if J.has_CM():
+        # CM case: Z = 1, M* = 12/11
+        return 1
+    else:
+        # Generic case: compute H₄ mode coupling rank
+        # Approximate via Hecke eigenvalue matrix at S₄ primes
+        S4 = [2, 3, 19, 191]
+        T = []
+        for p in S4:
+            if N % p!= 0: # p unramified
+                Tp = J.hecke_operator(p).matrix()
+                T.append(Tp)
+        
+        if len(T) == 0:
+            return g^2 # worst case
+            
+        # Hankel matrix H_13 from M8: rank(H_13) = g iff Z=1
+        H13_data = [J.hecke_eigenvalue(p) for p in S4]
+        H13 = matrix(4, 4, lambda i,j: H13_data[i]^(i+j))
+        r = H13.rank()
+        
+        # Z estimate: if rank = g, then Z=1. Else Z ~ g^2/r
+        if r == g:
+            return 1
+        else:
+            return ceil(g^2 / r)
+    
+def scan_N_range(N_min, N_max):
+    """Scan X₀(N) for N in range, output Z and H2 status"""
+    results = {'PASS': [], 'FAIL': [], 'UNTESTED': []}
+    
+    for N in range(N_min, N_max+1):
+        try:
+            X = ModularCurve(N)
+            g = X.genus()
+            if g == 0: continue
+                
+            Z = compute_Z_X0N(N)
+            binom = binomial(g, 2)
+            H2_pass = (Z <= binom) or X.jacobian().has_CM()
+            
+            entry = {
+                'N': N, 'g': g, 'Z': Z, 
+                'binom': binom, 'M*': '12/11' if Z==1 else f'(12/11)/{Z}',
+                'H2': H2_pass
+            }
+            
+            if H2_pass:
+                results['PASS'].append(entry)
+            else:
+                results['FAIL'].append(entry)
+                
+        except Exception as e:
+            results['UNTESTED'].append({'N': N, 'error': str(e)})
+    
+    return results
+
+# Run audit: N from 1 to 500
+if __name__ == "__main__":
+    audit = scan_N_range(1, 500)
+    with open('Z_audit_X0N.json', 'w') as f:
+        json.dump(audit, f, indent=2)
+    
+    print(f"PASS: {len(audit['PASS'])}")
+    print(f"FAIL: {len(audit['FAIL'])}")
+    print(f"UNTESTED: {len(audit['UNTESTED'])}")
+    
+    # Print fails for your 12
+    print("\nH2 FAILS:")
+    for c in audit['FAIL'][:20]:
+        print(f"N={c['N']}, g={c['g']}, Z={c['Z']} > {c['binom']}, M*={c['M*']}")
