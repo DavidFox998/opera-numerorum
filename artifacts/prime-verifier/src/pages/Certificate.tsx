@@ -1277,15 +1277,15 @@ export default function CertificatePage() {
             color="indigo"
             label="Block 4 \u2014 Core Certification Chain M1\u2013M8"
             files={[
-              { fn: "Module_1_Certificate.pdf",   sz: "2.8 K", label: "M1: \u03b1\u2080" },
-              { fn: "Module_2_Certificate.pdf",   sz: "3.0 K", label: "M2: Kappa" },
-              { fn: "Module_3_Certificate.pdf",   sz: "6.7 K", label: "M3: CF \u03c0/10" },
-              { fn: "Module_4_Certificate.pdf",   sz: "8.3 K", label: "M4: S\u2081\u2084 Primes" },
-              { fn: "Module_5_Certificate.pdf",   sz: "5.7 K", label: "M5: Bost Sum" },
-              { fn: "Module_6_Certificate.pdf",   sz: "5.8 K", label: "M6: X\u2080(143) Genus" },
-              { fn: "Module_6_3_Certificate.pdf", sz: "8.2 K", label: "M6.3" },
-              { fn: "Module_7_Certificate.pdf",   sz: "6.6 K", label: "M7: Master Manifest" },
-              { fn: "Module_8_Certificate.pdf",   sz: "12 K",  label: "M8: Hankel Rank" },
+              { fn: "Module_1_Certificate.pdf",   sz: "2.8 K", label: "M1: \u03b1\u2080",          sha: "4dcbb0568fd90fe186305249743b9ed8c63d1f8ed70ea623da8a72517e5b370a" },
+              { fn: "Module_2_Certificate.pdf",   sz: "3.0 K", label: "M2: Kappa",               sha: "2f508b2cb9b36fc755a2848c09ccefe2f1a049d769bac097f1ac1720bdaab36e" },
+              { fn: "Module_3_Certificate.pdf",   sz: "6.7 K", label: "M3: CF \u03c0/10",         sha: "c18f2a05c38e69c8828ba5601da2f58967a49cca4fdf2eff94679dbae7edd517" },
+              { fn: "Module_4_Certificate.pdf",   sz: "8.3 K", label: "M4: S\u2081\u2084 Primes", sha: "09ce496b79ab1c65d53efe6a42287e3428e42f02036ad4316a885ffabc312045" },
+              { fn: "Module_5_Certificate.pdf",   sz: "5.7 K", label: "M5: Bost Sum",            sha: "f9dd4916e2517c8e524a377832d90dc974a2dca0d95bf8c43e054331cc6a4885" },
+              { fn: "Module_6_Certificate.pdf",   sz: "5.8 K", label: "M6: X\u2080(143) Genus",  sha: "304d994ee154eb6fc79c1f8f7538500a12207bc52848a6dc8055726bb15b800e" },
+              { fn: "Module_6_3_Certificate.pdf", sz: "8.2 K", label: "M6.3",                    sha: "19b025686696192089381858485aebb49627fc50c783482c923f1ae20efdb9b0" },
+              { fn: "Module_7_Certificate.pdf",   sz: "6.6 K", label: "M7: Master Manifest",     sha: "28d0b76dd0640f19d72ab69dbf13527ba2d0f5b66d7c884baaf966d8e027c2a5" },
+              { fn: "Module_8_Certificate.pdf",   sz: "12 K",  label: "M8: Hankel Rank",         sha: "bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38" },
             ]}
             zipFile={{ fn: "CertificationChain_2026_06_04.zip", sz: "85 KB", label: "Chain + Invariants ZIP" }}
             zipSha="e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"

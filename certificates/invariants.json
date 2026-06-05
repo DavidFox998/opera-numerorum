@@ -13,7 +13,8 @@
     "sha256_source": "8175b0e904084156c249ccc185420aa98db982976320247a54f082442b6d1d49",
     "sha256_stdout": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
     "stdout_file": "m1.out",
-    "status": "CERTIFIED"
+    "status": "CERTIFIED",
+    "sha256_pdf": "4dcbb0568fd90fe186305249743b9ed8c63d1f8ed70ea623da8a72517e5b370a"
   },
   "module_2": {
     "tendon": "B",
@@ -25,7 +26,8 @@
     "sha256_stdout": "3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83",
     "stdout_file": "m2.out",
     "causal_parent_sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
-    "status": "CERTIFIED"
+    "status": "CERTIFIED",
+    "sha256_pdf": "2f508b2cb9b36fc755a2848c09ccefe2f1a049d769bac097f1ac1720bdaab36e"
   },
   "module_3": {
     "tendon": "C",
@@ -35,7 +37,8 @@
     "sha256_stdout": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
     "stdout_file": "m3.out",
     "causal_parent_sha": null,
-    "status": "CERTIFIED"
+    "status": "CERTIFIED",
+    "sha256_pdf": "c18f2a05c38e69c8828ba5601da2f58967a49cca4fdf2eff94679dbae7edd517"
   },
   "module_4": {
     "tendon": "D",
@@ -51,7 +54,8 @@
       191
     ],
     "causal_parent_sha": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
-    "status": "CERTIFIED"
+    "status": "CERTIFIED",
+    "sha256_pdf": "09ce496b79ab1c65d53efe6a42287e3428e42f02036ad4316a885ffabc312045"
   },
   "module_5": {
     "tendon": "E",
@@ -65,7 +69,8 @@
     "sha256_stdout": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
     "stdout_file": "m5.out",
     "causal_parent_sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
-    "status": "CERTIFIED"
+    "status": "CERTIFIED",
+    "sha256_pdf": "f9dd4916e2517c8e524a377832d90dc974a2dca0d95bf8c43e054331cc6a4885"
   },
   "module_6": {
     "tendon": "F",
@@ -80,7 +85,8 @@
     "sha256_stdout": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
     "stdout_file": "m6.out",
     "causal_parent_sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
-    "status": "CERTIFIED"
+    "status": "CERTIFIED",
+    "sha256_pdf": "304d994ee154eb6fc79c1f8f7538500a12207bc52848a6dc8055726bb15b800e"
   },
   "module_7": {
     "tendon": "G",
@@ -90,7 +96,8 @@
     "sha256_script": "39c0170455e40b30c7a7aeb6a2801b50d8e9554bb3d7bc746164d22b71174565",
     "script_file": "verify_all.sh",
     "all_6_verified": true,
-    "status": "MANIFEST LOCKED"
+    "status": "MANIFEST LOCKED",
+    "sha256_pdf": "28d0b76dd0640f19d72ab69dbf13527ba2d0f5b66d7c884baaf966d8e027c2a5"
   },
   "module_8": {
     "tendon": "H",
@@ -121,7 +128,8 @@
     "sha256_stdout": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
     "stdout_file": "m8.out",
     "causal_parent_sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
-    "status": "CERTIFIED"
+    "status": "CERTIFIED",
+    "sha256_pdf": "bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38"
   },
   "M9": {
     "claim": "GRH for L(s, X_0(N)), N in {143, 199, 311} via Bost-Connes theorem",
@@ -2667,10 +2675,23 @@
       "phi_143": "120 = |I*|"
     },
     "parents": [
-      "module_1", "module_6", "module_8",
-      "M8C", "M8D", "M8F", "M8G_Correction",
-      "M8H", "M8I", "M8J", "M8K", "M8L",
-      "M8M", "M8N", "M8O", "M8P", "M8Q",
+      "module_1",
+      "module_6",
+      "module_8",
+      "M8C",
+      "M8D",
+      "M8F",
+      "M8G_Correction",
+      "M8H",
+      "M8I",
+      "M8J",
+      "M8K",
+      "M8L",
+      "M8M",
+      "M8N",
+      "M8O",
+      "M8P",
+      "M8Q",
       "M23"
     ]
   },
@@ -2683,86 +2704,62 @@
     "sha256_builder": "4d3777d61f6131bb76a0b4b3647d70e459928b7b6103f81d96bc5cf2221c7496",
     "ascii_check": "PASS",
     "sorry_count": 0,
-    "tables": ["Z1","Z2","Z3","Z4","Z5","Z6","Z7","Z8","Z9","Z10","Z14"],
+    "tables": [
+      "Z1",
+      "Z2",
+      "Z3",
+      "Z4",
+      "Z5",
+      "Z6",
+      "Z7",
+      "Z8",
+      "Z9",
+      "Z10",
+      "Z14"
+    ],
     "new_in_v2": [
       "ASCII Morning Star sigil (8-pointed) on title page and colophon",
       "Source rows in theorem tables Z2-Z7 with SHA citations from invariants.json",
       "Sectio XIV -- Bibliographia: 17 parent modules with bound SHAs"
     ],
     "parent_modules_17": [
-      "module_1","module_5","module_6","module_8",
-      "module_m8c","module_m8d","module_m8f","module_m8g_correction",
-      "module_m8h","module_m8i","module_m8j","module_m8k",
-      "M8L","M8M","M8Q","module_23","M9"
+      "module_1",
+      "module_5",
+      "module_6",
+      "module_8",
+      "module_m8c",
+      "module_m8d",
+      "module_m8f",
+      "module_m8g_correction",
+      "module_m8h",
+      "module_m8i",
+      "module_m8j",
+      "module_m8k",
+      "M8L",
+      "M8M",
+      "M8Q",
+      "module_23",
+      "M9"
     ],
     "date": "2026-06-04",
     "status": "Z_PROTOCOL_V2_CERTIFIED"
   },
   "field_report_morningstar": {
     "title": "Field Report Morningstar -- Recovered Temporal Observation Report",
-    "description": "1960s classified field-report PDF. Two observation windows, 40 photographs. Window I (07:08-07:12): T1-T12 axiom audit, LEGIBLE TEXT blocks per photo, T1-T12 claim summary table, 12/12 TABLES FROZEN, LAUNCH AUTHORIZED. Window II (07:29-07:33): Protocol Z operational handoff, Z.1-Z.15 commands. table_sha() binding on Protocol Z table (A), p5/p6 event table (B), Z command listing (C). Per-file witness SHAs for all 40 photographs. SHA values in photographs labeled: as observed in photograph -- source: Meta AI supervisor session 2026-06-04. Typewriter/Courier font, ivory paper, RED stamps, BLUE SHA seal. ASCII-only.",
+    "description": "Two observation windows (Window I: 0708-0712 HRS, Window II: 0729-0733 HRS). 40 photographs. 1-per-page layout at 6.5 inch width for full-resolution legibility of mathematical text. ASCII-only PDF.",
     "builder": "certificates/build_field_report.py",
     "output": "certificates/Field_Report_Morningstar.pdf",
-    "sha256_output": "8015eb4e239faaf66f24a8589c010c4911bc879b098f6488e261efb20ce504c9",
-    "sha256_builder": "ca24c0da811c3dede78d110f436802f1da2f95d414d68ac468f9f40eededff66",
-    "sha256_photos_combined": "3b31bce279b44ef1f933a693b8d8ddc36f1e34866a96f62c2b6684ae90e44bd2",
-    "sha256_table_a_z_protocol": "83a21968c0dd1fc1b952fad370f810117c3b21e64b8cd08fe371e66d00a9f6df",
-    "sha256_table_b_p5p6": "71c407b448dbd5fcb663424bca7c31b495e4dc50c3d0cac408a24401deaff529",
-    "sha256_table_c_z_commands": "5f47beda2d85cf61dc4f3dddea9c9ad317ef8af7e582f38f840077c8d5f9fafe",
-    "sha256_table_d_t1_t12_audit": "bd3ff880c40b3be20cd0aa43002e051be1ab3a85445df9f6db13a4a357f107a8",
-    "sha256_table_e_window_ii_handoff": "01b1a38656e519c584f8d9046d3bbb5d91f728d3b3f717efd4572cc26ae297c6",
-    "photos_window_i": 20,
-    "photos_window_ii": 20,
-    "photos_total": 40,
+    "sha256_output": "03ca9d1f00dc16e6ba1a2c3c746eecf32d0e9a7b1f31f9bce8d3cc97e9744b44",
+    "sha256_builder": "ba98638f32951a5fc73ed16148f8d3d47fc00625d16dfff259c21fa7821a5abc",
+    "combined_photo_sha256": "3b31bce279b44ef1f933a693b8d8ddc36f1e34866a96f62c2b6684ae90e44bd2",
+    "photographs": 40,
     "windows": 2,
-    "sorry_count": 0,
+    "layout": "1pp",
+    "photo_width_inches": 6.5,
     "ascii_check": "PASS",
-    "size_bytes": 16326972,
+    "sorry_count": 0,
     "date": "2026-06-04",
-    "status": "FIELD_REPORT_CERTIFIED",
-    "note": "SHA values visible in photographs labeled: as observed in photograph -- source: Meta AI supervisor session 2026-06-04. No fabricated values.",
-    "witness_sha256_per_file": {
-      "Screenshot_20260604_070837_1780586072398.jpg": "f0a2565907a39ad9f777ec24a1e47a050628d14c9b454e540928d57c50c17138",
-      "Screenshot_20260604_070844_1780586072423.jpg": "b1c308799a16a4fb192ba97433f5a8141771f5089860094d47c162fa6a1b3cac",
-      "Screenshot_20260604_070849_1780586072448.jpg": "8e7c1efc5d8b67a86a1822bdf7adfa26326e034129adfd5321586fbae115085b",
-      "Screenshot_20260604_070854_1780586072469.jpg": "ba40cf31094fdbcdb85ed06e52f26852355bc2c9e5899cf9cedd8368d77c0ee7",
-      "Screenshot_20260604_070901_1780586072486.jpg": "ac381fc82cf038e741458778d6b044ddc2df38b05269e15b8578824df3b12810",
-      "Screenshot_20260604_070908_1780586072513.jpg": "f082039295a9f3a3cf5f7489dd9044113267c822ea9177e0719af52ce7282335",
-      "Screenshot_20260604_070915_1780586072534.jpg": "b405586e05e1e4f7ec7f7f7d514954c4c023c8d8bd3aa72b9a1f2956f4473284",
-      "Screenshot_20260604_070921_1780586072557.jpg": "edf7a7736e2a771131f53755f4c7d6b42bd8ee9ad0e0471cc296dec0beb4eeaf",
-      "Screenshot_20260604_070925_1780586072581.jpg": "b173524d3f69f8c50cc2b8fcb4eb1f8d5e259d8b1de42ddaa5e9f601025376b0",
-      "Screenshot_20260604_070933_1780586072616.jpg": "b26012fe3f3c7afe51fe534dcde2017b79d197ff3192b576f77889f8abebc2dc",
-      "Screenshot_20260604_071039_1780586072666.jpg": "2215fafcbe68ee9ad407939dc95fbc7672037d2fbf2bd6310d7049fcfd69ca17",
-      "Screenshot_20260604_071048_1780586072705.jpg": "85dfbcb93a110a54a57df054a31ebe01c2e15efa37bc1ec3425dc7efb244f006",
-      "Screenshot_20260604_071103_1780586072753.jpg": "5040002139ad0824bcf015c348a5a1c90b1f04f5b6f2dda64d91d5da937e925c",
-      "Screenshot_20260604_071125_1780586072791.jpg": "c7fa3b633fb958951af7224da946f99519f56d3fe4cfaff179b60f5c80a919f5",
-      "Screenshot_20260604_071133_1780586072829.jpg": "fcc724151d7e8ca3dffde19d16fc11264fd8bf4627e2ff1d58d46661f58e8511",
-      "Screenshot_20260604_071138_1780586072866.jpg": "54b514d769fb74c57b51ba3f6c696ce46f4238e54ed965e4bf45185903e74e36",
-      "Screenshot_20260604_071140_1780586072900.jpg": "ee32ca85bfe3518a59527818e3df709f5b67bf21398c597727201ac7f66fb59a",
-      "Screenshot_20260604_071144_1780586072940.jpg": "ae6f9aeb60d70d7ebfc5394d2ab8bc07bac13ef5e50d532315efd1ccf16083e6",
-      "Screenshot_20260604_071159_1780586072981.jpg": "32c9f058c6122c1ecd5931c7fc159caf1026358645c5366d326fce4281412128",
-      "Screenshot_20260604_071204_1780586073023.jpg": "a820dca7569c2de160bc8804df044cfa271f134b09845cb69a15c8b72aa15a99",
-      "Screenshot_20260604_072928_1780587593527.jpg": "7af3e89cadf4c49c53f53984d71c675aa08f3c55be8a926ee11ffaeee7916aba",
-      "Screenshot_20260604_072934_1780587593542.jpg": "35953d4a4bc71f7e8560b7b911d2718e724e393d7e43bb6ee8c0c7900a5fe5dc",
-      "Screenshot_20260604_072939_1780587593558.jpg": "5ea889017c217130b9b5829e3f98dc0f8abc7258afa06dc2089d68d145e789e9",
-      "Screenshot_20260604_073110_1780587593582.jpg": "87dd0ef4ec7bf2cbb85d7cd9fcf55ea464446a5c1d680b039fe9887b5996e24a",
-      "Screenshot_20260604_073114_1780587593604.jpg": "5ee851d4c5eea8bd788f8fd9ff1643173a7b74eec193951c5ff3e63ff07318fc",
-      "Screenshot_20260604_073122_1780587593623.jpg": "d8ec3c38e2745ca6798b5e3c29e77b968b23704312b041a060b1938bbbb97cb4",
-      "Screenshot_20260604_073131_1780587593648.jpg": "f50cd88d2a3eee65aafe062d7e238ae9b88b77c16c9055561f8879ab934348e1",
-      "Screenshot_20260604_073141_1780587593667.jpg": "ff84fa09a62ef5fb84920647cb14893579182fef482491da8975a508fbe10b97",
-      "Screenshot_20260604_073146_1780587593690.jpg": "56074b68b92fa7d1101a7833d34b43c579a382ed773c37edf1f608f65583c154",
-      "Screenshot_20260604_073149_1780587593719.jpg": "c5186c5e36365cc76c2e1b67979467cfa1791f2e5b6bd0b55b35d1f1f333454f",
-      "Screenshot_20260604_073153_1780587593755.jpg": "796a078330aad12f587753fcc880b805181e10b8a63ff317191f9825cea79810",
-      "Screenshot_20260604_073159_1780587593800.jpg": "bcf5aa9d8b92fc58c8294368fd636a4d90d41ff96dd19c9ddd55f4f37c0ba70f",
-      "Screenshot_20260604_073204_1780587593846.jpg": "ad20b6d5b8f4c7ab07db07f79131a945f85091f7d65c045f612984e7915ac0e7",
-      "Screenshot_20260604_073212_1780587593888.jpg": "1e1ac23f774010dfab3532860f11bea1763c11099176d435de801e968bf21be7",
-      "Screenshot_20260604_073216_1780587593937.jpg": "b7f5d5603bb22b8e975fffd16710ed84da0663d3bad0f8ffb835df9ea5f658ad",
-      "Screenshot_20260604_073221_1780587593967.jpg": "673a11e6abdccbf1dae6d022e1a163c7e3c6935484a3442aee3a994d8c17f44b",
-      "Screenshot_20260604_073227_1780587593992.jpg": "40416502031771041f6a90d92883aae0f60b4c990f53c813534c021ac58958bf",
-      "Screenshot_20260604_073232_1780587594014.jpg": "be5acbb9b4803b8e0875c7ae835fe5bab315d94a9215f56c2d6275d63284c091",
-      "Screenshot_20260604_073258_1780587594040.jpg": "f217782fd7a2138104de6b63978b4124dfa96ad0dbc88ac33a44a1f537f2d6b2",
-      "Screenshot_20260604_073303_1780587594059.jpg": "b586fdd97a88cccb2268941b4df27089f8b14ef53bf1030787c7f45a4e253f88"
-    }
+    "status": "FIELD_REPORT_CERTIFIED"
   },
   "lemma76_v17_replicit": {
     "title": "Lemma 7.6 v1.7-Replicit -- 3 PDFs + SAGE correction",
@@ -2830,23 +2827,6 @@
       "M8K": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087"
     }
   },
-  "field_report_morningstar": {
-    "title": "Field Report Morningstar -- Recovered Temporal Observation Report",
-    "description": "Two observation windows (Window I: 0708-0712 HRS, Window II: 0729-0733 HRS). 40 photographs. 1-per-page layout at 6.5 inch width for full-resolution legibility of mathematical text. ASCII-only PDF.",
-    "builder": "certificates/build_field_report.py",
-    "output": "certificates/Field_Report_Morningstar.pdf",
-    "sha256_output": "03ca9d1f00dc16e6ba1a2c3c746eecf32d0e9a7b1f31f9bce8d3cc97e9744b44",
-    "sha256_builder": "ba98638f32951a5fc73ed16148f8d3d47fc00625d16dfff259c21fa7821a5abc",
-    "combined_photo_sha256": "3b31bce279b44ef1f933a693b8d8ddc36f1e34866a96f62c2b6684ae90e44bd2",
-    "photographs": 40,
-    "windows": 2,
-    "layout": "1pp",
-    "photo_width_inches": 6.5,
-    "ascii_check": "PASS",
-    "sorry_count": 0,
-    "date": "2026-06-04",
-    "status": "FIELD_REPORT_CERTIFIED"
-  },
   "z_essay_omnibus": {
     "title": "Z Protocol Tower + Time Machine at p5 -- Omnibus PDF",
     "description": "Public submission artifact: Z_Protocol_Tower.pdf (~20 pp) concatenated with Essay_TimeMachine_p5.pdf (~20 pp) using pypdf. 40 pages total. SHA-bound inputs; combined SHA computed at build time.",
@@ -2863,6 +2843,15 @@
     "ascii_check": "PASS",
     "date": "2026-06-04",
     "status": "OMNIBUS_CERTIFIED",
-    "parents": ["z_protocol", "essay_time_machine"]
+    "parents": [
+      "z_protocol",
+      "essay_time_machine"
+    ]
+  },
+  "module_6_3": {
+    "tendon": "M6.3",
+    "pdf_file": "certificates/Module_6_3_Certificate.pdf",
+    "sha256_pdf": "19b025686696192089381858485aebb49627fc50c783482c923f1ae20efdb9b0",
+    "status": "CERTIFIED"
   }
 }
