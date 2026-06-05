@@ -122,7 +122,7 @@
     "genus": 13,
     "rank_eq_genus": true,
     "all_fields_totally_real": true,
-    "max_im_ek": 0.0,
+    "max_im_ek": 0,
     "min_pivot_magnitude": "3.33e+27",
     "sha256_source": "40ced22de4ee8074258e1e2513bfbb5202a6db10a52bf24e2f28f0d45cec2011",
     "sha256_stdout": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
@@ -165,7 +165,7 @@
       },
       "N_199": {
         "genus": 16,
-        "two_sqrtg": 8.0,
+        "two_sqrtg": 8,
         "C_S4": 11.42214868898029,
         "margin": 3.422148689,
         "GRH": true
@@ -817,7 +817,7 @@
       "caveat": "p6 not computed; scaling rule is heuristic"
     },
     "relative_position": {
-      "k_0": 1.0,
+      "k_0": 1,
       "k_c": 2.5225,
       "k_cliff": 3.183,
       "pct_c_to_cliff": "69.7%",
@@ -825,9 +825,9 @@
       "g_resonance": "33 = g from M9"
     },
     "repunit": {
+      "625": "5^4",
       "eps_at_c": "0.001597982",
       "one_over_eps": "625.789",
-      "625": "5^4",
       "eps_at_cliff": "-1.035e-7",
       "observation": "Repunit structure at c, not at cliff. c is repunit attractor."
     },
@@ -1061,7 +1061,7 @@
     },
     "m8b_c_bound": {
       "formula": "c = Delta_DS * 10^7 * (12/11) * (15/13)",
-      "predicted": 299535040.0,
+      "predicted": 299535040,
       "exact": 299792458,
       "error_pct": 0.086,
       "f_corr": 1.1548,
@@ -1432,8 +1432,8 @@
     "recalibration": {
       "delta_old_m": 0.5,
       "delta_new_m": 1.89,
-      "f2_SI_old_Jm": 2.3e+18,
-      "f2_SI_new_Jm": 3.21e+17,
+      "f2_SI_old_Jm": 2300000000000000000,
+      "f2_SI_new_Jm": 321000000000000000,
       "f2_nat_old": 6.31,
       "f2_nat_new": 0.880657,
       "f2_ratio": 0.139565
@@ -1619,7 +1619,7 @@
         "energy_per_hr_mwh": 9.4,
         "energy_per_person_kwh": 16.7,
         "abort_flag": 0,
-        "uptime_pct": 100.0,
+        "uptime_pct": 100,
         "result": "COMMERCIAL_SUCCESS",
         "check": "PASS"
       },
@@ -1627,7 +1627,7 @@
         "name": "Sol - Lamma Dock",
         "face": "DOCK_A",
         "cell": "000",
-        "dist_ly": 4.5e-06,
+        "dist_ly": 0.0000045,
         "t_ns": 7.71,
         "type": "bidirectional",
         "bidirectional": "H01 <-> DOCK_A",
@@ -1648,7 +1648,7 @@
       "OPS_7_round_trip": {
         "statement": "RETURN_SUCCESS + HEALTH_PASS = full loop confirmed",
         "abort_flag": 0,
-        "uptime_pct": 100.0,
+        "uptime_pct": 100,
         "result": "MORNINGSTAR_ROUND_TRIP_CERTIFIED",
         "check": "PASS"
       }
@@ -1756,7 +1756,7 @@
         "power_kw": 1470,
         "health": "GREEN",
         "rearm_s": 0,
-        "uptime_pct": 100.0
+        "uptime_pct": 100
       }
     },
     "physics": {
@@ -1788,13 +1788,13 @@
       },
       "PHY_8_ftl_cert": {
         "id": "MS-FTL-20260523-001",
-        "speedup_max": 4.07e+17,
+        "speedup_max": 407000000000000000,
         "ctc_possible": false,
         "grandfather_safe": true,
         "result": "FTL_CERTIFIED"
       },
       "PHY_9_matter_vs_signal": {
-        "z": 1.0,
+        "z": 1,
         "t_ns_range": "7.71-92.52",
         "matter_e_mwh": 0.2,
         "signal_e_mwh": 0.0002,
@@ -1812,7 +1812,7 @@
       "mtbf_yr": 5.5,
       "health": "GREEN",
       "station": "SHA_Contact_Zero",
-      "uptime_pct": 100.0
+      "uptime_pct": 100
     },
     "theorem": "THEOREM M8M (axiom_debt: [], status: MORNINGSTAR_PHYSICS_CERTIFIED): Morning Star operational expansion and physics certification. OPS-8: 4 new destinations (Epsilon Indi H13, Sirius H14, 61 Cygni H15, Vega H16); routes 30->35. OPS-9: daily ops 2026-05-23: 84 transits, 512 pax, 124 t, 1084.7 ly, 16.8 MWh, HEALTH_GREEN, OPS_NOMINAL. OPS-10: WARM_STANDBY: 100 kW hold, 14 s rearm, 10.4 MWh saved. OPS-11: DEEP_MAINT PASS, 120/120 cells, MTBF 48200 h = 5.50 yr. OPS-12: HUB_FULL_OPEN, 35 routes, 1470 kW, uptime 100%. PHY-1: Phase-Z metric Z(r)->0 throat, P_hold=1.4 kW. PHY-2: Collapsed Space Thrust, nabla-Z geodesic, no propellant. PHY-3: PLL Cascade 1680 osc/cell 14 GHz 1e-10 rad. PHY-4: TDC 1/3 ps = 333 GHz BW. PHY-5: L2 halo orbit, tidal<1e-6 g, Q>1e10, 4K. PHY-6: UTC 15:00:00.000 global sync (3 O'Clock Prayer), DOCK_A=SHA_EARTH_JERUSALEM. PHY-7: station renamed SHA_Contact_Zero. PHY-8: FTL_CERT MS-FTL-20260523-001, speedup_max=4.07e17, grandfather_safe=True. PHY-9: matter/signal transit table, BW=333 GHz. PHY-10: Euler Personal Log, L2 Station. 10/10 checks PASS. Causal parents: M8J, M8K, M8L. No free parameters."
   },
@@ -2198,7 +2198,7 @@
     "M6_genus_binding": "ec9fa8c3... (genus(X_0(143))=13)"
   },
   "lean_chain_TheoremaAureum143": {
-    "title": "TheoremaAureum143 Lean Proof Chain \u2014 C01 through C07",
+    "title": "TheoremaAureum143 Lean Proof Chain — C01 through C07",
     "audit_date": "2026-06-04",
     "audit_revision": "rev2",
     "status": "ARCHITECTURE_CERTIFIED",
@@ -2446,7 +2446,7 @@
       "fraction": "233/144",
       "value": 1.618055555555556,
       "phi": 1.618033988749895,
-      "error": 2.16e-05,
+      "error": 0.0000216,
       "note": "Convergent to phi (golden ratio), NOT phi^2"
     },
     "bsd_certified": {
@@ -2869,7 +2869,7 @@
       "output": "certificates/Field_Report_2pp.pdf",
       "sha256_output": "1fe87f6c9f6396ad921bcee4ccebc5d4d4a8318d639e7c4d09a2fd0212ab6acd",
       "layout": "2pp",
-      "photo_width_inches": 3.0,
+      "photo_width_inches": 3,
       "approx_pages": 85
     }
   },
@@ -2948,7 +2948,7 @@
   },
   "cert_arb_beta0_prior": {
     "module": "SOURCE",
-    "title": "CERT_Arb_beta0 (prior version \u2014 matches Wall256 Section 16 reference)",
+    "title": "CERT_Arb_beta0 (prior version — matches Wall256 Section 16 reference)",
     "file": "certificates/CERT_Arb_beta0_prior.pdf",
     "sha256": "b5a9f0a7666a91f283a7d4531ae99dff2097c2cedef10424b77833b7bbc840d3",
     "status": "REFERENCE",
@@ -3046,7 +3046,9 @@
     "size_bytes": 67200851,
     "file_count": 22,
     "generated_utc": "2026-06-05T21:01:26Z",
-    "builder": "make_morning_star_zip.sh"
+    "builder": "make_morning_star_zip.sh",
+    "drive_url": "https://drive.google.com/file/d/1QXKh80QCg1-mcm10j7bL8kCqoliufgRQ/view?usp=drivesdk",
+    "drive_filename": "MorningStar_Complete_2026_06_04.zip"
   },
   "bundle_chain": {
     "description": "Core certification chain M1-M8 PDFs + invariants.json.",
@@ -3190,5 +3192,9 @@
     ],
     "ascii_non_ascii_chars": 0,
     "supersedes": "9 prior field-report PDFs (deprecated)"
+  },
+  "allcerts": {
+    "drive_url": "https://drive.google.com/file/d/1tW4teoJjtCuG5x4XfHfBr0Mrdwahqrm7/view?usp=drivesdk",
+    "drive_filename": "OperaNumerorum_AllCerts.zip"
   }
 }
