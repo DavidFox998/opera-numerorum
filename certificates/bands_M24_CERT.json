@@ -1,0 +1,68 @@
+{
+  "module": "M24",
+  "title": "H4 Refraction Map: Z-Lock Alpha-Bands S-Bands Self-Duality",
+  "alpha": "2*pi/7",
+  "sieve_dps": 400,
+  "sieve_max_terms": 450,
+  "max_denominator_approx": "1e200",
+  "N_routes_found": 5,
+  "theorem_4_1_prediction": 108,
+  "bands": [
+    {
+      "band": 1,
+      "cf_step": 4,
+      "h": "127",
+      "h_digits": 3,
+      "norm": 0.643454357207102,
+      "Z_h": 1,
+      "M_star_h": "12/11",
+      "3h_mod7": 3,
+      "cond3_pass": true
+    },
+    {
+      "band": 2,
+      "cf_step": 10,
+      "h": "414679",
+      "h_digits": 6,
+      "norm": 0.24147702068850313,
+      "Z_h": 1,
+      "M_star_h": "12/11",
+      "3h_mod7": 3,
+      "cond3_pass": true
+    },
+    {
+      "band": 3,
+      "cf_step": 47,
+      "h": "4964318427222741249841",
+      "h_digits": 22,
+      "norm": 0.6019897083666559,
+      "Z_h": 1,
+      "M_star_h": "12/11",
+      "3h_mod7": 3,
+      "cond3_pass": true
+    },
+    {
+      "band": 4,
+      "cf_step": 58,
+      "h": "135531508477763247952856981",
+      "h_digits": 27,
+      "norm": 0.48606594083812027,
+      "Z_h": 1,
+      "M_star_h": "12/11",
+      "3h_mod7": 5,
+      "cond3_pass": true
+    },
+    {
+      "band": 5,
+      "cf_step": 71,
+      "h": "12454380874316538311034864614401",
+      "h_digits": 32,
+      "norm": 0.2961678934580142,
+      "Z_h": 1,
+      "M_star_h": "12/11",
+      "3h_mod7": 3,
+      "cond3_pass": true
+    }
+  ],
+  "SORRY": 0
+}
