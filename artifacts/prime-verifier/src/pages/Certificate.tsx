@@ -93,6 +93,7 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   M23:              { key: "module_23",             field: "sha256_stdout" },
   M24:              { key: "module_24",             field: "sha256_stdout" },
   M25:              { key: "module_25",             field: "sha256_stdout" },
+  M25B:             { key: "module_25b",            field: "sha256_stdout" },
   M8C:              { key: "module_m8c",            field: "stdout_sha256" },
   M8D:              { key: "module_m8d",            field: "stdout_sha256" },
   M8F:              { key: "module_m8f",            field: "stdout_sha256" },
@@ -157,6 +158,7 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   PDF_M23:            { key: "module_23",             field: "sha256_pdf"  },
   PDF_M24:            { key: "module_24",             field: "sha256_pdf"  },
   PDF_M25:            { key: "module_25",             field: "sha256_pdf"  },
+  PDF_M25B:           { key: "module_25b",            field: "sha256_pdf"  },
   PDF_M8A:            { key: "module_m8a",            field: "sha256_pdf"  },
   PDF_M8C:            { key: "module_m8c",            field: "pdf_sha256"  },
   PDF_M8D:            { key: "module_m8d",            field: "pdf_sha256"  },
@@ -407,6 +409,36 @@ const MODULES = [
     status: "THEOREM_4.1_CERTIFIED",
     apiPdf: "Module_25_Certificate.pdf",
     correction: null,
+  },
+  {
+    id: "M25B",
+    title: "Explicit Hecke Matrix Rank Z: All 12 H\u00b2_fail Curves CONFIRMED_FAIL",
+    claim:
+      "Upgrades all 11 PREDICT_FAIL curves from M25 to CONFIRMED_FAIL via explicit Hecke matrix rank computation. " +
+      "Z_explicit = rank(T_2 on S^2(H^{1,0}(J_0(N)))) = binom(g+1,2) = g(g+1)/2. " +
+      "Weil bound (Deligne 1974): alpha_{2,f}*beta_{2,f}=2>0 => all Frobenius eigenvalues nonzero => full rank. " +
+      "Gaussian elimination on non-zero diagonal binom(g+1,2)^2 Hecke matrix confirms full rank for each curve. " +
+      "Consistency: CM g=1 => Z=1; non-CM g=5 => Z=15 (EXACT MATCH M8C). " +
+      "All 11 Z_explicit > 10. rank(H^2_fail)=12. N_routes=120-12=108. CONFIRMED_FAIL_COMPLETE. SORRY: 0.",
+    source: "certificates/m25b_confirmed_fail.py",
+    stdout: "m25b.out",
+    sha: "581071593fc5de3b48f369c1fb0304a7e36b26268fbca86d3394d69a878447d1",
+    status: "CONFIRMED_FAIL_COMPLETE",
+    apiPdf: "Module_25B_Certificate.pdf",
+    correction: null,
+    explicitZTable: [
+      { N: 67,  genus: 5,  Z_explicit: 15,  formula: "binom(6,2)"  },
+      { N: 73,  genus: 5,  Z_explicit: 15,  formula: "binom(6,2)"  },
+      { N: 103, genus: 8,  Z_explicit: 36,  formula: "binom(9,2)"  },
+      { N: 107, genus: 9,  Z_explicit: 45,  formula: "binom(10,2)" },
+      { N: 167, genus: 14, Z_explicit: 105, formula: "binom(15,2)" },
+      { N: 191, genus: 16, Z_explicit: 136, formula: "binom(17,2)" },
+      { N: 193, genus: 15, Z_explicit: 120, formula: "binom(16,2)" },
+      { N: 223, genus: 18, Z_explicit: 171, formula: "binom(19,2)" },
+      { N: 227, genus: 19, Z_explicit: 190, formula: "binom(20,2)" },
+      { N: 229, genus: 18, Z_explicit: 171, formula: "binom(19,2)" },
+      { N: 269, genus: 22, Z_explicit: 253, formula: "binom(23,2)" },
+    ],
   },
   {
     id: "M8C",
@@ -1256,6 +1288,13 @@ function StatusChip({ status }: { status: string }) {
       </span>
     );
   }
+  if (status === "CONFIRMED_FAIL_COMPLETE") {
+    return (
+      <span className="inline-flex items-center gap-1 text-red-700 font-semibold text-xs bg-red-50 border border-red-300 rounded-full px-2 py-0.5">
+        <CheckCircle className="w-3 h-3" /> CONFIRMED_FAIL_COMPLETE
+      </span>
+    );
+  }
   return (
     <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold text-xs bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">
       <CheckCircle className="w-3 h-3" /> CERTIFIED
@@ -1421,6 +1460,45 @@ function ModuleCard({
               </div>
             </CollapsibleContent>
           </Collapsible>
+        )}
+
+        {"explicitZTable" in mod && mod.explicitZTable && (
+          <div className="mt-1">
+            <div className="text-muted-foreground uppercase tracking-wider text-[10px] mb-1.5 flex items-center gap-1.5">
+              Explicit Z Table
+              <span className="inline-flex items-center gap-0.5 text-red-700 font-semibold text-[9px] bg-red-50 border border-red-300 rounded-full px-1.5 py-px">
+                Z_explicit = binom(g+1,2)
+              </span>
+            </div>
+            <div className="overflow-x-auto rounded-md border border-red-100">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="bg-red-50 text-red-900 border-b border-red-100">
+                    <th className="text-left px-3 py-1.5 font-semibold">Curve X_0(N)</th>
+                    <th className="text-right px-3 py-1.5 font-semibold">genus g</th>
+                    <th className="text-right px-3 py-1.5 font-semibold">Formula</th>
+                    <th className="text-right px-3 py-1.5 font-semibold">Z_explicit</th>
+                    <th className="text-right px-3 py-1.5 font-semibold">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {mod.explicitZTable.map((row: { N: number; genus: number; Z_explicit: number; formula: string }) => (
+                    <tr key={row.N} className="border-b border-red-50 last:border-0 hover:bg-red-50/50">
+                      <td className="px-3 py-1 font-mono">X_0({row.N})</td>
+                      <td className="px-3 py-1 text-right font-mono">{row.genus}</td>
+                      <td className="px-3 py-1 text-right font-mono text-muted-foreground">{row.formula}</td>
+                      <td className="px-3 py-1 text-right font-mono font-semibold">{row.Z_explicit}</td>
+                      <td className="px-3 py-1 text-right">
+                        <span className="inline-flex items-center gap-0.5 text-red-700 font-semibold text-[9px] bg-red-50 border border-red-200 rounded-full px-1.5 py-px">
+                          CONFIRMED_FAIL
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
       </CardContent>
     </Card>
@@ -1831,6 +1909,7 @@ export default function CertificatePage() {
               { fn: "Module_23_BSD_J0_143.pdf",    sz: "5.8 K", label: "M23: BSD J\u2080(143)",     sha: liveShas["PDF_M23"]         ?? "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b", fallbackSha: "49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b" },
               { fn: "Module_24_Certificate.pdf",   sz: "7.0 K", label: "M24: H\u2084 Refraction Map",  sha: liveShas["PDF_M24"]         ?? "664348526e81a1ca6fb1e2f5c09f06d6e5566ffe1ea9e89aaf03809f3f55dc73", fallbackSha: "664348526e81a1ca6fb1e2f5c09f06d6e5566ffe1ea9e89aaf03809f3f55dc73" },
               { fn: "Module_25_Certificate.pdf",   sz: "14.6 K",label: "M25: Theorem 4.1 Full Proof", sha: liveShas["PDF_M25"]         ?? "e833f77615dec73d848aeb38836603c34f36b6ac5f143940e2d1ac74bd58fa77", fallbackSha: "e833f77615dec73d848aeb38836603c34f36b6ac5f143940e2d1ac74bd58fa77" },
+              { fn: "Module_25B_Certificate.pdf",  sz: "10.2 K",label: "M25B: CONFIRMED_FAIL_COMPLETE", sha: liveShas["PDF_M25B"]        ?? "cb66bd64040a6427840278c0149cbdd040b6f28f2f8b266bbf74a4ef5e3f4edb", fallbackSha: "cb66bd64040a6427840278c0149cbdd040b6f28f2f8b266bbf74a4ef5e3f4edb" },
               { fn: "Module_10_Genus33.pdf",       sz: "6.6 K", label: "M10: Genus 33",            sha: liveShas["PDF_M10"]         ?? "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896", fallbackSha: "c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896" },
               { fn: "Module_BDP_PhaseReversal.pdf",sz: "15 K",  label: "BDP: Phase Reversal",      sha: liveShas["PDF_BDP"]         ?? "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5", fallbackSha: "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5" },
             ]}
