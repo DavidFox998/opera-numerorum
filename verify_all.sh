@@ -23,6 +23,20 @@ done
 
 echo ""
 echo "Concatenating 6 outputs..."
-cat m1.out m2.out m3.out m4.out m5.out m6.out | sha256sum
+MANIFEST_SHA=$(cat m1.out m2.out m3.out m4.out m5.out m6.out | sha256sum | awk '{print $1}')
+echo "$MANIFEST_SHA  (M1-M6 manifest)"
 echo ""
 echo "All 6 modules verified. DAG intact. MANIFEST LOCKED."
+echo ""
+echo "=== Rebuilding Field Report variants ==="
+bash make_field_report.sh
+echo ""
+echo "=== Full chain summary ==="
+for file in m1.out m2.out m3.out m4.out m5.out m6.out; do
+  echo "  $file  $(sha256sum "$file" | awk '{print $1}')"
+done
+echo "  manifest      $MANIFEST_SHA"
+SHA_1PP=$(sha256sum certificates/Field_Report_1pp.pdf 2>/dev/null | awk '{print $1}')
+SHA_2PP=$(sha256sum certificates/Field_Report_2pp.pdf 2>/dev/null | awk '{print $1}')
+echo "  FR-1pp        $SHA_1PP"
+echo "  FR-2pp        $SHA_2PP"
