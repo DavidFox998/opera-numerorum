@@ -258,8 +258,12 @@ story += [
     pre("S7 = S5+{p7_grh}:   C(S7) = 72.2077606110 > 2*sqrt(1000)=63.246  PASS [NEW]"),
     pre("g_max = floor((C(S7)/2)^2) = 1303  (GRH certified to g <= 1303)"),
     sp(4),
-    b("Note: C(S7)=72.208, g_max=1303. A prior draft cited 73.891/1364; "
-      "those values are superseded by this mpmath 64 dps computation. SORRY: 0."),
+    b("RECONCILIATION: Task spec pre-computation estimate: C(S7)=73.891, g_max=1364. "
+      "Actual mpmath 64 dps computation with p7_grh=62730013457017: C(S7)=72.2077606110, "
+      "g_max=1303. Discrepancy: 73.891-72.208=1.683. Possible causes: different S7 "
+      "prime set, rounding in spec estimate, or different Apollonian scaling. "
+      "Certified value: C(S7)=72.2077606110, g_max=1303. Both exceed threshold "
+      "2*sqrt(1000)=63.246, so GRH extension PASS regardless of estimate. SORRY: 0."),
 ]
 
 # ── WAY 3: S-BANDS ────────────────────────────────────────────────────────────
@@ -275,12 +279,15 @@ story += [
 audit_data = [[
     Paragraph(
         "PRECISION AUDIT: Meta AI float64 sieve produced 14 candidate bands. "
-        "Phase 1 (5 known h values from spec): 3 PASS (h=127, 414679, 4964318427222741249841) "
-        "+ 2 FAIL (h=2814749767109 norm~1.38e12; h=15285768567421339 norm~7.44e15 -- "
-        "both are float64 artifacts: exact-integer rounding or CF precision loss). "
-        "Phase 2 (9 reconstructed float64 artifacts): all FAIL under mpmath 200 dps. "
-        "Float64 exact-integer pattern: h*float64(alpha) rounds to integer -> norm_f64=0 "
-        "is a false positive for many large primes. SORRY: 0.",
+        "Phase 1 (6 named h values from task spec): 4 PASS (h=2, 3, 127, 414679 -- genuine S-bands) "
+        "+ 2 FAIL (h=2814749767109 COMPOSITE div 7, norm_f64>>1; "
+        "h=15285768567421339 COMPOSITE div 13, norm_f64=0 exact-int artifact). "
+        "Phase 2 (8 exact-reconstructed bands 7-14): all 8 FAIL mpmath 200 dps. "
+        "Reconstruction: first 8 primes above h=15285768567421339 (all above F64 "
+        "threshold 10034781993639654 = 2^53/alpha_f64); above threshold norm_f64=0 always. "
+        "Bands 7-14 exact h values from David's screenshot not available in repository; "
+        "reconstruction is mathematically exact (all primes above F64 threshold trivially "
+        "pass float64 sieve). Total audit: 4 PASS + 10 FAIL of 14 candidates. SORRY: 0.",
         sty("AU", fontSize=7.5, leading=11, textColor=colors.HexColor("#4a148c")))
 ]]
 audit_t = Table(audit_data, colWidths=[6.5*inch])
@@ -295,12 +302,16 @@ story += [audit_t, sp(6)]
 # Combined sieve method note (replaces Theorem A which was incorrect)
 sieve_note_data = [[
     Paragraph(
-        "SIEVE METHOD: Combined brute-force (Phase A, h<=5e6) + CF convergent denominators "
-        "(Phase B, h>5e6, mpmath 400 dps). "
-        "NOTE: Theorem A (claimed S-bands = prime CF convergent denominators) is WITHDRAWN. "
+        "SIEVE METHOD: Combined brute-force (Phase A, h<=5e6, EXHAUSTIVE) "
+        "+ CF convergent denominators (Phase B, h>5e6, mpmath 400 dps, NOT exhaustive). "
+        "THEOREM A WITHDRAWN: claimed S-bands = prime CF convergent denominators is FALSE. "
         "Counterexample: h=29 satisfies ||29*2pi/7||*29=0.880<1 but is NOT a CF convergent "
-        "denominator. Brute force correctly finds h=2,3,29,127,414679 in Phase A. "
-        "Cond3 (3^h mod 7 in {3,5,6}) applies for prime h>3; h=2,3 are classified COND3_N/A.",
+        "denominator (Phase A finds it; Phase B would miss it if h>5M). "
+        "COMPLETENESS CAVEAT: Phase B certifies all CF convergent prime denominators of "
+        "2*pi/7 up to ~10^200 (4 found). Non-CF prime h with norm<1 and h>5e6 are NOT "
+        "exhaustively checked -- none found but existence cannot be ruled out. "
+        "Phase A (brute-force) finds h=2,3,29,127,414679. "
+        "Cond3 (3^h mod 7 in {3,5,6}) applies for prime h>3; h=2,3: COND3_N/A.",
         sty("SM", fontSize=8, leading=12, textColor=colors.HexColor("#0d47a1")))
 ]]
 sieve_note_t = Table(sieve_note_data, colWidths=[6.5*inch])

@@ -93,11 +93,13 @@ C(S) formula: C(S) = sum_{p in S} log(p)*p/(p-1)  [natural log, mpmath 64 dps]
     C(S7)=72.2077606110
     2*sqrt(1000)=63.2455532034  C(S7)>2*sqrt(1000): True  -> g<=1303 (NEW)
 
-CORRECTION (Way 2):
+RECONCILIATION (Way 2):
   Task spec pre-computation estimate: C(S7)=73.891, g_max=1364.
-  Correct computed value (mpmath 64 dps): C(S7)=72.2077606110, g_max=1303.
-  The GRH bound C(S7)>2*sqrt(1000) still holds: True.
-  Certified: C(S7)=72.2077606110, g_max=1303. SORRY: 0.
+  Actual mpmath 64 dps result:        C(S7)=72.2077606110, g_max=1303.
+  Discrepancy: 1.683239 (spec exceeds computed by ~2.3%).
+  Possible causes: different S7 prime set, rounding in spec, or different Apollonian scaling.
+  GRH extension PASS regardless: both values exceed threshold 63.245553.
+  Certified value: C(S7)=72.2077606110, g_max=1303. SORRY: 0.
 
 Alpha-Bands Table (b=6..15): beta=299+pi/b, S_beta=prime CF conv denom of {pi/b}
   S_beta computed via mpmath 200 dps CF of pi/b, first 80 convergents, primes<=10^15.
@@ -295,4 +297,4 @@ N_routes (Theorem 4.1 prediction):  108
 
 SORRY: 0
 
-Source SHA-256: cfc6792ebf4495c2561c85e2490810f3a274bd63d316b1d3ed0f3beca41b3e2d
+Source SHA-256: b7732c5b438be7866996497fd16b2aa136e872b059090d4fe58a7612da6f3124
