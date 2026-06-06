@@ -2892,16 +2892,16 @@
     }
   },
   "bundle_all_certs": {
-    "description": "Full certified archive: all 78 PDFs + invariants.json. Complete Opera Numerorum record.",
+    "description": "Full certified archive: all 79 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 96781361,
+    "size_bytes": 96793753,
     "size_mb_approx": 92.3,
-    "sha256": "8375ae28a52c305961136a3039514954b47d46c158b758448b6db9f2b9aff355",
-    "generated_utc": "2026-06-06T01:59:00.344831Z",
-    "pdf_count": 78,
+    "sha256": "0ddf44d9094e57998dcf338e6e8278dae1b238040e33ee5b0c8c5e2f8565ec8b",
+    "generated_utc": "2026-06-06T02:21:24.711757Z",
+    "pdf_count": 79,
     "contents": [
       "invariants.json",
-      "PDFs/*.pdf (78 files)"
+      "PDFs/*.pdf (79 files)"
     ]
   },
   "p5_replacement_c13": {
@@ -3709,5 +3709,31 @@
         "drive_id": "1El43TE20wrdRuqdg40qZdI9-CfvqwyMO"
       }
     ]
+  },
+  "module_M8R": {
+    "label": "M8R",
+    "title": "C01-C07 Tower Manifest",
+    "date": "2026-06-06",
+    "status": "TOWER_MANIFEST_CERTIFIED",
+    "pdf": "certificates/Module_M8R_C01_C07_Towers.pdf",
+    "pdf_sha256": "c62dd66354c8cc0a464b1540f83cc09bbae0a22a5f188196d6e31a45ec911210",
+    "clay_seal": "518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1",
+    "m7_manifest": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+    "towers": {
+      "C01": "Morning Star -- alpha_0=299+pi/10, 35 routes, RTT=18.635ns",
+      "C02": "BSD -- rank(J_0(143))=1, Hankel rank=13",
+      "C03": "Yang-Mills -- G_eff=50625*G_0, Z=15, tidal<0.1g",
+      "C04": "Navier -- C_jumps=5.724x at k_c=3.183",
+      "C05": "Hodge -- 200 transcendental Hodge classes, M*=4/55 (OPEN)",
+      "C06": "P_vs_NP -- LLM_Decide SORRY:0, 10^13 tokens at p_5 (OPEN)",
+      "C07": "RH/GRH -- GRH for L(s,X_0(143)) via M1-M7 chain"
+    },
+    "source_shas": {
+      "M8": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "M8C": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
+      "M8D": "27d8e0c1e145ba7fb4a22c85067f3db78d92b490e592dcd255523afcec156db5",
+      "M8H": "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe",
+      "M8K": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087"
+    }
   }
 }
