@@ -1749,6 +1749,26 @@ export default function CertificatePage() {
   }, [refreshShas]);
 
   useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const id = hash.startsWith("#") ? hash.slice(1) : hash;
+    const el = document.getElementById(id);
+    if (!el) return;
+    const timer = setTimeout(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => {
+        el.classList.add("card-flash-highlight");
+        const cleanup = () => {
+          el.classList.remove("card-flash-highlight");
+          el.removeEventListener("animationend", cleanup);
+        };
+        el.addEventListener("animationend", cleanup);
+      }, 600);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     let timerId: ReturnType<typeof setInterval> | null = null;
 
     function start() {
