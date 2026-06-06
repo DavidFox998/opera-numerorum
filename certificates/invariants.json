@@ -3048,7 +3048,7 @@
     "file_count": 24,
     "generated_utc": "2026-06-05T23:55:11Z",
     "builder": "make_morning_star_zip.sh",
-    "drive_url": ""
+    "drive_url": "https://drive.google.com/file/d/18cJi0AqC-lvajxzxdc2pl_VzBNhn6ht5/view?usp=drivesdk"
   },
   "bundle_chain": {
     "description": "Core certification chain M1-M8 PDFs + invariants.json.",
