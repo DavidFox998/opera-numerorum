@@ -1,10 +1,10 @@
 """
 build_z_essay_omnibus.py
-Opera Numerorum -- Z Protocol Tower + Time Machine Essay -- Omnibus PDF
-Combines Z_Protocol_Tower.pdf (~25 pp) and Essay_TimeMachine_p5.pdf (~21 pp)
+Opera Numerorum -- Z Protocol Tower (v3) + Time Machine Essay -- Omnibus PDF
+Combines Z_Protocol_Tower_v3.pdf (~24 pp) and Essay_TimeMachine_p5.pdf (~20 pp)
 into a single public-submission artifact using pypdf.
 SHA-256 bound. ASCII checked. Battle Plan v1.6.
-Author: David Fox | June 4, 2026
+Author: David Fox | June 4, 2026 | Updated June 6, 2026 for v3
 """
 
 import hashlib
@@ -18,7 +18,7 @@ except ImportError:
     print("ERROR: pypdf not available. Install with: pip install pypdf")
     sys.exit(1)
 
-Z_PROTOCOL = "certificates/Z_Protocol_Tower.pdf"
+Z_PROTOCOL = "certificates/Z_Protocol_Tower_v3.pdf"
 ESSAY      = "certificates/Essay_TimeMachine_p5.pdf"
 OUTPUT     = "certificates/Z_Essay_Omnibus.pdf"
 
@@ -108,8 +108,8 @@ print()
 print("=" * 64)
 print("OPERA NUMERORUM -- Z ESSAY OMNIBUS  --  BATTLE PLAN v1.6")
 print("=" * 64)
-print("Z_Protocol_Tower.pdf SHA:  {}".format(z_sha[:32]))
-print("Essay_TimeMachine_p5 SHA:  {}".format(e_sha[:32]))
+print("Z_Protocol_Tower_v3.pdf SHA: {}".format(z_sha[:32]))
+print("Essay_TimeMachine_p5 SHA:    {}".format(e_sha[:32]))
 print("Omnibus output SHA-256:    {}".format(out_sha))
 print("Total pages: {}".format(total_pages))
 print("ASCII: PASS" if not bad_chars else "ASCII: WARNING")
