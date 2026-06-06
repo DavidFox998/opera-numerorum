@@ -201,6 +201,10 @@ else:
 PYEOF
 
 echo ""
+echo "=== Uploading to Google Drive ==="
+node certificates/upload_morning_star_to_drive.js
+
+echo ""
 echo "=== Done ==="
 echo "$OUT"
 echo "SHA-256 : $SHA"

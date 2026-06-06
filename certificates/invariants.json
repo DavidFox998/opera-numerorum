@@ -1627,7 +1627,7 @@
         "name": "Sol - Lamma Dock",
         "face": "DOCK_A",
         "cell": "000",
-        "dist_ly": 4.5e-06,
+        "dist_ly": 0.0000045,
         "t_ns": 7.71,
         "type": "bidirectional",
         "bidirectional": "H01 <-> DOCK_A",
@@ -2198,7 +2198,7 @@
     "M6_genus_binding": "ec9fa8c3... (genus(X_0(143))=13)"
   },
   "lean_chain_TheoremaAureum143": {
-    "title": "TheoremaAureum143 Lean Proof Chain \u2014 C01 through C07",
+    "title": "TheoremaAureum143 Lean Proof Chain — C01 through C07",
     "audit_date": "2026-06-04",
     "audit_revision": "rev2",
     "status": "ARCHITECTURE_CERTIFIED",
@@ -2446,7 +2446,7 @@
       "fraction": "233/144",
       "value": 1.618055555555556,
       "phi": 1.618033988749895,
-      "error": 2.16e-05,
+      "error": 0.0000216,
       "note": "Convergent to phi (golden ratio), NOT phi^2"
     },
     "bsd_certified": {
@@ -2869,7 +2869,7 @@
       "output": "certificates/Field_Report_2pp.pdf",
       "sha256_output": "a039b3af42cf8cf67be123a2c91e2842692c9a8d046cbe249ae372ceebb8a697",
       "layout": "2pp",
-      "photo_width_inches": 3.0,
+      "photo_width_inches": 3,
       "approx_pages": 85
     }
   },
@@ -2949,7 +2949,7 @@
   },
   "cert_arb_beta0_prior": {
     "module": "SOURCE",
-    "title": "CERT_Arb_beta0 (prior version \u2014 matches Wall256 Section 16 reference)",
+    "title": "CERT_Arb_beta0 (prior version — matches Wall256 Section 16 reference)",
     "file": "certificates/CERT_Arb_beta0_prior.pdf",
     "sha256": "b5a9f0a7666a91f283a7d4531ae99dff2097c2cedef10424b77833b7bbc840d3",
     "status": "REFERENCE",
@@ -3048,7 +3048,9 @@
     "file_count": 24,
     "generated_utc": "2026-06-05T23:55:11Z",
     "builder": "make_morning_star_zip.sh",
-    "drive_url": "https://drive.google.com/file/d/18cJi0AqC-lvajxzxdc2pl_VzBNhn6ht5/view?usp=drivesdk"
+    "drive_url": "https://drive.google.com/file/d/18cJi0AqC-lvajxzxdc2pl_VzBNhn6ht5/view?usp=drivesdk",
+    "drive_file_id": "18cJi0AqC-lvajxzxdc2pl_VzBNhn6ht5",
+    "drive_folder_id": "1vWDb3k6zUI1vOtby5U0AB5ntac-4H_Y1"
   },
   "bundle_chain": {
     "description": "Core certification chain M1-M8 PDFs + invariants.json.",
@@ -3517,7 +3519,7 @@
   },
   "gdrive_morning_star": {
     "timestamp_utc": "2026-06-06",
-    "description": "Morning Star zero-sorry PDFs \u2014 cohesive 5-act upload",
+    "description": "Morning Star zero-sorry PDFs — cohesive 5-act upload",
     "parent_folder": {
       "name": "MORNING_STAR_20260606",
       "id": "1jXSQNCvmXbImp2iqrQNHms8XkKJ8A6DB",
@@ -3599,7 +3601,7 @@
         "drive_id": "12hC4apvYAVe11JI1KMDMrvZdlSselz8C",
         "drive_url": "https://drive.google.com/file/d/12hC4apvYAVe11JI1KMDMrvZdlSselz8C",
         "story_manifest_status": "CERTIFIED",
-        "note": "Previously MISSING \u2014 10^13 Replicut sieve data log, 5 exceptional primes, quad-precision"
+        "note": "Previously MISSING — 10^13 Replicut sieve data log, 5 exceptional primes, quad-precision"
       },
       {
         "date": "2026-06-06",
@@ -3609,7 +3611,7 @@
         "drive_folder": "MANIFESTS",
         "drive_id": "1WOQym1fUYX3NqapFn4R9NgMHHlDCnx9QO",
         "drive_url": "https://drive.google.com/file/d/1WOQym1fUYX3NqapFn4R9NgMHHlDCnx9QO",
-        "note": "Complete equation archive DOCX \u2014 all modules M1-M8Q with SHAs"
+        "note": "Complete equation archive DOCX — all modules M1-M8Q with SHAs"
       },
       {
         "date": "2026-06-06",
@@ -3623,7 +3625,7 @@
           "EQUATION_CENSUS_LOG.txt",
           "CHECKSUMS_BEFORE_AFTER.txt"
         ],
-        "note": "Certified Equation Census \u2014 476 entries, COUNT_A==COUNT_B, CLAY 518144c8 sealed"
+        "note": "Certified Equation Census — 476 entries, COUNT_A==COUNT_B, CLAY 518144c8 sealed"
       },
       {
         "date": "2026-06-06",
