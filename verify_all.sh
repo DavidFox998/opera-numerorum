@@ -4,6 +4,11 @@
 
 set -e
 
+# --- Pre-flight: verify all stdout SHAs recorded in invariants.json ---
+echo "=== invariants.json SHA pre-flight ==="
+python3 certificates/check_invariants.py
+echo ""
+
 declare -A SHAS=(
   [m1.out]="63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
   [m2.out]="3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83"
