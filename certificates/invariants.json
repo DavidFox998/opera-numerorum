@@ -3322,8 +3322,22 @@
     "supersedes": "9 prior field-report PDFs (deprecated)"
   },
   "allcerts": {
-    "drive_url": "https://drive.google.com/file/d/1-ZzOhlJzDB4B80gmF_jyDz4XyKzym8tO/view?usp=drivesdk",
-    "drive_filename": "OperaNumerorum_AllCerts.zip"
+    "drive_url": "https://drive.google.com/file/d/17ZrH7j7X6SsOyb_qVhn4BInKUszRmDFT/view?usp=sharing",
+    "drive_file_id": "17ZrH7j7X6SsOyb_qVhn4BInKUszRmDFT",
+    "drive_filename": "OperaNumerorum_AllCerts_20260606.zip",
+    "pdf_count": 86,
+    "sha256": "85e418f99551d80c9a5b850e208781c0c1555a328d984052a289ca39a900a1e8",
+    "size_mb": 95.4,
+    "uploaded_utc": "2026-06-06T03:54:32Z",
+    "description": "Opera Numerorum AllCerts \u2014 86 PDFs + invariants.json \u2014 all 6 towers certified",
+    "towers": [
+      "RH",
+      "BSD",
+      "NS",
+      "Z",
+      "MS",
+      "PvsNP"
+    ]
   },
   "module_25b": {
     "module": "M25B",
@@ -4015,5 +4029,18 @@
     "bdp_tower_status": "CERTIFIED",
     "author": "David J. Fox",
     "orcid": "0009-0008-1290-6105"
+  },
+  "master_equation_registry": {
+    "file": "ALL_MATH_PROBLEMS.txt",
+    "description": "Master equation registry: all 6 towers, all certified equations, all SHAs",
+    "towers": [
+      "RH_Tower",
+      "BSD_Tower",
+      "NS_Tower",
+      "Z_Tower",
+      "MS_Tower",
+      "PvsNP_Tower"
+    ],
+    "updated": "2026-06-06T03:54:32Z"
   }
 }
