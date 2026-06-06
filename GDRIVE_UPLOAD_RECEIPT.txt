@@ -83,3 +83,15 @@ STORY_MANIFEST.csv: Replicut row updated MISSING -> CERTIFIED
 SORRY_MAP.csv:      Replicut row added (SorryCount=0)
 invariants.json:    gdrive_morning_star.addenda patched
 CLAY:               518144c8... SEALED (unchanged)
+
+ADDENDUM — 2026-06-06 (Equation Census ZIP)
+--------------------------------------------
+EquationCensus_20260606.zip
+  SHA256:   0bd95e445f4bb5e72fa14e4ee5e55cc35c83ade1c3a327eb525be0ebf1fd6c8e
+  Folder:   MANIFESTS
+  Drive ID: 1bSjoZ773xtygefmv_IODmKMOfE573_w0
+  URL:      https://drive.google.com/file/d/1bSjoZ773xtygefmv_IODmKMOfE573_w0/view?usp=drivesdk
+  Contains:
+    CERTIFIED_EQUATIONS_MASTER.txt  (476 EQ lines, COUNT_A==COUNT_B)
+    EQUATION_CENSUS_LOG.txt         (grep commands + per-file counts)
+    CHECKSUMS_BEFORE_AFTER.txt      (CLAY 518144c8 before==after, UNTOUCHED)
