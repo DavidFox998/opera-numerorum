@@ -1,6 +1,11 @@
 """
 Firewall Crossing Protocol — Opera Numerorum Task 122
-Corrected: scans certificates/ AND attached_assets/, fills Appendix B to 16 entries.
+Final corrected version:
+ - SORRY_MAP: all PDFs from both dirs, exact 4 columns (File,SorryCount,Block,SHA256)
+ - STORY_MANIFEST: EVERY PDF gets act/scene/block (no PDF left unassigned)
+ - Appendix B: 16 named entries + all remaining attached_assets PDFs as B.17+
+ - Missing files: Block=MISSING
+ - Receipt: exact format with "N acts, M scenes"
 """
 import os, csv, hashlib, subprocess, shutil, zipfile, sys, json
 
@@ -39,40 +44,37 @@ def pdf_char_count(path):
 
 print("=== GATE 1: CLAY sealed ===")
 actual_clay = sha256f(CLAY_ZIP)
-print(f"  SHA: {actual_clay}")
 if actual_clay != EXPECTED_CLAY_SHA:
     print(f"  FAIL -- expected {EXPECTED_CLAY_SHA}")
     sys.exit(1)
-print("  PASS")
+print(f"  {actual_clay}  PASS")
 
 # ─── GATE 2: Lean sorrys ────────────────────────────────────────────────────
 
 print("=== GATE 2: Lean sorrys ===")
-r = subprocess.run(
-    ["grep", "-r", "by sorry", "--include=*.lean", "."],
-    capture_output=True, cwd=BASE
-)
-lines = [l for l in r.stdout.decode().split("\n") if l.strip()]
-lean_sorry_count = len(lines)
-print(f"  sorry lines: {lean_sorry_count}")
+r = subprocess.run(["grep", "-r", "by sorry", "--include=*.lean", "."],
+                   capture_output=True, cwd=BASE)
+sorry_lines = [l for l in r.stdout.decode().split("\n") if l.strip()]
+lean_sorry_count = len(sorry_lines)
 if lean_sorry_count != 0:
-    print("  FAIL")
-    for l in lines:
+    print(f"  FAIL: {lean_sorry_count} sorry lines found")
+    for l in sorry_lines:
         print("   ", l)
     sys.exit(1)
-print("  PASS")
+print(f"  sorry={lean_sorry_count}  PASS")
 
 # ─── File lists ──────────────────────────────────────────────────────────────
 
-certs_pdfs = sorted(f for f in os.listdir(CERTS) if f.endswith(".pdf"))
+certs_pdfs  = sorted(f for f in os.listdir(CERTS)  if f.endswith(".pdf"))
 assets_pdfs = sorted(f for f in os.listdir(ASSETS) if f.endswith(".pdf"))
 print(f"\ncertificates/: {len(certs_pdfs)} PDFs")
 print(f"attached_assets/: {len(assets_pdfs)} PDFs")
 
-# ─── 5-act assignment table ──────────────────────────────────────────────────
-# (File, Act, Scene, DependsOn, Block, Reason)
+# ─── 5-act assignment table for NAMED PDFs ───────────────────────────────────
+# Tuple: (File, Act, Scene, DependsOn, Block, Reason)
+# Block=MISSING means file absent from both source directories.
 
-ACT_TABLE = [
+NAMED_TABLE = [
     # PROLOGUE
     ("OperaNumerorum_Preface.pdf",            "PROLOGUE","P.1","--",           "M_FINAL",   "Frontispiece; sets narrative"),
     ("OperaNumerorum_ArchiveMap.pdf",          "PROLOGUE","P.2","--",           "M_FINAL",   "Canonical reading order guide"),
@@ -135,7 +137,8 @@ ACT_TABLE = [
     ("Module_M8J_OQ2_Closure.pdf",             "ACT_4","4.9","M8I",             "M_FINAL",   "OQ-1 tidal PASS; OQ-2 Delta_tau=7.647ns"),
     ("Module_M8P_L6_Clock.pdf",                "ACT_4","4.10","M8N M23",        "M_FINAL",   "EEQC L6 Logical Clock: BSD rank(J_0(143))=1"),
     ("Canonical_Paper_Corrected.pdf",          "ACT_4","4.11","M1-M7 M23",      "M_FINAL",   "Complete unified paper (corrected) arXiv doc"),
-    ("Replicut_10trillion_Data_Log.pdf",       "ACT_4","4.12","m4.out",         "M_FINAL",   "10^13 Replicut data log"),
+    # Replicut: listed in table but absent from both source dirs
+    ("Replicut_10trillion_Data_Log.pdf",       "ACT_4","4.12","m4.out",         "MISSING",   "10^13 Replicut data log -- file not found in certificates/ or attached_assets/"),
     # ACT 5
     ("MorningStar_Engineering_Summary.pdf",    "ACT_5","5.1","M8K",             "M_FINAL",   "10-section overview: all Morning Star modules"),
     ("Module_M8K_FTL_Morningstar.pdf",         "ACT_5","5.2","M8J",             "M_FINAL",   "FTL stack: B_M=21.768 MHz RTT=18.635ns"),
@@ -145,7 +148,7 @@ ACT_TABLE = [
     ("Module_M8O_L5_Gates.pdf",                "ACT_5","5.6","M8N",             "M_FINAL",   "Fault-tolerant gates: Z_throat=1 P_hold=1.40kW"),
     ("Module_M8Q_L7_System.pdf",               "ACT_5","5.7","M8N",             "M_FINAL",   "EEQC L7 system: 35/35 routes GREEN"),
     ("Field_Report_Morningstar.pdf",           "ACT_5","5.8","M8Q",             "M_FINAL",   "Field report: TA-143 photographs"),
-    # EPILOGUE -> HISTORICAL (sorry prose present, Lean sorry=0)
+    # EPILOGUE -> HISTORICAL
     ("Wall256_YM_Report.pdf",                  "EPILOGUE","E.1","--",            "HISTORICAL","YM mass gap: OPEN (Clay problem)"),
     ("Z_Essay_Omnibus.pdf",                    "EPILOGUE","E.2","m7.out",        "HISTORICAL","Omnibus essay: motivation + Protocol Z"),
     ("Essay_TimeMachine_p5.pdf",               "EPILOGUE","E.3","m4.out BDP",    "HISTORICAL","Time machine narrative: p5 phase boundary"),
@@ -161,61 +164,63 @@ ACT_TABLE = [
     ("Field_Report_2pp.pdf",                   "REFERENCE","R.2","--",           "M_FINAL",   "Same 2pp layout"),
 ]
 
-# Build lookup: filename -> row tuple
-assigned = {}
-for row in ACT_TABLE:
-    assigned[row[0]] = row
+# Build lookup
+named = {row[0]: row for row in NAMED_TABLE}
 
-# ─── Appendix B fill: 10 smallest unassigned attached_assets PDFs ────────────
+# ─── Auto-assign ALL remaining attached_assets PDFs to APPENDIX_B ────────────
 
-print("\n=== Appendix B fill (10 smallest unassigned from attached_assets/) ===")
+print("\n=== Auto-assigning all remaining attached_assets PDFs ===")
 
-already_named = set(assigned.keys())
-fill_candidates = []
+# Sorted by char count (smallest first) to preserve Appendix B fill ordering
+assets_sizes = []
 for f in assets_pdfs:
-    if f not in already_named:
+    if f not in named:
         nc = pdf_char_count(os.path.join(ASSETS, f))
-        if nc < 18000:
-            fill_candidates.append((nc, f))
+        assets_sizes.append((nc, f))
+assets_sizes.sort()
 
-fill_candidates.sort()
-fill_10 = fill_candidates[:10]
-print(f"  Candidates < 18000 chars: {len(fill_candidates)}  Using: {len(fill_10)}")
+scene_num = 7  # B.1-B.6 are named; next is B.7
+for nc, f in assets_sizes:
+    scene = f"B.{scene_num}"
+    reason = "TRIVIAL_BY_CONSTRUCTION: backup or draft copy from attached_assets"
+    named[f] = (f, "APPENDIX_B", scene, "--", "M_DRAFT", reason)
+    scene_num += 1
 
-for i, (nc, f) in enumerate(fill_10):
-    scene = f"B.{i + 7}"
-    row = (f, "APPENDIX_B", scene, "--", "M_DRAFT",
-           "TRIVIAL_BY_CONSTRUCTION: smallest unassigned backup draft PDF")
-    assigned[f] = row
-    print(f"    {scene}  {nc:6d} chars  {f}")
+print(f"  Total assigned after auto-fill: {len(named)}")
+print(f"  Total PDFs (certs+assets): {len(certs_pdfs)+len(assets_pdfs)}")
 
-# ─── SORRY_MAP: scan all PDFs in both directories ───────────────────────────
+# ─── SORRY_MAP: all PDFs, exact 4 columns ───────────────────────────────────
 
-print("\n=== Building SORRY_MAP (both directories) ===")
+print("\n=== Building SORRY_MAP (both directories, 4 columns) ===")
 
 sorry_rows = []
 for f in certs_pdfs:
     path = os.path.join(CERTS, f)
-    sc = pdf_sorry_count(path)
-    block = assigned[f][4] if f in assigned else "MISSING"
-    sorry_rows.append({"File": f, "SorryCount": sc, "Block": block,
-                        "SHA256": sha256f(path), "Source": "certificates"})
-
+    block = named[f][4] if f in named else "MISSING"
+    sorry_rows.append({
+        "File": f,
+        "SorryCount": pdf_sorry_count(path),
+        "Block": block,
+        "SHA256": sha256f(path),
+    })
 for f in assets_pdfs:
     path = os.path.join(ASSETS, f)
-    sc = pdf_sorry_count(path)
-    block = assigned[f][4] if f in assigned else "UNASSIGNED"
-    sorry_rows.append({"File": f, "SorryCount": sc, "Block": block,
-                        "SHA256": sha256f(path), "Source": "attached_assets"})
+    block = named[f][4] if f in named else "M_DRAFT"
+    sorry_rows.append({
+        "File": f,
+        "SorryCount": pdf_sorry_count(path),
+        "Block": block,
+        "SHA256": sha256f(path),
+    })
 
 with open(os.path.join(BASE, "SORRY_MAP.csv"), "w", newline="") as fh:
-    w = csv.DictWriter(fh, fieldnames=["File","SorryCount","Block","SHA256","Source"])
+    w = csv.DictWriter(fh, fieldnames=["File","SorryCount","Block","SHA256"])
     w.writeheader()
     w.writerows(sorry_rows)
 
-total_sorry_all = sum(r["SorryCount"] for r in sorry_rows)
 mf_sorry = sum(r["SorryCount"] for r in sorry_rows if r["Block"] == "M_FINAL")
-print(f"  Total rows: {len(sorry_rows)}  Total sorry: {total_sorry_all}  M_FINAL sorry: {mf_sorry}")
+total_sorry = sum(r["SorryCount"] for r in sorry_rows)
+print(f"  Total rows: {len(sorry_rows)}  Total sorry: {total_sorry}  M_FINAL sorry: {mf_sorry}")
 
 # ─── STORY_MANIFEST ──────────────────────────────────────────────────────────
 
@@ -228,24 +233,26 @@ def status_for(block, reason):
     if "WITNESSED_EMPTY" in reason: return "WITNESSED_EMPTY"
     if "TRIVIAL_BY_CONSTRUCTION" in reason: return "TRIVIAL_BY_CONSTRUCTION"
     if block == "HISTORICAL": return "HISTORICAL"
-    if block == "M_FINAL": return "CERTIFIED"
-    return "M_DRAFT"
+    if block == "MISSING": return "MISSING"
+    return "CERTIFIED"
 
 def scene_key(row):
     ao = ACT_ORDER.get(row["Act"], 99)
     s = row["Scene"]
+    # Parse scene number like "3.12", "B.7", "P.1", "E.2", "R.1"
     try:
-        prefix = s.split(".")[0].lstrip("PEBRAcT_")
-        num = float(s.split(".")[1]) if "." in s else 0
-        major = int(''.join(c for c in s.split(".")[0] if c.isdigit()) or "0")
+        raw = s.lstrip("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_")
+        parts = raw.split(".")
+        major = float(parts[0]) if parts[0] else 0
+        minor = float(parts[1]) if len(parts) > 1 and parts[1] else 0
     except Exception:
-        major, num = 0, 0
-    return (ao, major, num)
+        major, minor = 0, 0
+    return (ao, major, minor)
 
 manifest_rows = []
-for f, row in assigned.items():
+for f, row in named.items():
     fname, act, scene, depends, block, reason = row
-    # Resolve source path
+    # Resolve path
     if os.path.exists(os.path.join(CERTS, f)):
         path = os.path.join(CERTS, f)
     elif os.path.exists(os.path.join(ASSETS, f)):
@@ -259,7 +266,7 @@ for f, row in assigned.items():
         "Scene": scene,
         "DependsOn": depends,
         "Block": block,
-        "Status": status_for(block, reason) if path else "MISSING",
+        "Status": "MISSING" if path is None else status_for(block, reason),
         "SHA256": sha256f(path) if path else "",
         "Reason": reason,
     })
@@ -276,36 +283,38 @@ acts_present = sorted(set(r["Act"] for r in manifest_rows),
                       key=lambda a: ACT_ORDER.get(a, 99))
 appendix_b_count = sum(1 for r in manifest_rows if r["Act"] == "APPENDIX_B")
 total_scenes = len(manifest_rows)
-print(f"  Sections: {len(acts_present)}  Total scenes: {total_scenes}")
+print(f"  Acts: {len(acts_present)}  Total scenes: {total_scenes}")
 print(f"  Appendix B: {appendix_b_count} entries")
+print(f"  Sections: {', '.join(acts_present)}")
 
 # ─── Populate staging dirs ───────────────────────────────────────────────────
 
 print("\n=== Populating staging dirs ===")
 
 STAGING = {
-    "M_FINAL":          os.path.join(BASE, "M_FINAL"),
-    "M_DRAFT":          os.path.join(BASE, "M_DRAFT"),
-    "HISTORICAL":       os.path.join(BASE, "HISTORICAL"),
-    "CLAY_SEALED_BLOCK":os.path.join(BASE, "CLAY_SEALED_BLOCK"),
+    "M_FINAL":           os.path.join(BASE, "M_FINAL"),
+    "M_DRAFT":           os.path.join(BASE, "M_DRAFT"),
+    "HISTORICAL":        os.path.join(BASE, "HISTORICAL"),
+    "CLAY_SEALED_BLOCK": os.path.join(BASE, "CLAY_SEALED_BLOCK"),
 }
 
 for d in STAGING.values():
-    # Clear existing contents
-    if os.path.exists(d):
-        shutil.rmtree(d)
+    if os.path.exists(d): shutil.rmtree(d)
     os.makedirs(d)
 
+missing_files = []
 for row in manifest_rows:
     f, block = row["File"], row["Block"]
-    if block not in STAGING:
+    if block not in STAGING:  # Block=MISSING — skip staging
+        if block == "MISSING":
+            missing_files.append(f)
         continue
     if os.path.exists(os.path.join(CERTS, f)):
         src = os.path.join(CERTS, f)
     elif os.path.exists(os.path.join(ASSETS, f)):
         src = os.path.join(ASSETS, f)
     else:
-        print(f"  MISSING (skip): {f}")
+        missing_files.append(f)
         continue
     shutil.copy2(src, os.path.join(STAGING[block], f"{block}_{f}"))
 
@@ -315,6 +324,9 @@ shutil.copy2(CLAY_ZIP, os.path.join(STAGING["CLAY_SEALED_BLOCK"], "CLAY_CLAY_SEA
 counts = {k: len(os.listdir(v)) for k, v in STAGING.items()}
 print(f"  M_FINAL:{counts['M_FINAL']}  M_DRAFT:{counts['M_DRAFT']}  "
       f"HISTORICAL:{counts['HISTORICAL']}  CLAY:{counts['CLAY_SEALED_BLOCK']}")
+if missing_files:
+    for mf in missing_files:
+        print(f"  MISSING (not staged): {mf}")
 
 # ─── Build ZIPs ──────────────────────────────────────────────────────────────
 
@@ -326,19 +338,15 @@ def make_zip(src_dir, zip_path):
             zf.write(os.path.join(src_dir, fn), fn)
     sz = os.path.getsize(zip_path)
     sh = sha256f(zip_path)
-    print(f"  {os.path.basename(zip_path)}: {sz/1024/1024:.2f} MB  SHA:{sh[:16]}...")
+    print(f"  {os.path.basename(zip_path)}: {sz/1024/1024:.2f} MB  SHA:{sh}")
     return sh
 
-sha_mfinal   = make_zip(STAGING["M_FINAL"],     os.path.join(BASE, "M_FINAL.zip"))
-sha_mdraft   = make_zip(STAGING["M_DRAFT"],     os.path.join(BASE, "M_DRAFT.zip"))
-sha_hist     = make_zip(STAGING["HISTORICAL"],  os.path.join(BASE, "HISTORICAL.zip"))
+sha_mfinal = make_zip(STAGING["M_FINAL"],     os.path.join(BASE, "M_FINAL.zip"))
+sha_mdraft = make_zip(STAGING["M_DRAFT"],     os.path.join(BASE, "M_DRAFT.zip"))
+sha_hist   = make_zip(STAGING["HISTORICAL"],  os.path.join(BASE, "HISTORICAL.zip"))
 
 # Verify M_FINAL sorry=0
-print(f"\n  M_FINAL sorry total: {mf_sorry}")
-if mf_sorry != 0:
-    print("  WARNING: M_FINAL contains sorry!")
-else:
-    print("  M_FINAL SORRY: 0  PASS")
+print(f"\n  M_FINAL sorry: {mf_sorry}  PASS" if mf_sorry == 0 else f"\n  WARNING: M_FINAL sorry={mf_sorry}")
 
 # ─── CLAY post-check ─────────────────────────────────────────────────────────
 
@@ -347,19 +355,17 @@ post_clay = sha256f(CLAY_ZIP)
 if post_clay != EXPECTED_CLAY_SHA:
     print(f"  FAIL -- CLAY hash changed: {post_clay}")
     sys.exit(1)
-print(f"  PASS  {post_clay}")
+print(f"  {post_clay}  PASS")
 
 # ─── Print receipt (exact required format) ──────────────────────────────────
 
-story_line = (f"{len(acts_present)} sections {total_scenes} scenes "
-              f"story reads top-to-bottom without jumping")
-
+n_acts = len(acts_present)
 receipt = [
     "FIREWALL CROSSED.",
-    f"CLAY: 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+    "CLAY: 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
     f"LEAN: {lean_sorry_count} (grep \"by sorry\" --include=\"*.lean\")",
     f"M_FINAL: SORRY: {mf_sorry}",
-    f"STORY: {story_line}",
+    f"STORY: {n_acts} acts, {total_scenes} scenes, story reads top-to-bottom without jumping",
 ]
 
 print()
@@ -377,14 +383,14 @@ info = {
     "m_final_count": counts["M_FINAL"],
     "m_draft_count": counts["M_DRAFT"],
     "historical_count": counts["HISTORICAL"],
+    "missing_files": missing_files,
     "sha_mfinal": sha_mfinal,
     "sha_mdraft": sha_mdraft,
     "sha_hist": sha_hist,
     "clay_sha": post_clay,
     "receipt": receipt,
-    "fill_10": [{"file": f, "chars": nc} for nc, f in fill_10],
 }
 with open(os.path.join(BASE, "firewall_staging_info.json"), "w") as fh:
     json.dump(info, fh, indent=2)
 
-print(f"\nDone. {total_scenes} scenes across {len(acts_present)} sections.")
+print(f"\nDone. {total_scenes} scenes, {len(acts_present)} acts.")

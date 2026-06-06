@@ -3453,17 +3453,18 @@
         "pdf_count": 67,
         "sorry_count": 0,
         "size_mb": 77.15,
-        "note": "Replicut_10trillion_Data_Log.pdf missing from both directories -- 67 of 68 assigned PDFs present"
+        "note": "Replicut_10trillion_Data_Log.pdf absent from both source dirs; Block=MISSING in manifest"
       },
       "M_DRAFT": {
         "folder_id": "1ZTOmuNglArmsEw1TEwFGH2aQvNcF2-yT",
         "folder_url": "https://drive.google.com/drive/folders/1ZTOmuNglArmsEw1TEwFGH2aQvNcF2-yT",
         "file": "M_DRAFT.zip",
-        "file_id": "14KwvWO9Glt969YoGjj1wrMMzc4YDyGu4",
-        "sha256": "547bbd98403ab3a89a926c3ac666cc59e222b16859b72496d3d99dd22eafa8ea",
-        "pdf_count": 16,
-        "appendix_b_count": 16,
-        "note": "6 named Appendix B + 10 fill from smallest unassigned attached_assets PDFs"
+        "file_id": "1O34ps4Xxb5p8_Ybdse1HRzitwMRTMiya",
+        "sha256": "fc6a45a1f2716992a752dd383813a8b510bbc990671c6ccaa33673be5db4be30",
+        "pdf_count": 53,
+        "appendix_b_count": 53,
+        "size_mb": 10.0,
+        "note": "6 named Appendix B (certs/) + 47 attached_assets backup/draft PDFs auto-assigned B.7-B.53"
       },
       "HISTORICAL": {
         "folder_id": "1P-nMWWKFJaefleBUGtf0BLIJ491qxlxp",
@@ -3472,24 +3473,27 @@
         "file_id": "1Rtg7WVJpkIKkpX6uYIvCWks1WaCUqoIS",
         "sha256": "5d88c46f831f44a4f9f8899a3ac35110a93a2c6b3aeebd0f0a90e4bbcfa79f0b",
         "pdf_count": 3,
-        "note": "EPILOGUE block: Wall256_YM_Report.pdf contains sorry:1 in pdftotext -- correctly routed here"
+        "note": "EPILOGUE: Wall256_YM_Report.pdf has sorry:1 in pdftotext; correctly routed here"
       }
     },
     "manifests": {
       "SORRY_MAP": {
         "file": "SORRY_MAP.csv",
-        "file_id": "1ntN6yqKT_0jQSm-q_QxfxJ4QARP1Ei67",
-        "sha256": "fb2d66492aa5edb6d9ca3163658be10e880e0e055f14441d6848258a38cb74b6",
+        "file_id": "1rBFGNRDXltg9h0YH_7KceXw_eDi1ZmKA",
+        "sha256": "d7bfb77482aa1d3d158412e0fd4ea4d4596c7789104edfc8f760e07fba56d1a3",
         "rows": 124,
         "total_sorry": 3,
         "m_final_sorry": 0,
+        "columns": "File,SorryCount,Block,SHA256",
         "note": "77 certificates + 47 attached_assets; M_FINAL sorry=0"
       },
       "STORY_MANIFEST": {
         "file": "STORY_MANIFEST.csv",
-        "file_id": "13fRI-9d62nrnC1B5riQSunR1-nXl7-NW",
-        "sha256": "f2adedfa2defb5d5a377b8aa36bbfcb5e36c7487acbf33513191280c31c8f9e0",
-        "rows": 87,
+        "file_id": "1VZd2TMixqDlAZHKbj4CgDoC6D82PK3I3",
+        "sha256": "cd0d7cf2bd3a7d5c71324133d34581f5d8d4d02fb7cabfce07dc9d75a3f81d63",
+        "rows": 124,
+        "acts": 9,
+        "scenes": 124,
         "sections": [
           "PROLOGUE",
           "ACT_1",
@@ -3501,7 +3505,10 @@
           "APPENDIX_B",
           "REFERENCE"
         ],
-        "appendix_b_count": 16
+        "appendix_b_count": 53,
+        "missing_files": [
+          "Replicut_10trillion_Data_Log.pdf"
+        ]
       }
     }
   }
