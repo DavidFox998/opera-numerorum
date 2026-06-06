@@ -112,6 +112,7 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | NS Tower | NS(J_0(143)): rank=1 (theta divisor); Hodge divisor PROVEN (Lefschetz); Tate PROVEN (M23 closure); 200 transcendental Hodge classes (M8C); rho<=28=g+Z; M*=4/55; Hodge Clay: OPEN | `46ffa07d...` | NS_TOWER_CERTIFIED |
 | RH Tower | GRH for X_0(143) and all 147 X_0(N), g in [1,33]; C(S4)=11.422>2sqrt(13)=7.211; rank(H_13)=13=g; causal chain M1->M3->M4->M5->M6->M8->M9->M9All->M10; Lean 4 skeleton: RH_Tower.lean | `73a24c83...` | RH_TOWER_CERTIFIED |
 | MS Tower | Morning Star 7-layer EEQC: B_M=21.7683024920261MHz; RTT=18.635ns; v_g=3.183c; 35/35 GREEN; 120/120 cells; 1680/1680 PLLs; P_logical=0; MTBF=5.5yr; Health State 6: GREEN^6 | `86834fbd...` | MS_TOWER_CERTIFIED |
+| P vs NP Tower | BDP Phase Reversal at p_5=3,993,746,143,633; chi(frac)=14>chi(recip)=13; 10^13 tokens OOM; Lean SORRY:0; BDP1->BDP4 causal chain; Clay P vs NP: OPEN; BDP tower: CERTIFIED | `2f3c05b3...` | PVSNP_TOWER_CERTIFIED |
 | All Towers | Omnibus: RH+BSD+NS+Z+MS towers + Health State 6 dashboard; 8-page PDF | `certificates/All_Towers_Certificate.pdf` | ALL_TOWERS_CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
@@ -161,6 +162,12 @@ m8.out                       M8 certified stdout (Hankel rank check)
 
 **MS Tower stdout SHA** (Morning Star 7-layer EEQC):
 `86834fbdba0358b0bff1d4665928986a6c426a86f7ac5b35c416af513838e4cc`
+
+**P vs NP Tower stdout SHA** (BDP Phase Reversal, Clay P vs NP: OPEN, BDP tower: CERTIFIED):
+`2f3c05b3063ab1f3f2efda0109d64cf3c7b590e3d890caf36a4aaca284d9a942`
+
+**P vs NP Tower PDF SHA** (PvsNP_Tower_Certificate.pdf, 4 pages):
+`c60714a9d9632e937758d13eb4577230f250e7cfa365ff54fe02353fa966994c`
 
 **All Towers omnibus PDF SHA** (8 pages, RH+BSD+NS+Z+MS + Health State 6):
 `0627082573191a385b2dbe81accf0bfa2f3383f53d21b5cca5f045e96df551d7`

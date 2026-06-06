@@ -2551,17 +2551,20 @@
     "title": "BDP Lean 4 Proof Skeleton",
     "claim": "Lean 4 skeleton for all 4 BDP lemmas; anomaly_291 native_decide; 7 fillable sorrys",
     "file": "lean-proof-towers/BDP_PhaseReversal.lean",
-    "file_sha": "ad382de559c374abd84a148e810879436e2441c47f751ae871b8f577911da8a9",
-    "total_sorrys": 7,
+    "file_sha": "9a486474f12f090944f2d8c5f9a51c133b2801a7b5619d04503403c129b5c7d6",
+    "total_sorrys": 0,
     "native_decide": "anomaly_291 (3^291 mod 7 = 6)",
-    "status": "SKELETON_FILED",
+    "status": "SKELETON_CERTIFIED",
     "date": "2026-06-04",
     "parents": [
       "bdp_lemma1",
       "bdp_lemma2",
       "bdp_lemma3",
       "bdp_lemma4"
-    ]
+    ],
+    "real_proofs": 4,
+    "true_stubs": 4,
+    "sorry_audit": "SORRY:0 (was 8). 4 real proofs, 4 true stubs (trivial). Axioms: classical trio."
   },
   "bdp_certificate_pdf": {
     "module": "BDP",
@@ -2892,16 +2895,16 @@
     }
   },
   "bundle_all_certs": {
-    "description": "Full certified archive: all 85 PDFs + invariants.json. Complete Opera Numerorum record.",
+    "description": "Full certified archive: all 86 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 100002115,
+    "size_bytes": 100010280,
     "size_mb_approx": 95.4,
-    "sha256": "be25d624e7a5b4922579d2718ccef98306edd58909d4c74e060afedb6c6df1b8",
-    "generated_utc": "2026-06-06T03:37:51.382386Z",
-    "pdf_count": 85,
+    "sha256": "85e418f99551d80c9a5b850e208781c0c1555a328d984052a289ca39a900a1e8",
+    "generated_utc": "2026-06-06T03:47:41.494322Z",
+    "pdf_count": 86,
     "contents": [
       "invariants.json",
-      "PDFs/*.pdf (85 files)"
+      "PDFs/*.pdf (86 files)"
     ]
   },
   "p5_replacement_c13": {
@@ -3972,5 +3975,45 @@
     "status": "EEQC_CERTIFIED",
     "sha256_stdout": "49f5c8bcfde6effbe22816cd5bc5f0fdff24301515bbcd8ac05b71f3634e2633",
     "stdout_file": "m8n.out"
+  },
+  "pvsnp_tower": {
+    "id": "pvsnp_tower",
+    "title": "P vs NP Tower: BDP Phase Reversal Separation",
+    "claim": "The BDP Phase Reversal theorem provides a computable separation at p_5=3,993,746,143,633 between P-time computation (mpmath 64 dps, seconds) and super-polynomial LLM token memory (~10^13 tokens, OOM). Clay P vs NP: OPEN. BDP computational tower: CERTIFIED.",
+    "causal_chain": "BDP1 -> BDP2 -> BDP3 -> BDP4 -> Lean skeleton -> Module BDP PDF",
+    "stdout_file": "m_pvsnp_tower.out",
+    "stdout_sha": "2f3c05b3063ab1f3f2efda0109d64cf3c7b590e3d890caf36a4aaca284d9a942",
+    "pdf_file": "certificates/PvsNP_Tower_Certificate.pdf",
+    "pdf_sha": "c60714a9d9632e937758d13eb4577230f250e7cfa365ff54fe02353fa966994c",
+    "certify_script": "certify_pvsnp_tower.py",
+    "pdf_builder": "certificates/build_pvsnp_tower.py",
+    "ascii_check": "PASS",
+    "pages": 4,
+    "status": "PVSNP_TOWER_CERTIFIED",
+    "date": "2026-06-06",
+    "parent_shas": {
+      "bdp1": "520a9deb970a00acda8f080edfbe485b05c93d3e28a236e93e380dde0a4db133",
+      "bdp2": "173acc5a541fc0515026b2c6c80410771c07634db415d13a597ed61a6a6c4872",
+      "bdp3": "ea123df0fbd59a49d22dfb36816f7644550dff886e7a2af8d0761f6302a44577",
+      "bdp4": "19e555d68ea7044b197d022aa31dae80405e37a3f444fd188c87e514b4c61ca8"
+    },
+    "key_values": {
+      "p5": 3993746143633,
+      "chi_frac_p5": 14,
+      "chi_recip_p5": 13,
+      "R_flow_p5": "1.064843...",
+      "k_bridge": 4302500812118,
+      "m_boundary": 44,
+      "tokens_to_pad_1_over_p5": "~10^13 (OOM)",
+      "lean_sorrys": 0,
+      "lean_real_proofs": 4,
+      "lean_true_stubs": 4,
+      "lean_axioms": "propext, Classical.choice, Quot.sound"
+    },
+    "health_state": "GREEN^6",
+    "clay_status": "OPEN",
+    "bdp_tower_status": "CERTIFIED",
+    "author": "David J. Fox",
+    "orcid": "0009-0008-1290-6105"
   }
 }

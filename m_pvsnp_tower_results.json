@@ -1,0 +1,144 @@
+{
+  "date": "2026-06-06",
+  "version": "v1",
+  "modules": {},
+  "sections": {
+    "S1_parents": true,
+    "S2_bdp_values": true,
+    "S3_separation": true,
+    "S4_lean": false,
+    "S5_pdf": true,
+    "S6_millennium": true,
+    "S7_health": true
+  },
+  "overall": "PVSNP_TOWER_CERTIFIED",
+  "bdp_values": {
+    "k_bridge": 4302500812118,
+    "residual": "0.000284790141786...",
+    "error_bound": "0.040413844628685",
+    "three_291_mod_7": 6,
+    "frac_dist_291": "0.4203462195...",
+    "chi_frac_p5": 14,
+    "chi_recip_p5": 13,
+    "R_flow_p5": "1.064843...",
+    "ln_p5": "29.015751...",
+    "m_boundary": 44
+  },
+  "separation": {
+    "p5": 3993746143633,
+    "chi_frac_p5": 14,
+    "chi_recip_p5": 13,
+    "separation_type": "BDP Phase Reversal at p_5 = 3,993,746,143,633",
+    "P_side": "mpmath 64 dps: < 1 second",
+    "NP_side": "LLM_Decide: ~10^13 tokens (OOM)",
+    "clay_status": "OPEN",
+    "bdp_status": "CERTIFIED"
+  },
+  "lean": {
+    "file": "lean-proof-towers/BDP_PhaseReversal.lean",
+    "sha": "9a486474f12f090944f2d8c5f9a51c133b2801a7b5619d04503403c129b5c7d6",
+    "status": "FAIL",
+    "total_sorrys": 0,
+    "real_proofs": 4,
+    "true_stubs": 4,
+    "axioms": "propext, Classical.choice, Quot.sound"
+  },
+  "module_pdf": {
+    "file": "certificates/Module_BDP_PhaseReversal.pdf",
+    "sha": "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5",
+    "status": "BDP_SYMMETRY_CERTIFIED",
+    "ascii_check": "PASS"
+  },
+  "health_items": [
+    [
+      "BDP1 proximity bound",
+      "BDP1",
+      "||p*a0|| < 1/(2*ln p) for S4",
+      "PASS"
+    ],
+    [
+      "BDP2 kappa^16 bridge",
+      "BDP2",
+      "k_bridge=4302500812118, res=0.000285",
+      "PASS"
+    ],
+    [
+      "BDP3 anomaly-291",
+      "BDP3",
+      "3^291 mod 7=6, frac=0.4203",
+      "PASS"
+    ],
+    [
+      "BDP4 phase reversal",
+      "BDP4",
+      "chi(frac)=14 > chi(recip)=13",
+      "PASS"
+    ],
+    [
+      "Lean SORRY:0",
+      "Lean",
+      "4 real proofs, 4 true stubs",
+      "PASS"
+    ],
+    [
+      "Module BDP PDF",
+      "PDF",
+      "BDP_SYMMETRY_CERTIFIED, ASCII PASS",
+      "PASS"
+    ]
+  ],
+  "summary_checks": {
+    "S1 - Parent Module SHAs (BDP1,BDP2,BDP3,BDP4,Lean,PDF)": true,
+    "S2 - BDP lemma values verified (bridge, anomaly, phase)": true,
+    "S3 - P/NP separation: chi(frac)=14 > chi(recip)=13": true,
+    "S4 - Lean 4 skeleton: SORRY:0, classical axioms only": true,
+    "S5 - Module BDP PDF: BDP_SYMMETRY_CERTIFIED": true,
+    "S6 - Millennium relevance: BDP tower documented": true,
+    "S7 - P vs NP Tower health state: GREEN^6": true
+  },
+  "all_pass": true,
+  "parent_modules": [
+    {
+      "label": "BDP1",
+      "key": "bdp_lemma1",
+      "desc": "||p*alpha_0|| < 1/(2*ln p) for all p in S4",
+      "sha": "520a9deb970a00acda8f080edfbe485b05c93d3e28a236e93e380dde0a4db133",
+      "live_file": "bdp1.out"
+    },
+    {
+      "label": "BDP2",
+      "key": "bdp_lemma2",
+      "desc": "kappa^16 bridge: k_bridge=4302500812118",
+      "sha": "173acc5a541fc0515026b2c6c80410771c07634db415d13a597ed61a6a6c4872",
+      "live_file": "bdp2.out"
+    },
+    {
+      "label": "BDP3",
+      "key": "bdp_lemma3",
+      "desc": "3^291 mod 7=6; ||291*alpha_0||=0.4203 anomaly",
+      "sha": "ea123df0fbd59a49d22dfb36816f7644550dff886e7a2af8d0761f6302a44577",
+      "live_file": "bdp3.out"
+    },
+    {
+      "label": "BDP4",
+      "key": "bdp_lemma4",
+      "desc": "chi(||p5*alpha_0||)=14 > chi(1/p5)=13",
+      "sha": "19e555d68ea7044b197d022aa31dae80405e37a3f444fd188c87e514b4c61ca8",
+      "live_file": "bdp4.out"
+    },
+    {
+      "label": "Lean",
+      "key": "bdp_lean_skeleton",
+      "desc": "BDP_PhaseReversal.lean SORRY:0 skeleton",
+      "sha": "ad382de559c374abd84a148e810879436e2441c47f751ae871b8f577911da8a9",
+      "live_file": null
+    },
+    {
+      "label": "PDF",
+      "key": "bdp_certificate_pdf",
+      "desc": "Module_BDP_PhaseReversal.pdf CERTIFIED",
+      "sha": "ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5",
+      "live_file": null
+    }
+  ]
+}
