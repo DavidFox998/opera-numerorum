@@ -4,6 +4,12 @@
 
 set -e
 
+# --- Step 0: Validate SHA field formats in invariants.json ---
+# Catches truncated or malformed SHA values before any file comparison.
+echo "=== invariants.json SHA format validation ==="
+python3 certificates/validate_invariants.py
+echo ""
+
 # --- Pre-flight: verify all stdout SHAs recorded in invariants.json ---
 echo "=== invariants.json SHA pre-flight ==="
 python3 certificates/check_invariants.py
