@@ -32,6 +32,9 @@ python3 certificates/build_allcerts_zip.py  # rebuilds OperaNumerorum_AllCerts.z
 
 # Rebuild Field Report variants (1pp and 2pp layouts):
 bash make_field_report.sh
+
+# Push everything to GitHub (one command — reads GITHUB_PAT from environment):
+bash push_to_github.sh
 ```
 
 ## Stack
