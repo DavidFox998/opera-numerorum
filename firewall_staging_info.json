@@ -1,15 +1,15 @@
 {
   "sorry_map_rows": 124,
-  "story_manifest_rows": 124,
-  "appendix_b_count": 53,
-  "m_final_count": 67,
-  "m_draft_count": 53,
-  "historical_count": 3,
+  "story_manifest_rows": 87,
+  "appendix_b_count": 16,
   "missing_files": [
     "Replicut_10trillion_Data_Log.pdf"
   ],
+  "m_final_count": 67,
+  "m_draft_count": 16,
+  "historical_count": 3,
   "sha_mfinal": "0ca4c92cc107c23b5a28e5bb4a2126229f18a034ead6406607aecc745ed7c9b7",
-  "sha_mdraft": "fc6a45a1f2716992a752dd383813a8b510bbc990671c6ccaa33673be5db4be30",
+  "sha_mdraft": "547bbd98403ab3a89a926c3ac666cc59e222b16859b72496d3d99dd22eafa8ea",
   "sha_hist": "5d88c46f831f44a4f9f8899a3ac35110a93a2c6b3aeebd0f0a90e4bbcfa79f0b",
   "clay_sha": "518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1",
   "receipt": [
@@ -17,6 +17,48 @@
     "CLAY: 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
     "LEAN: 0 (grep \"by sorry\" --include=\"*.lean\")",
     "M_FINAL: SORRY: 0",
-    "STORY: 9 acts, 124 scenes, story reads top-to-bottom without jumping"
+    "STORY: 9 acts, 87 scenes, story reads top-to-bottom without jumping"
+  ],
+  "fill_10": [
+    {
+      "file": "1Alpha0Def_1779495389461.pdf",
+      "chars": 2158
+    },
+    {
+      "file": "D4_w1_NEGATIVE_Certificate_2026-06-01_1780629810667.pdf",
+      "chars": 2158
+    },
+    {
+      "file": "faltings_height_1780629810552.pdf",
+      "chars": 2393
+    },
+    {
+      "file": "Rh_109_data_set_1780629810783.pdf",
+      "chars": 2512
+    },
+    {
+      "file": "2KappaBound_1779495396691.pdf",
+      "chars": 3193
+    },
+    {
+      "file": "CERT_Arb_beta0_(1)_1780629810600.pdf",
+      "chars": 3335
+    },
+    {
+      "file": "CERT_Arb_beta0_(2)_1780557438479.pdf",
+      "chars": 3335
+    },
+    {
+      "file": "CERT_Arb_beta0_(2)_1780557621714.pdf",
+      "chars": 3335
+    },
+    {
+      "file": "CERT_Arb_beta0_1780629810647.pdf",
+      "chars": 3335
+    },
+    {
+      "file": "8M-braid_1780565701204.pdf",
+      "chars": 3343
+    }
   ]
 }
