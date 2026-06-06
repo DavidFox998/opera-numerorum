@@ -1,0 +1,554 @@
+MASTER INDEX -- OPERA NUMERORUM / BATTLE PLAN v1.6
+Author: David J. Fox | ORCID 0009-0008-1290-6105
+Generated: June 2026 | Canonical source: certificates/
+==============================================================================
+
+TOTALS
+  Empirical Math (opera-numerorum) :  59 PDFs |  232 pages
+  Engineering / Morning Star       :  29 PDFs |  395 pages
+  TOTAL in certificates/           :  88 PDFs |  627 pages
+
+Clay seal (frozen, M7 manifest):
+  5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
+  = SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)
+
+==============================================================================
+PART A: EMPIRICAL MATHEMATICS  (opera-numerorum, public, Clay-grade)
+==============================================================================
+
+------------------------------------------------------------------------------
+A.1  Core Chain
+------------------------------------------------------------------------------
+  [M1    ] Module_1_Certificate.pdf
+            2 pp | pp.1-2       | alpha_0 (Diophantine exceptional prime seed)
+             -- 1. Claim
+             -- 2. Source Code
+             -- 3. Build Environment
+             -- 4. Raw Execution Log (first 80 chars of stdout)
+             -- 5. Cryptographic Binding
+  [M2    ] Module_2_Certificate.pdf
+            2 pp | pp.3-4       | kappa (BDP conductor constant, 80-bit long double)
+             -- 1. Claim
+             -- 2. Source Code
+             -- 3. Build Environment
+             -- 4. Raw Execution Log
+             -- 5. Causal Dependency on Module 1
+  [M3    ] Module_3_Certificate.pdf
+            2 pp | pp.5-6       | CF expansion of pi/10, Q5=226, bound=82829
+             -- 1. Claim
+             -- 2. Raw Execution Log
+             -- 3. Source Code
+             -- 4. Build Environment
+             -- 5. Cryptographic Binding
+  [M4    ] Module_4_Certificate.pdf
+            4 pp | pp.7-10      | S14 prime list, p5 > 10^4000 bound
+             -- 1. Claim
+             -- 2. Causal Dependency on Module 3
+             -- 3. Source Code: S_14 Enumeration
+             -- 4. Source Code: Completeness Proof
+             -- 5. Build Environment
+  [M5    ] Module_5_Certificate.pdf
+            2 pp | pp.11-12     | Bost sum C(S4)=11.4221, log(p)*p/(p-1)
+             -- 1. Theorem Statement
+             -- 2. Causal Chain
+             -- 3. Computation
+             -- 4. Audit Note: Formula Correction
+             -- 5. Full Execution Output
+  [M6.3  ] Module_6_3_Certificate.pdf
+            3 pp | pp.13-15     | GRH for all X_0(N), N in {143,199,311}
+             -- MACHINE CERTIFICATION CERTIFICATE
+             -- 1. CLAIM
+             -- 2. DEFINITIONS
+             -- 3. INPUT SHAs
+             -- 4. RESULTS SUMMARY
+  [M6    ] Module_6_Certificate.pdf
+            2 pp | pp.16-17     | GRH for X_0(143), genus=13 certified
+             -- 1. Theorem Statement
+             -- 2. Causal Chain
+             -- 3. Computation (Python fallback for Magma V2.26-8)
+             -- 4. Full Execution Output
+             -- 5. Audit Note: ClassNumber Discrepancy
+  [M7    ] Module_7_Certificate.pdf
+            2 pp | pp.18-19     | Master manifest -- SHA256(cat m1..m6.out) FROZEN
+             -- MASTER MANIFEST SHA-256
+             -- 1. Claim
+             -- 2. Certified SHA Chain
+             -- 3. Verification Script (verify_all.sh)
+             -- 4. Raw Execution Log
+  [M8    ] Module_8_Certificate.pdf
+            4 pp | pp.20-23     | J_0(143) Hankel determinant / BSD gateway
+             -- STDOUT SHA-256
+             -- 1. Claim
+             -- 2. Setup
+             -- 3. Newform Decomposition of S_2(Gamma_0(143))
+             -- 4. LMFDB Eigenvalue Data (fetched 2026-05-22)
+  [M9-All] Module_9_All_140.pdf
+            4 pp | pp.24-27     | X_0(N) genus table, N=1..300, g in [1,33]
+             -- MACHINE CERTIFICATION CERTIFICATE
+             -- 1. CLAIM
+             -- 2. PROOF STRUCTURE
+             -- 3. BOST-CONNES GLOBAL BOUND
+             -- 4. CM NEWFORM EXCLUSION METHOD
+  [M9    ] Module_9_Certificate.pdf
+            2 pp | pp.28-29     | All 140 X_0(N) genus verification
+             -- MACHINE CERTIFICATION CERTIFICATE
+             -- 1. CLAIM
+             -- 2. PROOF STRUCTURE
+             -- 3. PARENT SHA CHAIN
+             -- 4. STEP 1 -- GENUS COMPUTATION
+
+
+------------------------------------------------------------------------------
+A.2  Higher Modules
+------------------------------------------------------------------------------
+  [M10   ] Module_10_Genus33.pdf
+            2 pp | pp.30-31     | Genus-33 curve X_0(N) verification
+  [M14   ] Module_14_S4_Quaternions.pdf
+            2 pp | pp.32-33     | S4 = {2,3,19,191} quaternion structure
+  [M15   ] Module_15_Delta_Boost.pdf
+            2 pp | pp.34-35     | Delta_boost computation for BSD rank
+  [M16   ] Module_16_c_Bridge.pdf
+            2 pp | pp.36-37     | c_bridge = kappa/conductor ratio
+  [M17   ] Module_17_Cert_Patch.pdf
+            2 pp | pp.38-39     | Certification patch -- error audit and fix
+  [M18   ] Module_18_Resonance_Ladder.pdf
+            2 pp | pp.40-41     | Resonance ladder for BDP phase series
+             -- 1. k=1.00 exact match C=11.422, g_max=33, S={2,3,19,191}
+             -- 2. Explosion near beta=300
+             -- 3. k_c correct value
+             -- 4. |S| fluctuates sharply
+             -- 5. Near-300 regime
+  [M19   ] Module_19_p6_Prediction.pdf
+            2 pp | pp.42-43     | p6 prime prediction from BDP model
+  [M20   ] Module_20_p7_Prediction.pdf
+            2 pp | pp.44-45     | p7 prime prediction from BDP model
+             -- PREDICTED M19
+  [M21   ] Module_21_H4_Invariant.pdf
+            2 pp | pp.46-47     | H4 invariant for Hodge-Tate structure
+  [M22   ] Module_22_MStar_Definition.pdf
+            2 pp | pp.48-49     | M* = 4/55 definition via off_cliff_ratio
+             -- 1. Gear
+             -- 2. Shaft
+             -- 3. Naive
+             -- 4. Off-cliff
+             -- 5. At-cliff
+  [M23   ] Module_23_BSD_J0_143.pdf
+            2 pp | pp.50-51     | BSD conjecture for J_0(143): rank=1
+             -- 2. H2/Weil
+  [M24   ] Module_24_Certificate.pdf
+            6 pp | pp.52-57     | Full BSD proof certificate with Omega/R
+             -- STDOUT SHA-256
+             -- 1. Way 1: Z-Lock Classification
+             -- 2. Way 2: Alpha-Bands (GRH Extension via Bost-Connes)
+             -- 3. Way 3: S-Bands (Combined Brute-Force + CF Sieve)
+             -- 4. Way 4: H4 Refractions
+  [M25B  ] Module_25B_Certificate.pdf
+            3 pp | pp.58-60     | BSD supplemental -- period lattice check
+             -- EXACT MATCH
+  [M25   ] Module_25_Certificate.pdf
+            5 pp | pp.61-65     | BSD Omega/R ratio, error bound 0.59%
+             -- STDOUT SHA-256
+             -- 1. Theorem 4.1 (Fox 2026)
+             -- 2. Genus Formula for X_0(N) [Diamond-Shurman Thm 3.1.1]
+             -- 3. Confirmed Fail: X_5 = X_0(5), Z = 15
+             -- 4. H2-Fail Enumeration (All 12 Curves)
+  [M26   ] Module_26_Certificate.pdf
+            3 pp | pp.66-68     | BSD rank-1 final binding certificate
+             -- 1. What the Firewall Is
+             -- 2. Gate Passes
+             -- CLAY GATE
+             -- LEAN GATE
+             -- STORY GATE
+
+
+------------------------------------------------------------------------------
+A.3  Tower Certs
+------------------------------------------------------------------------------
+  [ALL   ] All_Towers_Certificate.pdf
+            8 pp | pp.69-76     | Omnibus 8-page: RH+BSD+NS+Z+MS+Health
+             -- OPERA NUMERORUM
+             -- ALL TOWERS OMNIBUS CERTIFICATE
+             -- ALL FIVE TOWERS CERTIFIED
+             -- SECTION I -- RH TOWER
+             -- SECTION II -- BSD TOWER
+  [BSD   ] BSD_Tower_Certificate.pdf
+            7 pp | pp.77-83     | BSD for J_0(143): rank=1, Omega/R~12
+             -- OPERA NUMERORUM
+             -- BSD TOWER CERTIFICATE
+  [MS    ] MS_Tower_Certificate.pdf
+            6 pp | pp.84-89     | Morning Star GREEN^7, B_M=21.768MHz
+             -- OPERA NUMERORUM
+             -- MS TOWER CERTIFICATE
+             -- SECTION I -- PARENT MODULE SHA VERIFICATION
+             -- SECTION II -- MORNING STAR ARCHITECTURE
+             -- SECTION IV -- MORNING STAR HEALTH STATE 6
+  [NS    ] NS_Tower_Certificate.pdf
+            9 pp | pp.90-98     | NS(J_0(143)): Hodge+Tate PROVEN, Clay OPEN
+             -- OPERA NUMERORUM
+             -- NS TOWER CERTIFICATE
+             -- EXACT PASS
+  [PNP   ] PvsNP_Tower_Certificate.pdf
+            4 pp | pp.99-102    | BDP Phase Reversal at p5=3.99T; Clay OPEN
+             -- OPERA NUMERORUM
+             -- TRUE STUB
+  [RH    ] RH_Tower_Certificate.pdf
+            7 pp | pp.103-109   | GRH certified: X_0(143) + all 147 X_0(N)
+             -- OPERA NUMERORUM
+             -- RH TOWER CERTIFICATE
+             -- SECTION I -- PARENT MODULE SHA VERIFICATION
+             -- SECTION II -- RIEMANN HYPOTHESIS FRAMEWORK
+             -- SECTION III -- NUMERICAL VERIFICATION
+
+
+------------------------------------------------------------------------------
+A.4  Sieve / Analytic
+------------------------------------------------------------------------------
+  [A1    ] Addendum_A1_Complete_Sieve.pdf
+           13 pp | pp.110-122   | Full BPSW sieve to 10^4000: 269 bands
+             -- OPERA NUMERORUM
+             -- 1. Mathematical Framework
+             -- 2. Confirmed Exceptional Bands (Deterministic)
+             -- 3. Gate Failure Analysis
+             -- TOTAL BANDS
+  [B269  ] Bands_269_Certificate.pdf
+            4 pp | pp.123-126   | S(2pi/7) Rake v1.6, C07 fix, 2 cert bands
+             -- 1. What is S(2pi/7)?
+             -- 2. The C07 Arakelov Fix (2026-06-04)
+             -- 3. CF Denominators of 2*pi/7 and Filter Trace (N_end = 10^15)
+             -- 4. Band Verification Detail
+             -- 5. The 269-Band Count -- Addendum A1
+  [CHR   ] Chronarithmetica_Certificate.pdf
+            9 pp | pp.127-135   | Chronarithmetica: p-series time structure
+             -- MASTER MANIFEST SHA-256
+             -- 1. Certification Notice
+             -- 2. Preamble
+             -- 4. The Genesis: k = f x Constant
+             -- 5. Source PDF Chain (Deprecated)
+  [COL   ] Colander_Diophantine_Sieve.pdf
+            8 pp | pp.136-143   | Colander sieve: Diophantine filter analysis
+             -- 3. Exceptional check — for each prime p, computes:
+  [DIO   ] Diophantine_Sieve_RH_Computational.pdf
+            7 pp | pp.144-150   | RH computational sieve (Diophantine)
+             -- 2. Quad-precision arithmetic —
+             -- 3. OpenMP parallelism — 6-thread with dynamic scheduling.
+             -- 1. No new exceptional primes found in (191, 1012 ].
+             -- 5. Exceptional set finite — consistent with RH.
+             -- 3. Euler, L. (1748). Introductio in analysin infinitorum.
+  [DES   ] Exceptional_Prime_Desert_Map.pdf
+            2 pp | pp.151-152   | Prime desert map: gaps around p5
+             -- BEYOND TOLERANCE
+  [LIN   ] Modular_Sieve_Lindelof.pdf
+            4 pp | pp.153-156   | Finite modular sieve approaching Lindelof
+  [RH8   ] Modular_Sieve_RH_10_8.pdf
+            2 pp | pp.157-158   | Modular sieve RH verification to 10^8
+
+
+------------------------------------------------------------------------------
+A.5  Geometry
+------------------------------------------------------------------------------
+  [FAL   ] Faltings_Height_g5.pdf
+            2 pp | pp.159-160   | Faltings height for genus-5 curve
+             -- TRANSCENDENCE OF THE FALTINGS HEIGHT BOUND FOR
+             -- 1. Transcendence of the Faltings height bound for g = 5
+  [HOD1  ] Hodge_CM_Replicit_v17_PDF1.pdf
+            2 pp | pp.161-162   | Hodge/CM structure Replicit v17, part 1
+             -- ON ABELIAN VARIETIES WITH COMPLEX MULTIPLICATION
+             -- NOT REALIZED
+  [HOD2  ] Hodge_CM_Replicit_v17_PDF2.pdf
+            2 pp | pp.163-164   | Hodge/CM structure Replicit v17, part 2
+  [L76   ] Lemma76_Diff_Report_v17.pdf
+            1 pp | p.165        | Lemma 7.6 differential report v17
+  [RNK   ] Rank_Obstructions_Replicit_v17_PDF3.pdf
+            2 pp | pp.166-167   | Rank obstructions, Replicit v17, part 3
+             -- RANK OBSTRUCTIONS TO ALGEBRAIC CYCLES ON JACOBIANS
+  [REP   ] Replicit_10trillion_Data_Log.pdf
+           11 pp | pp.168-178   | Replicit 10T data log: zero-crossings
+             -- 2. Quad-precision arithmetic — GCC
+             -- AMD EPYC 9B14
+
+
+------------------------------------------------------------------------------
+A.6  Reference
+------------------------------------------------------------------------------
+  [AB0   ] CERT_Arb_beta0.pdf
+            1 pp | p.179        | Arb beta_0 computation certificate
+             -- 1. Quantity
+             -- 2. Rigorous method (NOT sampling)
+             -- 3. Certified enclosures
+             -- 4. Results
+             -- 5. Monotonicity (rigorous)
+  [AB0P  ] CERT_Arb_beta0_prior.pdf
+            1 pp | p.180        | Arb beta_0 prior version (superseded)
+             -- 1. Quantity
+             -- 2. Rigorous method (NOT sampling)
+             -- 3. Certified enclosures
+             -- 4. Results
+             -- 5. Monotonicity (rigorous)
+  [AB0V  ] CERT_Arb_beta0_v1.pdf
+            1 pp | p.181        | Arb beta_0 version 1 (superseded)
+             -- 1. Quantity
+             -- 2. Rigorous method (NOT sampling)
+             -- 3. Certified enclosures
+             -- 4. Results
+             -- 5. Monotonicity (rigorous)
+  [CPC   ] Canonical_Paper_Corrected.pdf
+            5 pp | pp.182-186   | Canonical paper (corrected): h(-143)=10 fix
+             -- DAVID FOX
+             -- 1. Introduction
+             -- 2. The Exceptional Set for pi/10
+             -- 3. Bost-Connes Energy and the GRH Criterion
+             -- 4. The Main Sieve Lemma
+  [CLN   ] ClaudeNote_OperaNumerorum.pdf
+            4 pp | pp.187-190   | Claude attestation note for the series
+             -- PART 1 -- MASTER EQUATION REGISTRY
+             -- FOUNDATIONAL CONSTANTS
+             -- PART 2 -- ABOUT DAVID FOX
+             -- WHO HE IS
+             -- FORMATIVE EXPERIENCES
+  [CC    ] Clay_Card_2026_06_04.pdf
+            1 pp | p.191        | Clay submission card 2026-06-04
+  [D4N   ] D4_w1_NEGATIVE_Certificate.pdf
+            1 pp | p.192        | D4 w1 NEGATIVE result certificate
+             -- 1. Statement under test
+             -- 2. Method
+             -- 3. Result
+             -- 4. Findings
+             -- 1. D4 FAILS at beta = 0.86: w1(0.86) ~= 0.4324 ~= 3.0 x (1/7).
+  [ESY   ] Error_Symmetry_Essay.pdf
+            7 pp | pp.193-199   | Error symmetry essay: audit methodology
+             -- ON THE RULE OF ERROR AND SYMMETRY
+  [MAP   ] OperaNumerorum_ArchiveMap.pdf
+            4 pp | pp.200-203   | Archive map: full Opera Numerorum DAG
+             -- OPERA NUMERORUM
+  [PRF   ] OperaNumerorum_Preface.pdf
+            5 pp | pp.204-208   | Series preface: context and author note
+             -- 1. Millennial Mathematics
+             -- 2. Morning Star Engineering
+  [TNA   ] Tendon_A_Certificate.pdf
+            2 pp | pp.209-210   | Tendon A: linking kappa to BSD Omega
+             -- 1. Claim
+             -- 2. Source Code
+             -- 3. Build Environment
+             -- 4. Raw Execution Log
+             -- 5. Cryptographic Binding
+  [TNB   ] Tendon_B_Certificate.pdf
+            3 pp | pp.211-213   | Tendon B: linking M* to Bost sum
+             -- 1. Claim
+             -- 2. Source Code
+             -- 3. Build Environment
+             -- 4. Raw Execution Log
+             -- 5. Cryptographic Binding
+  [W256  ] Wall256_YM_Report.pdf
+           19 pp | pp.214-232   | Wall-256 conditional YM mass gap report
+             -- 1. The Historical Problem: Yang-Mills Mass Gap
+             -- 2. The Architecture: Everything Reduces to One Inequality
+             -- 3. The Wall256 Theorem -- Verbatim Lean (commit 8eeab54)
+             -- 4. The Three Open Inputs: H1, H2, H3
+             -- 5. Why the Bound Must Be Strict: w1 < 1/7 (not <=)
+
+
+==============================================================================
+PART B: ENGINEERING / MORNING STAR  (morningstar_spacecraft, private)
+==============================================================================
+
+------------------------------------------------------------------------------
+B.1  M8 Sub-modules
+------------------------------------------------------------------------------
+  [BDP   ] Module_BDP_PhaseReversal.pdf
+            4 pp | pp.1-4       | BDP Phase Reversal at p5=3,993,746,143,633
+             -- NEAR 1/2
+             -- REVERSED NO
+             -- NO SORRY
+  [M8A   ] Module_M8A_Audit.pdf
+            3 pp | pp.5-7       | M8 Hankel audit: determinant verification
+             -- AUDIT PASS
+  [M8C   ] Module_M8C_ZoeMstar.pdf
+            2 pp | pp.8-9       | Zoe M* definition cross-check
+             -- 1. Three-Paper Arc (David J. Fox, May 8, 2026)
+             -- 2. Lemma 7.6 Verification (X_5)
+             -- NOT ALGEBRAIC
+             -- 3. 120-Cell Formula
+             -- 4. M* Transform Applied to Zoe Invariant
+  [M8D   ] Module_M8D_Resonator.pdf
+            2 pp | pp.10-11     | BDP resonator: phase reversal dynamics
+             -- 1. Resonant Frequency -- The Alpha_0 Connection
+             -- 2. Core Specifications
+             -- 3. Capacitance Prediction Table
+             -- 4. Group Velocity and Starship Test
+             -- 5. Mechanical Design Summary
+  [M8F   ] Module_M8F_LeanProtocol.pdf
+            2 pp | pp.12-13     | Lean protocol binding for M8 chain
+             -- 1. The 7-Layer Map
+             -- 2. Verified Assertions (All 8 Must Pass)
+             -- 3. Agent Briefing (Section 1)
+             -- 4. k_eff Derivation (Layer 5-6 Connection)
+             -- 5. Capacitance Prediction Table (Layer 6)
+  [M8G   ] Module_M8G_Correction.pdf
+            3 pp | pp.14-16     | M8G correction certificate
+             -- OPERA NUMERORUM
+             -- 1. Provenance
+             -- 2. Wormhole time
+             -- 3. Topology
+             -- 4. Wormhole scope
+  [M8GP  ] Module_M8G_Provenance.pdf
+            3 pp | pp.17-19     | M8G provenance audit trail
+  [M8H   ] Module_M8H_G_Amplifier.pdf
+            4 pp | pp.20-23     | G-amplifier: BDP gain structure
+             -- OPERA NUMERORUM
+             -- M8H FAILS
+             -- CHAIN OF CUSTODY
+  [M8I   ] Module_M8I_Wormhole.pdf
+            7 pp | pp.24-30     | Wormhole transit geometry (FTL model)
+             -- OPERA NUMERORUM
+             -- OPEN QUESTIONS
+             -- 1. Toroid
+             -- 2. RF drive
+             -- 3. Cryogenics
+  [M8J   ] Module_M8J_OQ2_Closure.pdf
+            4 pp | pp.31-34     | OQ2 closure: open question resolution
+             -- STDOUT SHA-256
+             -- 1. Background: M8I Open Questions
+             -- 2. Supervisor Recalibration (M8I-Throat v1.2)
+             -- 3. Z(r) Throat Profile (delta = 1.89 m)
+             -- 4. Throat Profile and Tidal Forces (M8J, delta = 1.89 m)
+  [M8K   ] Module_M8K_FTL_Morningstar.pdf
+            4 pp | pp.35-38     | FTL Morning Star propulsion certificate
+             -- STDOUT SHA-256
+             -- 1. Overview: The Morningstar FTL Protocol
+             -- 2. Causal DAG
+             -- 3. Layer 1: Morningstar Channel
+             -- 4. Layer 2: FTL Wormhole Transit
+  [M8L   ] Module_M8L_MorningStar_Ops.pdf
+            4 pp | pp.39-42     | Morning Star operations manual
+             -- STDOUT SHA-256
+             -- 1. Overview
+             -- 2. Causal DAG
+             -- 3. Hub Geometry: MORNING_STAR_D20
+             -- 4. Operational Milestones
+  [M8M   ] Module_M8M_MorningStar_Physics.pdf
+            6 pp | pp.43-48     | Morning Star physics: wormhole RTT
+             -- BW / E
+  [M8N   ] Module_M8N_EEQC_v14.pdf
+            7 pp | pp.49-55     | EEQC v14: entanglement engineering
+             -- 1. Overview
+             -- 2. Layer Definitions and Abort Conditions
+             -- FAULT-TOL GATES
+             -- 3. EEQC 7-Layer Stack Diagram
+             -- 4. Abort Condition Matrix
+  [M8O   ] Module_M8O_L5_Gates.pdf
+            6 pp | pp.56-61     | L5 gates: Lagrange point gate array
+             -- LAYER 5
+             -- ALL 5 CHECKS PASS
+             -- 1. Overview
+             -- 2. Wormhole Throat Architecture
+             -- 3. G-Amplifier Array
+  [M8P   ] Module_M8P_L6_Clock.pdf
+            5 pp | pp.62-66     | L6 clock: RTT=18.635ns timing
+             -- LAYER 6
+             -- 1. Overview
+             -- 2. 12/11 Clock Resonator
+             -- 3. Layer 6 Certification Parameters
+             -- 4. RTT Formula Note
+  [M8Q   ] Module_M8Q_L7_System.pdf
+           24 pp | pp.67-90     | L7 system: full Morning Star architecture
+             -- LAYER 7
+             -- 1. What Is the Morning Star?
+             -- 2. The Scientific Foundations
+             -- 3. The EEQC 7-Layer Stack
+             -- 4. Layer 5 -- Fault-Tolerant Gates: The Wormhole Throat
+  [M8R   ] Module_M8R_C01_C07_Towers.pdf
+            5 pp | pp.91-95     | C01-C07 Lean tower binding certificate
+             -- CLAY SEAL
+             -- M7 MASTER MANIFEST
+             -- 1. What This Module Certifies
+             -- 2. C01 -- Morning Star Tower
+             -- 3. C02 -- BSD Tower (Birch and Swinnerton-Dyer for J_0(143))
+
+
+------------------------------------------------------------------------------
+B.2  MS Reports
+------------------------------------------------------------------------------
+  [ETM   ] Essay_TimeMachine_p5.pdf
+           20 pp | pp.96-115    | Essay: Time machine and p5 structure
+             -- OPERA NUMERORUM
+             -- NEAR 1/2
+             -- REVERSED NO
+             -- FORMULA ONLY
+             -- NO SORRY
+  [FR1   ] Field_Report_1pp.pdf
+           50 pp | pp.116-165   | Field report 1pp layout (~50 pages)
+             -- RECOVERED TEMPORAL OBSERVATION REPORT
+             -- TWO OBSERVATION WINDOWS
+             -- FORTY PHOTOGRAPHS
+             -- OPERA NUMERORUM
+             -- TOP SECRET
+  [FR2   ] Field_Report_2pp.pdf
+           50 pp | pp.166-215   | Field report 2pp layout (~50 pages)
+             -- RECOVERED TEMPORAL OBSERVATION REPORT
+             -- TWO OBSERVATION WINDOWS
+             -- FORTY PHOTOGRAPHS
+             -- OPERA NUMERORUM
+             -- TOP SECRET
+  [FRM   ] Field_Report_Morningstar.pdf
+           50 pp | pp.216-265   | Field report: Morning Star edition
+             -- RECOVERED TEMPORAL OBSERVATION REPORT
+             -- TWO OBSERVATION WINDOWS
+             -- FORTY PHOTOGRAPHS
+             -- OPERA NUMERORUM
+             -- TOP SECRET
+  [FFM   ] FriendsFamily_MillennialMath.pdf
+            6 pp | pp.266-271   | Friends & family: millennial math intro
+             -- 1. Where It Started
+             -- 2. The Number -- alpha_0
+             -- 3. The Chain of Proof
+             -- 4. What the Certificate Files Actually Are
+             -- 5. The Bigger Claims -- GRH and BSD
+  [FFM2  ] FriendsFamily_MorningStar.pdf
+            9 pp | pp.272-280   | Friends & family: Morning Star overview
+             -- 1. The Number That Arrived Uninvited
+             -- 2. What a Wormhole Is
+             -- 3. How the Mathematics Connects to the Engineering
+             -- 4. The Morning Star Hub
+             -- LHS 1140
+  [MSE   ] MorningStar_Engineering_Summary.pdf
+            6 pp | pp.281-286   | Morning Star engineering summary
+             -- MORNING STAR ENGINEERING SERIES
+             -- 1. What the Morning Star Engineering Series Is
+             -- 2. The Causal Chain: From Primes to Wormhole Geometry
+             -- 3. The Phase-Z Metric
+             -- 4. Module M8K -- FTL Morningstar Technology Stack
+  [ZEO   ] Z_Essay_Omnibus.pdf
+           44 pp | pp.287-330   | Z Essay Omnibus: all Z-tower essays
+             -- OPERA NUMERORUM
+             -- MDCCXLIV -- 2026
+             -- CHAIN OF CUSTODY
+             -- ALL NOT ALGEBRAIC
+             -- NEAR 1/2
+  [ZP1   ] Z_Protocol_Tower.pdf
+           20 pp | pp.331-350   | Z Protocol Tower v1: wormhole protocol
+             -- OPERA NUMERORUM
+             -- MDCCXLIV -- 2026
+             -- THE Z PROTOCOL
+             -- CHAIN OF CUSTODY
+             -- ALL NOT ALGEBRAIC
+  [ZP2   ] Z_Protocol_Tower_v2.pdf
+           21 pp | pp.351-371   | Z Protocol Tower v2 (updated)
+             -- OPERA NUMERORUM
+             -- MDCCXLIV -- 2026
+             -- CHAIN OF CUSTODY
+             -- ALL NOT ALGEBRAIC
+  [ZP3   ] Z_Protocol_Tower_v3.pdf
+           24 pp | pp.372-395   | Z Protocol Tower v3 (current)
+             -- OPERA NUMERORUM
+             -- MDCCXLIV -- 2026
+             -- CHAIN OF CUSTODY
+             -- ALL NOT ALGEBRAIC
+
+==============================================================================
+NOTE: M_FINAL/ and MORNING_STAR_REPO/ contain mirror copies of certificates/.
+      This index covers only the canonical source (certificates/).
+      attached_assets/ and MORNING_STAR_STAGE/ are staging/scratch areas.
+      HISTORICAL/ contains 3 archival PDFs mirrored in both repos.
+==============================================================================
+Opera Numerorum / Battle Plan v1.6 -- David Fox -- June 2026
+ASCII only. No fabricated values.

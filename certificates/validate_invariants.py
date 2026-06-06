@@ -13,21 +13,35 @@ Covered field-name patterns  (regex: sha256_.+ | .+_sha | .+_sha256):
   sha256_lambda_stdout, stdout_sha, stdout_sha256, manifest_sha,
   file_sha, script_sha, pdf_sha, builder_sha, causal_parent_sha, ...
 
-Explicit exemptions (field names that match the pattern but are NOT full
-64-char SHA-256 values by design):
-  sha256_prefix    -- 8-char display abbreviation; full SHA stored in sha256
-  sha256_pdf_note  -- free-text annotation about a PDF rebuild
+----------------------------------------------------------------------------
+EXEMPTION TABLE  (single authoritative place -- see EXEMPTIONS below)
+----------------------------------------------------------------------------
 
-Short-SHA exemptions (field names that store deliberate git-style 8-char
-SHA prefixes -- flagged as WARN rather than FAIL so the validator still
-exits 0 but draws attention to them):
-  backing_sha, C01_sha, C07_sha
+To add a new annotation field (free text, not a real SHA):
+  Append one entry to EXEMPTIONS["free_text"]  -- key name -> reason string.
+
+To add a new short-SHA field (abbreviated hex prefix stored at a specific
+JSON path):
+  Append one entry to EXEMPTIONS["short_sha"]  -- full dot-path ->
+  (min_hex_chars, max_hex_chars, reason).  Using the full path rather than
+  just the key name means the same key name appearing elsewhere in the JSON
+  is still subject to the normal 64-char rule.
+
+Free-text fields are silently skipped (exempt by design).
+Short-SHA fields produce WARN rather than FAIL so the validator still exits
+0 but draws attention to them.
 
 A null value for causal_parent_sha is accepted because some modules have
 no causal parent.
 
 Usage:
-    python3 certificates/validate_invariants.py
+    python3 certificates/validate_invariants.py                   # default path
+    python3 certificates/validate_invariants.py /path/to/file     # explicit path
+    python3 certificates/validate_invariants.py --self-test       # internal regression
+
+The optional path argument lets callers (e.g. pre-commit hooks) pass a temp
+file extracted from the Git index, so the staged snapshot is validated rather
+than the working-tree file.
 
 Exit code: 0 if all non-exempt SHA fields are well-formed, 1 otherwise.
 """
@@ -45,18 +59,54 @@ NULLABLE_KEYS = {
     "causal_parent_sha",
 }
 
-EXEMPT_KEYS = {
-    "sha256_prefix",
-    "sha256_pdf_note",
+# ---------------------------------------------------------------------------
+# EXEMPTIONS -- the single place to register all SHA-field exceptions.
+#
+# Two categories:
+#
+#   "free_text"  -- key names (matched anywhere in the JSON) that hold
+#                   human-readable annotations rather than real SHA digests.
+#                   Validator silently skips these.
+#
+#   "short_sha"  -- full JSON dot-paths (as produced by walk()) that hold
+#                   intentional abbreviated SHA prefixes (e.g. git short-SHAs).
+#                   Format: dot_path -> (min_hex_chars, max_hex_chars, reason)
+#                   Convention: git-style 8-char prefix -> (7, 16) gives
+#                   headroom for both short (7-char) and medium refs.
+#                   Validator emits WARN (not FAIL) for these.
+#
+# To add a new annotation field:  append to "free_text".
+# To add a new short-SHA path:    append to "short_sha".
+# No other code change is required in either case.
+# ---------------------------------------------------------------------------
+EXEMPTIONS: dict[str, dict] = {
+    "free_text": {
+        "sha256_prefix":         "8-char display abbreviation; full SHA stored in sha256",
+        "sha256_pdf_note":       "free-text annotation about a PDF rebuild",
+        "sha256_bands_json_note": "free-text annotation about a bands JSON rebuild",
+    },
+    "short_sha": {
+        "lean_chain_TheoremaAureum143.critical_fix.backing_sha": (
+            7, 16,
+            "git short-SHA backing the critical-fix note in TheoremaAureum143",
+        ),
+        "addendum_A1.lean_chain.C01_sha": (
+            7, 16,
+            "Lean chain commit reference -- addendum A1 step C01",
+        ),
+        "addendum_A1.lean_chain.C07_sha": (
+            7, 16,
+            "Lean chain commit reference -- addendum A1 step C07",
+        ),
+    },
 }
 
-SHORT_SHA_KEYS = {
-    "backing_sha",
-    "C01_sha",
-    "C07_sha",
+# Derived lookups (do not edit these -- edit EXEMPTIONS above)
+_EXEMPT_KEYS: set[str] = set(EXEMPTIONS["free_text"])
+_SHORT_SHA_REGISTRY: dict[str, tuple[int, int]] = {
+    path: (lo, hi)
+    for path, (lo, hi, _reason) in EXEMPTIONS["short_sha"].items()
 }
-
-SHORT_SHA_RE = re.compile(r'^[0-9a-f]{7,63}$')
 
 
 def is_sha_key(key: str) -> bool:
@@ -78,8 +128,9 @@ def walk(obj, path: str, errors: list, warnings: list, skipped: list) -> None:
 
 
 def _check_sha_field(key, value, path, errors, warnings, skipped):
-    if key in EXEMPT_KEYS:
-        skipped.append((path, repr(value), "exempt by design"))
+    if key in _EXEMPT_KEYS:
+        reason = EXEMPTIONS["free_text"][key]
+        skipped.append((path, repr(value), f"free-text annotation: {reason}"))
         return
 
     if value is None:
@@ -96,10 +147,20 @@ def _check_sha_field(key, value, path, errors, warnings, skipped):
     if SHA_VALUE_RE.match(value):
         return
 
-    if key in SHORT_SHA_KEYS and SHORT_SHA_RE.match(value):
-        warnings.append((path, value,
-                         f"short SHA prefix ({len(value)} chars) -- "
-                         "intentional abbreviation? consider storing full 64-char hash"))
+    if path in _SHORT_SHA_REGISTRY:
+        lo, hi = _SHORT_SHA_REGISTRY[path]
+        _lo, _hi, reg_reason = EXEMPTIONS["short_sha"][path]
+        hex_re = re.compile(rf'^[0-9a-f]{{{lo},{hi}}}$')
+        if hex_re.match(value):
+            warnings.append((path, value,
+                             f"short SHA prefix ({len(value)} chars, "
+                             f"registry allows {lo}-{hi}) -- {reg_reason}"))
+        else:
+            errors.append((path, value,
+                           f"registered short-SHA path: value ({len(value)} chars) "
+                           f"does not satisfy registry range [{lo},{hi}] "
+                           "or contains non-hex characters -- "
+                           "fix the value or update EXEMPTIONS['short_sha']"))
         return
 
     reason = (
@@ -124,15 +185,16 @@ def count_sha_fields(obj) -> int:
     return total
 
 
-def main() -> None:
+def main(path: str | None = None) -> None:
+    target = path or INVARIANTS_PATH
     try:
-        with open(INVARIANTS_PATH) as f:
+        with open(target) as f:
             data = json.load(f)
     except FileNotFoundError:
-        print(f"ERROR: {INVARIANTS_PATH} not found", file=sys.stderr)
+        print(f"ERROR: {target} not found", file=sys.stderr)
         sys.exit(1)
     except json.JSONDecodeError as exc:
-        print(f"ERROR: {INVARIANTS_PATH} is not valid JSON: {exc}",
+        print(f"ERROR: {target} is not valid JSON: {exc}",
               file=sys.stderr)
         sys.exit(1)
 
@@ -145,6 +207,21 @@ def main() -> None:
     total = count_sha_fields(data)
 
     print("Opera Numerorum -- invariants.json SHA format validation")
+    print("=" * 60)
+
+    free_text = EXEMPTIONS["free_text"]
+    short_sha = EXEMPTIONS["short_sha"]
+
+    print(f"Free-text annotation fields ({len(free_text)} registered key(s)):")
+    for key, reason in free_text.items():
+        print(f"  {key}")
+        print(f"    reason: {reason}")
+
+    print(f"Short-SHA registry ({len(short_sha)} registered path(s)):")
+    for reg_path, (lo, hi, reason) in short_sha.items():
+        print(f"  [{lo},{hi}]  {reg_path}")
+        print(f"    reason: {reason}")
+
     print("=" * 60)
 
     if warnings:
@@ -163,7 +240,7 @@ def main() -> None:
         if warnings:
             msg_parts.append(f"{len(warnings)} warning(s)")
         if skipped:
-            msg_parts.append(f"{len(skipped)} exempt field(s) skipped")
+            msg_parts.append(f"{len(skipped)} exempt annotation field(s) skipped")
         print(f"\nFORMAT VALIDATION FAILED -- {', '.join(msg_parts)}")
         sys.exit(1)
     else:
@@ -172,7 +249,7 @@ def main() -> None:
         if warnings:
             print(f"  ({len(warnings)} short-SHA warning(s))", end="")
         if skipped:
-            print(f"  ({len(skipped)} exempt field(s) skipped)", end="")
+            print(f"  ({len(skipped)} exempt annotation field(s) skipped)", end="")
         print()
         print("=" * 60)
         if warnings:
@@ -182,5 +259,113 @@ def main() -> None:
         sys.exit(0)
 
 
+def _self_test() -> None:
+    """Regression tests for EXEMPTIONS logic.  Run via --self-test.
+
+    Coverage:
+      - Every free_text key: validator must silently skip it (no error, no warning).
+      - Every short_sha path:
+          * A valid hex string of length lo  -> WARN (not ERROR).
+          * A non-hex / too-short string     -> ERROR.
+          * The same key name at an unregistered path -> ERROR (full 64-char rule).
+    """
+    errors: list = []
+    warnings: list = []
+    skipped: list = []
+
+    total_pass = 0
+    total_fail = 0
+    fail_messages: list[str] = []
+
+    def _ok(label: str) -> None:
+        nonlocal total_pass
+        total_pass += 1
+        print(f"  PASS  {label}")
+
+    def _fail(label: str, detail: str) -> None:
+        nonlocal total_fail
+        total_fail += 1
+        msg = f"  FAIL  {label} -- {detail}"
+        fail_messages.append(msg)
+        print(msg)
+
+    # -----------------------------------------------------------------------
+    # free_text tests: every registered key must be silently skipped
+    # -----------------------------------------------------------------------
+    print(f"free_text tests ({len(EXEMPTIONS['free_text'])} key(s)):")
+    for ft_key, ft_reason in EXEMPTIONS["free_text"].items():
+        errors.clear(); warnings.clear(); skipped.clear()
+        _check_sha_field(ft_key, "some human note here",
+                         f"module_x.{ft_key}", errors, warnings, skipped)
+        label = f"free_text[{ft_key!r}]"
+        if errors:
+            _fail(label, f"produced unexpected error(s): {errors}")
+        elif warnings:
+            _fail(label, f"produced unexpected warning(s): {warnings}")
+        elif len(skipped) != 1:
+            _fail(label, f"expected 1 skipped entry, got {skipped}")
+        else:
+            _ok(label)
+
+    # -----------------------------------------------------------------------
+    # short_sha tests: every registered path gets three sub-tests
+    # -----------------------------------------------------------------------
+    print(f"short_sha tests ({len(EXEMPTIONS['short_sha'])} path(s)):")
+    for reg_path, (lo, hi, _reason) in EXEMPTIONS["short_sha"].items():
+        key = reg_path.split(".")[-1]
+
+        # (a) Valid short hex at the registered path -> WARN, no ERROR
+        errors.clear(); warnings.clear(); skipped.clear()
+        good_val = "a" * lo
+        _check_sha_field(key, good_val, reg_path, errors, warnings, skipped)
+        label_a = f"short_sha[{reg_path!r}] valid-value -> WARN"
+        if errors:
+            _fail(label_a, f"produced error(s): {errors}")
+        elif len(warnings) != 1:
+            _fail(label_a, f"expected 1 warning, got {warnings}")
+        else:
+            _ok(label_a)
+
+        # (b) Non-hex / invalid value at the registered path -> ERROR
+        errors.clear(); warnings.clear(); skipped.clear()
+        bad_val = "zz"
+        _check_sha_field(key, bad_val, reg_path, errors, warnings, skipped)
+        label_b = f"short_sha[{reg_path!r}] invalid-value -> ERROR"
+        if len(errors) != 1:
+            _fail(label_b, f"expected 1 error, got errors={errors} warnings={warnings}")
+        else:
+            _ok(label_b)
+
+        # (c) Same key name at an unregistered path -> ERROR (full 64-char rule)
+        errors.clear(); warnings.clear(); skipped.clear()
+        unregistered_path = f"some.other.section.{key}"
+        _check_sha_field(key, good_val, unregistered_path, errors, warnings, skipped)
+        label_c = f"short_sha[{reg_path!r}] unregistered-path -> ERROR"
+        if len(errors) != 1:
+            _fail(label_c,
+                  f"short value at unregistered path should error; "
+                  f"got errors={errors} warnings={warnings}")
+        else:
+            _ok(label_c)
+
+    # -----------------------------------------------------------------------
+    # Summary
+    # -----------------------------------------------------------------------
+    print()
+    print(f"self-test results: {total_pass} pass, {total_fail} fail")
+    if total_fail:
+        for msg in fail_messages:
+            print(msg, file=sys.stderr)
+        raise SystemExit(1)
+    print("EXEMPTIONS self-test PASS (all free_text keys + all short_sha paths covered)")
+
+
 if __name__ == "__main__":
-    main()
+    import sys as _sys
+    args = _sys.argv[1:]
+    if args == ["--self-test"]:
+        _self_test()
+    elif args and not args[0].startswith("-"):
+        main(path=args[0])
+    else:
+        main()

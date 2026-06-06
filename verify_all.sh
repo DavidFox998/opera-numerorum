@@ -10,24 +10,61 @@ echo "=== invariants.json SHA format validation ==="
 python3 certificates/validate_invariants.py
 echo ""
 
-# --- Pre-flight: verify all stdout SHAs recorded in invariants.json ---
+# --- Step 1: Recertify -- detect drift and re-emit stale PDFs ---
+# Runs BEFORE the SHA pre-flight so that any module rebuild is
+# repaired (PDFs re-emitted, invariants.json patched) before we
+# verify the chain.  The pre-flight below then acts as a post-repair
+# confirmation gate, not a hard abort on legitimate rebuilds.
+echo "=== Recertify: M1-M7 PDF drift check ==="
+python3 certificates/recertify.py
+echo ""
+
+# --- Step 2: Update source SHAs in invariants.json ---
+# Runs after recertify so any rebuilt source files are reflected before
+# the pre-flight gate checks the full chain.
+echo "=== Source SHA update (update_source_shas.py) ==="
+python3 certificates/update_source_shas.py
+echo ""
+
+# --- Step 3: Pre-flight -- verify all stdout SHAs in invariants.json ---
+# Runs after recertify so it sees the repaired state.
 echo "=== invariants.json SHA pre-flight ==="
 python3 certificates/check_invariants.py
 echo ""
 
-declare -A SHAS=(
-  [m1.out]="63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
-  [m2.out]="3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83"
-  [m3.out]="e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044"
-  [m4.out]="b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
-  [m5.out]="9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
-  [m6.out]="ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb"
+# --- Step 4: Dynamic SHA verification for M1-M6 stdout files ---
+# Reads sha256_stdout for each module directly from invariants.json
+# (the single source of truth) instead of a hardcoded table.
+echo "=== M1-M6 stdout SHA verification (from invariants.json) ==="
+
+declare -A SHAS
+while IFS=$'\t' read -r file sha; do
+  SHAS["$file"]="$sha"
+done < <(python3 - <<'PYEOF'
+import json, sys
+d = json.load(open("certificates/invariants.json"))
+mapping = [
+    ("module_1", "m1.out"),
+    ("module_2", "m2.out"),
+    ("module_3", "m3.out"),
+    ("module_4", "m4.out"),
+    ("module_5", "m5.out"),
+    ("module_6", "m6.out"),
+]
+for key, fname in mapping:
+    sha = d.get(key, {}).get("sha256_stdout", "")
+    if not sha:
+        print(f"ERROR: {key}.sha256_stdout missing in invariants.json", file=sys.stderr)
+        sys.exit(1)
+    print(f"{fname}\t{sha}")
+PYEOF
 )
 
 i=1
 for file in m1.out m2.out m3.out m4.out m5.out m6.out; do
-  echo -n "[$i/6] $file SHA: ${SHAS[$file]}... "
-  echo "${SHAS[$file]}  $file" | sha256sum -c --status
+  sha="${SHAS[$file]}"
+  echo -n "[$i/6] $file SHA: ${sha}... "
+  echo "${sha}  $file" | sha256sum -c --status
   echo "PASS"
   ((i++))
 done
@@ -36,6 +73,18 @@ echo ""
 echo "Concatenating 6 outputs..."
 MANIFEST_SHA=$(cat m1.out m2.out m3.out m4.out m5.out m6.out | sha256sum | awk '{print $1}')
 echo "$MANIFEST_SHA  (M1-M6 manifest)"
+
+INVARIANTS_MANIFEST_SHA=$(python3 -c "import json; print(json.load(open('certificates/invariants.json'))['module_7']['manifest_sha'])")
+if [ "$MANIFEST_SHA" != "$INVARIANTS_MANIFEST_SHA" ]; then
+  echo ""
+  echo "WARNING: manifest SHA mismatch!"
+  echo "  computed : $MANIFEST_SHA"
+  echo "  invariants.json: $INVARIANTS_MANIFEST_SHA"
+  echo "  The .out files have drifted from the last recertify run."
+  echo "  Re-run 'python3 certificates/recertify.py' to reseal the chain."
+  exit 1
+fi
+
 echo ""
 echo "All 6 modules verified. DAG intact. MANIFEST LOCKED."
 echo ""

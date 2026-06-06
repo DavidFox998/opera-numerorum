@@ -4,7 +4,12 @@ check_invariants.py -- Pre-flight SHA checker for Opera Numerorum
 Battle Plan v1.6
 
 Reads certificates/invariants.json, recomputes the SHA-256 of every
-certified *.out file, and compares against the stored value.
+certified *.out file AND every recorded source/binary file, and compares
+against the stored values.
+
+Pass 1 (stdout checks):  sha256_stdout / stdout_sha / stdout_sha256 fields
+Pass 2 (source checks):  sha256_source (+ source_file) and
+                          sha256_binary (+ binary) fields
 
 Usage:
     python3 certificates/check_invariants.py          # check all modules
@@ -29,7 +34,11 @@ def sha256_file(path):
     return h.hexdigest()
 
 
-def extract_checks(key, val):
+# ---------------------------------------------------------------------------
+# Pass 1: stdout checks
+# ---------------------------------------------------------------------------
+
+def extract_stdout_checks(key, val):
     """
     Return a list of (label, filepath, stored_sha) tuples for every
     stdout file recorded in this module entry.
@@ -88,7 +97,68 @@ def extract_checks(key, val):
     return unique
 
 
-def run_checks(data, filter_keys=None):
+# ---------------------------------------------------------------------------
+# Pass 2: source / binary checks
+# ---------------------------------------------------------------------------
+
+def extract_source_checks(key, val):
+    """
+    Return a list of (label, filepath, stored_sha) tuples for every
+    source file and compiled binary recorded in this module entry.
+
+    Only entries that have BOTH a file path AND a stored SHA are included;
+    entries with a source_file/source but no sha256_source are skipped
+    (nothing to compare against).
+
+    Patterns handled:
+      sha256_source + source_file    (most modules)
+      sha256_source + source         (bands_269 and rake-style modules)
+      sha256_binary + binary         (M2 and any module with a compiled binary)
+    """
+    checks = []
+
+    if "sha256_source" in val:
+        filepath = val.get("source_file") or val.get("source")
+        if filepath:
+            label = f"{key} [sha256_source]"
+            checks.append((label, filepath, val["sha256_source"]))
+
+    if "sha256_binary" in val and "binary" in val:
+        label = f"{key} [sha256_binary]"
+        checks.append((label, val["binary"], val["sha256_binary"]))
+
+    return checks
+
+
+def extract_source_warnings(key, val):
+    """
+    Return a list of (label, filepath) tuples for every source file or
+    binary that is recorded in this module entry but has NO corresponding
+    SHA field.  These are gaps in the chain: the file could be edited
+    without any check detecting the change.
+    """
+    warnings = []
+
+    # source_file / source present but sha256_source absent
+    if "sha256_source" not in val:
+        filepath = val.get("source_file") or val.get("source")
+        if filepath:
+            label = f"{key} [source_file]"
+            warnings.append((label, filepath))
+
+    # binary present but sha256_binary absent
+    if "sha256_binary" not in val and "binary" in val:
+        label = f"{key} [binary]"
+        warnings.append((label, val["binary"]))
+
+    return warnings
+
+
+# ---------------------------------------------------------------------------
+# Generic check runner
+# ---------------------------------------------------------------------------
+
+def run_checks(data, extractor, filter_keys=None):
     total = 0
     passed = 0
     failed = 0
@@ -100,7 +170,7 @@ def run_checks(data, filter_keys=None):
         if filter_keys and key not in filter_keys:
             continue
 
-        checks = extract_checks(key, val)
+        checks = extractor(key, val)
         for label, filepath, stored_sha in checks:
             total += 1
             if not os.path.exists(filepath):
@@ -120,6 +190,10 @@ def run_checks(data, filter_keys=None):
     return total, passed, failed, missing
 
 
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+
 def main():
     if not os.path.exists(INVARIANTS_PATH):
         print(f"ERROR: {INVARIANTS_PATH} not found", file=sys.stderr)
@@ -138,19 +212,60 @@ def main():
         if missing_keys:
             print(f"WARNING: keys not found in invariants.json: {', '.join(sorted(missing_keys))}")
 
-    total, passed, failed, missing = run_checks(data, filter_keys)
+    # ------------------------------------------------------------------
+    # Pass 1: stdout SHAs
+    # ------------------------------------------------------------------
+    print(f"\n--- Pass 1: stdout checks ---")
+    s_total, s_passed, s_failed, s_missing = run_checks(
+        data, extract_stdout_checks, filter_keys
+    )
+    print(f"\nStdout checks: {s_total}  |  PASS: {s_passed}  |  FAIL: {s_failed}  |  MISSING: {s_missing}")
 
-    print(f"{'=' * 60}")
+    # ------------------------------------------------------------------
+    # Pass 2: source / binary SHAs
+    # ------------------------------------------------------------------
+    print(f"\n--- Pass 2: source / binary checks ---")
+    c_total, c_passed, c_failed, c_missing = run_checks(
+        data, extract_source_checks, filter_keys
+    )
+
+    # Warn about source files that have no SHA recorded at all
+    c_warned = 0
+    for key, val in data.items():
+        if not isinstance(val, dict):
+            continue
+        if filter_keys and key not in filter_keys:
+            continue
+        for label, filepath in extract_source_warnings(key, val):
+            print(f"  WARN     {label}: {filepath} -- source_file present but no sha256_source recorded")
+            c_warned += 1
+
+    print(f"\nSource checks: {c_total}  |  PASS: {c_passed}  |  FAIL: {c_failed}  |  MISSING: {c_missing}  |  WARN: {c_warned}")
+
+    # ------------------------------------------------------------------
+    # Summary
+    # ------------------------------------------------------------------
+    total   = s_total   + c_total
+    passed  = s_passed  + c_passed
+    failed  = s_failed  + c_failed
+    missing = s_missing + c_missing
+
+    print(f"\n{'=' * 60}")
     print(f"Total checks: {total}  |  PASS: {passed}  |  FAIL: {failed}  |  MISSING: {missing}")
 
     if failed > 0 or missing > 0:
-        print(f"\nPRE-FLIGHT FAILED -- {failed} SHA mismatch(es), {missing} missing file(s)")
+        parts = []
+        if s_failed or s_missing:
+            parts.append(f"stdout: {s_failed} mismatch(es), {s_missing} missing")
+        if c_failed or c_missing:
+            parts.append(f"source/binary: {c_failed} mismatch(es), {c_missing} missing")
+        print(f"\nPRE-FLIGHT FAILED -- {'; '.join(parts)}")
         sys.exit(1)
     elif total == 0:
-        print(f"\nWARNING: no stdout checks found (check key names)")
+        print(f"\nWARNING: no checks found (check key names)")
         sys.exit(1)
     else:
-        print(f"\nPRE-FLIGHT PASS -- all {passed} stdout SHAs match invariants.json")
+        print(f"\nPRE-FLIGHT PASS -- all {passed} checks match invariants.json")
         sys.exit(0)
 
 

@@ -202,14 +202,30 @@ def section_sorry_quarantine(lines):
         lines.append("  They are NOT in the BSD submission scope (proofs/).")
         lines.append("  BSD ISOLATION: PASS (zero sorries in proofs/)")
         lines.append("  MORNINGSTAR FULL QUARANTINE: PARTIAL (BDP tower sorries in src/M_FINAL/)")
+        lines.append("")
+        lines.append("  STRUCTURAL ISOLATION (June 2026):")
+        lines.append("  MORNING_STAR_REPO/ now lives in a physically separate private GitHub")
+        lines.append("  repository (github.com/DavidFox998/morningstar_spacecraft). A Clay")
+        lines.append("  referee cloning opera-numerorum sees zero BDP/Morning Star files by")
+        lines.append("  construction. The sorry-isolation is structural (repo-level), not")
+        lines.append("  only import-graph-verified. Push scripts: push_to_github.sh (public)")
+        lines.append("  and push_morning_star.sh (private). See REPO_MAP.txt.")
     else:
         lines.append("  RESULT: PASS -- All sorry in MORNING_STAR_REPO quarantined to HISTORICAL")
+        lines.append("")
+        lines.append("  STRUCTURAL ISOLATION (June 2026):")
+        lines.append("  MORNING_STAR_REPO/ now lives in a physically separate private GitHub")
+        lines.append("  repository (github.com/DavidFox998/morningstar_spacecraft). A Clay")
+        lines.append("  referee cloning opera-numerorum sees zero BDP/Morning Star files by")
+        lines.append("  construction. The sorry-isolation is structural (repo-level), not")
+        lines.append("  only import-graph-verified. Push scripts: push_to_github.sh (public)")
+        lines.append("  and push_morning_star.sh (private). See REPO_MAP.txt.")
     lines.append("")
 
     lines.append("3c. STUB_MANIFEST contents:")
     stub = MS_REPO_DIR / "archive" / "HISTORICAL" / "PVS_NP" / "STUB_MANIFEST.txt"
     if stub.exists():
-        for ln in stub.read_text().splitlines()[:12]:
+        for ln in stub.read_text().splitlines()[:25]:
             lines.append(f"  {ln}")
     else:
         lines.append("  STUB_MANIFEST.txt not found")

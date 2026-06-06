@@ -1,5 +1,5 @@
 """
-Builds Tendon_B_Certificate.pdf — machine certificate v1.6
+Builds Tendon_B_Certificate.pdf -- machine certificate v1.6
 kappa = phi(N) * c / 10^10
   phi(N) = Euler totient of N=143 = 120   (NOT the golden ratio)
   c      = 403608451.6483666              (conductor normalization, NOT speed of light)
@@ -234,14 +234,14 @@ story.append(Spacer(1, 12))
 story.append(section("7", "Verification Status"))
 status_data = [
     ["Check",                                               "Result"],
-    ["euler_phi(143) = 120  (exact uint64_t)",              "PASS ✓"],
-    ["c_lemma = 403,608,451.6483666  (Lemma 4.1)",          "PASS ✓"],
-    ["c_formula = c_lemma/100 = 4036084.5164816990832151L", "PASS ✓"],
-    ["kappa = phi*c/1e8 long double",                       "PASS ✓"],
-    ["Output EXACT = 4.8433014197780389",                   "PASS ✓"],
-    ["Source SHA-256 bound",                                "PASS ✓"],
-    ["Binary SHA-256 bound",                                "PASS ✓"],
-    ["Stdout SHA-256 bound",                                "PASS ✓"],
+    ["euler_phi(143) = 120  (exact uint64_t)",              "PASS"],
+    ["c_lemma = 403,608,451.6483666  (Lemma 4.1)",          "PASS"],
+    ["c_formula = c_lemma/100 = 4036084.5164816990832151L", "PASS"],
+    ["kappa = phi*c/1e8 long double",                       "PASS"],
+    ["Output EXACT = 4.8433014197780389",                   "PASS"],
+    ["Source SHA-256 bound",                                "PASS"],
+    ["Binary SHA-256 bound",                                "PASS"],
+    ["Stdout SHA-256 bound",                                "PASS"],
 ]
 tbl4 = Table(status_data, colWidths=[4.0*inch, 2.5*inch])
 tbl4.setStyle(TableStyle([

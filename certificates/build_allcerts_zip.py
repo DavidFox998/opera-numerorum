@@ -60,7 +60,9 @@ def update_invariants(sha: str, size_bytes: int, pdf_count: int) -> None:
     size_mb = round(size_bytes / (1024 * 1024), 1)
     now_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
-    data["bundle_all_certs"] = {
+    existing = data.get("bundle_all_certs", {})
+    drive_url = existing.get("drive_url", "")
+    entry = {
         "description": f"Full certified archive: all {pdf_count} PDFs + invariants.json. Complete Opera Numerorum record.",
         "file": "OperaNumerorum_AllCerts.zip",
         "size_bytes": size_bytes,
@@ -71,8 +73,11 @@ def update_invariants(sha: str, size_bytes: int, pdf_count: int) -> None:
         "contents": [
             "invariants.json",
             f"PDFs/*.pdf ({pdf_count} files)"
-        ]
+        ],
     }
+    if drive_url:
+        entry["drive_url"] = drive_url
+    data["bundle_all_certs"] = entry
 
     with open(INVARIANTS_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)

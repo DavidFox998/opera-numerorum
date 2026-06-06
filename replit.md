@@ -6,6 +6,21 @@ A cryptographic certification pipeline for David Fox's mathematical paper on exc
 
 Internal working title: **Battle Plan v1.6** — retained in all SHA-bound files to preserve chain integrity. Public series name: **Opera Numerorum**.
 
+## Pre-commit Hook (format validator)
+
+The `hooks/pre-commit` script runs `python3 certificates/validate_invariants.py` automatically whenever `certificates/invariants.json` is staged. Any malformed SHA field blocks the commit and prints the offending paths.
+
+```bash
+# Install once after cloning (or after pulling a new hook template):
+bash install_hooks.sh
+
+# The hook is a no-op when invariants.json is not staged,
+# so it adds zero overhead to unrelated commits.
+
+# To run the validator manually at any time:
+python3 certificates/validate_invariants.py
+```
+
 ## Run & Operate
 
 ```bash
@@ -33,6 +48,12 @@ python3 certificates/build_field_report.py --layout 2pp   # ~85 pages
 
 # Push everything to GitHub:
 bash push_to_github.sh
+
+# Run the recertify self-check (CI validation step "recertify-self-check"):
+python3 certificates/recertify.py --self-check
+# Runs 5 fixture tests: live drift scan, SHA injection/detection, build-script
+# registration (M1-M3), M7 manifest recomputation, and M1-M6 membership set.
+# Exit 0 = all pass; exit 1 = one or more failures.
 ```
 
 ## Stack

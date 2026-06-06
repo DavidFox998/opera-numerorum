@@ -1,0 +1,115 @@
+#!/bin/bash
+# Opera Numerorum -- pre-commit hook
+#
+# Two checks run depending on what is staged:
+#
+# 1. SHA FORMAT CHECK (when invariants.json is staged)
+#    Runs validate_invariants.py against the staged snapshot of
+#    certificates/invariants.json (via `git show :path`) rather than the
+#    working-tree file.
+#
+# 2. STALE SOURCE SHA CHECK (when a source file tracked in invariants.json is staged)
+#    Reads invariants.json from the git INDEX (not the working tree) so the
+#    SHA comparison reflects exactly what will be committed.  This catches the
+#    key failure mode: source staged, invariants updated in working tree but
+#    not re-staged -- the index still holds the stale invariants entry.
+#    Blocks the commit if any sha256_source / sha256_binary field is stale.
+#
+# Install:  bash install_hooks.sh
+# Manual:   cp hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+INVARIANTS="certificates/invariants.json"
+
+# ---------------------------------------------------------------------------
+# Always extract invariants.json from the git INDEX (not the working tree).
+# `git show :path` reads the index entry, which equals HEAD for unmodified
+# files and the newly staged blob for staged changes.  This is the correct
+# snapshot for both checks below.
+# ---------------------------------------------------------------------------
+INDEX_BLOB_TMP="$(mktemp /tmp/invariants_index_XXXXXX.json)"
+trap 'rm -f "$INDEX_BLOB_TMP"' EXIT
+
+HAS_INDEX_INVARIANTS=0
+if git show ":$INVARIANTS" > "$INDEX_BLOB_TMP" 2>/dev/null; then
+    HAS_INDEX_INVARIANTS=1
+fi
+
+# ---------------------------------------------------------------------------
+# CHECK 1: SHA format validator -- only fires when invariants.json is staged
+# ---------------------------------------------------------------------------
+if git diff --cached --name-only | grep -qF "$INVARIANTS"; then
+    echo "pre-commit: $INVARIANTS is staged -- validating staged snapshot..."
+    echo ""
+
+    if [ "$HAS_INDEX_INVARIANTS" -eq 0 ]; then
+        echo "pre-commit: WARNING -- could not read index blob for $INVARIANTS; skipping format check."
+    else
+        if ! python3 certificates/validate_invariants.py "$INDEX_BLOB_TMP"; then
+            echo ""
+            echo "pre-commit: commit blocked. Fix the SHA fields shown above, re-stage $INVARIANTS, and retry."
+            exit 1
+        fi
+        echo ""
+    fi
+fi
+
+# ---------------------------------------------------------------------------
+# CHECK 2: Stale source SHA check when a tracked source file is staged.
+#
+# Reads source/binary paths from the INDEX version of invariants.json so we
+# always compare against what will actually be committed, even when the
+# developer has updated the working-tree invariants.json without re-staging.
+# ---------------------------------------------------------------------------
+if [ "$HAS_INDEX_INVARIANTS" -eq 1 ]; then
+    # Extract tracked source/binary paths from the index snapshot.
+    TRACKED_SOURCES="$(python3 - "$INDEX_BLOB_TMP" <<'PYEOF'
+import json, sys
+path = sys.argv[1]
+try:
+    with open(path) as f:
+        data = json.load(f)
+except Exception:
+    sys.exit(0)
+paths = set()
+for val in data.values():
+    if not isinstance(val, dict):
+        continue
+    if "sha256_source" in val:
+        p = val.get("source_file") or val.get("source")
+        if p:
+            paths.add(p)
+    if "sha256_binary" in val:
+        p = val.get("binary")
+        if p:
+            paths.add(p)
+print("\n".join(sorted(paths)))
+PYEOF
+)"
+
+    # Check whether any staged file exactly matches a tracked source/binary path.
+    SOURCE_STAGED=0
+    while IFS= read -r staged; do
+        [ -z "$staged" ] && continue
+        if echo "$TRACKED_SOURCES" | grep -qFx "$staged"; then
+            SOURCE_STAGED=1
+            break
+        fi
+    done <<< "$(git diff --cached --name-only)"
+
+    if [ "$SOURCE_STAGED" -eq 1 ]; then
+        echo "pre-commit: a tracked source file is staged -- checking index invariants.json for stale source SHAs..."
+        echo ""
+        # Pass --invariants-path pointing at the index blob so the SHA
+        # comparison is against the staged invariants content, not the
+        # working-tree file.  Source/binary files are hashed from working-tree
+        # paths (the staged content is assumed to match for tracked files).
+        if ! python3 certificates/update_source_shas.py --check --invariants-path "$INDEX_BLOB_TMP"; then
+            echo ""
+            echo "pre-commit: commit blocked. Update and re-stage $INVARIANTS before retrying."
+            exit 1
+        fi
+        echo ""
+    fi
+fi
+
+exit 0

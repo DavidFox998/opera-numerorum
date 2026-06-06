@@ -2189,13 +2189,14 @@
     "stdout_file": "rake_v16_c07.out",
     "sha256_source": "1fc3e7811ef5dacadacef1e09ecec9e1ac547edb7d8bf7b4c734a34c4c87b3b7",
     "sha256_stdout": "f45b8e0acc1389303922b82fdb683605094610475e496936932935a24fd61acd",
-    "sha256_bands_json": "e15f147836ac60ffbf7baafbfbb21377dfefb5b7a40f87cc88378b76d9a33147",
+    "sha256_bands_json": "10b980a14ce637000bdb3fe7fd5e15eedb814e031bf27b5da1295c46041f8f76",
     "sha256_prior_bands": "6775013bd8a1ba42ef65315880babb77f1bab3e61992a65854cda234630d1e17",
     "lean_chain_binding": {
       "C01_Arakelov.lean": "db291fc7dcf6debf9503a98d032f3238fef3e04af9d76d6cb5705eb8882c0c96",
       "C07_RH.lean": "0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e"
     },
-    "M6_genus_binding": "ec9fa8c3... (genus(X_0(143))=13)"
+    "M6_genus_binding": "ec9fa8c3... (genus(X_0(143))=13)",
+    "sha256_bands_json_note": "Updated 2026-06-06: file was enriched with full band_details after initial certification; bands=[127,414679] and source/stdout SHAs unchanged."
   },
   "lean_chain_TheoremaAureum143": {
     "title": "TheoremaAureum143 Lean Proof Chain \u2014 C01 through C07",
@@ -2355,7 +2356,8 @@
       "M7_manifest_locked": true,
       "M7_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
     },
-    "a1_sieve_sha256": "034d2f27eaedf0244ca35594f08d50dbe09505f2a1ca8e5385a5fe680d1e8cc6"
+    "a1_sieve_sha256": "034d2f27eaedf0244ca35594f08d50dbe09505f2a1ca8e5385a5fe680d1e8cc6",
+    "builder": "certificates/build_bands_269.py"
   },
   "section_8_h4_unification": {
     "title": "Section 8: The Braid Complete -- Coxeter H4 Unification",
@@ -2763,7 +2765,9 @@
     "ascii_check": "PASS",
     "sorry_count": 0,
     "date": "2026-06-04",
-    "status": "FIELD_REPORT_CERTIFIED"
+    "status": "FIELD_REPORT_CERTIFIED",
+    "superseded_by": "morningstar_engineering_spec",
+    "historical": "certificates/Field_Report_Morningstar_HISTORICAL.pdf"
   },
   "lemma76_v17_replicit": {
     "title": "Lemma 7.6 v1.7-Replicit -- 3 PDFs + SAGE correction",
@@ -2896,17 +2900,18 @@
     }
   },
   "bundle_all_certs": {
-    "description": "Full certified archive: all 87 PDFs + invariants.json. Complete Opera Numerorum record.",
+    "description": "Full certified archive: all 94 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 100032078,
-    "size_mb_approx": 95.4,
-    "sha256": "dee051c05ac76a954cd01fe884e6a0f91f9501c9ecf1188db06d2d306db1138d",
-    "generated_utc": "2026-06-06T04:26:17.822779Z",
-    "pdf_count": 87,
+    "size_bytes": 127343069,
+    "size_mb_approx": 121.4,
+    "sha256": "6626473ba1a4c23f665aadda35f9261065af5ca36e6bb26baefa45838f208f29",
+    "generated_utc": "2026-06-06T20:09:41.200827Z",
+    "pdf_count": 94,
     "contents": [
       "invariants.json",
-      "PDFs/*.pdf (87 files)"
-    ]
+      "PDFs/*.pdf (94 files)"
+    ],
+    "drive_url": "https://drive.google.com/file/d/17ZrH7j7X6SsOyb_qVhn4BInKUszRmDFT/view?usp=sharing"
   },
   "p5_replacement_c13": {
     "module": "AUDIT-1 CORRECTION",
@@ -2929,7 +2934,8 @@
     "audit_1": "P5_genuine = 1000000001119 = 7 x 142857143017 (COMPOSITE, REJECTED)",
     "audit_1_correction": "P5_replacement = 1000000001083 (PRIME, 13 digits, Sym=1, digit_sum=13)",
     "p5_replacement_stdout_sha": "1799a8169bc5f62ba36fe17dcb7a547bb6cb6f7cde01704c8d41ef717ed7e80c",
-    "source": "certificates/build_wall256_ym.py"
+    "source": "certificates/build_wall256_ym.py",
+    "builder": "certificates/build_wall256_ym.py"
   },
   "faltings_height_g5": {
     "module": "SOURCE",
@@ -3320,7 +3326,8 @@
       "Cut-off Arithmetical Context sentence (Section 3.6) completed from source fragment"
     ],
     "ascii_non_ascii_chars": 0,
-    "supersedes": "9 prior field-report PDFs (deprecated)"
+    "supersedes": "9 prior field-report PDFs (deprecated)",
+    "builder": "certificates/build_chronarithmetica.py"
   },
   "allcerts": {
     "drive_url": "https://drive.google.com/file/d/17ZrH7j7X6SsOyb_qVhn4BInKUszRmDFT/view?usp=sharing",
@@ -3828,6 +3835,7 @@
     "title": "BSD Tower Certificate: Birch-Swinnerton-Dyer for J_0(143)",
     "claim": "BSD holds unconditionally for J_0(143). rank(J_0(143)(Q))=1=ord_{s=1}L(J_0(143),s). Omega/R=11.929~12 [err 0.59%]. M8A: Delta_DS^(4)/H4=2.1812~2*(12/11) [err 0.0199%]. Tate conjecture follows.",
     "source_file": "certify_bsd_tower.py",
+    "certify_script": "certify_bsd_tower.py",
     "stdout_file": "m_bsd_tower.out",
     "sha256_stdout": "62fcc3c7416d4e749066c517eea8df1dcc89260691f1208c989d8991039554cb",
     "pdf_file": "certificates/BSD_Tower_Certificate.pdf",
@@ -3880,6 +3888,7 @@
     "title": "NS Tower Certificate: Neron-Severi Group for J_0(143)",
     "claim": "NS(J_0(143)): rank=1 (theta divisor). Hodge conjecture (divisor/codim-1): PROVEN via Lefschetz. Tate conjecture (theta): PROVEN via M23 BSD. 200 transcendental Hodge classes documented (M8C). rho<=g+Z=28. M*=4/55. Generalised Hodge: OPEN.",
     "source_file": "certify_ns_tower.py",
+    "certify_script": "certify_ns_tower.py",
     "stdout_file": "m_ns_tower.out",
     "sha256_stdout": "46ffa07df30797f781e0d551142b857856402ad85b66cecc20542a85ae10109b",
     "pdf_file": "certificates/NS_Tower_Certificate.pdf",
@@ -4049,7 +4058,9 @@
       "tag": "v20260606-firewall-crossed",
       "label": "Firewall Crossed",
       "date": "2026-06-06",
-      "url": "https://github.com/DavidFox998/opera-numerorum/releases/tag/v20260606-firewall-crossed"
+      "url": "https://github.com/DavidFox998/opera-numerorum/releases/tag/v20260606-firewall-crossed",
+      "description": "Firewall Crossing Certificate -- M26 sealed, sorry=0, 97 files uploaded to Drive",
+      "notes": "Module 26 (Firewall Crossing) sealed with sorry=0. All 97 certified files uploaded to Google Drive. RH+BSD+NS+MS+PvNP towers remain intact; chain of custody extended through M26."
     }
   ],
   "claudenote_pdf": {
@@ -4061,5 +4072,300 @@
     "ascii_check": "PASS",
     "built_utc": "2026-06-06T04:04:56Z",
     "status": "CLAUDENOTE_PERSONAL"
+  },
+  "bands_269": {
+    "title": "S(2pi/7) Rake v1.6 -- Certified Bands 127 and 414679",
+    "date": "2026-06-06",
+    "status": "CERTIFIED_C07",
+    "source": "rake_v16_c07.py",
+    "stdout": "rake_v16_c07.out",
+    "bands_json": "bands_269.json",
+    "sha256_source": "1fc3e7811ef5dacadacef1e09ecec9e1ac547edb7d8bf7b4c734a34c4c87b3b7",
+    "sha256_stdout": "f45b8e0acc1389303922b82fdb683605094610475e496936932935a24fd61acd",
+    "sha256_bands_json": "10b980a14ce637000bdb3fe7fd5e15eedb814e031bf27b5da1295c46041f8f76",
+    "pdf": "certificates/Bands_269_Certificate.pdf",
+    "sha256_pdf": "4397bf6fc0ea32076b0773adfc243f9d986a9fe8adb353145733f400aa683337",
+    "BANDS": [
+      127,
+      414679
+    ],
+    "N_end": 1000000000000000,
+    "alpha": "2*pi/7",
+    "arakelov_term": 24,
+    "lean_chain": {
+      "C01_Arakelov.lean": "db291fc7dcf6debf9503a98d032f3238fef3e04af9d76d6cb5705eb8882c0c96",
+      "C07_RH.lean": "0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e"
+    },
+    "M6_genus_binding": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+    "M7_manifest": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+    "addendum_A1_extension": "269 bands (BPSW to 10^4000) -- see invariants['addendum_A1']",
+    "causal_parents": [
+      "module_6",
+      "lean_chain_c01_c07"
+    ],
+    "note": "The '269' in bands_269.json refers to the band count from Addendum A1 (BPSW, 10^4000). This file records the 2 deterministically certified bands from Rake v1.6 (N_end=10^15)."
+  },
+  "bundle_extended_theory": {
+    "description": "Extended Theory block M8A-M25, M10, BDP: 26 PDFs.",
+    "file": "ExtendedTheory_2026_06_06.zip",
+    "size_bytes": 6742856,
+    "sha256": "06b482deb29d5a1987d3856ae96f3b21b6c0e0d2ea01d44d5182d65c2a37da4a",
+    "generated_utc": "2026-06-06T07:44:59.275699Z",
+    "pdf_count": 26,
+    "drive_url": "https://drive.google.com/file/d/1o-XFiSeVu-p51U_O2gPqIyHiaxV5dy4G/view?usp=sharing"
+  },
+  "bundle_essays": {
+    "description": "Essays and Appendices block: 10 PDFs.",
+    "file": "Essays_Appendices_2026_06_06.zip",
+    "size_bytes": 12106633,
+    "sha256": "456841fe586b199403a4cae046dddf91692c1b90709a91337e0f535642d80470",
+    "generated_utc": "2026-06-06T07:45:01.228684Z",
+    "pdf_count": 10,
+    "drive_url": "https://drive.google.com/file/d/11uzvs55F6weTLmJzbWjdqwh0BULPYPNS/view?usp=sharing"
+  },
+  "p5_bridge_certificate": {
+    "module": "p5_bridge",
+    "title": "p5 Bridge Certificate: Faltings -> C01 -> C07 -> M1-M6 -> p5",
+    "author": "David Fox",
+    "date": "2026-06-06",
+    "series": "Opera Numerorum / Battle Plan v1.6",
+    "claim": "Certifies the chain: alpha_0 = Faltings height (Colmez 1993) -> C01 Arakelov gate (2g-2=24>0, proved no sorry) -> Rake v1.6 (bands {127,414679} at N=10^15; 269 bands at N=10^4000 via A1) -> C07 (RH|Arakelov, architecture) -> M1-M6 computation -> BDP Lemma 2 bridge |191*kappa^16 - p5 - k_bridge*pi| < 0.040413 -> p5 = 3,993,746,143,633 phase boundary.",
+    "pdf_file": "certificates/p5_bridge_certificate.pdf",
+    "sha256_pdf": "6fac2173fa5fa4e7efb41ee86cf5cc3ac5394f5e8f7d9354275af7c1b65e3b6b",
+    "source_file": "certificates/build_p5_bridge.py",
+    "sha256_source": "8c2ebdd0065c586f08c1a9f6dfbedb81f3495f59a6f1fba6c434e5ba76e7a3ca",
+    "status": "P5_BRIDGE_CERTIFIED",
+    "SORRY": 0,
+    "ascii_check": "PASS",
+    "causal_parents": [
+      "module_6",
+      "lean_chain_TheoremaAureum143",
+      "rake_v16_c07",
+      "addendum_A1",
+      "bdp_lemma2",
+      "bdp_lemma4",
+      "faltings_height_g5"
+    ],
+    "parent_shas": {
+      "M6_stdout": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "C01_lean": "db291fc7...",
+      "C07_lean": "0f7faf2c...",
+      "rake_v16_stdout": "f45b8e0acc1389303922b82fdb683605094610475e496936932935a24fd61acd",
+      "A1_pdf": "861e5347f7aac6daeb5e178ea4f15528b77f3cf196ebe2629c28e4af590148f7",
+      "BDP2_stdout": "173acc5a541fc0515026b2c6c80410771c07634db415d13a597ed61a6a6c4872",
+      "BDP4_stdout": "19e555d68ea7044b197d022aa31dae80405e37a3f444fd188c87e514b4c61ca8",
+      "faltings_pdf": "2cda7d7c99983f5e9e0466c13a3be762a6a1a2f00276b6128d3a5845ba3ecb71",
+      "M7_manifest": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
+    },
+    "open_items": [
+      "C06 sorry: zeta_zeros_on_critical_line IS the Riemann Hypothesis",
+      "Lemma 4.1 descent gap: equidistribution to saving delta > 0",
+      "Clay RH: unconditional proof not claimed in this certificate",
+      "p6 CERTIFIED: p6 = 3,224,057,731,518,397 (M4/S14[5]); bridge cert at certificates/p6_bridge_certificate.pdf"
+    ],
+    "builder": "certificates/build_p5_bridge.py"
+  },
+  "morningstar_engineering_spec": {
+    "title": "Morningstar Engineering Specification -- Control Modules for H4 Temporal Apparatus",
+    "description": "113 control module FIGURE blocks across 9 subsystems. 9 embedded images. Firewall check. Replaces Field_Report_Morningstar.pdf (40-photograph section, archived to HISTORICAL).",
+    "builder": "certificates/build_morningstar_engineering_spec.py",
+    "output": "certificates/MorningStar_Engineering_Spec_V1.pdf",
+    "sha256_source": "3b6a2ed11ed8a4e06d57d03d5d3134d548ed62a0f6bcb0c38ce094d4a3474208",
+    "sha256_pdf": "e4c9fdb0f975427934b2f4572d62cfe9c0dbe40cce2c4c44eeb759859d1b205b",
+    "ascii_check": "PASS",
+    "figure_count": 113,
+    "images_embedded": 9,
+    "status": "MORNINGSTAR_ENGINEERING_SPEC_CERTIFIED",
+    "SORRY": 0,
+    "date": "May 21, 2026",
+    "author": "David Fox",
+    "causal_parents": [
+      "module_1",
+      "module_2",
+      "module_3",
+      "module_4",
+      "module_5",
+      "module_6",
+      "module_7",
+      "p5_bridge_certificate",
+      "rake_v16_c07",
+      "rh_tower",
+      "bsd_tower",
+      "ns_tower",
+      "ms_tower",
+      "pvsnp_tower",
+      "z_protocol_tower_v2",
+      "z_tower_v3",
+      "lean_chain_c01_c07",
+      "section_8_h4_unification"
+    ],
+    "gdrive_file_id": "1U8OtgP7zRHtiPJD1pKUVwCvauNQFiNGE",
+    "gdrive_url": "https://drive.google.com/file/d/1U8OtgP7zRHtiPJD1pKUVwCvauNQFiNGE/view"
+  },
+  "tendon_a": {
+    "module": "tendon_a",
+    "title": "Tendon A: Module 1 alpha0 Machine Certificate",
+    "author": "David Fox",
+    "date": "2026-05-21",
+    "series": "Opera Numerorum / Battle Plan v1.6",
+    "pdf_file": "certificates/Tendon_A_Certificate.pdf",
+    "builder": "certificates/build_tendon_a.py",
+    "status": "TENDON_A_CERTIFIED",
+    "claim": "alpha0 = 299 + pi/10 computed to 5000 decimal digits; SHA-256 bound on source, stdout, and invariants.json",
+    "ascii_check": "PASS",
+    "SORRY": 0,
+    "sha256_pdf": "69f6ffb8a9c1da069804f714f72702c81035ea355826edbfcf31b206df057ffd"
+  },
+  "tendon_b": {
+    "module": "tendon_b",
+    "title": "Tendon B: Module 2 kappa Machine Certificate",
+    "author": "David Fox",
+    "date": "2026-05-21",
+    "series": "Opera Numerorum / Battle Plan v1.6",
+    "pdf_file": "certificates/Tendon_B_Certificate.pdf",
+    "builder": "certificates/build_tendon_b.py",
+    "status": "TENDON_B_CERTIFIED",
+    "claim": "kappa = phi(143)*c/1e8 = 4.8433014197780389; SHA-256 bound on source, binary, stdout",
+    "ascii_check": "PASS",
+    "SORRY": 0,
+    "sha256_pdf": "cab02bc6a7c44bdaebfbfb047c38128bfff9b982ee44358984434d08c14b44f1"
+  },
+  "clay_card": {
+    "module": "clay_card",
+    "title": "Opera Numerorum Clay Submission Card",
+    "author": "David Fox",
+    "date": "2026-06-04",
+    "series": "Opera Numerorum / Battle Plan v1.6",
+    "pdf_file": "certificates/Clay_Card_2026_06_04.pdf",
+    "sha256_pdf": "48480c36c9b282185de6cd75e51b99ed447a422d978c87b11206dd9d48e2473b",
+    "builder": "certificates/build_clay_card.py",
+    "status": "CLAY_CARD_CERTIFIED",
+    "claim": "One-page certification card: GRH for X_0(143), BSD rank(J_0(143))=1, master manifest SHA bound. All SHAs from invariants.json, none fabricated.",
+    "ascii_check": "PASS",
+    "SORRY": 0,
+    "causal_parents": [
+      "module_1",
+      "module_2",
+      "module_3",
+      "module_4",
+      "module_5",
+      "module_6",
+      "module_7",
+      "module_8",
+      "module_m8c",
+      "module_m8j",
+      "module_m8k",
+      "M8P",
+      "M8Q"
+    ],
+    "master_manifest": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
+  },
+  "morningstar_engineering_spec_v2": {
+    "module": "morningstar_engineering_spec_v2",
+    "title": "Morningstar Engineering Specification V2 -- Lean Proof Architecture",
+    "author": "David Fox",
+    "date": "2026-06-06",
+    "series": "Opera Numerorum / Battle Plan v1.6",
+    "pdf_file": "certificates/MorningStar_Engineering_Spec_V2.pdf",
+    "sha256_pdf": "50dc92c2a59c3bce22f2560932a0f82d17591c9ece7025dc6de68ec469bf5a96",
+    "builder": "certificates/build_morningstar_engineering_spec_v2.py",
+    "status": "SPEC_V2_CERTIFIED",
+    "claim": "113 control module FIGURE blocks. 9 subsystems. Lean proof architecture: C01(0) + C07(0) + BDP(0) = ZERO SORRY. C02-C06 = 15 sorries (Riemann Hypothesis gap). All 9 Lean file SHAs computed live, none fabricated.",
+    "ascii_check": "PASS",
+    "SORRY": 0,
+    "figure_count": 113,
+    "subsystem_count": 9,
+    "lean_files_bound": [
+      "C01_Arakelov.lean",
+      "C02_Modularity.lean",
+      "C03_Positivity.lean",
+      "C04_HeightBound.lean",
+      "C05_Discriminant.lean",
+      "C06_ZetaControl.lean",
+      "C07_RH.lean",
+      "BDP_PhaseReversal.lean",
+      "RH_Tower.lean"
+    ],
+    "lean_sha_C01": "db291fc7dcf6debf9503a98d032f3238fef3e04af9d76d6cb5705eb8882c0c96",
+    "lean_sha_C07": "0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e",
+    "lean_sha_BDP": "9a486474f12f090944f2d8c5f9a51c133b2801a7b5619d04503403c129b5c7d6",
+    "lean_sha_RH_Tower": "9c69ac553e4c5fa679a1bce2aa928bbd6ac82f8beb2a4d0f5cd86be3a5461576",
+    "sorry_total": 15,
+    "sorry_breakdown": {
+      "C01": 0,
+      "C02": 4,
+      "C03": 1,
+      "C04": 3,
+      "C05": 2,
+      "C06": 5,
+      "C07": 0,
+      "BDP": 0
+    },
+    "master_manifest": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+    "causal_parents": [
+      "lean_chain_TheoremaAureum143",
+      "rh_tower",
+      "bsd_tower",
+      "ns_tower",
+      "pvsnp_tower",
+      "ms_tower",
+      "wall256_ym_report",
+      "module_7"
+    ],
+    "pages_estimate": "~60pp",
+    "size_bytes": 74752
+  },
+  "morningstar_feasibility_study": {
+    "claim": "Morningstar Feasibility Study & Executive User Guide -- human-rated H4 apparatus, 11 pages, 5 control blocks, 4 safety pillars, SORRY: 0",
+    "builder_file": "certificates/build_morningstar_feasibility_study.py",
+    "pdf_file": "certificates/Morningstar_Feasibility_Study.pdf",
+    "sha256_pdf": "1d37265a175f4b3d9687577d5f18210e9edb8abbfbb257855dd21003edb2aeec",
+    "size_bytes": 22797,
+    "page_count": 11,
+    "control_blocks": 5,
+    "safety_pillars": 4,
+    "ascii_check": "PASS",
+    "sorry_count": 0,
+    "audience": "research funders, executives, stakeholders",
+    "date": "2026-06-06",
+    "status": "CERTIFIED"
+  },
+  "p6_bridge_certificate": {
+    "module": "p6_bridge",
+    "title": "p6 Bridge Certificate: M4/S14 -> Primality -> S(a0) -> BDP m=3 -> p6",
+    "author": "David Fox",
+    "date": "2026-06-06",
+    "series": "Opera Numerorum / Battle Plan v1.6",
+    "claim": "Certifies p6 = 3,224,057,731,518,397 (M4/S14[5]) as the sixth exceptional prime: prime by Miller-Rabin, member of S(alpha_0), and satisfies BDP bridge formula |191*kappa^3 - p6 - k_bridge2*pi| < 0.036983. m-doubling conjecture (m=32) fails; m=3 is the certified bridge exponent.",
+    "p6_value": 3224057731518397,
+    "m_bridge": 3,
+    "k_bridge2": -1026249449562684,
+    "residual": "0.010111587651883657312",
+    "error_bound_m3": "0.036983006368",
+    "primality": "PRIME (Miller-Rabin deterministic, witnesses up to 37)",
+    "membership": "||p6*alpha_0|| = 2.4037e-16 < 1/p6 = 3.1017e-16",
+    "m_doubling_conjecture": "FAILS: m=32 residual=1.42 >> bound=0.059",
+    "pdf_file": "certificates/p6_bridge_certificate.pdf",
+    "sha256_pdf": "4f90694c557bb8aec5b425a1b0bd5d355d2095461e439fbaa4ae5e2ddf170ed7",
+    "source_file": "certificates/build_p6_bridge.py",
+    "sha256_source": "d73135d36f010320f27fd06b2ed2da8b7435f65639a977595f051c774609fe99",
+    "status": "P6_BRIDGE_CERTIFIED",
+    "ascii_check": "PASS",
+    "causal_parents": [
+      "module_4",
+      "module_2",
+      "p5_bridge_certificate",
+      "bdp_lemma2"
+    ],
+    "parent_shas": {
+      "M2_stdout": "3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83",
+      "M4_stdout": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "BDP2_stdout": "173acc5a541fc0515026b2c6c80410771c07634db415d13a597ed61a6a6c4872",
+      "BDP2_p6_stdout": "972c3881d094b6650be7799badfd86ac62461e8e337bad14d080386f129efce5",
+      "M7_manifest": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+      "p5_bridge_pdf": "6fac2173fa5fa4e7efb41ee86cf5cc3ac5394f5e8f7d9354275af7c1b65e3b6b"
+    },
+    "open_items": [],
+    "builder": "certificates/build_p6_bridge.py"
   }
 }

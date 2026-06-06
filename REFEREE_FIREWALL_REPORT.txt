@@ -1,7 +1,7 @@
 ========================================================================
   CMI REFEREE FIREWALL REPORT
   Subject: BSD Rank 0 Submission Isolation Verification
-  Date: 2026-06-06 04:34 UTC
+  Date: 2026-06-06 06:59 UTC
   Repositories Audited:
     opera-numerorum  [PUBLIC]  ./  (this workspace)
     morningstar_spacecraft  [PRIVATE]  ./MORNING_STAR_REPO/
@@ -68,6 +68,14 @@ RESULT: PASS -- No forbidden imports found in proofs/
   BSD ISOLATION: PASS (zero sorries in proofs/)
   MORNINGSTAR FULL QUARANTINE: PARTIAL (BDP tower sorries in src/M_FINAL/)
 
+  STRUCTURAL ISOLATION (June 2026):
+  MORNING_STAR_REPO/ now lives in a physically separate private GitHub
+  repository (github.com/DavidFox998/morningstar_spacecraft). A Clay
+  referee cloning opera-numerorum sees zero BDP/Morning Star files by
+  construction. The sorry-isolation is structural (repo-level), not
+  only import-graph-verified. Push scripts: push_to_github.sh (public)
+  and push_morning_star.sh (private). See REPO_MAP.txt.
+
 3c. STUB_MANIFEST contents:
   STUB MANIFEST -- PVS_NP HISTORICAL ARCHIVE
   Opera Numerorum / Battle Plan v1.6
@@ -81,6 +89,19 @@ RESULT: PASS -- No forbidden imports found in proofs/
   
   FILES ARCHIVED HERE:
     (none -- all BDP Lean work migrated to src/M_FINAL/BDP_PhaseReversal.lean)
+  
+  ACTIVE BDP LEAN FILE:
+    morningstar_spacecraft/src/M_FINAL/BDP_PhaseReversal.lean
+    -- Contains 23 'sorry' instances, all annotated as sorry-fills
+    -- pointing to certified .out files (bdp1.out through bdp4.out).
+    -- These sorries are in the P vs NP Tower ONLY.
+    -- They are NOT in the BSD submission scope (opera-numerorum/proofs/).
+  
+  BSD SUBMISSION SCOPE:
+    opera-numerorum/proofs/ACT1-5/ -- SORRY: 0
+    opera-numerorum/proofs/ACT3/BSD_M22.lean -- M_star = 4/55, SORRY: 0
+  
+  CLAY SEAL (frozen):
 
 ========================================================================
 4. AXIOM INVENTORY: BSD uses only classical Lean axioms

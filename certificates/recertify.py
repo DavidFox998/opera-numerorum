@@ -74,6 +74,22 @@ BUILD_SCRIPT_MAP = {
     "bdp_lemma2":            "certificates/build_module_bdp.py",
     "bdp_lemma3":            "certificates/build_module_bdp.py",
     "bdp_lemma4":            "certificates/build_module_bdp.py",
+    # tower PDFs
+    "rh_tower":              "certificates/build_rh_tower.py",
+    "bsd_tower":             "certificates/build_bsd_tower.py",
+    "ns_tower":              "certificates/build_ns_tower.py",
+    "ms_tower":              "certificates/build_ms_tower.py",
+    "pvsnp_tower":           "certificates/build_pvsnp_tower.py",
+    # extended certifications
+    "p5_bridge_certificate": "certificates/build_p5_bridge.py",
+    "addendum_A1":           "certificates/build_bands_269.py",
+    "chronarithmetica":      "certificates/build_chronarithmetica.py",
+    "wall256_ym_report":     "certificates/build_wall256_ym.py",
+    "tendon_a":              "certificates/build_tendon_a.py",
+    "tendon_b":              "certificates/build_tendon_b.py",
+    "clay_card":                        "certificates/build_clay_card.py",
+    "morningstar_engineering_spec_v2":  "certificates/build_morningstar_engineering_spec_v2.py",
+    "morningstar_feasibility_study":    "certificates/build_morningstar_feasibility_study.py",
 }
 
 # ---------------------------------------------------------------------------
@@ -110,6 +126,7 @@ PDF_PATH_MAP = {
     "ns_tower":      "certificates/NS_Tower_Certificate.pdf",
     "rh_tower":      "certificates/RH_Tower_Certificate.pdf",
     "ms_tower":      "certificates/MS_Tower_Certificate.pdf",
+    "pvsnp_tower":   "certificates/PvsNP_Tower_Certificate.pdf",
 }
 
 
@@ -187,6 +204,8 @@ def get_pdf_path(key, entry):
     """Return the expected PDF output path for this module, or None."""
     if "pdf" in entry and isinstance(entry["pdf"], str):
         return entry["pdf"]
+    if "pdf_file" in entry and isinstance(entry["pdf_file"], str):
+        return entry["pdf_file"]
     return PDF_PATH_MAP.get(key)
 
 
@@ -431,16 +450,22 @@ def run_self_check():
         else:
             print(f"  PASS: detected, build script -> {script}")
 
-    # Test 3: verify M1-M3 have build scripts registered
-    print("Test 3: M1-M3 build scripts registered ...")
-    for key in ["module_1", "module_2", "module_3"]:
-        script = get_build_script(key, data.get(key, {}))
-        exists = os.path.exists(script) if script else False
-        if not script or not exists:
-            print(f"  FAIL: {key} -> script={script}, exists={exists}")
+    # Test 3: every key in BUILD_SCRIPT_MAP that is present in invariants.json
+    # must have its builder script on disk.  Missing scripts produce FAIL.
+    print("Test 3: BUILD_SCRIPT_MAP entries present in invariants.json ...")
+    t3_keys = [k for k in BUILD_SCRIPT_MAP if k in data]
+    t3_fail = False
+    for key in sorted(t3_keys):
+        script = BUILD_SCRIPT_MAP[key]
+        exists = os.path.exists(script)
+        if not exists:
+            print(f"  FAIL: {key} -> {script}  [NOT FOUND ON DISK]")
             ok = False
+            t3_fail = True
         else:
             print(f"  PASS: {key} -> {script}")
+    if not t3_fail:
+        print(f"  {len(t3_keys)} script(s) verified.")
 
     # Test 4: M7 manifest SHA sanity
     print("Test 4: M7 manifest SHA recomputation ...")
@@ -465,6 +490,76 @@ def run_self_check():
             ok = False
     if ok:
         print(f"  PASS: all 6 keys present.")
+
+    # Test 6: every tower whose certify_script is recorded in invariants.json
+    # must have that file present on disk.  A recorded but missing script
+    # produces FAIL (not a silent skip).  Towers with no certify_script field
+    # are noted but do not count as failures.
+    print("Test 6: Tower certify_script files exist on disk ...")
+    TOWER_KEYS = ["rh_tower", "bsd_tower", "ns_tower", "ms_tower", "pvsnp_tower"]
+    t6_fail = False
+    for tower in TOWER_KEYS:
+        entry = data.get(tower)
+        if entry is None:
+            print(f"  SKIP: {tower} not in invariants.json")
+            continue
+        cs = entry.get("certify_script")
+        if cs is None:
+            print(f"  FAIL: {tower} has no certify_script field in invariants.json")
+            ok = False
+            t6_fail = True
+            continue
+        if os.path.exists(cs):
+            print(f"  PASS: {tower} -> {cs}")
+        else:
+            print(f"  FAIL: {tower} -> {cs}  [NOT FOUND ON DISK]")
+            ok = False
+            t6_fail = True
+    if not t6_fail:
+        checked = [t for t in TOWER_KEYS
+                   if data.get(t) and data[t].get("certify_script")]
+        print(f"  {len(checked)} certify_script(s) verified.")
+
+    # Test 7: tower PDF SHA integrity -- sha256_pdf / pdf_sha in invariants.json
+    # must match the on-disk PDF.  Missing PDF -> SKIP.  Mismatch -> FAIL.
+    print("Test 7: Tower PDF SHA integrity (invariants.json vs on-disk) ...")
+    t7_fail = False
+    t7_checked = 0
+    t7_skipped = 0
+    for tower in TOWER_KEYS:
+        entry = data.get(tower)
+        if entry is None:
+            print(f"  SKIP: {tower} not in invariants.json")
+            t7_skipped += 1
+            continue
+        sha_field = get_pdf_sha_field(entry)
+        if sha_field is None:
+            print(f"  SKIP: {tower} has no sha256_pdf / pdf_sha field")
+            t7_skipped += 1
+            continue
+        stored_sha = entry[sha_field]
+        pdf_path = get_pdf_path(tower, entry)
+        if pdf_path is None:
+            print(f"  SKIP: {tower} -- PDF path unknown")
+            t7_skipped += 1
+            continue
+        if not os.path.exists(pdf_path):
+            print(f"  SKIP: {tower} -- PDF not on disk ({pdf_path})")
+            t7_skipped += 1
+            continue
+        computed_sha = sha256_file(pdf_path)
+        if computed_sha == stored_sha:
+            print(f"  PASS: {tower} -- {pdf_path} ({computed_sha[:16]}...)")
+            t7_checked += 1
+        else:
+            print(f"  FAIL: {tower} -- PDF SHA mismatch for {pdf_path}")
+            print(f"    stored:   {stored_sha}")
+            print(f"    on-disk:  {computed_sha}")
+            ok = False
+            t7_fail = True
+            t7_checked += 1
+    if not t7_fail:
+        print(f"  {t7_checked} PDF(s) verified, {t7_skipped} skipped.")
 
     print("=" * 60)
     if ok:
@@ -635,10 +730,15 @@ def main():
     print(f"  Changed modules detected:  {len(changed_keys)}")
     print(f"  PDFs rebuilt:              {len(rebuilt)}")
     if m1_to_m6_changed:
-        relock_status = "OK" if (m7_result and m7_result.get("build_ok")) else (
-            "DRY-RUN" if args.dry_run else "no-op (unchanged)"
-        )
-        print(f"  M7 manifest re-lock:       {relock_status}")
+        if m7_result and m7_result.get("build_ok") is True:
+            new_sha = m7_result.get("manifest_sha", "")
+            print(f"  M7 manifest re-locked:     {new_sha}")
+        elif args.dry_run:
+            print(f"  M7 manifest re-lock:       DRY-RUN")
+        elif m7_result and m7_result.get("build_ok") is False:
+            print(f"  M7 manifest re-lock:       FAILED")
+        else:
+            print(f"  M7 manifest re-lock:       no-op (manifest unchanged)")
     if skipped_no_script:
         print(f"  SHA-only updates (no script): "
               f"{', '.join(skipped_no_script)}")

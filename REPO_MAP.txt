@@ -1,0 +1,97 @@
+REPO MAP -- Opera Numerorum / Battle Plan v1.6
+Author: David J. Fox | ORCID 0009-0008-1290-6105
+Generated: June 2026
+
+==============================================================================
+REPOSITORY LAYOUT
+==============================================================================
+
+Two separate GitHub repositories. Use the corresponding push script for each.
+
+------------------------------------------------------------------------------
+1. opera-numerorum (PUBLIC)
+   URL: https://github.com/DavidFox998/opera-numerorum
+   Push: bash push_to_github.sh
+   Visibility: PUBLIC -- visible to Clay referees and the general public
+------------------------------------------------------------------------------
+
+INCLUDED (Clay-grade mathematical content):
+
+  certificates/          PDF certificates, Python sources, build scripts
+  verify/                Verification scripts (bound_10_4000.py, etc.)
+  bin/                   Compiled C binaries (print_kappa, print_S14)
+  proofs/                Lean 4 proof files (BSD, RH towers) -- SORRY: 0
+  m1.out .. m6.out       Certified stdout (inputs to M7 manifest)
+  bdp1.out .. bdp4.out   BDP tower certified outputs
+  verify_all.sh          Full chain verification script
+  ALL_MATH_PROBLEMS.txt  Master equation registry
+  hooks/                 Pre-commit format validator
+  install_hooks.sh       Hook installer
+  HISTORICAL/            Historical essays (MIRRORED in both repos)
+  REPO_MAP.txt           This file
+
+EXCLUDED (live in morningstar_spacecraft instead):
+
+  MORNING_STAR_REPO/     Morning Star full repo
+  MORNING_STAR_STAGE/    Staging / in-progress work
+  M_DRAFT/               Draft PDFs and working certificates
+  M_FINAL/               Finalized engineering PDFs
+
+Clay seal (frozen):
+  5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
+  = SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)
+
+------------------------------------------------------------------------------
+2. morningstar_spacecraft (PRIVATE)
+   URL: https://github.com/DavidFox998/morningstar_spacecraft
+   Push: bash push_morning_star.sh
+   Visibility: PRIVATE -- engineering governance, not Clay submission scope
+------------------------------------------------------------------------------
+
+INCLUDED (Morning Star engineering content):
+
+  MORNING_STAR_REPO/     BDP Phase Reversal, P vs NP Tower, MS engineering
+                           src/M_FINAL/BDP_PhaseReversal.lean (23 sorry-fills,
+                           P vs NP Tower only, annotated, outside BSD scope)
+  MORNING_STAR_STAGE/    Staging / in-progress work
+  M_DRAFT/               Draft PDFs (working versions, superseded certificates)
+  M_FINAL/               Finalized engineering PDFs (Field Reports, etc.)
+  HISTORICAL/            Historical essays (MIRRORED from opera-numerorum)
+
+EXCLUDED (live in opera-numerorum instead):
+
+  All certified math chain files (m*.out, certificates/, proofs/, etc.)
+
+==============================================================================
+FIREWALL RATIONALE
+==============================================================================
+
+The Clay referee firewall requires that the BSD submission (proofs/) contain
+zero sorry instances and import nothing from the P vs NP / Morning Star
+towers. Structural separation into two repos enforces this at the repository
+level, in addition to import-graph verification (REFEREE_FIREWALL_REPORT.pdf).
+
+  BSD scope (opera-numerorum/proofs/)     -- SORRY: 0   [Clay submission]
+  BDP tower (morningstar_spacecraft/...)  -- 23 sorry-fills [P vs NP only]
+
+The 23 sorry-fills in BDP_PhaseReversal.lean are annotated sorry-fills
+pointing to certified bdp1.out through bdp4.out computations. They are in
+the P vs NP Tower only, which is Clay-OPEN (not claimed as proved). They do
+not affect BSD logical independence.
+
+==============================================================================
+HISTORICAL/ MIRROR POLICY
+==============================================================================
+
+HISTORICAL/ (workspace root) contains historical essays and reference PDFs.
+It is deliberately mirrored into BOTH repos. Rationale: historical context
+is relevant to both the public mathematical record and the private engineering
+record. Neither repo is the single authoritative source.
+
+To update HISTORICAL/ in both repos: edit files at workspace root,
+then run both push_to_github.sh and push_morning_star.sh.
+
+==============================================================================
+Opera Numerorum / Battle Plan v1.6 -- David Fox -- June 2026
+ASCII only. No fabricated values.
+==============================================================================
