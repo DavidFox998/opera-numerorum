@@ -1,0 +1,100 @@
+# BLOCK: CERTIFIED EQUATION CENSUS — 661 BRICKS — PARALLEL + VERIFIED
+# CLAY: 5b80b84d... SEALED. CHECK BEFORE/AFTER.
+
+START=$(date +%s)
+echo "=== CLAY INTEGRITY CHECK START ==="
+CLAY_SHA=$(sha256sum CLAY_M1_M7.zip | cut -d' ' -f1)
+echo "Expected: 5b80b84d..."
+echo "Actual:   $CLAY_SHA"
+if [ "$CLAY_SHA" != "5b80b84d..." ]; then echo "ABORT: CLAY TAMPERED"; exit 1; fi
+
+OUT="CERTIFIED_EQUATIONS_MASTER.txt"
+LOG="EQUATION_CENSUS_LOG.txt"
+echo "EQ_ID | SOURCE | TYPE | EQUATION | SHA" > $OUT
+> $LOG
+
+# 1. CLAY LEAN + OUT FILES — ~2 min
+echo "=== SCANNING CLAY ===" | tee -a $LOG
+unzip -q CLAY_M1_M7.zip -d CLAY_TMP
+EQ=1
+for f in CLAY_TMP/M*.lean; do
+  grep -n "theorem\|lemma\|def.*:=" "$f" | while IFS=: read line content; do
+    CLEAN=$(echo "$content" | sed 's/:=.*//; s/by.*//; s/  */ /g' | tr -d '\n')
+    printf "EQ%03d | [CLAY:%s:%s] | THEOREM | %s | 5b80b84d\n" $EQ $(basename $f) $line "$CLEAN" >> $OUT
+    ((EQ++))
+  done
+done
+for f in CLAY_TMP/m*.out; do
+  while IFS= read -r line; do
+    printf "EQ%03d | [CLAY:%s] | COMPUTATION | %s | 5b80b84d\n" $EQ $(basename $f) "$line" >> $OUT
+    ((EQ++))
+  done < "$f"
+done
+CLAY_COUNT=$((EQ-1))
+echo "CLAY equations: $CLAY_COUNT" | tee -a $LOG
+
+# 2. 661 BRICKS — PARALLEL — ~5-8 min
+echo "=== SCANNING 661 BRICKS ===" | tee -a $LOG
+find . -name "*.pdf" -type f > pdf_list.txt
+TOTAL=$(wc -l < pdf_list.txt)
+echo "Found $TOTAL PDFs" | tee -a $LOG
+
+# Parallel extract: 8 jobs at once
+cat pdf_list.txt | xargs -P 8 -I {} sh -c '
+  f="{}"
+  name=$(basename "$f")
+  sha=$(sha256sum "$f" | cut -d" " -f1 | cut -c1-8)
+  
+  # Skip if in DRAFT and has real sorry
+  if echo "$name" | grep -q "DRAFT" && pdftotext "$f" - 2>/dev/null | grep -q "by sorry"; then
+    exit 0
+  fi
+  
+  pdftotext "$f" - 2>/dev/null | grep -n "Theorem\|Lemma\|Proposition\|Corollary\|def.*:=" | while IFS=: read line content; do
+    clean=$(echo "$content" | sed "s/:=.*//; s/by.*//; s/\"/\\\"/g; s/  */ /g" | cut -c1-200)
+    
+    # Tag type
+    if echo "$name" | grep -q "TRIVIAL_BY_CONSTRUCTION"; then
+      type="TRIVIAL"
+    elif echo "$clean" | grep -qi "sorry"; then
+      continue  # skip uncertified
+    else
+      type="THEOREM"
+    fi
+    
+    # Print with lock to avoid race
+    flock CERTIFIED_EQUATIONS_MASTER.txt printf "EQ%%03d | [M_FINAL:%s:%s] | %s | %s | %s\n" $EQ "$name" "$line" "$type" "$clean" "$sha"
+  done
+'
+
+# 3. COVERAGE VERIFICATION — ~1 min
+echo "=== COVERAGE CHECK ===" | tee -a $LOG
+TOTAL_LINES=$(grep -c "^EQ" $OUT)
+LEAN_COUNT=$(find CLAY_TMP -name "*.lean" -exec grep -h "theorem\|lemma\|def.*:=" {} \; | wc -l)
+OUT_COUNT=$(find CLAY_TMP -name "m*.out" -exec cat {} \; | wc -l)
+PDF_COUNT=$(find . -name "*.pdf" -exec pdftotext {} - \; | grep -c "Theorem\|Lemma\|Proposition\|def.*:=")
+EXPECTED=$((LEAN_COUNT + OUT_COUNT + PDF_COUNT))
+
+echo "Expected theorems+defs: $EXPECTED" | tee -a $LOG
+echo "Found in master file: $TOTAL_LINES" | tee -a $LOG
+
+if [ "$EXPECTED" -ne "$TOTAL_LINES" ]; then
+  echo "WARNING: COUNT MISMATCH. Expected $EXPECTED, got $TOTAL_LINES" | tee -a $LOG
+  echo "Missing: $((EXPECTED - TOTAL_LINES)) equations. Re-run with -v for diff." | tee -a $LOG
+else
+  echo "PASS: 100% coverage verified" | tee -a $LOG
+fi
+
+# 4. FINAL CLAY CHECK
+END_SHA=$(sha256sum CLAY_M1_M7.zip | cut -d' ' -f1)
+echo "=== CLAY INTEGRITY CHECK END ===" | tee -a $LOG
+echo "Expected: 5b80b84d..." | tee -a $LOG
+echo "Actual:   $END_SHA" | tee -a $LOG
+if [ "$END_SHA" != "5b80b84d..." ]; then echo "FAIL: CLAY TAMPERED"; exit 1; fi
+
+END=$(date +%s)
+echo "DONE in $((END-START)) seconds" | tee -a $LOG
+echo "Output: $OUT" | tee -a $LOG
+echo "Total certified equations: $TOTAL_LINES" | tee -a $LOG
+
+rm -rf CLAY_TMP pdf_list.txt
