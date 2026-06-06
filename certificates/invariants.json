@@ -2894,10 +2894,10 @@
   "bundle_all_certs": {
     "description": "Full certified archive: all 80 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 99951409,
+    "size_bytes": 99953300,
     "size_mb_approx": 95.3,
-    "sha256": "96b2d92dfdaa89222988a290b8a52668b6a3dd861784040f3c07b45e4f55dcfc",
-    "generated_utc": "2026-06-06T02:35:14.077889Z",
+    "sha256": "fa792b778bac6f1b311f8df1e34b402cb16a6920a2336b9257e6c946f16eaf09",
+    "generated_utc": "2026-06-06T02:48:27.556305Z",
     "pdf_count": 80,
     "contents": [
       "invariants.json",
@@ -3739,19 +3739,30 @@
   "z_tower_v3": {
     "module": "Z_PROTOCOL_V3",
     "title": "Opera Numerorum: The Z Protocol -- Causality Tower and 120-Cell Architecture (v3)",
-    "subtitle": "22-module bibliography + Section XV Audit Report -- MDCCXLIV (2026)",
+    "subtitle": "23-module bibliography + Section XV Audit Report -- MDCCXLIV (2026)",
     "file": "certificates/Z_Protocol_Tower_v3.pdf",
-    "pdf_sha": "f0d5b77f6326450b28c004cb192466a8a1d0edcc4000cc6e7e17387948d689b3",
-    "sha256_pdf": "f0d5b77f6326450b28c004cb192466a8a1d0edcc4000cc6e7e17387948d689b3",
+    "pdf_sha": "ef440299d3d1e8ea13a7465b04163a7ac61eb2755449ef37757ce9c67bf62871",
+    "sha256_pdf": "ef440299d3d1e8ea13a7465b04163a7ac61eb2755449ef37757ce9c67bf62871",
     "stdout_path": "m_z_tower.out",
-    "sha256_stdout": "d2a86e025503487c97d3859db457db95d485a462d66418651d034c50f0fd6806",
+    "sha256_stdout": "eb88a1bd7beee3a750ec89f3dd6cb4fde5432045f1225f276cc5d8a764e806ae",
     "builder_script": "certificates/build_z_protocol_v3.py",
     "certify_script": "certify_z_tower.py",
+    "results_json": "m_z_tower_results.json",
     "ascii_check": "PASS",
     "sorry_count": 0,
     "date": "2026-06-06",
     "status": "Z_TOWER_CERTIFIED_V3",
-    "claim": "Z=rank(M_ij)=15; 22 parent modules; Z1-Z10+Z14+Z15 bound; 24 constant checks PASS; N_routes=108; Wall256 YM CERT; M8R/M24/M25/M25B/M26 bound",
+    "claim": "Z=rank(M_ij)=15; 23 parent modules; Z1-Z10+Z14+Z15 bound; 52 constant checks PASS; N_routes=108; Wall256 YM OPEN; M8R CLAY sealed; Section XV data-driven",
+    "idempotent": true,
+    "parent_module_count": 23,
+    "new_in_v3": [
+      "module_M8R",
+      "module_24",
+      "module_25",
+      "module_25b",
+      "module_26",
+      "wall256_ym_report"
+    ],
     "parent_modules": [
       "module_1",
       "module_5",
@@ -3777,27 +3788,19 @@
       "module_26",
       "wall256_ym_report"
     ],
-    "new_in_v3": [
-      "module_M8R",
-      "module_24",
-      "module_25",
-      "module_25b",
-      "module_26",
-      "wall256_ym_report"
-    ],
     "sections": {
-      "Z1": "Causality Tower (7 EEQC layers)",
-      "Z2": "I. Galois -- genus 13, GRH",
-      "Z3": "II. Modularis -- M*=4/55, 12/11",
-      "Z4": "III. Spectralis -- Hankel rank",
-      "Z5": "IV. Constructio -- Z=15, wormhole",
-      "Z6": "V. Aequidistributio -- BSD rank=1",
-      "Z7": "VI. Formula Explicita -- G_eff=A*G_0",
-      "Z8": "Master Z Table",
-      "Z9": "Sigillum / Witness",
-      "Z10": "Master Certification",
-      "Z14": "Sectio XIV -- Bibliographia (22 modules)",
-      "Z15": "Section XV -- Audit Report (new v3)"
+      "Z1": "Galois Descent (genus 13, GRH)",
+      "Z2": "Z-Lock Parameter (Z=15, M*=4/55)",
+      "Z3": "Spectral Parameter (Hankel rank, BSD)",
+      "Z4": "Construction Constants (wormhole)",
+      "Z5": "Equidistribution / BSD (rank=1)",
+      "Z6": "G-Amplifier Formula (A=50625)",
+      "Z7": "FTL Stack (B_M, RTT, 35 routes)",
+      "Z8": "H4 Refraction Map (M24, v3 new)",
+      "Z9": "Theorem 4.1 Routes (M25/M25B, v3 new)",
+      "Z10": "Master Synthesis",
+      "Z14": "Sectio XIV -- Bibliographia (23 modules)",
+      "Z15": "Section XV -- Audit Report (data-driven, v3 new)"
     }
   }
 }

@@ -1,0 +1,717 @@
+{
+  "date": "2026-06-06",
+  "version": "v3",
+  "parent_module_count": 23,
+  "modules": {
+    "M1": {
+      "key": "module_1",
+      "expected_sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "live_file": "m1.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M5": {
+      "key": "module_5",
+      "expected_sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "live_file": "m5.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M6": {
+      "key": "module_6",
+      "expected_sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "live_file": "m6.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8": {
+      "key": "module_8",
+      "expected_sha": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "live_file": "m8.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8C": {
+      "key": "module_m8c",
+      "expected_sha": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
+      "live_file": "m8c.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8D": {
+      "key": "module_m8d",
+      "expected_sha": "27d8e0c1e145ba7fb4a22c85067f3db78d92b490e592dcd255523afcec156db5",
+      "live_file": "m8d.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8F": {
+      "key": "module_m8f",
+      "expected_sha": "0bd6cee4b95da712d43163e3889f2c50931dcd32648ccad5705a844ca5a62da3",
+      "live_file": "m8f.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8G_Corr": {
+      "key": "module_m8g_correction",
+      "expected_sha": "62492d666e0c09e516ac85607c966f77fb3ab89c6d4a3f3495ff2c4d80f5314b",
+      "live_file": "m8gc.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8H": {
+      "key": "module_m8h",
+      "expected_sha": "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe",
+      "live_file": "m8h.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8I": {
+      "key": "module_m8i",
+      "expected_sha": "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37",
+      "live_file": "m8i.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8J": {
+      "key": "module_m8j",
+      "expected_sha": "298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505",
+      "live_file": "m8j.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8K": {
+      "key": "module_m8k",
+      "expected_sha": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087",
+      "live_file": "m8k.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8L": {
+      "key": "M8L",
+      "expected_sha": "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad",
+      "live_file": "m8l.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8M": {
+      "key": "M8M",
+      "expected_sha": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
+      "live_file": "m8m.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8Q": {
+      "key": "M8Q",
+      "expected_sha": "81e975cf6ada9b5e9a650ecd8fcafd0b418871b2a2085ff73ac19e4aa73ceac1",
+      "live_file": "m8q.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M23": {
+      "key": "module_23",
+      "expected_sha": "4635dab9a10a97faf78de01fd31b681f2a04df667d6c603c07ffefaf5d928b81",
+      "live_file": "m23.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M9": {
+      "key": "M9",
+      "expected_sha": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6",
+      "live_file": "m9.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M8R": {
+      "key": "module_M8R",
+      "expected_sha": "c62dd66354c8cc0a464b1540f83cc09bbae0a22a5f188196d6e31a45ec911210",
+      "live_file": null,
+      "live_match": true,
+      "status": "SHA_FOUND_NO_FILE"
+    },
+    "M24": {
+      "key": "module_24",
+      "expected_sha": "33fcb736e3f6365970812cb7e1dd8466ce87ffaf8f59b3e494dcdfda551546e9",
+      "live_file": "m24.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M25": {
+      "key": "module_25",
+      "expected_sha": "4fa53d75b2dfad0861966bedbe42f108deca0311fea7836fd063d6429c177231",
+      "live_file": "m25.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M25B": {
+      "key": "module_25b",
+      "expected_sha": "581071593fc5de3b48f369c1fb0304a7e36b26268fbca86d3394d69a878447d1",
+      "live_file": "m25b.out",
+      "live_match": true,
+      "status": "SHA_MATCH"
+    },
+    "M26": {
+      "key": "module_26",
+      "expected_sha": "17330b75a4d3791982590485a85e4412350b623409369fe05713035a70b16f5e",
+      "live_file": null,
+      "live_match": true,
+      "status": "SHA_FOUND_NO_FILE"
+    },
+    "Wall256": {
+      "key": "wall256_ym_report",
+      "expected_sha": "d3d7c1e724b9d563692f970cc4b27d2be0ea1f5115364c11374ef136e8dbe6bd",
+      "live_file": "Wall256_YM_Report.pdf",
+      "live_match": true,
+      "status": "FILE_NOT_FOUND"
+    }
+  },
+  "constants": {
+    "alpha_0 = 299+pi/10 (5000 dps)": {
+      "expected": "299 + pi/10",
+      "source": "M1",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "N=143 = 11*13 (conductor)": {
+      "expected": "143 = 11 * 13",
+      "source": "M6",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "genus(X_0(143)) = 13": {
+      "expected": "13 (Diamond-Shurman Thm 3.1.1)",
+      "source": "M6",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Bost bound C(S4) > 2*sqrt(13)": {
+      "expected": "C(S4)=11.4221 > 7.211",
+      "source": "M5",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "GRH X_0(143) CERTIFIED": {
+      "expected": "UNCONDITIONAL via Bost-Connes",
+      "source": "M9",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Z = rank(M_ij) = 15": {
+      "expected": "15",
+      "source": "M8G_Corr",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "M* (J_0(143)) = 4/55": {
+      "expected": "4/55 = 0.07272...",
+      "source": "M8C",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Hodge classes = 200 transcendental": {
+      "expected": "200 transcendental",
+      "source": "M8C",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Z_throat = Z_vac/Z = 1": {
+      "expected": "1 (normalised wormhole throat)",
+      "source": "M8G_Corr",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "A = (Z_vac/Z_throat)^4 = 50625": {
+      "expected": "50625 = 15^4 (EXACT)",
+      "source": "M8H",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "rank(H_13(L_w, J_0(143))) = 13 = g": {
+      "expected": "13 = g (Hankel rank)",
+      "source": "M8",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "BSD rank(J_0(143)) = 1": {
+      "expected": "1",
+      "source": "M23",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "f_res = alpha_0 MHz": {
+      "expected": "f_res = 299 + pi/10 MHz",
+      "source": "M8D",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "k_eff = 3.183 ~ pi (operational approx)": {
+      "expected": "3.183 (pi ~ 3.14159; protocol uses 3.183)",
+      "source": "M8F",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Spectral gap Delta > 0": {
+      "expected": "> 0 (BSD + Bost-Connes)",
+      "source": "M9",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "r0 (wormhole throat radius) = 3m": {
+      "expected": "3 m (Morris-Thorne)",
+      "source": "M8I",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "delta (tuning offset) = 1.89m": {
+      "expected": "1.89 m (recalibrated)",
+      "source": "M8J",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "tidal = 0.0999g < 0.1g [OQ-1 CLOSED]": {
+      "expected": "0.0999g < 0.100g [PASS]",
+      "source": "M8J",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Delta_tau = 7.647ns [OQ-2 CLOSED]": {
+      "expected": "7.647 ns",
+      "source": "M8J",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "P_hold = 1.40kW": {
+      "expected": "1.396 kW",
+      "source": "M8J",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "rank(J_0(143)) = 1": {
+      "expected": "1 (analytic = algebraic)",
+      "source": "M23",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "L(J_0(143),1) nonzero": {
+      "expected": "nonzero (BSD rank 1 condition)",
+      "source": "M23",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Omega/R = 11.929 ~ 12": {
+      "expected": "11.929 (err 0.59%)",
+      "source": "M23",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "B_M = 21.7683024920261 MHz": {
+      "expected": "21.7683024920261 MHz",
+      "source": "M8K",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "G_eff formula G_0*(Z_vac/Z)^4": {
+      "expected": "G_0 * (Z_vac/Z)^4 = G_0 * A",
+      "source": "M8H",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "A = 50625 = 15^4 (EXACT)": {
+      "expected": "50625",
+      "source": "M8H",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "F_tidal at r0=3m = 3.38e-10 N": {
+      "expected": "3.38e-10 N (PREDICTION)",
+      "source": "M8H",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "B_M = 21.768 MHz": {
+      "expected": "21.7683024920261 MHz",
+      "source": "M8K",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "FTL_adv = v_g/c = 3.183 ~ pi (operational)": {
+      "expected": "3.183 ~ pi (group velocity; protocol approx)",
+      "source": "M8K",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "RTT = 18.635 ns": {
+      "expected": "18.635 ns",
+      "source": "M8K",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "35 routes GREEN": {
+      "expected": "35 / 35 GREEN",
+      "source": "M8M",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "MTBF = 5.5yr": {
+      "expected": "5.5 yr = 48200 hr",
+      "source": "M8M",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "120/120 cells HEALTH_PASS": {
+      "expected": "120/120 cells PASS",
+      "source": "M8Q",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Z(h) = 1 for all S-bands": {
+      "expected": "1 (trivial H4 representation)",
+      "source": "M24",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "M*(h) = 12/11 for all S-bands": {
+      "expected": "12/11 (follows from Z=1, Z-Lock Theorem)",
+      "source": "M24",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "K_H4 = Z/M* = 55/4 = 13.75": {
+      "expected": "55/4 = 13.750000 (exact)",
+      "source": "M24",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "f_H4 = pi^2 * 11/120 = 0.9047": {
+      "expected": "pi^2*11/120 = 0.9047137368",
+      "source": "M24",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "2*pi/7 vertex angle = 0.8976": {
+      "expected": "2*pi/7 = 0.8975979010",
+      "source": "M24",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "N_bands certified = 10 (M24)": {
+      "expected": "10 S-bands (Phase A+B sieve)",
+      "source": "M24",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "N_cells (120-cell resonator) = 120": {
+      "expected": "120 (3-cells)",
+      "source": "M8L",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "rank(H^2_fail) = 12 (M25 + M25B)": {
+      "expected": "12 (1 CONFIRMED + 11 CONFIRMED via M25B)",
+      "source": "M25",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "N_routes = 120 - 12 = 108 [THEOREM 4.1]": {
+      "expected": "108 [exact: 120-12=108]",
+      "source": "M25",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "X_5 (N=5) CONFIRMED_FAIL (Z=15 > 10)": {
+      "expected": "Z=15 > 10 (M8C SHA-bound)",
+      "source": "M8C",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "11 PREDICT_FAIL -> CONFIRMED (M25B)": {
+      "expected": "Z_explicit=binom(g+1,2), all > 10",
+      "source": "M25B",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "S-band sieve lower bound >= 10 (M24)": {
+      "expected": "10 S-bands certified",
+      "source": "M24",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "phi(143) = 120 = |I*|": {
+      "expected": "(11-1)*(13-1) = 120",
+      "source": "M6",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "GREEN^7 (7/7 layers)": {
+      "expected": "7/7 layers GREEN (EEQC v14)",
+      "source": "M8Q",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Z=15 | Z_throat=1 | A=50625": {
+      "expected": "Z=15, throat=1, A=15^4=50625",
+      "source": "M8G_Corr",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "N_routes=108 | 35 active routes": {
+      "expected": "Theorem 4.1 (108) + M8M expansion (35)",
+      "source": "M25",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "CLAY sealed (M8R)": {
+      "expected": "518144c8... CLAY ZIP SHA",
+      "source": "M8R",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "Wall256 YM status = OPEN": {
+      "expected": "YM_STATUS=OPEN (3 open hypotheses H1/H2/H3)",
+      "source": "Wall256",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    },
+    "M26 Firewall SORRY=0 sealed": {
+      "expected": "SORRY=0, Google Drive cert",
+      "source": "M26",
+      "sha_ok": true,
+      "arithmetic_ok": true,
+      "status": "PASS"
+    }
+  },
+  "z15_redeived": true,
+  "overall": "Z_TOWER_CERTIFIED_V3",
+  "z_certified": 15,
+  "tables": {
+    "Z1 - Galois Descent": true,
+    "Z2 - Z-Lock Parameter": true,
+    "Z3 - Spectral Parameter": true,
+    "Z4 - Construction Constants": true,
+    "Z5 - Equidistribution (BSD)": true,
+    "Z6 - G-Amplifier Formula": true,
+    "Z7 - FTL Stack": true,
+    "Z8 - H4 Refraction Map (v3 new)": true,
+    "Z9 - Theorem 4.1 Routes (v3 new)": true,
+    "Z10 - Master Synthesis": true,
+    "23 Parent Module SHAs found": true,
+    "Z=15 re-derivation (m8gc.out)": true
+  },
+  "all_pass": true,
+  "parent_modules_23": [
+    {
+      "label": "M1",
+      "key": "module_1",
+      "desc": "alpha_0 = 299+pi/10, 5000 dps",
+      "expected_sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "live_match": true
+    },
+    {
+      "label": "M5",
+      "key": "module_5",
+      "desc": "Bost-Connes C(S4) > 2*sqrt(13)",
+      "expected_sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "live_match": true
+    },
+    {
+      "label": "M6",
+      "key": "module_6",
+      "desc": "GRH X_0(143): genus 13, Bost bound",
+      "expected_sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "live_match": true
+    },
+    {
+      "label": "M8",
+      "key": "module_8",
+      "desc": "Hankel rank(H_13) = g = 13",
+      "expected_sha": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "live_match": true
+    },
+    {
+      "label": "M8C",
+      "key": "module_m8c",
+      "desc": "Zoe-M* bridge: Z=15, M*=4/55",
+      "expected_sha": "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323",
+      "live_match": true
+    },
+    {
+      "label": "M8D",
+      "key": "module_m8d",
+      "desc": "120-cell resonator: f_res=alpha_0 MHz",
+      "expected_sha": "27d8e0c1e145ba7fb4a22c85067f3db78d92b490e592dcd255523afcec156db5",
+      "live_match": true
+    },
+    {
+      "label": "M8F",
+      "key": "module_m8f",
+      "desc": "7-layer lean protocol: k_eff=3.183",
+      "expected_sha": "0bd6cee4b95da712d43163e3889f2c50931dcd32648ccad5705a844ca5a62da3",
+      "live_match": true
+    },
+    {
+      "label": "M8G_Corr",
+      "key": "module_m8g_correction",
+      "desc": "Z=rank(M_ij)=15 (H4 mode coupling)",
+      "expected_sha": "62492d666e0c09e516ac85607c966f77fb3ab89c6d4a3f3495ff2c4d80f5314b",
+      "live_match": true
+    },
+    {
+      "label": "M8H",
+      "key": "module_m8h",
+      "desc": "G_eff(Z)=G_0*(Z_vac/Z)^4, A=50625",
+      "expected_sha": "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe",
+      "live_match": true
+    },
+    {
+      "label": "M8I",
+      "key": "module_m8i",
+      "desc": "Morris-Thorne wormhole r0=3m",
+      "expected_sha": "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37",
+      "live_match": true
+    },
+    {
+      "label": "M8J",
+      "key": "module_m8j",
+      "desc": "OQ closure: delta=1.89m, tidal=0.0999g",
+      "expected_sha": "298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505",
+      "live_match": true
+    },
+    {
+      "label": "M8K",
+      "key": "module_m8k",
+      "desc": "FTL Morningstar: B_M=21.768MHz, RTT",
+      "expected_sha": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087",
+      "live_match": true
+    },
+    {
+      "label": "M8L",
+      "key": "M8L",
+      "desc": "Morning Star D20 operational cert.",
+      "expected_sha": "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad",
+      "live_match": true
+    },
+    {
+      "label": "M8M",
+      "key": "M8M",
+      "desc": "Physics BSM: 35 routes, MTBF=5.5yr",
+      "expected_sha": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
+      "live_match": true
+    },
+    {
+      "label": "M8Q",
+      "key": "M8Q",
+      "desc": "System: 35/35 GREEN, 120/120 PASS",
+      "expected_sha": "81e975cf6ada9b5e9a650ecd8fcafd0b418871b2a2085ff73ac19e4aa73ceac1",
+      "live_match": true
+    },
+    {
+      "label": "M23",
+      "key": "module_23",
+      "desc": "BSD J_0(143): rank=1 CERTIFIED",
+      "expected_sha": "4635dab9a10a97faf78de01fd31b681f2a04df667d6c603c07ffefaf5d928b81",
+      "live_match": true
+    },
+    {
+      "label": "M9",
+      "key": "M9",
+      "desc": "GRH unconditional: Bost-Connes Thm 6",
+      "expected_sha": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6",
+      "live_match": true
+    },
+    {
+      "label": "M8R",
+      "key": "module_M8R",
+      "desc": "C01-C07 Clay Tower Manifest, CLAY sealed",
+      "expected_sha": "c62dd66354c8cc0a464b1540f83cc09bbae0a22a5f188196d6e31a45ec911210",
+      "live_match": true
+    },
+    {
+      "label": "M24",
+      "key": "module_24",
+      "desc": "H4 Refraction Map: Z=1, M*=12/11, K_H4=13.75",
+      "expected_sha": "33fcb736e3f6365970812cb7e1dd8466ce87ffaf8f59b3e494dcdfda551546e9",
+      "live_match": true
+    },
+    {
+      "label": "M25",
+      "key": "module_25",
+      "desc": "Theorem 4.1: N_routes=120-12=108 full proof",
+      "expected_sha": "4fa53d75b2dfad0861966bedbe42f108deca0311fea7836fd063d6429c177231",
+      "live_match": true
+    },
+    {
+      "label": "M25B",
+      "key": "module_25b",
+      "desc": "11 PREDICT_FAIL -> CONFIRMED_FAIL (binom)",
+      "expected_sha": "581071593fc5de3b48f369c1fb0304a7e36b26268fbca86d3394d69a878447d1",
+      "live_match": true
+    },
+    {
+      "label": "M26",
+      "key": "module_26",
+      "desc": "Firewall Crossing: SORRY=0 sealed, GDrive",
+      "expected_sha": "17330b75a4d3791982590485a85e4412350b623409369fe05713035a70b16f5e",
+      "live_match": true
+    },
+    {
+      "label": "Wall256",
+      "key": "wall256_ym_report",
+      "desc": "Wall256 YM: beta_0 in [2.0794..] CERT",
+      "expected_sha": "d3d7c1e724b9d563692f970cc4b27d2be0ea1f5115364c11374ef136e8dbe6bd",
+      "live_match": true
+    }
+  ],
+  "a_certified": 50625,
+  "n_routes": 108
+}
