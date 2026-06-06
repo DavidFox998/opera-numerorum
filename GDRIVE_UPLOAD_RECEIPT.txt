@@ -60,3 +60,26 @@ STORYLINE
   Structure: PROLOGUE / ACT_1-5 / EPILOGUE / APPENDIX_B / REFERENCE
   SHA256SUMS.txt generated for every folder
   STORY_MANIFEST.csv + SORRY_MAP.csv in MANIFESTS/
+
+ADDENDUM — 2026-06-06
+---------------------
+Replicut_10trillion_Data_Log.pdf
+  Source:  Replicit_10trillion_Data_Log_1780709180555.pdf
+  SHA256:  867fe6ffd31de2c06a463897c49940cd97f2d57c75a47ee0522a0289d0778f44
+  Sorry:   0
+  Folder:  04_ACT4_BSD_FINAL_THEOREM
+  Drive:   https://drive.google.com/file/d/12hC4apvYAVe11JI1KMDMrvZdlSselz8C
+  Status:  Previously MISSING — now CERTIFIED
+  Content: 10^13 sieve; 5 exceptional primes {2,3,19,191,3993746143633}; quad-precision
+
+Equations_updated_20260606.docx
+  Source:  Equations_updated_6426_1780708559729.docx
+  SHA256:  7d6271bb3e89a84f60d89d8c87d9e01dfc833f533cf3d647be1196184df61734
+  Folder:  MANIFESTS
+  Drive:   https://drive.google.com/file/d/1WOQym1fUYX3NqapFn4R9NgMHlDCnx9QO
+  Content: Complete equation archive DOCX — all modules M1-M8Q with SHAs
+
+STORY_MANIFEST.csv: Replicut row updated MISSING -> CERTIFIED
+SORRY_MAP.csv:      Replicut row added (SorryCount=0)
+invariants.json:    gdrive_morning_star.addenda patched
+CLAY:               518144c8... SEALED (unchanged)

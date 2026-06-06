@@ -56,7 +56,7 @@ Module_M8I_Wormhole.pdf,ACT_4,4.8,M8H,M_FINAL,CERTIFIED,06faf631c722d36003ae69e2
 Module_M8J_OQ2_Closure.pdf,ACT_4,4.9,M8I,M_FINAL,CERTIFIED,48a2ac8b1baad01a4a56e775460c43b96ddae22be2bafd711205e303d65a69d3,OQ-1 tidal PASS; OQ-2 Delta_tau=7.647ns
 Module_M8P_L6_Clock.pdf,ACT_4,4.10,M8N M23,M_FINAL,CERTIFIED,ab567ebfe70ac2a3d8bd24468c80ae48b95d5963ca08028505342055b71976c7,EEQC L6 Logical Clock: BSD rank=1
 Canonical_Paper_Corrected.pdf,ACT_4,4.11,M1-M7 M23,M_FINAL,CERTIFIED,04a67a0ce252a4ed6b84383934eb76e5191521c2ed4ab2d35f592c86d0df305f,Complete unified paper (corrected) arXiv
-Replicut_10trillion_Data_Log.pdf,ACT_4,4.12,m4.out,MISSING,MISSING,,10^13 Replicut data log
+Replicut_10trillion_Data_Log.pdf,ACT_4,4.12,m4.out,M_FINAL,CERTIFIED,867fe6ffd31de2c06a463897c49940cd97f2d57c75a47ee0522a0289d0778f44,10^13 Replicut data log
 MorningStar_Engineering_Summary.pdf,ACT_5,5.1,M8K,M_FINAL,CERTIFIED,c8ce2bfb480731dedee32f51618ed9e9dcdc5b56bb6b90250ed76973a936eaf4,10-section overview: Morning Star modules
 Module_M8K_FTL_Morningstar.pdf,ACT_5,5.2,M8J,M_FINAL,CERTIFIED,72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e,FTL stack: B_M=21.768 MHz RTT=18.635ns
 Module_M8L_MorningStar_Ops.pdf,ACT_5,5.3,M8K,M_FINAL,CERTIFIED,5b8e683eba8f6b8c768216e8d099e5cf32ee9d312daaf736a40ead8a8622ac06,D20 hub: 30 routes 120 cells 47tx/hr
