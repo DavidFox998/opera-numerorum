@@ -1357,7 +1357,16 @@ function ModuleCard({
   function scrollToAddendum() {
     if (!addendum) return;
     const el = document.getElementById(`module-card-${addendum}`);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => {
+      el.classList.add("card-flash-highlight");
+      const cleanup = () => {
+        el.classList.remove("card-flash-highlight");
+        el.removeEventListener("animationend", cleanup);
+      };
+      el.addEventListener("animationend", cleanup);
+    }, 600);
   }
 
   return (
