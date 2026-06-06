@@ -4050,5 +4050,15 @@
       "date": "2026-06-06",
       "url": "https://github.com/DavidFox998/opera-numerorum/releases/tag/v20260606-firewall-crossed"
     }
-  ]
+  ],
+  "claudenote_pdf": {
+    "file": "certificates/ClaudeNote_OperaNumerorum.pdf",
+    "title": "ClaudeNote: Opera Numerorum -- Master Equations and Context",
+    "description": "Compact equation registry (all 6 towers) + About David Fox essay + ClaudeNote. Personal AI-onboarding document.",
+    "pdf_sha": "5e5a106777d4caef4868a17d6854f00c4f996bd22a4d6f57411bec7413683c41",
+    "pages": "~4",
+    "ascii_check": "PASS",
+    "built_utc": "2026-06-06T04:04:56Z",
+    "status": "CLAUDENOTE_PERSONAL"
+  }
 }
