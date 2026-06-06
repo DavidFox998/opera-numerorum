@@ -1355,9 +1355,12 @@ function ModuleCard({
 
   const addendum = "addendum" in mod ? (mod.addendum as string) : undefined;
 
-  function scrollToAddendum() {
-    if (!addendum) return;
-    const el = document.getElementById(`module-card-${addendum}`);
+  const parentId = MODULES.find(
+    (m) => "addendum" in m && (m as { addendum: string }).addendum === mod.id
+  )?.id;
+
+  function scrollToCard(targetId: string) {
+    const el = document.getElementById(`module-card-${targetId}`);
     if (!el) return;
     el.scrollIntoView({ behavior: "smooth", block: "start" });
     setTimeout(() => {
@@ -1368,6 +1371,11 @@ function ModuleCard({
       };
       el.addEventListener("animationend", cleanup);
     }, 600);
+  }
+
+  function scrollToAddendum() {
+    if (!addendum) return;
+    scrollToCard(addendum);
   }
 
   return (
@@ -1419,6 +1427,17 @@ function ModuleCard({
           >
             <CheckCircle className="w-3 h-3" />
             Upgraded by {addendum}: {MODULES.find((m) => m.id === addendum)?.status ?? addendum}
+          </button>
+        )}
+
+        {parentId && (
+          <button
+            onClick={() => scrollToCard(parentId)}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-300 rounded-full px-3 py-1 transition-colors cursor-pointer"
+            title={`Scroll to ${parentId} module card`}
+          >
+            <CheckCircle className="w-3 h-3" />
+            Upgrades {parentId}
           </button>
         )}
 
