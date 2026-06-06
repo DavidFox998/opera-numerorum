@@ -4042,5 +4042,13 @@
       "PvsNP_Tower"
     ],
     "updated": "2026-06-06T03:54:32Z"
-  }
+  },
+  "github_releases": [
+    {
+      "tag": "v20260606-firewall-crossed",
+      "label": "Firewall Crossed",
+      "date": "2026-06-06",
+      "url": "https://github.com/DavidFox998/opera-numerorum/releases/tag/v20260606-firewall-crossed"
+    }
+  ]
 }

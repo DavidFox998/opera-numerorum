@@ -208,6 +208,27 @@ const INVARIANTS_DRIVE_URL_MAP: Record<string, { key: string; field: string }> =
   ZIP_CHAIN:          { key: "bundle_chain",         field: "drive_url" },
 };
 
+type GithubRelease = {
+  tag: string;
+  label: string;
+  date: string;
+  url: string;
+};
+
+function extractGithubReleasesFromInvariants(
+  data: Record<string, unknown>,
+): GithubRelease[] {
+  const raw = data["github_releases"];
+  if (!Array.isArray(raw)) return [];
+  return raw.filter(
+    (r): r is GithubRelease =>
+      r !== null &&
+      typeof r === "object" &&
+      typeof (r as Record<string, unknown>)["tag"] === "string" &&
+      typeof (r as Record<string, unknown>)["url"] === "string",
+  );
+}
+
 function extractDriveUrlsFromInvariants(
   data: Record<string, unknown>,
 ): Record<string, string> {
@@ -1732,6 +1753,7 @@ export default function CertificatePage() {
   const [liveShas, setLiveShas] = useState<Record<string, string>>({});
   const [liveSizes, setLiveSizes] = useState<Record<string, number>>({});
   const [liveUrls, setLiveUrls] = useState<Record<string, string>>({});
+  const [liveGithubReleases, setLiveGithubReleases] = useState<GithubRelease[]>([]);
   const [shaStatus, setShaStatus] = useState<"loading" | "ready" | "error">(
     "loading",
   );
@@ -1752,6 +1774,7 @@ export default function CertificatePage() {
         setLiveShas(extractShasFromInvariants(data));
         setLiveSizes(extractSizesFromInvariants(data));
         setLiveUrls(extractDriveUrlsFromInvariants(data));
+        setLiveGithubReleases(extractGithubReleasesFromInvariants(data));
         setShaStatus("ready");
         setLastSynced(new Date());
       })
@@ -1872,6 +1895,20 @@ export default function CertificatePage() {
               <span>⟶</span>
               <span>Causal DAG — 5 Tower Analysis</span>
             </a>
+            {liveGithubReleases.map((rel) => (
+              <a
+                key={rel.tag}
+                href={rel.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-mono bg-gray-900 text-amber-400 border border-gray-700 rounded px-3 py-1.5 hover:bg-gray-800 transition-colors"
+                title={`GitHub release tag: ${rel.tag}${rel.date ? " · " + rel.date : ""}`}
+              >
+                <GitBranch className="w-3 h-3 shrink-0" />
+                <span>{rel.tag}</span>
+                <ExternalLink className="w-2.5 h-2.5 shrink-0 opacity-60" />
+              </a>
+            ))}
           </div>
         </div>
 
