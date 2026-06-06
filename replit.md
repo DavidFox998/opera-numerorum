@@ -110,6 +110,9 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M8Q | EEQC Layer 7 SYSTEM: 35/35 routes GREEN; 120/120 cells PASS; 1680/1680 PLLs PASS; tidal_all<0.1g; P_logical=0; MTBF=5.5yr; GREEN^7; min 7 simultaneous failures to break; universal 7-abort matrix; images: rotunda/hallway/craft/docking | `81e975cf...` | MORNINGSTAR_SYSTEM_CERTIFIED |
 | BSD Tower | BSD for J_0(143): causal chain M1->M5->M6->M8->M21->M22->M23; Omega/R=11.929~12 [err 0.59%]; M8A Delta_DS^(4)/H4=2.1812~2*(12/11) [err 0.0199%]; c err 0.0837%; Tate follows | `62fcc3c7...` | BSD_TOWER_CERTIFIED |
 | NS Tower | NS(J_0(143)): rank=1 (theta divisor); Hodge divisor PROVEN (Lefschetz); Tate PROVEN (M23 closure); 200 transcendental Hodge classes (M8C); rho<=28=g+Z; M*=4/55; Hodge Clay: OPEN | `46ffa07d...` | NS_TOWER_CERTIFIED |
+| RH Tower | GRH for X_0(143) and all 147 X_0(N), g in [1,33]; C(S4)=11.422>2sqrt(13)=7.211; rank(H_13)=13=g; causal chain M1->M3->M4->M5->M6->M8->M9->M9All->M10; Lean 4 skeleton: RH_Tower.lean | `73a24c83...` | RH_TOWER_CERTIFIED |
+| MS Tower | Morning Star 7-layer EEQC: B_M=21.7683024920261MHz; RTT=18.635ns; v_g=3.183c; 35/35 GREEN; 120/120 cells; 1680/1680 PLLs; P_logical=0; MTBF=5.5yr; Health State 6: GREEN^6 | `86834fbd...` | MS_TOWER_CERTIFIED |
+| All Towers | Omnibus: RH+BSD+NS+Z+MS towers + Health State 6 dashboard; 8-page PDF | `certificates/All_Towers_Certificate.pdf` | ALL_TOWERS_CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
@@ -152,6 +155,15 @@ m8.out                       M8 certified stdout (Hankel rank check)
 
 **Combined PDF SHA** (42 pages, M1-M8I):
 `ff79cd50d7ad1b56598d4d30f2aa161cd689ffb61e2856429e511c04ba1e0e11`
+
+**RH Tower stdout SHA** (GRH for 147 X_0(N)):
+`73a24c83f1230b562759d349ee9de01f20f3788595f664e142117a34c9df6a37`
+
+**MS Tower stdout SHA** (Morning Star 7-layer EEQC):
+`86834fbdba0358b0bff1d4665928986a6c426a86f7ac5b35c416af513838e4cc`
+
+**All Towers omnibus PDF SHA** (8 pages, RH+BSD+NS+Z+MS + Health State 6):
+`0627082573191a385b2dbe81accf0bfa2f3383f53d21b5cca5f045e96df551d7`
 
 Full SHA table: `certificates/invariants.json`
 

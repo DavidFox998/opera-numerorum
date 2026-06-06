@@ -1,0 +1,97 @@
+{
+  "date": "2026-06-06",
+  "version": "v1",
+  "modules": {
+    "M8K": {
+      "key": "module_m8k",
+      "desc": "FTL stack: B_M=21.768MHz, RTT=18.635ns",
+      "expected_sha": "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087",
+      "status": "PASS"
+    },
+    "M8L": {
+      "key": "M8L",
+      "desc": "Morning Star D20 ops: 35 routes, 12 dests",
+      "expected_sha": "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad",
+      "status": "PASS"
+    },
+    "M8M": {
+      "key": "M8M",
+      "desc": "Physics BSM: 35 routes+H13-H16, MTBF=5.5yr",
+      "expected_sha": "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f",
+      "status": "PASS"
+    },
+    "M8N": {
+      "key": "M8N_live",
+      "desc": "EEQC v14 baseline: 7 layers PASS",
+      "expected_sha": "49f5c8bcfde6effbe22816cd5bc5f0fd",
+      "status": "PASS"
+    },
+    "M8O": {
+      "key": "M8O",
+      "desc": "Fault-tolerant gates: G_eff=50625xG_0",
+      "expected_sha": "1e7e5280ee3e6665e8d31d2c823f82255ab723e69bf8fbb6caa019ca52ceb9dc",
+      "status": "PASS"
+    },
+    "M8P": {
+      "key": "M8P",
+      "desc": "Logical clock: M*=4/55, BSD rank=1",
+      "expected_sha": "3e5f4f044ba481fcbbb0bc731b9bbebf4adb86ec3ace716523ef4822ee64b90b",
+      "status": "PASS"
+    },
+    "M8Q": {
+      "key": "M8Q",
+      "desc": "System: 35/35 GREEN, 120/120 cells PASS",
+      "expected_sha": "81e975cf6ada9b5e9a650ecd8fcafd0b418871b2a2085ff73ac19e4aa73ceac1",
+      "status": "PASS"
+    }
+  },
+  "sections": {
+    "S1_parents": true,
+    "S2_architecture": true,
+    "S3_numerics": true,
+    "S4_ops": true,
+    "S5_equations": true,
+    "S6_health_state_6": true
+  },
+  "overall": "MS_TOWER_CERTIFIED",
+  "M8N_live_sha": "49f5c8bcfde6effbe22816cd5bc5f0fdff24301515bbcd8ac05b71f3634e2633",
+  "ms_constants": {
+    "B_M_MHz": 21.7683024920261,
+    "alpha_0_MHz": 299.31415926535897,
+    "RTT_ns": 18.635,
+    "v_g_c": 3.183,
+    "N_cells": 120,
+    "N_routes": 35,
+    "N_pll": 1680,
+    "Z_lock": 15,
+    "G_eff_ratio": 50625,
+    "tidal_g": 0.0999
+  },
+  "ms_numerics": {
+    "B_M_err_pct": 3.485429707715543e-14,
+    "bm_pass": true,
+    "G_eff_factor": 50625,
+    "geff_exact": true,
+    "total_plls": 1680,
+    "pll_pass": true,
+    "channel_length_m": 8.891125551861945
+  },
+  "health_state_6": {
+    "HS1 -- Frequency lock": "PASS",
+    "HS2 -- FTL advance": "PASS",
+    "HS3 -- Geometry": "PASS",
+    "HS4 -- Gravity control": "PASS",
+    "HS5 -- Quantum coherence": "PASS",
+    "HS6 -- System integrity": "PASS"
+  },
+  "summary_checks": {
+    "S1 - Parent Module SHAs (M8K,M8L,M8M,M8N,M8O,M8P,M8Q)": true,
+    "S3a- B_M err < 0.5% vs alpha_0/13.75": true,
+    "S3b- G_eff = 15^4 = 50625 (exact)": true,
+    "S3c- PLLs: 14*120=1680 (exact)": true,
+    "S4 - System health matrix GREEN": true,
+    "S5 - 7-layer equations documented": true,
+    "S6 - Morning Star Health State 6: GREEN^6": true
+  },
+  "all_pass": true
+}

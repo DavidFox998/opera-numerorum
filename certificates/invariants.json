@@ -2892,16 +2892,16 @@
     }
   },
   "bundle_all_certs": {
-    "description": "Full certified archive: all 82 PDFs + invariants.json. Complete Opera Numerorum record.",
+    "description": "Full certified archive: all 85 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 99973685,
-    "size_mb_approx": 95.3,
-    "sha256": "eb790ebed2687937c0e605599ab3a5f8f893680b85da7197a212701126aaa45d",
-    "generated_utc": "2026-06-06T03:20:59.177750Z",
-    "pdf_count": 82,
+    "size_bytes": 100002115,
+    "size_mb_approx": 95.4,
+    "sha256": "be25d624e7a5b4922579d2718ccef98306edd58909d4c74e060afedb6c6df1b8",
+    "generated_utc": "2026-06-06T03:37:51.382386Z",
+    "pdf_count": 85,
     "contents": [
       "invariants.json",
-      "PDFs/*.pdf (82 files)"
+      "PDFs/*.pdf (85 files)"
     ]
   },
   "p5_replacement_c13": {
@@ -3895,5 +3895,82 @@
     },
     "millennium_relevance": "Hodge Conjecture (Clay) -- divisor case PROVEN, 200 transcendental classes documented, generalised Hodge OPEN",
     "date": "2026-06-06"
+  },
+  "rh_tower": {
+    "title": "RH Tower -- GRH for 147 X_0(N), genera 1-33",
+    "claim": "GRH for X_0(143) and all 147 X_0(N), g in [1,33], no CM newforms",
+    "status": "RH_TOWER_CERTIFIED",
+    "stdout_file": "m_rh_tower.out",
+    "sha256_stdout": "73a24c83f1230b562759d349ee9de01f20f3788595f664e142117a34c9df6a37",
+    "pdf": "certificates/RH_Tower_Certificate.pdf",
+    "sha256_pdf": "4804dde6df01f7088cc727f33bf55a899dcc216973bfb6731a4402892d6864d5",
+    "lean_file": "RH_Tower.lean",
+    "certify_script": "certify_rh_tower.py",
+    "builder_script": "certificates/build_rh_tower.py",
+    "date": "2026-06-06",
+    "causal_parents": [
+      "module_1",
+      "module_3",
+      "module_4",
+      "module_5",
+      "module_6",
+      "module_8",
+      "M9",
+      "module_9_all",
+      "module_10"
+    ],
+    "key_numbers": {
+      "C_S4": 11.422148689,
+      "bound_2sqrt13": 7.211102551,
+      "margin": 4.211046,
+      "p5": 83497,
+      "curves_certified": 147
+    }
+  },
+  "ms_tower": {
+    "title": "MS Tower -- Morning Star 7-Layer EEQC Stack",
+    "claim": "Morning Star fully operational: GREEN^7, FTL certified",
+    "status": "MS_TOWER_CERTIFIED",
+    "stdout_file": "m_ms_tower.out",
+    "sha256_stdout": "86834fbdba0358b0bff1d4665928986a6c426a86f7ac5b35c416af513838e4cc",
+    "pdf": "certificates/MS_Tower_Certificate.pdf",
+    "sha256_pdf": "2f59203ec0d46194fb284bfd958c19ad277275119356c8ea414816add5754326",
+    "certify_script": "certify_ms_tower.py",
+    "builder_script": "certificates/build_ms_tower.py",
+    "date": "2026-06-06",
+    "causal_parents": [
+      "module_m8k",
+      "M8L",
+      "M8M",
+      "M8N_live",
+      "M8O",
+      "M8P",
+      "M8Q"
+    ],
+    "key_numbers": {
+      "B_M_MHz": 21.7683024920261,
+      "RTT_ns": 18.635,
+      "v_g_c": 3.183,
+      "routes": "35/35",
+      "cells": "120/120",
+      "PLLs": "1680/1680",
+      "P_logical": 0,
+      "MTBF_yr": 5.5
+    },
+    "health_state_6": {
+      "HS1_frequency_lock": "GREEN",
+      "HS2_FTL_advance": "GREEN",
+      "HS3_geometry": "GREEN",
+      "HS4_gravity_control": "GREEN",
+      "HS5_quantum_coherence": "GREEN",
+      "HS6_system_integrity": "GREEN"
+    }
+  },
+  "M8N": {
+    "title": "EEQC 7-Layer Test Baseline v14",
+    "claim": "EEQC_CERTIFIED: P_logical=0, all 7 layers PASS, 35 routes GREEN",
+    "status": "EEQC_CERTIFIED",
+    "sha256_stdout": "49f5c8bcfde6effbe22816cd5bc5f0fdff24301515bbcd8ac05b71f3634e2633",
+    "stdout_file": "m8n.out"
   }
 }

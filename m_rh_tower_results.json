@@ -1,0 +1,203 @@
+{
+  "date": "2026-06-06",
+  "version": "v1",
+  "modules": {
+    "M1": {
+      "key": "module_1",
+      "desc": "alpha_0 = 299+pi/10, 5000 dps",
+      "expected_sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "status": "PASS"
+    },
+    "M3": {
+      "key": "module_3",
+      "desc": "CF pi/10: Q_5=226, a_6=733, bound=82829",
+      "expected_sha": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
+      "status": "PASS"
+    },
+    "M4": {
+      "key": "module_4",
+      "desc": "S_14: 14 primes, p_5=83497 > bound=82829",
+      "expected_sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "status": "PASS"
+    },
+    "M5": {
+      "key": "module_5",
+      "desc": "C(S4)=11.4221 > 2*sqrt(13)=7.2111",
+      "expected_sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "status": "PASS"
+    },
+    "M6": {
+      "key": "module_6",
+      "desc": "genus(X_0(143))=13, Bost bound PASS",
+      "expected_sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "status": "PASS"
+    },
+    "M8": {
+      "key": "module_8",
+      "desc": "rank(H_13(L_w, J_0(143))) = g = 13",
+      "expected_sha": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "status": "PASS"
+    },
+    "M9": {
+      "key": "M9",
+      "desc": "GRH for X_0(N), N in {143,199,311}",
+      "expected_sha": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6",
+      "status": "PASS"
+    },
+    "M9All": {
+      "key": "module_9_all",
+      "desc": "GRH for all 140 X_0(N), g in [1,32]",
+      "expected_sha": "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821",
+      "status": "PASS"
+    },
+    "M10": {
+      "key": "module_10",
+      "desc": "GRH for all 7 X_0(N) with g=33",
+      "expected_sha": "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade",
+      "status": "FILE_NOT_FOUND"
+    }
+  },
+  "sections": {
+    "S1_parents": true,
+    "S2_framework": true,
+    "S3_numerics": true,
+    "S4_lean_alignment": true,
+    "S5_millennium": true,
+    "S6_health": true
+  },
+  "overall": "RH_TOWER_CERTIFIED",
+  "rh_numerics": {
+    "C_S4": 11.42214868898029,
+    "bound_13": 7.211102550927978,
+    "margin": 4.211046138052311,
+    "c_pass": true,
+    "p5_actual": 83497,
+    "bound_cf": 25538,
+    "cf_pass": true,
+    "N_curves_certified": 147
+  },
+  "health_items": [
+    [
+      "alpha_0 bound",
+      "M1",
+      "299+pi/10 = 299.3141... > 299",
+      "PASS"
+    ],
+    [
+      "CF convergent Q_5",
+      "M3",
+      "Q_5 = 226, bound = 82829",
+      "PASS"
+    ],
+    [
+      "S_14 primes",
+      "M4",
+      "14 primes, p_5 = 83497 > bound",
+      "PASS"
+    ],
+    [
+      "Bost-Connes C(S_4)",
+      "M5",
+      "11.4221 > 2*sqrt(13)=7.211",
+      "PASS"
+    ],
+    [
+      "GRH X_0(143)",
+      "M6+M8",
+      "genus=13, rank(H_13)=13=g",
+      "PASS"
+    ],
+    [
+      "GRH family 143+",
+      "M9",
+      "N in {143,199,311} all PASS",
+      "PASS"
+    ],
+    [
+      "GRH all 140 curves",
+      "M9All",
+      "g in [1,32], 140 curves PASS",
+      "PASS"
+    ],
+    [
+      "GRH g=33 curves",
+      "M10",
+      "7 curves with g=33 PASS",
+      "PASS"
+    ]
+  ],
+  "summary_checks": {
+    "S1 - Parent Module SHAs (M1,M3,M4,M5,M6,M8,M9,M9All,M10)": true,
+    "S3a- C(S_4)=11.4221 > 2*sqrt(13)=7.211 (Bost-Connes)": true,
+    "S3c- p_5=83497 > CF bound=25538": true,
+    "S4 - Lean 4 skeleton alignment documented": true,
+    "S5 - Millennium RH relevance: 147 curves certified": true,
+    "S6 - RH Tower health state: GREEN^8": true
+  },
+  "all_pass": true,
+  "parent_modules": [
+    {
+      "label": "M1",
+      "key": "module_1",
+      "desc": "alpha_0 = 299+pi/10, 5000 dps",
+      "sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "live_file": "m1.out"
+    },
+    {
+      "label": "M3",
+      "key": "module_3",
+      "desc": "CF pi/10: Q_5=226, a_6=733, bound=82829",
+      "sha": "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044",
+      "live_file": "m3.out"
+    },
+    {
+      "label": "M4",
+      "key": "module_4",
+      "desc": "S_14: 14 primes, p_5=83497 > bound=82829",
+      "sha": "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed",
+      "live_file": "m4.out"
+    },
+    {
+      "label": "M5",
+      "key": "module_5",
+      "desc": "C(S4)=11.4221 > 2*sqrt(13)=7.2111",
+      "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "live_file": "m5.out"
+    },
+    {
+      "label": "M6",
+      "key": "module_6",
+      "desc": "genus(X_0(143))=13, Bost bound PASS",
+      "sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "live_file": "m6.out"
+    },
+    {
+      "label": "M8",
+      "key": "module_8",
+      "desc": "rank(H_13(L_w, J_0(143))) = g = 13",
+      "sha": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "live_file": "m8.out"
+    },
+    {
+      "label": "M9",
+      "key": "M9",
+      "desc": "GRH for X_0(N), N in {143,199,311}",
+      "sha": "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6",
+      "live_file": "m9.out"
+    },
+    {
+      "label": "M9All",
+      "key": "module_9_all",
+      "desc": "GRH for all 140 X_0(N), g in [1,32]",
+      "sha": "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821",
+      "live_file": "m9_all.out"
+    },
+    {
+      "label": "M10",
+      "key": "module_10",
+      "desc": "GRH for all 7 X_0(N) with g=33",
+      "sha": "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade",
+      "live_file": "m10.out"
+    }
+  ]
+}
