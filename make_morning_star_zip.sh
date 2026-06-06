@@ -151,6 +151,55 @@ with open(path, "w") as f:
 print("invariants.json updated.")
 PYEOF
 
+# -----------------------------------------------------------------------
+# Patch Certificate.tsx so the UI stays in sync automatically.
+# Updates: zipSha fallback, zipFallbackSha, and the "XX MB" size label.
+# -----------------------------------------------------------------------
+echo ""
+echo "=== Patching Certificate.tsx ==="
+python3 - <<PYEOF
+import re
+
+TSX_PATH = "artifacts/prime-verifier/src/pages/Certificate.tsx"
+NEW_SHA  = "$SHA"
+NEW_SIZE_MB = int("$SIZE") // (1024 * 1024)
+
+with open(TSX_PATH, "r", encoding="utf-8") as fh:
+    src = fh.read()
+
+original = src
+
+# 1. Extract the current SHA from the zipSha fallback for ZIP_MORNING_STAR
+m = re.search(
+    r'zipSha=\{liveShas\["ZIP_MORNING_STAR"\] \?\? "([a-f0-9]{64})"\}',
+    src,
+)
+old_sha = m.group(1) if m else None
+
+# 2. Replace old SHA → new SHA everywhere (covers both zipSha ?? and zipFallbackSha=)
+if old_sha and old_sha != NEW_SHA:
+    src = src.replace(old_sha, NEW_SHA)
+
+# 3. Replace the fallback size string in the zipFile prop for ZIP_MORNING_STAR
+#    Targets: liveSizes["ZIP_MORNING_STAR"] ? formatBytes(...) : "XX MB"
+src = re.sub(
+    r'(liveSizes\["ZIP_MORNING_STAR"\][^"]*?:\s*")(\d+\s*MB)(")',
+    lambda mo: f'{mo.group(1)}{NEW_SIZE_MB} MB{mo.group(3)}',
+    src,
+)
+
+if src == original:
+    print("  Certificate.tsx: nothing changed (SHA and size already current)")
+else:
+    with open(TSX_PATH, "w", encoding="utf-8") as fh:
+        fh.write(src)
+    changes = []
+    if old_sha and old_sha != NEW_SHA:
+        changes.append(f"SHA {old_sha[:12]}...->{NEW_SHA[:12]}...")
+    changes.append(f"size->{NEW_SIZE_MB} MB")
+    print(f"  patched Certificate.tsx: {', '.join(changes)}")
+PYEOF
+
 echo ""
 echo "=== Done ==="
 echo "$OUT"
