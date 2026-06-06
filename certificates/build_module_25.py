@@ -18,8 +18,6 @@ SRC         = "certificates/m25_theorem41_proof.py"
 STDOUT_FILE = "m25.out"
 JSON_FILE   = "certificates/m25_theorem41_cert.json"
 
-M25B_STDOUT_SHA = "581071593fc5de3b48f369c1fb0304a7e36b26268fbca86d3394d69a878447d1"
-
 os.makedirs("certificates", exist_ok=True)
 
 def sha(path):
@@ -31,6 +29,16 @@ SHA_JSON   = sha(JSON_FILE)
 
 with open(JSON_FILE) as f:
     cert = json.load(f)
+
+INVARIANTS_FILE = "certificates/invariants.json"
+with open(INVARIANTS_FILE) as _f:
+    _inv = json.load(_f)
+if "module_25b" not in _inv or "sha256_stdout" not in _inv["module_25b"]:
+    sys.exit(
+        "ERROR: certificates/invariants.json is missing key "
+        "module_25b.sha256_stdout -- rebuild M25B first."
+    )
+M25B_STDOUT_SHA = _inv["module_25b"]["sha256_stdout"]
 
 doc = SimpleDocTemplate(OUT, pagesize=LETTER,
                         leftMargin=0.75*inch, rightMargin=0.75*inch,
