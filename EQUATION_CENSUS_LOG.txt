@@ -1,0 +1,54 @@
+=== CLAY SHA BEFORE ===
+  518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1  CLAY_SEALED.zip
+  CLAY INTEGRITY OK
+
+=== EXTRACTING CLAY to /tmp/CLAY_TMP_zj3hriyv ===
+  15 files extracted
+
+=== SCANNING .lean FILES ===
+  Lean files: ['BDP_PhaseReversal.lean']
+  BDP_PhaseReversal.lean: 32 theorems/lemmas/defs
+  LEAN TOTAL: 32
+  CMD: grep -nE '(theorem|lemma|def .*:=)' ['BDP_PhaseReversal.lean']
+
+=== SCANNING .out FILES ===
+  .out files: ['bdp1.out', 'bdp2.out', 'bdp3.out', 'bdp4.out', 'm1.out', 'm2.out', 'm3.out', 'm4.out', 'm5.out', 'm6.out', 'm7.out']
+  bdp1.out: 41 lines
+  bdp2.out: 52 lines
+  bdp3.out: 46 lines
+  bdp4.out: 75 lines
+  m1.out: 1 lines
+  m2.out: 1 lines
+  m3.out: 2 lines
+  m4.out: 1 lines
+  m5.out: 4 lines
+  m6.out: 6 lines
+  m7.out: 1 lines
+  OUT TOTAL: 230
+  CMD: for each .out file: read every non-empty line
+
+=== LOADING SORRY_MAP.csv ===
+  M_FINAL, SorryCount=0: 68 PDFs
+  Found on disk: 67
+  Missing from disk: ['Replicut_10trillion_Data_Log.pdf']
+
+=== SCANNING M_FINAL PDFs ===
+  PDF THEOREM TOTAL: 214
+  CMD: pdftotext <file> - | grep -nE 'Theorem|Lemma|Proposition|Corollary'
+
+=== BUILDING CERTIFIED_EQUATIONS_MASTER.txt ===
+  Raw total:   476
+  After dedup: 476
+  COUNT_A (lines in master): 476
+
+=== CROSS-CHECK ===
+  LEAN theorems/defs:    32
+  OUT computation lines: 230
+  PDF theorem lines:     214
+  COUNT_B (sum):         476
+  COUNT_A (master file): 476
+  CROSS-CHECK: PASS — COUNT_A == COUNT_B == 476
+
+=== CLAY SHA AFTER ===
+  518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1  CLAY_SEALED.zip
+  CLAY INTEGRITY OK — UNCHANGED
