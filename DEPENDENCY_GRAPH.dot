@@ -1,0 +1,37 @@
+digraph OperaNumerorum {
+  rankdir=LR;
+  node [shape=box, style=filled, fillcolor=lightblue];
+
+  M1 [label="M1\nalpha0\n63ef870a"];
+  M2 [label="M2\nkappa\n3716c7db"];
+  M3 [label="M3\nCF pi/10\ne687bb09"];
+  M4 [label="M4\nS14 primes\nb810a7a3"];
+  M5 [label="M5\nBost-Connes\n9df98a39"];
+  M6 [label="M6\nGRH X0(143)\nec9fa8c3"];
+  M7 [label="M7\nManifest\n5b80b84d", fillcolor=gold];
+
+  M8  [label="M8\nHankel rank\ne2d70821"];
+  M8C [label="M8C\nHodge bridge\n02fe6048"];
+  M8D [label="M8D\n120-cell\n27d8e0c1"];
+  M8F [label="M8F\n7-layer\n0bd6cee4"];
+  M8G [label="M8G\nProvenance\n2874d4bd"];
+  M8H [label="M8H\nG amplifier\n2c3ac1d2"];
+  M8I [label="M8I\nWormhole\n5c7189fc"];
+  M8J [label="M8J\nOQ closure\n298d440a"];
+  M8K [label="M8K\nFTL stack\n0ae865a8"];
+  M8L [label="M8L\nD20 ops\n80ff8a25"];
+  M8M [label="M8M\nOPS-8\nafce5f21"];
+  M8N [label="M8N\nEEQC v14\n49f5c8bc"];
+  M8O [label="M8O\nL5 Gates\n1e7e5280"];
+  M8P [label="M8P\nL6 Clock\n3e5f4f04"];
+  M8Q [label="M8Q\nL7 System\n81e975cf"];
+
+  BDP [label="BDP\nPhaseReversal\n518144c8", fillcolor=orange];
+
+  M1->M7; M2->M7; M3->M7; M4->M7; M5->M7; M6->M7;
+  M3->M4; M4->M5; M5->M6;
+  M7->M8; M8->M8C; M8C->M8D; M8D->M8F; M8F->M8G;
+  M8G->M8H; M8H->M8I; M8I->M8J; M8J->M8K;
+  M8K->M8L; M8L->M8M; M8M->M8N; M8N->M8O; M8O->M8P; M8P->M8Q;
+  M2->BDP; M3->BDP; M4->BDP;
+}

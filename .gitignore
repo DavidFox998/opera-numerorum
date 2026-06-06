@@ -1,0 +1,9 @@
+appendices/A_DRAFTS/
+archive/HISTORICAL/
+__pycache__/
+*.pyc
+.DS_Store
+*.tar.gz
+# All ZIPs excluded EXCEPT the CLAY seal
+*.zip
+!src/CLAY/CLAY_SEALED.zip
