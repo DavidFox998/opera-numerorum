@@ -3166,7 +3166,7 @@
     "sha256_source": "0d7d41c7364f7c7f817b4eab8fe7f4d50c5886e7f5a5657debc3336ac6c54ff3",
     "sha256_stdout": "4fa53d75b2dfad0861966bedbe42f108deca0311fea7836fd063d6429c177231",
     "stdout_file": "m25.out",
-    "sha256_pdf": "e833f77615dec73d848aeb38836603c34f36b6ac5f143940e2d1ac74bd58fa77",
+    "sha256_pdf": "5877b8323d0cab45678485b21eaf147b1d3c56c4a395831f795357670ca44f59",
     "sha256_json": "e97720b0560ee03290a42afd04a2e1b8fb1ffb59329d038d5f7ba6ba7c0ec9d7",
     "json_file": "certificates/m25_theorem41_cert.json",
     "theorem_4_1": {
@@ -3275,7 +3275,8 @@
       227,
       229,
       269
-    ]
+    ],
+    "sha256_pdf_note": "Rebuilt with M25B addendum section (Section 10): all 11 PREDICT_FAIL upgraded to CONFIRMED_FAIL"
   },
   "chronarithmetica": {
     "module": "Chronarithmetica",
