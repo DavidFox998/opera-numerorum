@@ -1417,7 +1417,7 @@ function ModuleCard({
             title={`Scroll to ${addendum} module card`}
           >
             <CheckCircle className="w-3 h-3" />
-            Upgraded by {addendum}: CONFIRMED_FAIL_COMPLETE
+            Upgraded by {addendum}: {MODULES.find((m) => m.id === addendum)?.status ?? addendum}
           </button>
         )}
 
