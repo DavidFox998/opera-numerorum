@@ -201,8 +201,10 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
 };
 
 const INVARIANTS_DRIVE_URL_MAP: Record<string, { key: string; field: string }> = {
-  ZIP_MORNING_STAR: { key: "bundle_morning_star", field: "drive_url" },
-  ALL_CERTS_ZIP:    { key: "bundle_all_certs",    field: "drive_url" },
+  ZIP_MORNING_STAR:   { key: "bundle_morning_star", field: "drive_url" },
+  ALL_CERTS_ZIP:      { key: "bundle_all_certs",    field: "drive_url" },
+  ZIP_CLAY:           { key: "bundle_clay",          field: "drive_url" },
+  CONTEXT_BUNDLE_ZIP: { key: "bundle_context",       field: "drive_url" },
 };
 
 function extractDriveUrlsFromInvariants(
@@ -1851,7 +1853,7 @@ export default function CertificatePage() {
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
                 SHA: {liveShas["CONTEXT_BUNDLE_ZIP"] ?? "0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752"}
               </span>
-              <div className="flex items-center gap-2 mt-1.5">
+              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                 <a
                   href="/api/certs/OperaNumerorum_Context.zip"
                   download
@@ -1861,6 +1863,17 @@ export default function CertificatePage() {
                   Download
                 </a>
                 <VerifyFileButton sha={liveShas["CONTEXT_BUNDLE_ZIP"] ?? "0df0749e1ee0244cf935210cb6595f2b78a2242bea611976768758801c6c7752"} />
+                {liveUrls["CONTEXT_BUNDLE_ZIP"] && (
+                  <a
+                    href={liveUrls["CONTEXT_BUNDLE_ZIP"]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-medium text-blue-300 hover:text-blue-100 border border-blue-600 rounded-md px-2.5 py-1 bg-blue-900/30 hover:bg-blue-800/40 transition-colors"
+                  >
+                    <ExternalLink className="w-3 h-3 shrink-0" />
+                    Google Drive
+                  </a>
+                )}
               </div>
             </div>
             {/* Full PDF bundle */}
@@ -2053,6 +2066,7 @@ export default function CertificatePage() {
             zipFile={{ fn: "ClaySubmission_2026_06_04.zip", sz: liveSizes["ZIP_CLAY"] ? formatBytes(liveSizes["ZIP_CLAY"]) : "13 MB", label: "Clay Submission ZIP" }}
             zipSha={liveShas["ZIP_CLAY"] ?? "4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703"}
             zipFallbackSha="4f8330af586d91255a7f029b0b5d519402a1b925090544a15338a77106dfb703"
+            zipDriveUrl={liveUrls["ZIP_CLAY"]}
           />
 
           {/* All certs — master archive */}
