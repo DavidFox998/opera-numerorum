@@ -424,13 +424,15 @@ const MODULES = [
       "{67,73,103,107,167,191,193,223,227,229,269}. genus \u2208 {5,5,8,9,14,16,15,18,19,18,22}. " +
       "CM_LIST membership check for all 11: NONE in CM_LIST. " +
       "Z-Lock+M21 non-CM Hecke lift: Z\u22652g+1>10 for all 11. " +
-      "120\u221212=108 verified by Python assert. SORRY: 0.",
+      "120\u221212=108 verified by Python assert. SORRY: 0. " +
+      "[PREDICT_FAIL status superseded \u2014 all 11 entries upgraded to CONFIRMED_FAIL by M25B addendum.]",
     source: "certificates/m25_theorem41_proof.py",
     stdout: "m25.out",
     sha: "4fa53d75b2dfad0861966bedbe42f108deca0311fea7836fd063d6429c177231",
     status: "THEOREM_4.1_CERTIFIED",
     apiPdf: "Module_25_Certificate.pdf",
     correction: null,
+    addendum: "M25B",
   },
   {
     id: "M25B",
@@ -1343,8 +1345,17 @@ function ModuleCard({
     ? applyLiveShasToClaimText(mod.claim, liveShas)
     : mod.claim;
 
+  const addendum = "addendum" in mod ? (mod.addendum as string) : undefined;
+
+  function scrollToAddendum() {
+    if (!addendum) return;
+    const el = document.getElementById(`module-card-${addendum}`);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
     <Card
+      id={`module-card-${mod.id}`}
       className={`shadow-sm border ${
         isManifest
           ? "border-indigo-300 bg-indigo-50/30 dark:bg-indigo-950/10"
@@ -1382,6 +1393,17 @@ function ModuleCard({
         <p className="text-sm text-muted-foreground leading-relaxed">
           {displayClaim}
         </p>
+
+        {addendum && (
+          <button
+            onClick={scrollToAddendum}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-300 rounded-full px-3 py-1 transition-colors cursor-pointer"
+            title={`Scroll to ${addendum} module card`}
+          >
+            <CheckCircle className="w-3 h-3" />
+            Upgraded by {addendum}: CONFIRMED_FAIL_COMPLETE
+          </button>
+        )}
 
         <div className="grid grid-cols-2 gap-2 text-xs">
           <div className="rounded-md bg-muted/50 px-3 py-2">
