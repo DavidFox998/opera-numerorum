@@ -1,0 +1,78 @@
+File,Act,Scene,DependsOn,Block,Status,SHA256,Reason
+OperaNumerorum_Preface.pdf,PROLOGUE,P.1,—,M_FINAL,CERTIFIED,79b591c87c4039398db833af4c9ee599763326c82a27f49662724b53a6f57cd7,Frontispiece; sets narrative
+OperaNumerorum_ArchiveMap.pdf,PROLOGUE,P.2,—,M_FINAL,CERTIFIED,05b8fa568ae1e62d7bef540bbafebfd63510356f8b06df9f734f50176399c493,Canonical reading order guide
+FriendsFamily_MillennialMath.pdf,PROLOGUE,P.3,—,M_FINAL,CERTIFIED,ae5e92df8f1cc01429ee590062d8386108abf6706117f747a04ea5c7727ad9b7,"Lay context, Opera Numerorum I"
+FriendsFamily_MorningStar.pdf,PROLOGUE,P.4,—,M_FINAL,CERTIFIED,175fdf737c606c9a5bbd0589dedad3b8bea951cd65abf590fd496ad7f39e8b65,"Lay context, Opera Numerorum II"
+Module_1_Certificate.pdf,ACT_1,1.1,—,M_FINAL,CERTIFIED,4dcbb0568fd90fe186305249743b9ed8c63d1f8ed70ea623da8a72517e5b370a,alpha_0=299+pi/10 (5000 dps)
+Module_2_Certificate.pdf,ACT_1,1.2,m1.out,M_FINAL,CERTIFIED,2f508b2cb9b36fc755a2848c09ccefe2f1a049d769bac097f1ac1720bdaab36e,kappa bound (80-bit long double)
+Module_3_Certificate.pdf,ACT_1,1.3,m1.out,M_FINAL,CERTIFIED,c18f2a05c38e69c8828ba5601da2f58967a49cca4fdf2eff94679dbae7edd517,"CF pi/10: Q_5=226, bound=82829"
+Module_4_Certificate.pdf,ACT_1,1.4,m3.out,M_FINAL,CERTIFIED,09ce496b79ab1c65d53efe6a42287e3428e42f02036ad4316a885ffabc312045,S_14: 14 primes p_5>82829
+Module_5_Certificate.pdf,ACT_1,1.5,m4.out,M_FINAL,CERTIFIED,f9dd4916e2517c8e524a377832d90dc974a2dca0d95bf8c43e054331cc6a4885,C(S_4)=11.4221>2*sqrt(13)
+Module_6_Certificate.pdf,ACT_1,1.6,m5.out,M_FINAL,CERTIFIED,304d994ee154eb6fc79c1f8f7538500a12207bc52848a6dc8055726bb15b800e,"genus(X_0(143))=13, Bost bound"
+Module_6_3_Certificate.pdf,ACT_1,1.7,m6.out,M_FINAL,CERTIFIED,19b025686696192089381858485aebb49627fc50c783482c923f1ae20efdb9b0,M6 correction: h(-143)=10 audit
+Module_7_Certificate.pdf,ACT_1,1.8,m1-m6.out,M_FINAL,MANIFEST_LOCKED,28d0b76dd0640f19d72ab69dbf13527ba2d0f5b66d7c884baaf966d8e027c2a5,Master manifest SHA LOCKED
+Tendon_A_Certificate.pdf,ACT_1,1.9,m7.out,M_FINAL,CERTIFIED,38269865309649da2f7e515849521e0c713352e249289aaf41edb894fffc1fd6,Structural connector M7->M8
+Tendon_B_Certificate.pdf,ACT_1,1.10,Tendon_A,M_FINAL,CERTIFIED,f6182314c457c91b26a15c6cd0305aa012eff7064afe5ccb3267a266106a990b,Structural connector M8->MorningStar
+Faltings_Height_g5.pdf,ACT_2,2.1,m6.out,M_FINAL,CERTIFIED,2cda7d7c99983f5e9e0466c13a3be762a6a1a2f00276b6128d3a5845ba3ecb71,Transcendence of Faltings height for g=5
+Module_8_Certificate.pdf,ACT_2,2.2,"m7.out,Tendon_A",M_FINAL,CERTIFIED,bc099390189ec00ee7ca655a1d2bad0e3541e2cdf6e4c6e00dcd83af6ab47a38,"rank(H_13(L_w,J_0(143)))=g=13"
+Module_M8A_Audit.pdf,ACT_2,2.3,m8.out,M_FINAL,CERTIFIED,3567279c610e037d7815afcd7239992ace92fdbbe323272a487e566b4911caec,M8 Hankel audit
+Module_M8C_ZoeMstar.pdf,ACT_2,2.4,m8.out,M_FINAL,CERTIFIED,9dc46ef8226b1ee7aa0c949b5ab0c923d72d60bdae48e9f5a351e8ec328163f3,"Z=15, M*=4/55, 200 Hodge classes"
+Hodge_CM_Replicit_v17_PDF1.pdf,ACT_2,2.5,M8C,M_FINAL,CERTIFIED,faae893ae0777bc5dd7d4f81962ec781b2d53fcca615d9bdeb69ee3829e695f1,"Linear recurrence for alg (1,1)-classes"
+Hodge_CM_Replicit_v17_PDF2.pdf,ACT_2,2.6,PDF1,M_FINAL,CERTIFIED,233ba2df8285af277346a03e6ce91dea8a349b4b0df9b665da727924cc0153b5,Phase-invariant realization for X_0(143)
+Rank_Obstructions_Replicit_v17_PDF3.pdf,ACT_2,2.7,PDF2,M_FINAL,CERTIFIED,94aff1b769d0625a3c6514505e537c99c16ad28c5e079ad66212357a36837681,Rank obstructions to algebraic cycles
+Lemma76_Diff_Report_v17.pdf,ACT_2,2.8,PDF2,M_FINAL,CERTIFIED,4b0d91d4d8a73d2e46af847e0664c0798aebfb80c3cfe39f3d949604f853c5a6,Lemma 7.6 diff: v1.7 correction
+Exceptional_Prime_Desert_Map.pdf,ACT_2,2.9,m4.out,M_FINAL,CERTIFIED,f26fa03de51ded4b00293be04f13bfd5019074eaf7ab47234089b0437227a894,S14 desert map with widths
+Module_10_Genus33.pdf,ACT_2,2.10,m6.out,M_FINAL,CERTIFIED,c268b5bbbd86e9be084a6beedb0b5c1e970a1f8b3f2897639b757786b96c1896,GRH extension: g=33 companion curve
+Module_14_S4_Quaternions.pdf,ACT_2,2.11,m5.out,M_FINAL,CERTIFIED,4ab49abf06d707f4ca436c250fb38b1a23f493305f3a07e04097f22485978ac9,600-cell quaternion S_4 bridge
+Colander_Diophantine_Sieve.pdf,ACT_2,2.12,m4.out,M_FINAL,CERTIFIED,cc8f78341a6ba76d18665277ebc81dd27cf5f14b80617a9ed837a0fa832124cb,Diophantine sieve structure
+Diophantine_Sieve_RH_Computational.pdf,ACT_3,3.1,m4.out,M_FINAL,CERTIFIED,8806645dcd17117f403501a781978a67db68df116c7ebe553305b0bff9eaa662,Computational RH sieve
+Modular_Sieve_RH_10_8.pdf,ACT_3,3.2,m4.out,M_FINAL,CERTIFIED,cfab72c3b06dc19f01bbc5e193ae40136417c3de4ae764db150844fb33e2168e,Modular sieve to 10^8
+Modular_Sieve_Lindelof.pdf,ACT_3,3.3,3.2,M_FINAL,CERTIFIED,8d157b56f5c5a7d1689c884fdd9c04d7d76596cd3b1c1db97be2974dc7fe9c2e,Approach to Lindelof via modular sieve
+Module_9_Certificate.pdf,ACT_3,3.4,m7.out,M_FINAL,CERTIFIED,98d2cc1ef3d3f20920e3407e5d771a1db1e0c2cd1cd3912b60af71db6dfd5856,"GRH for X_0(143,199,311): analytic rank"
+Module_9_All_140.pdf,ACT_3,3.5,M9,M_FINAL,CERTIFIED,03d26e74df4b3d2a512dcf51dd50c5cd0de1d1685526b2934b2eec630810fc41,Extended: 140 curves verified
+Module_15_Delta_Boost.pdf,ACT_3,3.6,m5.out,M_FINAL,CERTIFIED,6c2595ac7dcdfcf6e77f7981a6b13f02ecc6e0d267a466c0950ba0082bdc8394,Delta boost audit: 4 errors caught
+Module_16_c_Bridge.pdf,ACT_3,3.7,m2.out,M_FINAL,CERTIFIED,77a005d529387b35525046931ac20b69a444fb2cea187adb89f8d731cca97f3e,c/10^6 ~ beta_0=299+pi/10
+Module_17_Cert_Patch.pdf,ACT_3,3.8,"m5.out,m6.out",M_FINAL,CERTIFIED,0044a64038d287118c6df684fcb676d6f30688627b9da989959c728cd7dae957,Patch: 5 LaTeX draft errors superseded
+Module_18_Resonance_Ladder.pdf,ACT_3,3.9,m5.out,M_FINAL,CERTIFIED,09ced8c0152c60f51bca97889c593309a7aa1713c1b36a4a709d4ef68c6983af,Resonance ladder for Hecke eigenvalues
+Module_19_p6_Prediction.pdf,ACT_3,3.10,m4.out,M_FINAL,CERTIFIED,25598fb9fbfe6b6da4759e6f20b34a4996f6b572d854202cf89e596d0a2b53c4,Apollonian p6 prediction + explosion cliff
+Module_20_p7_Prediction.pdf,ACT_3,3.11,M19,M_FINAL,CERTIFIED,6d0fbb9ea8b08dddff7a95857616974fcdae1cfde0cb250cf5c5a7d564a4e0cf,p7 prediction + self-symmetry proof
+Module_BDP_PhaseReversal.pdf,ACT_3,3.12,"m2.out,m4.out",M_FINAL,CERTIFIED,ea59c07222aa9b82e3bb94e30ac7279f70368bcc187d9a4feda53e8689865da5,BDP Phase Reversal: chi inversion at p5
+Chronarithmetica_Certificate.pdf,ACT_3,3.13,"m1-m7.out,BDP",M_FINAL,CERTIFIED,be36da92b94efbe6dae1583d3dbc0296d4ef75dc87abfd7bf3c49182cd6d6950,Diophantine Protocol of Space-Time
+Addendum_A1_Complete_Sieve.pdf,ACT_3,3.14,m4.out,M_FINAL,CERTIFIED,861e5347f7aac6daeb5e178ea4f15528b77f3cf196ebe2629c28e4af590148f7,Complete 4-condition sieve for S-bands
+Module_21_H4_Invariant.pdf,ACT_3,3.15,m8.out,M_FINAL,CERTIFIED,1ef0b386026730e2c67ab6759106d72e6b51c522cb03fb6877cb08ffc9e7d1a3,H4 invariant + H2_WeilTransfer conjecture
+Module_22_MStar_Definition.pdf,ACT_3,3.16,M21,M_FINAL,CERTIFIED,3e65f926f344275420457d8d998f4344a774a3118ede172fde037cd8bd289a0d,M*=4/55 formal definition + cliff correction
+Module_M8D_Resonator.pdf,ACT_3,3.17,M8C,M_FINAL,CERTIFIED,22f1a64239f7b8e0602c95a42e3944a6d8d9a90f24351d39d46228ab365a6ccc,120-cell resonator: f_res=alpha_0 MHz
+Module_M8F_LeanProtocol.pdf,ACT_3,3.18,M8D,M_FINAL,CERTIFIED,e81915a4e1487a79de8686abbb32e1b54480a2e5eb98472b2c176b6906704e10,"7-layer protocol: k_eff=3.183, v_g=3.183c"
+Z_Protocol_Tower.pdf,ACT_3,3.19,"M8F,m7.out",M_FINAL,CERTIFIED,41187edaca17d76dc5b1a76782f68ea0a41e97d9db5a38113751eca200f41c9f,Protocol Z causality tower
+Z_Protocol_Tower_v2.pdf,ACT_3,3.20,3.19,M_FINAL,CERTIFIED,4e1ea390ca0bf556881b60acb6a16c7304fa7b045279afe1afd84400eab29df5,Protocol Z v2 (updated tower)
+Module_23_BSD_J0_143.pdf,ACT_4,4.1,"m7.out,M22,M8C",M_FINAL,CERTIFIED,49a68e605f0ce9b32453f3bfa43363d2d6e826e13767d0500cee72e16ef7e87b,"BSD for J_0(143): rank=1, L-function"
+Module_24_Certificate.pdf,ACT_4,4.2,M23,M_FINAL,CERTIFIED,664348526e81a1ca6fb1e2f5c09f06d6e5566ffe1ea9e89aaf03809f3f55dc73,H4 refraction map: S-band certification
+Module_25_Certificate.pdf,ACT_4,4.3,M24,M_FINAL,CERTIFIED,5877b8323d0cab45678485b21eaf147b1d3c56c4a395831f795357670ca44f59,Theorem 4.1 full proof: all PREDICT_FAIL
+Module_25B_Certificate.pdf,ACT_4,4.4,M25,M_FINAL,CERTIFIED,c866d5b95d6aa5531d9a288fb800b09f37e72aae239cbe4a11814268a7f616be,M25B: 11 PREDICT_FAIL -> CONFIRMED_FAIL
+Module_M8G_Provenance.pdf,ACT_4,4.5,M8F,M_FINAL,CERTIFIED,0cbe4a3a9b2caea9414e77da3482e944dc963fef1cd521ef39d216394d3d84c7,Provenance Feb2025->M8F; wormhole 0.524ns
+Module_M8G_Correction.pdf,ACT_4,4.6,M8G,M_FINAL,CORRECTIONS_CERTIFIED,8d7fd668fa8772c6ae5700087f4a2dc48b3a2134d4679dd781e925dd9889bdf5,Z=rank(M_ij) clarification; conditional cert
+Module_M8H_G_Amplifier.pdf,ACT_4,4.7,M8G,M_FINAL,PREDICTION_CERTIFIED,a3010c4093334a1d6ec014381fc1f7c3d3bb81dbe893158a1c412133f9364c14,G_eff=50625 G_0; F=3.38e-10 N
+Module_M8I_Wormhole.pdf,ACT_4,4.8,M8H,M_FINAL,ARCHITECTURE_CERTIFIED,06faf631c722d36003ae69e27187201fc48e44489d4b7e33ad76575944de4a98,Morris-Thorne wormhole r0=3m; b'=0 PASS
+Module_M8J_OQ2_Closure.pdf,ACT_4,4.9,M8I,M_FINAL,ARCHITECTURE_CERTIFIED,48a2ac8b1baad01a4a56e775460c43b96ddae22be2bafd711205e303d65a69d3,OQ-1 tidal PASS; OQ-2 Delta_tau=7.647ns
+Module_M8P_L6_Clock.pdf,ACT_4,4.10,"M8N,M23",M_FINAL,LOGICAL_CLOCK_CERTIFIED,ab567ebfe70ac2a3d8bd24468c80ae48b95d5963ca08028505342055b71976c7,EEQC L6 Logical Clock: BSD rank(J_0(143))=1
+Canonical_Paper_Corrected.pdf,ACT_4,4.11,"M1-M7,M23",M_FINAL,CERTIFIED,04a67a0ce252a4ed6b84383934eb76e5191521c2ed4ab2d35f592c86d0df305f,Complete unified paper (corrected) - arXiv
+Replicit_10trillion_Data_Log.pdf,ACT_4,4.12,m4.out,M_FINAL,CERTIFIED,867fe6ffd31de2c06a463897c49940cd97f2d57c75a47ee0522a0289d0778f44,10^13 Replicit data log
+MorningStar_Engineering_Summary.pdf,ACT_5,5.1,M8K,M_FINAL,MORNINGSTAR_PHYSICS_CERTIFIED,c8ce2bfb480731dedee32f51618ed9e9dcdc5b56bb6b90250ed76973a936eaf4,10-section overview: all MorningStar modules
+Module_M8K_FTL_Morningstar.pdf,ACT_5,5.2,M8J,M_FINAL,FTL_MORNINGSTAR_CERTIFIED,72af3cdd1da00650d32763bcafe492a2d34d3ed468abeb4fa1c50edf6c5fb31e,"FTL stack: B_M=21.768 MHz, RTT=18.635ns"
+Module_M8L_MorningStar_Ops.pdf,ACT_5,5.3,M8K,M_FINAL,MORNINGSTAR_OPERATIONAL_CERTIFIED,5b8e683eba8f6b8c768216e8d099e5cf32ee9d312daaf736a40ead8a8622ac06,"D20 hub: 30 routes, 120 cells, 47tx/hr"
+Module_M8M_MorningStar_Physics.pdf,ACT_5,5.4,M8L,M_FINAL,MORNINGSTAR_PHYSICS_CERTIFIED,3a4a7b8b78ff1f70f4aa1bfc0d59d575969677f920094ee75775b3231917aa2e,"Physics beyond SM: 35 routes, Phase-Z"
+Module_M8N_EEQC_v14.pdf,ACT_5,5.5,"M8M,M8P",M_FINAL,EEQC_CERTIFIED,03ab6aaa9f3da8033bd8ad46221bd084701284b2f479d8eae7d5e604665f7d4a,EEQC 7-layer test baseline v14: all PASS
+Module_M8O_L5_Gates.pdf,ACT_5,5.6,M8N,M_FINAL,FAULT_TOLERANT_GATES_CERTIFIED,c2a3d6c6230a3cd7570de417333d52ba5c66c47965fe688dd0d5b8cec4cea41a,Fault-tolerant gates: Z_throat=1
+Module_M8Q_L7_System.pdf,ACT_5,5.7,M8N,M_FINAL,MORNINGSTAR_SYSTEM_CERTIFIED,afef73ea1e774797c893ef04fa501a0bd3e349dbf70e1f91a9fce572fee00a63,EEQC L7 system: 35/35 routes GREEN
+Field_Report_Morningstar.pdf,ACT_5,5.8,M8Q,M_FINAL,CERTIFIED,03ca9d1f00dc16e6ba1a2c3c746eecf32d0e9a7b1f31f9bce8d3cc97e9744b44,Field report: TA-143 photographs
+Wall256_YM_Report.pdf,EPILOGUE,E.1,—,HISTORICAL,HISTORICAL,d3d7c1e724b9d563692f970cc4b27d2be0ea1f5115364c11374ef136e8dbe6bd,"YM mass gap: OPEN (Clay problem, SORRY:0)"
+Z_Essay_Omnibus.pdf,EPILOGUE,E.2,m7.out,HISTORICAL,HISTORICAL,0d7cd160b84acbc67f9dc591ae87131e38402dc24ad0c683aae27a8c00812614,Omnibus essay: motivation + Protocol Z
+Essay_TimeMachine_p5.pdf,EPILOGUE,E.3,"m4.out,BDP",HISTORICAL,HISTORICAL,458d972e6df5a0a39783399f31e09a5a6a6e23f7e6c55f80966375b1df1a20c7,Time machine narrative: p5 phase boundary
+Clay_Card_2026_06_04.pdf,APPENDIX_B,B.1,—,M_DRAFT,WITNESSED_EMPTY,0c4b81d35007b5aa43dcad781946864956027748ad256882250df1408b584ae7,"Testing method recorded, no data"
+D4_w1_NEGATIVE_Certificate.pdf,APPENDIX_B,B.2,—,M_DRAFT,WITNESSED_EMPTY,9a794ccf0c707812e6fa3db2095a350f2d5b61a011fcc77e453c548716ac8764,D4 w1 strict bound negative certificate
+CERT_Arb_beta0.pdf,APPENDIX_B,B.3,—,M_DRAFT,TRIVIAL_BY_CONSTRUCTION,8879175c0bb11d20f71a0b31f221047c58fce489d5465bfda703dfa9a4bab8ae,ARB beta0 interval enclosure (vacuous)
+CERT_Arb_beta0_v1.pdf,APPENDIX_B,B.4,—,M_DRAFT,TRIVIAL_BY_CONSTRUCTION,4648eab7d5abd641d2b8acdfc29399bb9c620c7c45ad750a25401776bb80ec6c,ARB beta0 v1 (superseded by canonical)
+CERT_Arb_beta0_prior.pdf,APPENDIX_B,B.5,—,M_DRAFT,TRIVIAL_BY_CONSTRUCTION,b5a9f0a7666a91f283a7d4531ae99dff2097c2cedef10424b77833b7bbc840d3,ARB beta0 prior (superseded)
+Error_Symmetry_Essay.pdf,APPENDIX_B,B.6,—,M_DRAFT,TRIVIAL_BY_CONSTRUCTION,ebee47b0d96eb7216dbc5b688c6bcdf5f421870c7198945dc0eb9bfcec5ed322,Essay on error and symmetry (non-proof)
+Field_Report_1pp.pdf,REFERENCE,REF.1,M8Q,M_FINAL,CERTIFIED,7f6d0c0f657f7db151860d1d6a95883a9911fa3a84d63f7e7734b07d8af02380,"All modules, 1-page-per-section layout"
+Field_Report_2pp.pdf,REFERENCE,REF.2,M8Q,M_FINAL,CERTIFIED,a039b3af42cf8cf67be123a2c91e2842692c9a8d046cbe249ae372ceebb8a697,"All modules, 2pp layout"

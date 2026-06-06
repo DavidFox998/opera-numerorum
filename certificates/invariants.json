@@ -3427,5 +3427,77 @@
       }
     },
     "status": "CONFIRMED_FAIL_COMPLETE"
+  },
+  "gdrive_blocks": {
+    "timestamp_utc": "2026-06-06T00:00:00Z",
+    "parent_folder": {
+      "name": "OperaNumerorum_Blocks_20260606",
+      "id": "1bstsbZwLtInP7JMf92ddLTNl4SO7h5z9",
+      "url": "https://drive.google.com/drive/folders/1bstsbZwLtInP7JMf92ddLTNl4SO7h5z9"
+    },
+    "blocks": {
+      "CLAY_SEALED_BLOCK": {
+        "folder_id": "1Ompz4KzpKkguzE14niuYFr53wxILhnDg",
+        "folder_url": "https://drive.google.com/drive/folders/1Ompz4KzpKkguzE14niuYFr53wxILhnDg",
+        "file": "CLAY_CLAY_SEALED.zip",
+        "file_id": "1EAQrpYCfdOWFYm3nN6s8G05uuGVzS8-X",
+        "sha256": "518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1",
+        "note": "CLAY manifest FROZEN \u2014 SHA 5b80b84d... READ ONLY"
+      },
+      "M_FINAL": {
+        "folder_id": "15MWFxGeD0Ntp8RY_5yp8NpIZL7CZYXNn",
+        "folder_url": "https://drive.google.com/drive/folders/15MWFxGeD0Ntp8RY_5yp8NpIZL7CZYXNn",
+        "file": "M_FINAL.zip",
+        "file_id": "1giAMbwYo5LqIosWGRTTQN-ZArSt9siID",
+        "sha256": "b4d1acee59c4c45038bdbf9a2f312b720e8516a20a3c281bd31c45f9c30dd963",
+        "pdf_count": 68,
+        "sorry_count": 0,
+        "size_mb": 77.4
+      },
+      "M_DRAFT": {
+        "folder_id": "1ZTOmuNglArmsEw1TEwFGH2aQvNcF2-yT",
+        "folder_url": "https://drive.google.com/drive/folders/1ZTOmuNglArmsEw1TEwFGH2aQvNcF2-yT",
+        "file": "M_DRAFT.zip",
+        "file_id": "1Qxm6lRXJ2pNjpCt2wxjAxMFtOJ6qJX7u",
+        "sha256": "79dc2a83079dac8ebb9617987df4430259a4f13c4e559799ce2b643beb7846bb",
+        "pdf_count": 6,
+        "sorry_count": 0
+      },
+      "HISTORICAL": {
+        "folder_id": "1P-nMWWKFJaefleBUGtf0BLIJ491qxlxp",
+        "folder_url": "https://drive.google.com/drive/folders/1P-nMWWKFJaefleBUGtf0BLIJ491qxlxp",
+        "file": "HISTORICAL.zip",
+        "file_id": "1KiIp5n-VceS-1cpcRtr9TirsO51TBP9P",
+        "sha256": "516dd66ed28cca8aa3019bddcafe087e5d87c7318180af74f48f28e3452975a8",
+        "pdf_count": 3,
+        "note": "Wall256_YM_Report.pdf contains sorry:1 \u2014 correctly routed here"
+      }
+    },
+    "manifests": {
+      "SORRY_MAP": {
+        "file": "SORRY_MAP.csv",
+        "file_id": "14idI_NpqfMTpXlV7kwLULTgBeEfven1c",
+        "sha256": "cc0786a1b915b614f60161abae43c8dbc98aa5c3cc29cca53c524104a349d568",
+        "rows": 77,
+        "sorry_total": 0
+      },
+      "STORY_MANIFEST": {
+        "file": "STORY_MANIFEST.csv",
+        "file_id": "16aCnZEEwls90UPO88reDSJLMIb1uUO4y",
+        "sha256": "da859f0ab0455fd8d6fe637fdc4b62547616fe2dbbab8f98ef0e5770d6643617",
+        "rows": 77,
+        "acts": [
+          "PROLOGUE",
+          "ACT_1",
+          "ACT_2",
+          "ACT_3",
+          "ACT_4",
+          "ACT_5",
+          "EPILOGUE",
+          "APPENDIX_B",
+          "REFERENCE"
+        ]
+      }
+    }
   }
 }

@@ -1,0 +1,25 @@
+{
+  "timestamp": "20260606_003519",
+  "clay_sha": "518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1",
+  "lean_sorry_count": 0,
+  "mfinal_sorry_count": 0,
+  "mfinal_zip_sha": "b4d1acee59c4c45038bdbf9a2f312b720e8516a20a3c281bd31c45f9c30dd963",
+  "mfinal_zip_size_mb": 77.41,
+  "block_counts": {
+    "CLAY_SEALED_BLOCK": 1,
+    "M_FINAL": 68,
+    "M_DRAFT": 6,
+    "HISTORICAL": 3
+  },
+  "act_counts": {
+    "PROLOGUE": 4,
+    "ACT_1": 10,
+    "ACT_2": 12,
+    "ACT_3": 20,
+    "ACT_4": 12,
+    "ACT_5": 8,
+    "EPILOGUE": 3,
+    "APPENDIX_B": 6,
+    "REFERENCE": 2
+  }
+}
