@@ -463,6 +463,11 @@ const MODULES = [
       { N: 229, genus: 18, Z_explicit: 171, formula: "binom(19,2)" },
       { N: 269, genus: 22, Z_explicit: 253, formula: "binom(23,2)" },
     ],
+    parentShas: [
+      { moduleId: "M25",  sha: "4fa53d75b2dfad0861966bedbe42f108deca0311fea7836fd063d6429c177231" },
+      { moduleId: "M21",  sha: "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad" },
+      { moduleId: "M8C",  sha: "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323" },
+    ],
   },
   {
     id: "M8C",
@@ -1485,6 +1490,32 @@ function ModuleCard({
             <span className="text-xs text-muted-foreground">
               SHA-bound via invariants.json
             </span>
+          </div>
+        )}
+
+        {"parentShas" in mod && Array.isArray(mod.parentShas) && mod.parentShas.length > 0 && (
+          <div className="space-y-1.5">
+            <div className="text-muted-foreground uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+              <Library className="w-3 h-3" />
+              Causal parents (SHA-bound)
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(mod.parentShas as Array<{ moduleId: string; sha: string }>).map(({ moduleId, sha }) => (
+                <button
+                  key={moduleId}
+                  onClick={() => {
+                    const el = document.getElementById(`module-card-${moduleId}`);
+                    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-md px-2.5 py-1 transition-colors cursor-pointer"
+                  title={`Scroll to ${moduleId} — full SHA: ${sha}`}
+                >
+                  <span className="font-sans font-bold">{moduleId}</span>
+                  <span className="text-indigo-400">&middot;</span>
+                  <span>{sha.substring(0, 8)}&hellip;</span>
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
