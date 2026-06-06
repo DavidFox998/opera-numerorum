@@ -26,6 +26,7 @@ import {
   XCircle,
   CheckCircle2,
   Loader2,
+  ExternalLink,
 } from "lucide-react";
 
 const POLL_INTERVAL_MS = 60_000;
@@ -198,6 +199,27 @@ const INVARIANTS_SHA_MAP: Record<string, ShaSpec> = {
   CONTEXT_BUNDLE_ZIP: { key: "bundle_context",      field: "sha256" },
   ALL_CERTS_ZIP:      { key: "bundle_all_certs",    field: "sha256" },
 };
+
+const INVARIANTS_DRIVE_URL_MAP: Record<string, { key: string; field: string }> = {
+  ZIP_MORNING_STAR: { key: "bundle_morning_star", field: "drive_url" },
+  ALL_CERTS_ZIP:    { key: "bundle_all_certs",    field: "drive_url" },
+};
+
+function extractDriveUrlsFromInvariants(
+  data: Record<string, unknown>,
+): Record<string, string> {
+  const result: Record<string, string> = {};
+  for (const [id, spec] of Object.entries(INVARIANTS_DRIVE_URL_MAP)) {
+    const entry = data[spec.key];
+    if (!entry || typeof entry !== "object") continue;
+    const obj = entry as Record<string, unknown>;
+    const value = obj[spec.field];
+    if (typeof value === "string" && value.length > 0) {
+      result[id] = value;
+    }
+  }
+  return result;
+}
 
 function extractShasFromInvariants(
   data: Record<string, unknown>,
@@ -1526,7 +1548,7 @@ function StalenessChip() {
 }
 
 function DownloadBlock({
-  color, label, files, zipFile, zipSha, zipFallbackSha,
+  color, label, files, zipFile, zipSha, zipFallbackSha, zipDriveUrl,
 }: {
   color: BlockColor;
   label: string;
@@ -1534,6 +1556,7 @@ function DownloadBlock({
   zipFile?: { fn: string; sz: string; label: string };
   zipSha?: string;
   zipFallbackSha?: string;
+  zipDriveUrl?: string;
 }) {
   const c = COLOR_MAP[color];
   const filesWithSha = files.filter((f) => f.sha);
@@ -1565,6 +1588,17 @@ function DownloadBlock({
             <Download className="w-2.5 h-2.5 shrink-0" />
             {zipFile.label}
             <span className="opacity-70 text-[10px]">{zipFile.sz}</span>
+          </a>
+        )}
+        {zipDriveUrl && (
+          <a
+            href={zipDriveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center gap-1 rounded-md border bg-white dark:bg-black/20 px-2.5 py-1 transition-colors ${c.pill}`}
+          >
+            <ExternalLink className="w-2.5 h-2.5 shrink-0" />
+            <span className="font-medium">Google Drive</span>
           </a>
         )}
       </div>
@@ -1613,6 +1647,7 @@ export default function CertificatePage() {
   const [auditOpen, setAuditOpen] = useState(false);
   const [liveShas, setLiveShas] = useState<Record<string, string>>({});
   const [liveSizes, setLiveSizes] = useState<Record<string, number>>({});
+  const [liveUrls, setLiveUrls] = useState<Record<string, string>>({});
   const [shaStatus, setShaStatus] = useState<"loading" | "ready" | "error">(
     "loading",
   );
@@ -1632,6 +1667,7 @@ export default function CertificatePage() {
       .then((data) => {
         setLiveShas(extractShasFromInvariants(data));
         setLiveSizes(extractSizesFromInvariants(data));
+        setLiveUrls(extractDriveUrlsFromInvariants(data));
         setShaStatus("ready");
         setLastSynced(new Date());
       })
@@ -1788,7 +1824,7 @@ export default function CertificatePage() {
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
                 SHA: {liveShas["ALL_CERTS_ZIP"] ?? "ccc6a5fce6e0813d0c4025510efbb409055cf5a10ec3f7fb6dffbd6fed8d1474"}
               </span>
-              <div className="flex items-center gap-2 mt-1.5">
+              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                 <a
                   href="/api/certs/OperaNumerorum_AllCerts.zip"
                   download
@@ -1798,6 +1834,17 @@ export default function CertificatePage() {
                   Download
                 </a>
                 <VerifyFileButton sha={liveShas["ALL_CERTS_ZIP"] ?? "ccc6a5fce6e0813d0c4025510efbb409055cf5a10ec3f7fb6dffbd6fed8d1474"} />
+                {liveUrls["ALL_CERTS_ZIP"] && (
+                  <a
+                    href={liveUrls["ALL_CERTS_ZIP"]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-medium text-green-300 hover:text-green-100 border border-green-700 rounded-md px-2.5 py-1 bg-green-900/30 hover:bg-green-800/40 transition-colors"
+                  >
+                    <ExternalLink className="w-3 h-3 shrink-0" />
+                    Google Drive
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -1859,6 +1906,7 @@ export default function CertificatePage() {
             zipFile={{ fn: "MorningStar_Complete_2026_06_04.zip", sz: liveSizes["ZIP_MORNING_STAR"] ? formatBytes(liveSizes["ZIP_MORNING_STAR"]) : "64 MB", label: "Morning Star ZIP" }}
             zipSha={liveShas["ZIP_MORNING_STAR"] ?? "b765b3d2ac0829079e5000e975f80c171fc95643dbf60e691997f4fa04b51319"}
             zipFallbackSha="b765b3d2ac0829079e5000e975f80c171fc95643dbf60e691997f4fa04b51319"
+            zipDriveUrl={liveUrls["ZIP_MORNING_STAR"]}
           />
 
           {/* Block 4 — Core Certification Chain M1-M8 */}

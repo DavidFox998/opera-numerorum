@@ -2898,6 +2898,7 @@
     "sha256": "ccc6a5fce6e0813d0c4025510efbb409055cf5a10ec3f7fb6dffbd6fed8d1474",
     "generated_utc": "2026-06-05T23:55:24.718313Z",
     "pdf_count": 77,
+    "drive_url": "https://drive.google.com/file/d/1-ZzOhlJzDB4B80gmF_jyDz4XyKzym8tO/view?usp=drivesdk",
     "contents": [
       "invariants.json",
       "PDFs/*.pdf (77 files)"
@@ -3046,7 +3047,8 @@
     "size_bytes": 67220048,
     "file_count": 24,
     "generated_utc": "2026-06-05T23:55:11Z",
-    "builder": "make_morning_star_zip.sh"
+    "builder": "make_morning_star_zip.sh",
+    "drive_url": ""
   },
   "bundle_chain": {
     "description": "Core certification chain M1-M8 PDFs + invariants.json.",
