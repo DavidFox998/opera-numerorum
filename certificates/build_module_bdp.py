@@ -24,14 +24,33 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 import hashlib, sys, os
 
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
 OUTPUT = "certificates/Module_BDP_PhaseReversal.pdf"
 
 # ---- SHAs (computed, not fabricated) ----
-BDP1_SHA = "520a9deb970a00acda8f080edfbe485b05c93d3e28a236e93e380dde0a4db133"
-BDP2_SHA = "173acc5a541fc0515026b2c6c80410771c07634db415d13a597ed61a6a6c4872"
-BDP3_SHA = "ea123df0fbd59a49d22dfb36816f7644550dff886e7a2af8d0761f6302a44577"
-BDP4_SHA = "19e555d68ea7044b197d022aa31dae80405e37a3f444fd188c87e514b4c61ca8"
-LEAN_SHA = "ad382de559c374abd84a148e810879436e2441c47f751ae871b8f577911da8a9"
+BDP1_SHA = _inv_sha("bdp_lemma1", "stdout_sha",        label="BDP1 stdout")
+BDP2_SHA = _inv_sha("bdp_lemma2", "stdout_sha",        label="BDP2 stdout")
+BDP3_SHA = _inv_sha("bdp_lemma3", "stdout_sha",        label="BDP3 stdout")
+BDP4_SHA = _inv_sha("bdp_lemma4", "stdout_sha",        label="BDP4 stdout")
+LEAN_SHA = _inv_sha("bdp_lean_skeleton", "file_sha",   label="BDP lean skeleton sha")
 M2_SHA   = "3716c7db..."   # certified kappa module
 
 # Parent module SHAs (causal chain)

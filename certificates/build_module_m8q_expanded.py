@@ -17,12 +17,31 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
 import hashlib, os
 
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
 OUT    = "certificates/Module_M8Q_L7_System.pdf"
 SRC    = "certificates/eeqc_l7_system.py"
 STDOUT = "m8q.out"
 FIGS   = "certificates/figures"
 
-SHA_M8Q = "81e975cf6ada9b5e9a650ecd8fcafd0b418871b2a2085ff73ac19e4aa73ceac1"
+SHA_M8Q = _inv_sha("M8Q", "sha256_stdout", label="M8Q stdout")
 
 styles = getSampleStyleSheet()
 def sty(name, parent="Normal", **kw):
@@ -1209,11 +1228,11 @@ story += [
 
 manifest_rows = [
     ["Item",                      "SHA-256"],
-    ["Master manifest M1-M6",     "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"],
-    ["M8 stdout (Hankel)",        "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002"],
-    ["M8O stdout (L5 Gates)",     "1e7e5280ee3e6665e8d31d2c823f82255ab723e69bf8fbb6caa019ca52ceb9dc"],
-    ["M8P stdout (L6 Clock)",     "3e5f4f044ba481fcbbb0bc731b9bbebf4adb86ec3ace716523ef4822ee64b90b"],
-    ["M8Q stdout (L7 System)",    "81e975cf6ada9b5e9a650ecd8fcafd0b418871b2a2085ff73ac19e4aa73ceac1"],
+    ["Master manifest M1-M6",     _inv_sha("module_7", "manifest_sha",   label="M7 manifest")],
+    ["M8 stdout (Hankel)",        _inv_sha("module_8", "sha256_stdout",  label="M8 stdout")],
+    ["M8O stdout (L5 Gates)",     _inv_sha("M8O",      "sha256_stdout",  label="M8O stdout")],
+    ["M8P stdout (L6 Clock)",     _inv_sha("M8P",      "sha256_stdout",  label="M8P stdout")],
+    ["M8Q stdout (L7 System)",    _inv_sha("M8Q",      "sha256_stdout",  label="M8Q stdout")],
     ["M8Q PDF (this document)",   "(computed at build time -- see builder output)"],
 ]
 ts_man = TableStyle([

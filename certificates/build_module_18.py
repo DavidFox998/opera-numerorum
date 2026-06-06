@@ -12,6 +12,25 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 import hashlib, sys
 
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
 OUTPUT = "certificates/Module_18_Resonance_Ladder.pdf"
 styles = getSampleStyleSheet()
 
@@ -38,9 +57,9 @@ err_s   = PS("E",  fontSize=8, leading=10,
 SCRIPT_SHA = sys.argv[1] if len(sys.argv) >= 3 else "(see m18.out)"
 STDOUT_SHA = sys.argv[2] if len(sys.argv) >= 3 else "(see m18.out)"
 
-M1_SHA  = "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
-M5_SHA  = "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
-M9_SHA  = "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821"
+M1_SHA  = _inv_sha("module_1", "sha256_stdout",     label="M1 stdout")
+M5_SHA  = _inv_sha("module_5", "sha256_stdout",     label="M5 stdout")
+M9_SHA  = _inv_sha("module_9_all", "sha256_stdout", label="M9-All stdout")
 
 story = []
 

@@ -1,3 +1,22 @@
+
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """Build Module 6 CERTIFIED PDF -- Battle Plan v1.6"""
 import os, sys
@@ -16,10 +35,10 @@ from reportlab.lib.enums import TA_CENTER
 OUT = "certificates/Module_6_Certificate.pdf"
 os.makedirs("certificates", exist_ok=True)
 
-SHA_SRC      = "87cf78f0362e4d27c9ea8b40ce6fb5eb61e803d82057b7985f04e980ece2cbe6"
-SHA_LOG      = "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb"
-PARENT_M5    = "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
-PARENT_M1    = "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
+SHA_SRC      = _inv_sha("module_6", "sha256_source", label="M6 source")
+SHA_LOG      = _inv_sha("module_6", "sha256_stdout", label="M6 stdout")
+PARENT_M5    = _inv_sha("module_5", "sha256_stdout", label="M5 stdout")
+PARENT_M1    = _inv_sha("module_1", "sha256_stdout", label="M1 stdout")
 
 doc = SimpleDocTemplate(OUT, pagesize=LETTER,
                         leftMargin=0.85*inch, rightMargin=0.85*inch,

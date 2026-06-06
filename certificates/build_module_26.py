@@ -1,3 +1,31 @@
+
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing.
+    Supports both dict keys (str) and list indices (int) in the path."""
+    obj = _inv
+    for k in path:
+        if isinstance(obj, dict):
+            if k not in obj:
+                _lbl = label or ".".join(str(p) for p in path)
+                _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        elif isinstance(obj, list):
+            if not isinstance(k, int) or k >= len(obj):
+                _lbl = label or ".".join(str(p) for p in path)
+                _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        else:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """Build Module 26 Certificate PDF -- Opera Numerorum -- Firewall Crossing"""
 import os, sys, hashlib, json
@@ -31,12 +59,12 @@ SHA_SORRY_MAP    = sha(SORRY_MAP_FILE)
 SHA_STORY        = sha(STORY_FILE)
 
 # All SHA values from GDRIVE_UPLOAD_RECEIPT.txt and invariants.json -- never fabricated
-SHA_CLAY_SEALED  = "518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1"
-SHA_REPLICUT     = "867fe6ffd31de2c06a463897c49940cd97f2d57c75a47ee0522a0289d0778f44"
-SHA_EQ_CENSUS    = "0bd95e445f4bb5e72fa14e4ee5e55cc35c83ade1c3a327eb525be0ebf1fd6c8e"
-SHA_EQUATIONS    = "7d6271bb3e89a84f60d89d8c87d9e01dfc833f533cf3d647be1196184df61734"
-SHA_REPO_TARGZ   = "ef700584089605a7874429a6475e0026454570746392181f159cd890cc7385f0"
-SHA_CLAY_MANIFEST = "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
+SHA_CLAY_SEALED  = _inv_sha("gdrive_blocks", "blocks", "CLAY_SEALED_BLOCK", "sha256", label="gdrive_blocks CLAY_SEALED sha256")
+SHA_REPLICUT     = _inv_sha("replicit_10trillion", "sha256", label="replicit_10trillion sha256")
+SHA_EQ_CENSUS    = _inv_sha("module_26", "addenda", 1, "sha256", label="M26 addenda[1] EquationCensus sha256")
+SHA_EQUATIONS    = _inv_sha("module_26", "addenda", 2, "sha256", label="M26 addenda[2] Equations sha256")
+SHA_REPO_TARGZ   = _inv_sha("module_26", "addenda", 3, "sha256", label="M26 addenda[3] REPO tar.gz sha256")
+SHA_CLAY_MANIFEST = _inv_sha("module_7", "manifest_sha", label="M7 manifest")
 
 DRIVE_PARENT_URL = "https://drive.google.com/drive/folders/1jXSQNCvmXbImp2iqrQNHms8XkKJ8A6DB"
 DRIVE_PARENT_ID  = "1jXSQNCvmXbImp2iqrQNHms8XkKJ8A6DB"
@@ -346,7 +374,7 @@ f"  {SHA_SORRY_MAP}  SORRY_MAP.csv\n\n"
 f"  $ sha256sum STORY_MANIFEST.csv\n"
 f"  {SHA_STORY}  STORY_MANIFEST.csv\n\n"
 "  # Verify CLAY sealed archive:\n"
-"  $ echo '518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1  CLAY_SEALED.zip' \\\n"
+f"  $ echo '{SHA_CLAY_SEALED}  CLAY_SEALED.zip' \\\n"
 "    | sha256sum -c\n"
 "  CLAY_SEALED.zip: OK\n\n"
 "  # Confirm LEAN sorry count:\n"

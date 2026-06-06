@@ -1,3 +1,22 @@
+
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """Build Module 8 CERTIFIED PDF -- Battle Plan v1.6 -- J_0(143) Hankel Rank Check"""
 import os, sys, hashlib
@@ -16,7 +35,7 @@ from reportlab.lib.enums import TA_CENTER
 OUT = "certificates/Module_8_Certificate.pdf"
 os.makedirs("certificates", exist_ok=True)
 
-SHA_M8_STDOUT  = "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002"
+SHA_M8_STDOUT  = _inv_sha("module_8", "sha256_stdout", label="M8 stdout")
 SHA_M8_SOURCE  = hashlib.sha256(open("certificates/j0_143_hankel.py","rb").read()).hexdigest()
 
 doc = SimpleDocTemplate(OUT, pagesize=LETTER,
@@ -271,7 +290,7 @@ bind_data = [
     ["certificates/j0_143_hankel.py (source)", SHA_M8_SOURCE],
     ["m8.out (certified stdout)",              SHA_M8_STDOUT],
     ["causal parent: m6.out (M6 stdout)",
-     "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb"],
+     _inv_sha("module_6", "sha256_stdout", label="M6 stdout")],
 ]
 btbl = Table(bind_data, colWidths=[2.4*inch, 4.3*inch])
 btbl.setStyle(TableStyle([

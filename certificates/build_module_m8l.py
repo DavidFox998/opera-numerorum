@@ -1,3 +1,22 @@
+
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """Build Module M8L PDF -- Battle Plan v1.6 -- Morning Star D20 Operational Certification"""
 import os, sys, hashlib
@@ -16,7 +35,7 @@ from reportlab.lib.enums import TA_CENTER
 OUT = "certificates/Module_M8L_MorningStar_Ops.pdf"
 os.makedirs("certificates", exist_ok=True)
 
-SHA_M8L_STDOUT = "80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad"
+SHA_M8L_STDOUT = _inv_sha("M8L", "stdout_sha256", label="M8L stdout")
 SHA_M8L_SOURCE = hashlib.sha256(
     open("certificates/m8l_morningstar_ops.py", "rb").read()
 ).hexdigest()

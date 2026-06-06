@@ -7,7 +7,26 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 import hashlib, subprocess, os, datetime
 
-M8G_SHA    = "2874d4bd44cb867d8902f0c3ad7af4f0fbe50be169840cfb97b836ebf2e526e3"
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
+M8G_SHA    = _inv_sha("module_m8g", "stdout_sha256", label="M8G stdout")
 SOURCE     = "certificates/m8g_provenance.py"
 STDOUT     = "m8g.out"
 OUT_PDF    = "certificates/Module_M8G_Provenance.pdf"
@@ -248,10 +267,10 @@ story.append(Paragraph("Certified SHA-256 Chain", HEAD2))
 footer_data = [
     ["Module", "Stdout SHA-256"],
     ["M8G (this module)", M8G_SHA],
-    ["M8F (7-layer protocol)", "0bd6cee4b95da712d43163e3889f2c50931dcd32648ccad5705a844ca5a62da3"],
-    ["M8D (resonator spec)",   "27d8e0c1e145ba7fb4a22c85067f3db78d92b490e592dcd255523afcec156db5"],
-    ["M8C (Zoe-M* bridge)",    "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323"],
-    ["M22 (M* definition)",    "5a5a345f6394438f7a5134cf682d714fea6c89c73cfc22fcdc503bc90761e5ca"],
+    ["M8F (7-layer protocol)", _inv_sha("module_m8f", "stdout_sha256", label="M8F stdout")],
+    ["M8D (resonator spec)",   _inv_sha("module_m8d", "stdout_sha256", label="M8D stdout")],
+    ["M8C (Zoe-M* bridge)",    _inv_sha("module_m8c", "stdout_sha256", label="M8C stdout")],
+    ["M22 (M* definition)",    _inv_sha("module_22", "sha256_stdout",  label="M22 stdout")],
     ["M1  (alpha_0)",          "63ef870a..."],
 ]
 footer_table = Table(footer_data, colWidths=[1.8*inch, 4.7*inch])

@@ -1,4 +1,23 @@
 #!/usr/bin/env python3
+
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
 """Build Module 7 CERTIFIED PDF -- Battle Plan v1.6 -- Master Manifest"""
 import os, sys, hashlib
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -17,22 +36,22 @@ OUT = "certificates/Module_7_Certificate.pdf"
 os.makedirs("certificates", exist_ok=True)
 
 # All values are real -- produced by bash verify_all.sh
-SHA_SCRIPT   = "39c0170455e40b30c7a7aeb6a2801b50d8e9554bb3d7bc746164d22b71174565"
-SHA_MANIFEST = "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
+SHA_SCRIPT   = _inv_sha("module_7", "sha256_script",  label="M7 script")
+SHA_MANIFEST = _inv_sha("module_7", "manifest_sha",   label="M7 manifest")
 
 CHAIN = [
     ("M1", "alpha_0 = 299+pi/10",
-     "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"),
+     _inv_sha("module_1", "sha256_stdout", label="M1 stdout")),
     ("M2", "kappa bound",
-     "3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83"),
+     _inv_sha("module_2", "sha256_stdout", label="M2 stdout")),
     ("M3", "CF of pi/10: Q_5=226, bound=82829",
-     "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044"),
+     _inv_sha("module_3", "sha256_stdout", label="M3 stdout")),
     ("M4", "S_14: 14 primes, p_5 > bound",
-     "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"),
+     _inv_sha("module_4", "sha256_stdout", label="M4 stdout")),
     ("M5", "C(S_4) = 11.4221 > 2*sqrt(13)",
-     "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"),
+     _inv_sha("module_5", "sha256_stdout", label="M5 stdout")),
     ("M6", "GRH bound for X_0(143)",
-     "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb"),
+     _inv_sha("module_6", "sha256_stdout", label="M6 stdout")),
 ]
 
 doc = SimpleDocTemplate(OUT, pagesize=LETTER,
@@ -124,12 +143,12 @@ story += [
 "set -e\n"
 "\n"
 "declare -A SHAS=(\n"
-"  [m1.out]=\"63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291\"\n"
-"  [m2.out]=\"3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83\"\n"
-"  [m3.out]=\"e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044\"\n"
-"  [m4.out]=\"b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed\"\n"
-"  [m5.out]=\"9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13\"\n"
-"  [m6.out]=\"ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb\"\n"
+"  [m1.out]=\"" + _inv_sha("module_1","sha256_stdout") + "\"\n"
+"  [m2.out]=\"" + _inv_sha("module_2","sha256_stdout") + "\"\n"
+"  [m3.out]=\"" + _inv_sha("module_3","sha256_stdout") + "\"\n"
+"  [m4.out]=\"" + _inv_sha("module_4","sha256_stdout") + "\"\n"
+"  [m5.out]=\"" + _inv_sha("module_5","sha256_stdout") + "\"\n"
+"  [m6.out]=\"" + _inv_sha("module_6","sha256_stdout") + "\"\n"
 ")\n"
 "\n"
 "i=1\n"
@@ -154,12 +173,12 @@ story += [
     h("4.  Raw Execution Log"),
     pre(
 "  $ bash verify_all.sh\n"
-"  [1/6] m1.out SHA: 63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291... PASS\n"
-"  [2/6] m2.out SHA: 3716c7dbb32524074b8fffb65eea45069c8b568a31dc73706405116b84029a83... PASS\n"
-"  [3/6] m3.out SHA: e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044... PASS\n"
-"  [4/6] m4.out SHA: b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed... PASS\n"
-"  [5/6] m5.out SHA: 9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13... PASS\n"
-"  [6/6] m6.out SHA: ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb... PASS\n"
+"  [1/6] m1.out SHA: " + _inv_sha("module_1","sha256_stdout") + "... PASS\n"
+"  [2/6] m2.out SHA: " + _inv_sha("module_2","sha256_stdout") + "... PASS\n"
+"  [3/6] m3.out SHA: " + _inv_sha("module_3","sha256_stdout") + "... PASS\n"
+"  [4/6] m4.out SHA: " + _inv_sha("module_4","sha256_stdout") + "... PASS\n"
+"  [5/6] m5.out SHA: " + _inv_sha("module_5","sha256_stdout") + "... PASS\n"
+"  [6/6] m6.out SHA: " + _inv_sha("module_6","sha256_stdout") + "... PASS\n"
 "\n"
 "  Concatenating 6 outputs...\n"
 f"  {SHA_MANIFEST}  -\n"

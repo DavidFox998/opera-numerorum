@@ -21,14 +21,33 @@ os.makedirs("certificates", exist_ok=True)
 def sha(path):
     return hashlib.sha256(open(path, "rb").read()).hexdigest()
 
-# Certified SHAs -- all computed live from actual files
-SHA_CLAY_SEALED   = "518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1"
-SHA_CLAY_MANIFEST = "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
-SHA_M8            = "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002"
-SHA_M8C           = "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323"
-SHA_M8D           = "27d8e0c1e145ba7fb4a22c85067f3db78d92b490e592dcd255523afcec156db5"
-SHA_M8H           = "2c3ac1d292fc6f5e8ad551f00ce547d3d47f89349cd8f17b0409aa8e65f41bbe"
-SHA_M8K           = "0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087"
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Certified SHAs -- read live from invariants.json
+SHA_CLAY_SEALED   = _inv_sha("gdrive_blocks", "blocks", "CLAY_SEALED_BLOCK", "sha256", label="gdrive_blocks CLAY_SEALED sha256")
+SHA_CLAY_MANIFEST = _inv_sha("module_7",      "manifest_sha",                          label="M7 manifest")
+SHA_M8            = _inv_sha("module_8",       "sha256_stdout",                         label="M8 stdout")
+SHA_M8C           = _inv_sha("module_m8c",     "stdout_sha256",                         label="M8C stdout")
+SHA_M8D           = _inv_sha("module_m8d",     "stdout_sha256",                         label="M8D stdout")
+SHA_M8H           = _inv_sha("module_m8h",     "stdout_sha256",                         label="M8H stdout")
+SHA_M8K           = _inv_sha("module_m8k",     "stdout_sha256",                         label="M8K stdout")
 
 doc = SimpleDocTemplate(OUT, pagesize=LETTER,
                         leftMargin=0.80*inch, rightMargin=0.80*inch,

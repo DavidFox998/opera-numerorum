@@ -13,11 +13,30 @@ from reportlab.platypus import (
 )
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 
-SHA_M3_OUT    = "e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044"
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
+SHA_M3_OUT    = _inv_sha("module_3", "sha256_stdout",       label="M3 stdout")
 SHA_M4_SRC    = "36025d56f76b0f87cb73b1da14e46ceed79d1c359ab17dfb5ea624fab4ce4ee0"
 SHA_M4_BIN    = "cbc3cfa7db75487192ca4959d8b28164b8e8a59f0c5a847b1fd265fba1fd2b1b"
-SHA_M4_OUT    = "53315d4e6649a40b425edd445efbb937c0dec7a1aa571ea6b60f4f1033568387"
-SHA_M4_BOUND  = "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+SHA_M4_OUT    = _inv_sha("module_4", "sha256_primes_stdout", label="M4 primes stdout")
+SHA_M4_BOUND  = _inv_sha("module_4", "sha256_stdout",       label="M4 stdout")
 
 S14_STDOUT = (
     "2,3,19,191,3993746143633,3224057731518397,"
@@ -189,7 +208,7 @@ story.append(Paragraph("File: <b>verify/bound_10_4000.py</b>", body_style))
 story.append(code_block(
     "# Battle Plan v1.6 - Module 4: Prove S_14 complete to 10^4000\n"
     "# Depends on Module 3 bound: p_5 > 82829\n"
-    "# Module 3 SHA: e687bb09a55e4eda198d4c5b24d03b7579f93bba27184a61fec7cbe29a83d044\n"
+    "# Module 3 SHA: " + _inv_sha("module_3", "sha256_stdout", label="M3 stdout") + "\n"
     "from mpmath import mp\n"
     "mp.dps = 4010  # 10^4000 requires 4000+ digits\n\n"
     "alpha0 = 299 + mp.pi/10\n"

@@ -14,12 +14,31 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
 import hashlib, os
 
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
 OUT    = "certificates/Module_M8P_L6_Clock.pdf"
 SRC    = "certificates/eeqc_l6_clock.py"
 STDOUT = "m8p.out"
 FIGS   = "certificates/figures"
 
-SHA_M8P = "3e5f4f044ba481fcbbb0bc731b9bbebf4adb86ec3ace716523ef4822ee64b90b"
+SHA_M8P = _inv_sha("M8P", "sha256_stdout", label="M8P stdout")
 
 styles = getSampleStyleSheet()
 def sty(name, parent="Normal", **kw):

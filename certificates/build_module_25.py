@@ -40,6 +40,19 @@ if "module_25b" not in _inv or "sha256_stdout" not in _inv["module_25b"]:
     )
 M25B_STDOUT_SHA = _inv["module_25b"]["sha256_stdout"]
 
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            sys.exit(f"ERROR: {INVARIANTS_FILE} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        sys.exit(f"ERROR: {INVARIANTS_FILE} {_lbl} is empty -- rebuild that module first.")
+    return obj
+
 doc = SimpleDocTemplate(OUT, pagesize=LETTER,
                         leftMargin=0.75*inch, rightMargin=0.75*inch,
                         topMargin=0.65*inch, bottomMargin=0.65*inch)
@@ -278,7 +291,7 @@ story += [
     sp(4),
     note_box(
         "M8C stdout SHA-256 (Zoe-M* bridge, Z=15 source): "
-        "02fe604876c3253ec61ce0a8b382c7b01a089d1d217ab200fc9975464a645323. "
+        + _inv_sha("module_m8c", "stdout_sha256", label="M8C stdout") + ". "
         "M8C claim: Z=15, M*=4/55, 200 Hodge classes transcendental. "
         "Z=rank(M_ij) per M8G_Correction (SHA: 62492d666e0c09e51...). "
         "Audit: genus(X_0(5))=0 means the 2g bound is trivial; Z=15 is the "

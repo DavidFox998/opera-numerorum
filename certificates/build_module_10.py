@@ -15,6 +15,25 @@ import sys
 import os
 import hashlib
 
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
 OUTPUT = "certificates/Module_10_Genus33.pdf"
 
 # -----------------------------------------------------------------------
@@ -71,12 +90,12 @@ G33_CURVES = [
 ]
 CM_EXCLUDED = 4    # g=33 CM levels
 
-M4_SHA = "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
-M5_SHA = "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
-M9A_SHA = "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821"
+M4_SHA  = _inv_sha("module_4", "sha256_stdout",       label="M4 stdout")
+M5_SHA  = _inv_sha("module_5", "sha256_stdout",       label="M5 stdout")
+M9A_SHA = _inv_sha("module_9_all", "sha256_stdout",   label="M9-All stdout")
 
-SCRIPT_SHA = "faa90d9908b9b1a5026b3b76ba8e412b5733f2d84cea7eb20f3eba0bf25a5c60"
-STDOUT_SHA = "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade"
+SCRIPT_SHA = _inv_sha("module_10", "sha256_source",   label="M10 source")
+STDOUT_SHA = _inv_sha("module_10", "sha256_stdout",   label="M10 stdout")
 
 # -----------------------------------------------------------------------
 # Build flowables

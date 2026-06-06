@@ -12,6 +12,25 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 import hashlib, sys
 
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
 OUTPUT = "certificates/Module_20_p7_Prediction.pdf"
 styles = getSampleStyleSheet()
 
@@ -34,9 +53,9 @@ warn_s  = PS("W",  fontSize=8, leading=10, textColor=colors.HexColor("#8B4500"),
 SCRIPT_SHA = sys.argv[1] if len(sys.argv) >= 3 else "(see m20.out)"
 STDOUT_SHA = sys.argv[2] if len(sys.argv) >= 3 else "(see m20.out)"
 
-M4_SHA  = "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
-M10_SHA = "ab9ce40c3cbd874cc7123d1ff0a620452610ccf874f1ab7d6a99f5700fce1ade"
-M19_SHA = "1f7f68bdc12913cf66142679f9fb5b67f1e5485687c7d4d517c8559091495294"
+M4_SHA  = _inv_sha("module_4", "sha256_stdout",     label="M4 stdout")
+M10_SHA = _inv_sha("module_10", "sha256_stdout",    label="M10 stdout")
+M19_SHA = _inv_sha("module_19", "sha256_stdout",    label="M19 stdout")
 
 story = []
 

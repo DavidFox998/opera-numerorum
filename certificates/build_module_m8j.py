@@ -1,3 +1,22 @@
+
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """Build Module M8J PDF -- Battle Plan v1.6 -- OQ-2 Closure / Recalibrated Wormhole"""
 import os, sys, hashlib
@@ -16,11 +35,11 @@ from reportlab.lib.enums import TA_CENTER
 OUT = "certificates/Module_M8J_OQ2_Closure.pdf"
 os.makedirs("certificates", exist_ok=True)
 
-SHA_M8J_STDOUT = "298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505"
+SHA_M8J_STDOUT = _inv_sha("module_m8j", "stdout_sha256", label="M8J stdout")
 SHA_M8J_SOURCE = hashlib.sha256(
     open("certificates/m8j_oq2_closure.py", "rb").read()
 ).hexdigest()
-SHA_M8I_STDOUT = "5c7189fc95f9f99b0f43f1a5879eb2f303ab14577b0ced5d6f1087508bf23b37"
+SHA_M8I_STDOUT = _inv_sha("module_m8i", "stdout_sha256", label="M8I stdout")
 
 doc = SimpleDocTemplate(OUT, pagesize=LETTER,
                         leftMargin=0.85*inch, rightMargin=0.85*inch,

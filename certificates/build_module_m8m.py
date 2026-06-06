@@ -1,3 +1,22 @@
+
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """Build Module M8M PDF -- Battle Plan v1.6 -- Morning Star Physics Beyond Standard Model"""
 import os, sys, hashlib
@@ -16,7 +35,7 @@ from reportlab.lib.enums import TA_CENTER
 OUT = "certificates/Module_M8M_MorningStar_Physics.pdf"
 os.makedirs("certificates", exist_ok=True)
 
-SHA_M8M_STDOUT = "afce5f2146c40c22bbcc7d7f1c4514eeba08107436de7929a3e3ef6d4f5e121f"
+SHA_M8M_STDOUT = _inv_sha("M8M", "stdout_sha256", label="M8M stdout")
 SHA_M8M_SOURCE = hashlib.sha256(
     open("certificates/m8m_morningstar_physics.py", "rb").read()
 ).hexdigest()
@@ -410,9 +429,9 @@ story += [
         ["Source SHA-256",   SHA_M8M_SOURCE],
         ["Stdout file",      "m8m.out"],
         ["Stdout SHA-256",   SHA_M8M_STDOUT],
-        ["Causal parent",    "M8L stdout  80ff8a251c6ea7b6a57fd81fe71a76dd62a3f862c80381d571e2f30d3c4222ad"],
-        ["Causal parent",    "M8K stdout  0ae865a8812ce93b05461ec4483ad1714e24fc9be9de1e7bb54963da43592087"],
-        ["Causal parent",    "M8J stdout  298d440aae8ecc3808b413c7ce1b1cf19c92d359beb7664d837062e04b01b505"],
+        ["Causal parent",    "M8L stdout  " + _inv_sha("M8L",        "stdout_sha256",    label="M8L stdout")],
+        ["Causal parent",    "M8K stdout  " + _inv_sha("module_m8k", "stdout_sha256",    label="M8K stdout")],
+        ["Causal parent",    "M8J stdout  " + _inv_sha("module_m8j", "stdout_sha256",    label="M8J stdout")],
         ["Status",           "MORNINGSTAR_PHYSICS_CERTIFIED"],
     ]),
     sp(6),

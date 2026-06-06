@@ -13,6 +13,25 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 import hashlib, sys
 
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
 OUTPUT = "certificates/Module_15_Delta_Boost.pdf"
 
 styles = getSampleStyleSheet()
@@ -39,8 +58,8 @@ warn_s    = PS("W",  fontSize=7.5, leading=10,
 SCRIPT_SHA = sys.argv[1] if len(sys.argv) >= 3 else "(see m15.out)"
 STDOUT_SHA = sys.argv[2] if len(sys.argv) >= 3 else "(see m15.out)"
 
-M3_SHA = "e687bb0931f2c37c6ae12cfbde7ff9a79b3cccf5b0c88e17e9c3fe4abe1cf80d"
-M4_SHA = "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+M3_SHA = _inv_sha("module_3", "sha256_stdout", label="M3 stdout")
+M4_SHA = _inv_sha("module_4", "sha256_stdout", label="M4 stdout")
 
 story = []
 

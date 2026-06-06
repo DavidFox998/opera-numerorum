@@ -1,3 +1,22 @@
+
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """Build Module M8A CERTIFIED PDF -- Battle Plan v1.6 -- Delta_DS Audit"""
 import csv, hashlib, math, os, sys
@@ -17,16 +36,16 @@ OUT = "certificates/Module_M8A_Audit.pdf"
 os.makedirs("certificates", exist_ok=True)
 
 # All SHAs computed, never fabricated
-SHA_M7   = "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
-SHA_M15  = "cf1620c7b8d8b931fe4ceb051b0db9ab20aaa1e3f439929da66237b644234b78"
-SHA_M9   = "624b93f7d4687b81371dcecfe6adad9de074addf35f5409e1c3b244d8410f7e6"
-SHA_M9ALL= "5e39f3a957d818fa85dad0a66d98a3c51801ba107ecea5a6bb457eb3456b4821"
-SHA_M21  = "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad"
-SHA_M5   = "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
+SHA_M7   = _inv_sha("module_7", "manifest_sha",         label="M7 manifest")
+SHA_M15  = _inv_sha("module_15", "sha256_stdout",       label="M15 stdout")
+SHA_M9   = _inv_sha("M9", "stdout_sha",                 label="M9 stdout")
+SHA_M9ALL= _inv_sha("module_9_all", "sha256_stdout",    label="M9-All stdout")
+SHA_M21  = _inv_sha("module_21", "sha256_stdout",       label="M21 stdout")
+SHA_M5   = _inv_sha("module_5", "sha256_stdout",        label="M5 stdout")
 
-SHA_AUDIT  = "45249445f11fb46b365a4b281e04a07772e7b2f6b633cea854337f2bb3ea8550"
-SHA_LAMBDA = "d8fd613aacfa0090f13471916445e0058a166b8db6f9662a23f9b73a542c7aab"
-SHA_H2     = "6df5c388607840ac9e3842a6dcd42b5a38b627bae1645f5c1af6570ad73617ea"
+SHA_AUDIT  = _inv_sha("module_m8a", "sha256_audit_stdout",  label="M8A audit stdout")
+SHA_LAMBDA = _inv_sha("module_m8a", "sha256_lambda_stdout", label="M8A lambda stdout")
+SHA_H2     = _inv_sha("module_m8a", "sha256_binding_file",  label="M8A binding file")
 
 DELTA_TRUE  = "2.753126094323295100690126"
 DELTA_PAPER = "23.796910"

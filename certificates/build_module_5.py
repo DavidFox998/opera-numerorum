@@ -1,3 +1,22 @@
+
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
 #!/usr/bin/env python3
 """Build Module 5 CERTIFIED PDF -- Battle Plan v1.6"""
 import os, sys
@@ -17,11 +36,11 @@ OUT = "certificates/Module_5_Certificate.pdf"
 os.makedirs("certificates", exist_ok=True)
 
 # -- Certified cryptographic values -------------------------------------------
-SHA_SRC_PY   = "d8257be4e3f673c7834f1cc1d3aa3db95ac885dcd615a5934e3694a243ce263b"
+SHA_SRC_PY   = _inv_sha("module_5", "sha256_source",       label="M5 source")
 SHA_SRC_C    = "59fa922272838d24391d7bf46d8d76026e841befdfe5906105d0456cc0d23b56"
-SHA_INPUT    = "53315d4e6649a40b425edd445efbb937c0dec7a1aa571ea6b60f4f1033568387"
-SHA_LOG      = "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
-PARENT_SHA   = "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
+SHA_INPUT    = _inv_sha("module_4", "sha256_primes_stdout", label="M4 primes stdout")
+SHA_LOG      = _inv_sha("module_5", "sha256_stdout",       label="M5 stdout")
+PARENT_SHA   = _inv_sha("module_4", "sha256_stdout",       label="M4 stdout")
 # -----------------------------------------------------------------------------
 
 doc = SimpleDocTemplate(OUT, pagesize=LETTER,

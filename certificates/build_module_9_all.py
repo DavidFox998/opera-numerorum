@@ -13,16 +13,35 @@ from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 
+# ── invariants.json loader (auto-maintained -- do not edit manually) ──────────
+import json as _json, sys as _sys
+_INVARIANTS = "certificates/invariants.json"
+with open(_INVARIANTS) as _f:
+    _inv = _json.load(_f)
+def _inv_sha(*path, label=None):
+    """Return a SHA from invariants.json; sys.exit with clear error if missing."""
+    obj = _inv
+    for k in path:
+        if not isinstance(obj, dict) or k not in obj:
+            _lbl = label or ".".join(str(p) for p in path)
+            _sys.exit(f"ERROR: {_INVARIANTS} missing {_lbl} -- rebuild that module first.")
+        obj = obj[k]
+    if not obj:
+        _lbl = label or ".".join(str(p) for p in path)
+        _sys.exit(f"ERROR: {_INVARIANTS} {_lbl} is empty -- rebuild that module first.")
+    return obj
+# ─────────────────────────────────────────────────────────────────────────────
+
 mp.dps = 64
 
 OUT_PDF      = "certificates/Module_9_All_140.pdf"
 M9ALL_SCRIPT = "certificates/m9_all_grh.py"
 M9ALL_OUT    = "m9_all.out"
 
-M1_SHA  = "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291"
-M4_SHA  = "b810a7a331e47066e3eb4765a5ffdc17c1a56ddbff855a096c18ce2e9e2a19ed"
-M5_SHA  = "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13"
-M9_SHA  = "624b93f7bf7ca8fdce6aa2b4ceabdb43dc25f1e56a73b3d7c7ef3b8e17a65a0c"
+M1_SHA  = _inv_sha("module_1", "sha256_stdout",     label="M1 stdout")
+M4_SHA  = _inv_sha("module_4", "sha256_stdout",     label="M4 stdout")
+M5_SHA  = _inv_sha("module_5", "sha256_stdout",     label="M5 stdout")
+M9_SHA  = _inv_sha("M9", "stdout_sha",              label="M9 stdout")
 
 def sha256(path):
     return hashlib.sha256(open(path, 'rb').read()).hexdigest()
