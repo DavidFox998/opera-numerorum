@@ -1,0 +1,40 @@
+CERTIFICATE UPLOAD RECEIPT — 2026-06-06
+========================================
+CLAY: 518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1  SEALED
+M7 manifest: 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9  LOCKED
+
+DELIVERABLE 1 — certificates_of_verification.zip
+  SHA256:   f849049d9582f5897e6d7c08f79b901ec259bcec92125626529eaefbc16458ac
+  Size:     49 KB
+  Drive ID: 1lCjAuvupktrfLcWvDnvPQxfP5nz3tsV5
+  URL:      https://drive.google.com/file/d/1lCjAuvupktrfLcWvDnvPQxfP5nz3tsV5/view?usp=drivesdk
+  Files (10):
+    CLAY_SEALED.zip         — CLAY seal, 518144c8... READ-ONLY
+    SEALED_518144c8.txt     — seal certificate with timestamp
+    SHA256SUMS              — 115-entry integrity manifest
+    MANIFEST.csv            — 114 files with SHA256+act
+    EQUATION_INDEX.txt      — 476 certified equations (COUNT_A==COUNT_B)
+    tests/verify.sh         — 5-check verification script (ALL PASS)
+    CHANGELOG.md            — seal dates and equation count
+    AXIOM_AUDIT.txt         — grep proof: 0 custom axioms, classic trio only
+    SORRY_AUDIT.txt         — grep proof: SORRY:0 in proofs/ACT*
+    STORY_MANIFEST.csv      — act → scene → reason (87 rows)
+
+DELIVERABLE 2 — classic_trio_files.zip
+  SHA256:   b66304d4b4de9f1b997593108b0652f5ef8762c391811c6149c156c40b718da8
+  Size:     1 KB
+  Drive ID: 1lt5cvfEfKiuhF0n36FNsBAP2-KE2kzg_
+  URL:      https://drive.google.com/file/d/1lt5cvfEfKiuhF0n36FNsBAP2-KE2kzg_/view?usp=drivesdk
+  Files (3):
+    propext.cert            — propext: {a b:Prop}→(a↔b)→a=b
+    Classical.choice.cert   — Classical.choice: Nonempty α → α
+    Quot.sound.cert         — Quot.sound: r a b → Quot.mk r a = Quot.mk r b
+
+AUDIT RESULTS:
+  CLAY before/after:   MATCH — 518144c8... UNTOUCHED
+  SORRY in proofs/:    0 hits (PASS)
+  Custom axioms:       0 hits (PASS)
+  Classic trio check:  PASS
+
+FOLDER: MANIFESTS (MORNING_STAR_20260606)
+  https://drive.google.com/drive/folders/1Z1tqm599kpqlIYBUxiDSzLlUSg8R79Xh

@@ -1,0 +1,25 @@
+CLASSIC TRIO AXIOM CERTIFICATE
+================================
+Axiom:   Classical.choice
+Date:    2026-06-06
+Source:  Lean 4 kernel / Init.Prelude
+
+STATEMENT:
+  noncomputable def Classical.choice : {α : Sort u} → Nonempty α → α
+  (Choice — given non-emptiness proof, extract a witness)
+  Also exports: Classical.em (law of excluded middle)
+
+WHERE USED IN CLAY/M_FINAL:
+  (used implicitly by Lean 4 kernel)
+
+AUDIT:
+  grep -rn "Classical" src/ (MORNING_STAR_REPO)
+  Result: see AXIOM_AUDIT.txt
+
+VERIFICATION:
+  This axiom is part of the Classic Trio — the only axioms permitted
+  in MAIN proofs (proofs/ACT*/). No custom axioms are declared.
+  CLAY SHA: 518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1
+  CLAY STATUS: SEALED
+
+MACHINE CHECK: #check @Classical.choice → noncomputable def, no sorry

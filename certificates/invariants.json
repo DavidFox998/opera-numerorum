@@ -3643,6 +3643,24 @@
           "manifests": "MANIFEST.csv (114 files), SHA256SUMS (115 entries)",
           "scripts": "tests/verify.sh + lean_check.sh (all 5 checks PASS)"
         }
+      },
+      {
+        "date": "2026-06-06",
+        "file": "certificates_of_verification.zip",
+        "sha256": "f849049d9582f5897e6d7c08f79b901ec259bcec92125626529eaefbc16458ac",
+        "size_kb": 49,
+        "drive_id": "1lCjAuvupktrfLcWvDnvPQxfP5nz3tsV5",
+        "drive_url": "https://drive.google.com/file/d/1lCjAuvupktrfLcWvDnvPQxfP5nz3tsV5/view?usp=drivesdk",
+        "note": "10-file proof package: CLAY seal + SHA256SUMS + MANIFEST + equations + verify.sh + axiom/sorry audits"
+      },
+      {
+        "date": "2026-06-06",
+        "file": "classic_trio_files.zip",
+        "sha256": "b66304d4b4de9f1b997593108b0652f5ef8762c391811c6149c156c40b718da8",
+        "size_kb": 1,
+        "drive_id": "1lt5cvfEfKiuhF0n36FNsBAP2-KE2kzg_",
+        "drive_url": "https://drive.google.com/file/d/1lt5cvfEfKiuhF0n36FNsBAP2-KE2kzg_/view?usp=drivesdk",
+        "note": "3 .cert files: propext + Classical.choice + Quot.sound statements and usage locations"
       }
     ]
   }

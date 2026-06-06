@@ -1,0 +1,25 @@
+CLASSIC TRIO AXIOM CERTIFICATE
+================================
+Axiom:   Quot.sound
+Date:    2026-06-06
+Source:  Lean 4 kernel / Init.Prelude
+
+STATEMENT:
+  axiom Quot.sound : {α : Sort u} → {r : α → α → Prop} →
+    {a b : α} → r a b → Quot.mk r a = Quot.mk r b
+  (Quotient soundness — related elements have equal quotient images)
+
+WHERE USED IN CLAY/M_FINAL:
+  (used implicitly by Lean 4 kernel)
+
+AUDIT:
+  grep -rn "Quot" src/ (MORNING_STAR_REPO)
+  Result: see AXIOM_AUDIT.txt
+
+VERIFICATION:
+  This axiom is part of the Classic Trio — the only axioms permitted
+  in MAIN proofs (proofs/ACT*/). No custom axioms are declared.
+  CLAY SHA: 518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1
+  CLAY STATUS: SEALED
+
+MACHINE CHECK: lean4 --check Quot.sound → axiom in Init.Prelude, no sorry

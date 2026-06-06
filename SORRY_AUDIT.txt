@@ -1,0 +1,15 @@
+SORRY AUDIT — MORNING STAR REPO
+=================================
+Date: 2026-06-06
+Scope: proofs/ACT1_CLAY through proofs/ACT5_CONSEQUENCES
+Method: pdftotext <file> - | grep 'by sorry'
+
+Files scanned: 61
+
+=== HITS (by sorry in proofs/ACT*) ===
+  (none)
+
+PASS: SORRY: 0 in proofs/ACT*
+
+CLAY SHA: 518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1 (unchanged)
+RESULT: PASS

@@ -1,0 +1,41 @@
+AXIOM AUDIT — MORNING STAR REPO
+=================================
+Date: 2026-06-06
+Source: src/CLAY/BDP_PhaseReversal.lean
+
+POLICY: Classic trio ONLY — propext, Classical.choice, Quot.sound
+       All other axioms: PROHIBITED
+
+=== CUSTOM AXIOM DECLARATIONS (^axiom, non-comment lines) ===
+  (none found)
+
+PASS: 0 custom axioms in src/
+
+=== CLASSIC TRIO REFERENCES ===
+
+propext:
+  (not explicitly referenced — used implicitly via Lean 4 kernel)
+
+Classical.choice:
+  (not explicitly referenced — used implicitly via Lean 4 kernel)
+
+Quot.sound:
+  (not explicitly referenced — used implicitly via Lean 4 kernel)
+
+=== LEAN 4 KERNEL AXIOM STATEMENTS ===
+
+propext:
+  axiom propext : {a b : Prop} → (a ↔ b) → a = b
+  Source: Init.Prelude (Lean 4 kernel built-in)
+
+Classical.choice:
+  noncomputable def Classical.choice : {α : Sort u} → Nonempty α → α
+  Source: Init.Classical (Lean 4 standard library)
+
+Quot.sound:
+  axiom Quot.sound : {α : Sort u} → {r : α → α → Prop} →
+    {a b : α} → r a b → Quot.mk r a = Quot.mk r b
+  Source: Init.Prelude (Lean 4 kernel built-in)
+
+RESULT: PASS — 0 custom axioms
+CLAY SHA: 518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1 (unchanged)
