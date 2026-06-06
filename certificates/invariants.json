@@ -3513,5 +3513,79 @@
         ]
       }
     }
+  },
+  "gdrive_morning_star": {
+    "timestamp_utc": "2026-06-06",
+    "description": "Morning Star zero-sorry PDFs \u2014 cohesive 5-act upload",
+    "parent_folder": {
+      "name": "MORNING_STAR_20260606",
+      "id": "1jXSQNCvmXbImp2iqrQNHms8XkKJ8A6DB",
+      "url": "https://drive.google.com/drive/folders/1jXSQNCvmXbImp2iqrQNHms8XkKJ8A6DB"
+    },
+    "integrity": {
+      "clay_manifest_sha": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+      "clay_sealed_zip_sha": "518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1",
+      "lean_sorry_count": 0,
+      "m_final_sorry_count": 0,
+      "excluded_sorry": [
+        "Wall256_YM_Report.pdf"
+      ],
+      "missing": [
+        "Replicut_10trillion_Data_Log.pdf"
+      ]
+    },
+    "story": {
+      "acts": 9,
+      "manifest_rows": 87,
+      "pdfs_staged": 85,
+      "structure": "PROLOGUE / ACT_1 / ACT_2 / ACT_3 / ACT_4 / ACT_5 / EPILOGUE / APPENDIX_B / REFERENCE"
+    },
+    "folders": {
+      "00_PROLOGUE_CONTEXT": {
+        "id": "13uudlLcYnXInWHq-1ChqHsga3U0t3CIX",
+        "pdfs": 4
+      },
+      "01_ACT1_CLAY_COMPUTATIONAL_CERTIFICATES": {
+        "id": "16Mg_aEBf7cqNaWsE8iO4PEVHF9Rd0Dbu",
+        "pdfs": 10
+      },
+      "02_ACT2_GEOMETRY": {
+        "id": "19A_RkoTGp_dX4YOvH31XH3Mj-SCPboqp",
+        "pdfs": 12
+      },
+      "03_ACT3_ANALYTIC": {
+        "id": "1o9uCsLtC-dBxr8r9eayc-g0SPp0bR5as",
+        "pdfs": 20
+      },
+      "04_ACT4_BSD_FINAL_THEOREM": {
+        "id": "1nh8GzyOSxRzu1DZrSWSkZjLb6EQtBZ4h",
+        "pdfs": 11
+      },
+      "05_ACT5_CONSEQUENCES": {
+        "id": "1RFyZtrEbtWoJHT0UBV8E-8CnsH6htotH",
+        "pdfs": 8
+      },
+      "06_EPILOGUE_FUTURE_WORK": {
+        "id": "1laiAkdx_yJy3YPiwCJmmWDh39bOKory-",
+        "pdfs": 2
+      },
+      "APPENDIX_B_TRIVIAL_BY_CONSTRUCTION": {
+        "id": "1eBqslv4Y6LRRWc_6cB_f5dMGPM_OnnBP",
+        "pdfs": 16
+      },
+      "REFERENCE": {
+        "id": "11wwVbjp1lWJ3LPApCvuOf5eAkqkT66Wa",
+        "pdfs": 2
+      },
+      "MANIFESTS": {
+        "id": "1Z1tqm599kpqlIYBUxiDSzLlUSg8R79Xh",
+        "pdfs": 0,
+        "contains": [
+          "STORY_MANIFEST.csv",
+          "SORRY_MAP.csv",
+          "SHA256SUMS.txt"
+        ]
+      }
+    }
   }
 }

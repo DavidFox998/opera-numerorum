@@ -1,0 +1,62 @@
+MORNING STAR GDRIVE UPLOAD — COMPLETE
+======================================
+Date: 2026-06-06
+Parent folder: MORNING_STAR_20260606
+Parent ID: 1jXSQNCvmXbImp2iqrQNHms8XkKJ8A6DB
+Parent URL: https://drive.google.com/drive/folders/1jXSQNCvmXbImp2iqrQNHms8XkKJ8A6DB
+
+FOLDER MANIFEST
+---------------
+   4 PDFs   00_PROLOGUE_CONTEXT
+           ID: 13uudlLcYnXInWHq-1ChqHsga3U0t3CIX
+           URL: https://drive.google.com/drive/folders/13uudlLcYnXInWHq-1ChqHsga3U0t3CIX
+  10 PDFs   01_ACT1_CLAY_COMPUTATIONAL_CERTIFICATES
+           ID: 16Mg_aEBf7cqNaWsE8iO4PEVHF9Rd0Dbu
+           URL: https://drive.google.com/drive/folders/16Mg_aEBf7cqNaWsE8iO4PEVHF9Rd0Dbu
+  12 PDFs   02_ACT2_GEOMETRY
+           ID: 19A_RkoTGp_dX4YOvH31XH3Mj-SCPboqp
+           URL: https://drive.google.com/drive/folders/19A_RkoTGp_dX4YOvH31XH3Mj-SCPboqp
+  20 PDFs   03_ACT3_ANALYTIC
+           ID: 1o9uCsLtC-dBxr8r9eayc-g0SPp0bR5as
+           URL: https://drive.google.com/drive/folders/1o9uCsLtC-dBxr8r9eayc-g0SPp0bR5as
+  11 PDFs   04_ACT4_BSD_FINAL_THEOREM
+           ID: 1nh8GzyOSxRzu1DZrSWSkZjLb6EQtBZ4h
+           URL: https://drive.google.com/drive/folders/1nh8GzyOSxRzu1DZrSWSkZjLb6EQtBZ4h
+   8 PDFs   05_ACT5_CONSEQUENCES
+           ID: 1RFyZtrEbtWoJHT0UBV8E-8CnsH6htotH
+           URL: https://drive.google.com/drive/folders/1RFyZtrEbtWoJHT0UBV8E-8CnsH6htotH
+   2 PDFs   06_EPILOGUE_FUTURE_WORK
+           ID: 1laiAkdx_yJy3YPiwCJmmWDh39bOKory-
+           URL: https://drive.google.com/drive/folders/1laiAkdx_yJy3YPiwCJmmWDh39bOKory-
+  16 PDFs   APPENDIX_B_TRIVIAL_BY_CONSTRUCTION
+           ID: 1eBqslv4Y6LRRWc_6cB_f5dMGPM_OnnBP
+           URL: https://drive.google.com/drive/folders/1eBqslv4Y6LRRWc_6cB_f5dMGPM_OnnBP
+   2 PDFs   REFERENCE
+           ID: 11wwVbjp1lWJ3LPApCvuOf5eAkqkT66Wa
+           URL: https://drive.google.com/drive/folders/11wwVbjp1lWJ3LPApCvuOf5eAkqkT66Wa
+   0 PDFs   MANIFESTS
+           ID: 1Z1tqm599kpqlIYBUxiDSzLlUSg8R79Xh
+           URL: https://drive.google.com/drive/folders/1Z1tqm599kpqlIYBUxiDSzLlUSg8R79Xh
+
+TOTALS
+------
+  PDFs uploaded:    85
+  SHA256SUMS files: 10
+  Manifest files:   2 (STORY_MANIFEST.csv, SORRY_MAP.csv)
+  Total items:      97
+
+INTEGRITY
+---------
+  CLAY manifest (sealed, READ ONLY): 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
+  CLAY_SEALED.zip SHA256: 518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1
+  Lean sorry count: 0
+  M_FINAL sorry count: 0
+  Excluded (sorry>0): Wall256_YM_Report.pdf (prose 'by sorry' in PDF text; Lean clean)
+  Missing (not in certificates/): Replicut_10trillion_Data_Log.pdf
+
+STORYLINE
+---------
+  Story: 9 acts, 85 zero-sorry PDFs staged, 87 manifest rows
+  Structure: PROLOGUE / ACT_1-5 / EPILOGUE / APPENDIX_B / REFERENCE
+  SHA256SUMS.txt generated for every folder
+  STORY_MANIFEST.csv + SORRY_MAP.csv in MANIFESTS/
