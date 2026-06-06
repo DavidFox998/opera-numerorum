@@ -1,0 +1,48 @@
+=== MASTER CERTIFICATION AUDIT — repo ===
+Date: Sat Jun  6 02:56:13 AM UTC 2026
+CLAY: 
+FAIL: CLAY TAMPERED
+MATH PROBLEMS FOUND: 110
+CERTIFICATES FOUND: 407
+
+=== MISSING CERTIFICATIONS ===
+NO CERT: ./.agents/memory/bdp-kappa-formula.md
+NO CERT: ./.agents/memory/bdp-lemma2-audit.md
+NO CERT: ./.agents/memory/MEMORY.md
+NO CERT: ./attached_assets/hOS_Plan_(2)_1780557438435.md
+NO CERT: ./attached_assets/hOS_Plan_(2)_1780557621665.md
+NO CERT: ./.local/secondary_skills/ai-recruiter/SKILL.md
+NO CERT: ./.local/secondary_skills/content-machine/SKILL.md
+NO CERT: ./.local/secondary_skills/design-thinker/SKILL.md
+NO CERT: ./.local/secondary_skills/geo/references/content-patterns.md
+NO CERT: ./.local/secondary_skills/interview-prep/SKILL.md
+NO CERT: ./.local/secondary_skills/podcast-marketing/video-clips.md
+NO CERT: ./.local/secondary_skills/product-manager/SKILL.md
+NO CERT: ./.local/secondary_skills/programmatic-seo/SKILL.md
+NO CERT: ./.local/secondary_skills/resume-maker/SKILL.md
+NO CERT: ./.local/secondary_skills/storyboard/SKILL.md
+NO CERT: ./.local/secondary_skills/website-cloning/pitfalls.md
+NO CERT: ./.local/skills/query-integration-data/SKILL.md
+NO CERT: ./.local/skills/react-vite/references/seo.md
+NO CERT: ./.local/skills/slides/SKILL.md
+NO CERT: ./.local/skills/slides/templates/thesis-defense.md
+NO CERT: ./node_modules/.pnpm/esutils@2.0.3/node_modules/esutils/README.md
+NO CERT: ./node_modules/.pnpm/fs-extra@11.3.5/node_modules/fs-extra/README.md
+
+=== AXIOM AUDIT ===
+FAIL: CUSTOM AXIOMS FOUND:
+    PROOF: no sorry, no axiom. Closes by Real.exp_pos and le_refl after rw. -/
+-- REAL PROOFS (no sorry, no axiom):
+-- TRUE STUBS (no sorry, no axiom, True := trivial):
+-- #print axioms → [] for all real proofs above.
+-- All #print axioms -> [] after sorry fills noted below.
+-- #print axioms -> [] for all lemmas after sorry fills
+SORRY IN MAIN: 0
+0
+FAIL: SORRY FOUND IN MAIN
+LEAN THEOREMS: 0
+0 | EQUATION_INDEX: 0
+WARN: COUNT MISMATCH
+
+RESULT: FAIL — MISSING CERTIFICATIONS: 22
+Check AUDIT_RESULT.txt for list
