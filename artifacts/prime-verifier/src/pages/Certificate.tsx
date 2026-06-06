@@ -205,6 +205,7 @@ const INVARIANTS_DRIVE_URL_MAP: Record<string, { key: string; field: string }> =
   ALL_CERTS_ZIP:      { key: "bundle_all_certs",    field: "drive_url" },
   ZIP_CLAY:           { key: "bundle_clay",          field: "drive_url" },
   CONTEXT_BUNDLE_ZIP: { key: "bundle_context",       field: "drive_url" },
+  ZIP_CHAIN:          { key: "bundle_chain",         field: "drive_url" },
 };
 
 function extractDriveUrlsFromInvariants(
@@ -2002,6 +2003,7 @@ export default function CertificatePage() {
             zipFile={{ fn: "CertificationChain_2026_06_04.zip", sz: liveSizes["ZIP_CHAIN"] ? formatBytes(liveSizes["ZIP_CHAIN"]) : "85 KB", label: "Chain + Invariants ZIP" }}
             zipSha={liveShas["ZIP_CHAIN"] ?? "e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"}
             zipFallbackSha="e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3"
+            zipDriveUrl={liveUrls["ZIP_CHAIN"]}
           />
 
           {/* Block 5 — Extended Theory M8A–M25 */}

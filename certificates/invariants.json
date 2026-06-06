@@ -3056,7 +3056,8 @@
     "description": "Core certification chain M1-M8 PDFs + invariants.json.",
     "file": "CertificationChain_2026_06_04.zip",
     "sha256": "e629e7eb7c45de9727e6efc0ad1ac4671c9efb2275693e3c1c426298bb21f7a3",
-    "size_bytes": 86541
+    "size_bytes": 86541,
+    "drive_url": "https://drive.google.com/file/d/1yFSdmTMO_IuQGuDwuXW-n_yFgci4hLkT/view?usp=drivesdk"
   },
   "bundle_clay": {
     "description": "Clay Submission bundle: M23 BSD + Hodge/Rank Replicut v1.7 PDFs + Z Protocol Tower v2 + supporting modules.",
