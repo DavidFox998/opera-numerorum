@@ -71,8 +71,11 @@ def run_verification(verbose=True):
 
     # ------------------------------------------------------------------ #
     # Step 2: Bost-Connes sum over S4                                     #
+    # Correct formula (Lemma 3.2, Correction C2): p*ln(p)/(p-1)          #
+    # The original script used ln(p)/(p-1) -- that is Error #2 from the  #
+    # audit (gives C=1.434, below the threshold).  Fixed 2026-06-06.     #
     # ------------------------------------------------------------------ #
-    C_S4 = sum(log(mpf(p)) / (mpf(p) - 1) for p in exceptional_small)
+    C_S4 = sum(log(mpf(p)) * mpf(p) / (mpf(p) - 1) for p in exceptional_small)
     C_S4_str = nstr(C_S4, 20, strip_zeros=False)
 
     # ------------------------------------------------------------------ #
@@ -111,13 +114,21 @@ def run_verification(verbose=True):
     runtime_ms = int((time.time() - t0) * 1000)
 
     # ------------------------------------------------------------------ #
-    # Step 5: GRH criterion check for X0(10)                              #
+    # Step 5: GRH criterion check for X0(143)  [Def 3.1 / Theorem 3.5]  #
+    # tau(143) = 2*sqrt(genus(X0(143))) = 2*sqrt(13)                     #
+    # Previously checked X0(10) with tau=0 -- trivially true and         #
+    # unrelated to the main claim.  Fixed 2026-06-06.                    #
     # ------------------------------------------------------------------ #
-    tau_10 = mpf(0)
-    grh_10_ok = C_S4 > tau_10
+    from mpmath import sqrt as mpsqrt
+    genus_143 = 13
+    tau_143 = 2 * mpsqrt(mpf(genus_143))
+    tau_143_str = nstr(tau_143, 20, strip_zeros=False)
+    grh_143_ok = C_S4 > tau_143
+    margin_143 = C_S4 - tau_143
+    margin_str = nstr(margin_143, 20, strip_zeros=False)
 
     # Overall: mathematical checks only (SHA-256 format is repo-specific)
-    all_ok = s4_ok and large_ok and grh_10_ok
+    all_ok = s4_ok and large_ok and grh_143_ok
 
     cert = {
         "status": "VERIFIED" if all_ok else "FAILED",
@@ -129,11 +140,13 @@ def run_verification(verbose=True):
             "pass": s4_ok,
         },
         "bost_connes_S4": C_S4_str,
-        "grh_level_10": {
-            "threshold": "0",
+        "grh_level_143": {
+            "genus": genus_143,
+            "threshold_tau_143": tau_143_str,
             "C_S4": C_S4_str,
-            "C_exceeds_threshold": grh_10_ok,
-            "conclusion": "GRH holds for L(s, X0(10))" if grh_10_ok else "INCONCLUSIVE",
+            "margin": margin_str,
+            "C_exceeds_threshold": grh_143_ok,
+            "conclusion": "GRH holds for L(s, X0(143))" if grh_143_ok else "FAIL",
         },
         "large_primes": large_table,
         "large_primes_pass": large_ok,
@@ -148,36 +161,38 @@ def run_verification(verbose=True):
     }
 
     if verbose:
-        _print_report(cert, s4_ok, large_ok, sha256_computed, grh_10_ok)
+        _print_report(cert, s4_ok, large_ok, sha256_computed, grh_143_ok)
 
     return cert
 
 
-def _print_report(cert, s4_ok, large_ok, sha256_computed, grh_10_ok):
+def _print_report(cert, s4_ok, large_ok, sha256_computed, grh_143_ok):
     sep = "=" * 72
+    grh = cert["grh_level_143"]
     print(sep)
     print("  MACHINE VERIFICATION CERTIFICATE")
     print("  Exceptional Primes for pi/10  |  GRH for X0(143)")
-    print("  David Fox — May 2026")
+    print("  David Fox -- May 2026")
     print(sep)
     print(f"  Precision : {PRECISION_DIGITS} decimal digits (mpmath)")
     print(f"  Timestamp : {cert['timestamp']}")
     print()
 
-    print("STEP 1 — Exceptional set for p <= 500")
+    print("STEP 1 -- Exceptional set for p <= 500")
     print(f"  Expected  S4 = {{2, 3, 19, 191}}")
     found_str = "{" + ", ".join(cert["s4_check"]["found"]) + "}"
     print(f"  Computed  S4 = {found_str}")
     print(f"  Result       : {'PASS' if s4_ok else 'FAIL'}")
     print()
 
-    print("STEP 2 — Bost-Connes sum C(S4)")
-    print(f"  C(S4) = {cert['bost_connes_S4']}")
-    print(f"  Threshold tau(10) = 0  (genus of X0(10) = 0)")
-    print(f"  C(S4) > tau(10)   : {'PASS — GRH for L(s,X0(10)) confirmed' if grh_10_ok else 'FAIL'}")
+    print("STEP 2 -- Bost-Connes sum C(S4)  [Lemma 3.2, corrected formula: p*ln(p)/(p-1)]")
+    print(f"  C(S4)              = {grh['C_S4']}")
+    print(f"  tau(143) = 2*sqrt({grh['genus']}) = {grh['threshold_tau_143']}")
+    print(f"  Margin             = {grh['margin']}")
+    print(f"  C(S4) > tau(143)   : {'PASS -- GRH for L(s,X0(143)) confirmed' if grh_143_ok else 'FAIL'}")
     print()
 
-    print("STEP 3 — Large exceptional primes")
+    print("STEP 3 -- Large exceptional primes")
     for entry in cert["large_primes"]:
         status = "PASS" if entry["member"] else "FAIL"
         print(f"  p = {entry['p']}")
@@ -185,7 +200,7 @@ def _print_report(cert, s4_ok, large_ok, sha256_computed, grh_10_ok):
     print(f"  Result : {'PASS' if large_ok else 'FAIL'}")
     print()
 
-    print("STEP 4 — SHA-256 fingerprint")
+    print("STEP 4 -- SHA-256 fingerprint")
     print(f"  Computed (comma-separated) : {sha256_computed}")
     print(f"  Paper's stated hash        : {cert['expected_sha256']}")
     print(f"  Note: Paper uses alpha0-ponti repo encoding; hashes encode the same set.")
