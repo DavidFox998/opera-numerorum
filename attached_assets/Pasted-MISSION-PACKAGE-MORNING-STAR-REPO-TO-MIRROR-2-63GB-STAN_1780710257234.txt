@@ -1,0 +1,82 @@
+MISSION: PACKAGE MORNING_STAR_REPO TO MIRROR 2.63GB STANDARD
+
+TEMPLATE: Use the 2.63GB file at $BIG_ARCHIVE as structural reference only. 
+DO NOT copy its contents. DO NOT upload it. Extract schema only.
+
+REQUIREMENT: Final output must be MORNING_STAR_REPO.tar.gz containing:
+1. CLAY problems — sealed, 5b80b84d...
+2. Morning Star — ACT1-5 + Appendices + Historical 
+3. All downloadable files — PDFs, Lean, .out, manifests
+4. Classic trio axioms ONLY — propext, Classical.choice, Quot.sound
+
+FIREWALL RULES:
+1. CLAY is READ-ONLY. Checksum 5b80b84d... before/after. If changed: ABORT.
+2. AXIOM AUDIT: Run `grep -r "axiom" src/` → output must be ONLY classical trio. No custom axioms.
+3. SORRY AUDIT: `grep -r "by sorry" proofs/` → output must be 0 for MAIN_ARCHIVE. Drafts go to appendices/
+4. HISTORICAL vs MAIN: archive/HISTORICAL/ ≠ src/ + proofs/. Never mix.
+
+REQUIRED STRUCTURE — MIRROR 2.63GB FORMAT:
+MORNING_STAR_REPO/
+├── README.md                    # How to verify: CLAY=5b80b84d, SORRY=0
+├── VERSION                      # 2026.06.05_clay_5b80b84d_classic_trio
+├── CHANGELOG.md                 # Seal dates, equation count
+├── MANIFEST.csv                 # Every file: path, sha256, act, status
+├── SHA256SUMS                   # For `sha256sum -c SHA256SUMS` verify
+├── LICENSE                      # Classic: "Classical axioms only"
+├── EQUATION_INDEX.txt           # From CERTIFIED_EQUATIONS_MASTER.txt
+├── DEPENDENCY_GRAPH.dot         # ACT1→ACT2→ACT3→ACT4
+├── src/
+│   ├── CLAY/                    # CLAY_M1_M7.zip + M1.lean...M7.lean + m1.out...m7.out
+│   │   └── SEALED_5b80b84d.txt  # Timestamp + checksum proof
+│   └── M_FINAL/                 # All Lean files for ACT2-5, SORRY:0
+├── proofs/                      # PDFs in story order
+│   ├── ACT1_CLAY/               # Computation certs
+│   ├── ACT2_GEOMETRY/           # height, regulator
+│   ├── ACT3_ANALYTIC/           # Weil, PhaseReversal
+│   ├── ACT4_BSD/                # Final theorem
+│   └── ACT5_CONSEQUENCES/       # Corollaries
+├── data/
+│   ├── m_outputs/               # Raw m1.out ... m7.out
+│   └── constants/               # phi_143, h_p6, kappa values
+├── docs/
+│   ├── PROLOGUE/                # Motivation PDFs
+│   ├── EPILOGUE/                # YM, open problems
+│   └── STORY_MANIFEST.csv       # Act→Scene→Reason
+├── tests/
+│   ├── verify.sh                # #!/bin/bash: check CLAY sha + SORRY=0 + axioms
+│   └── lean_check.sh            # Runs lake build, exits non-zero if sorry
+├── appendices/
+│   ├── A_DRAFTS/                # DRAFT_REVISION_NEEDED
+│   └── B_VACUOUS/               # TRIVIAL_BY_CONSTRUCTION × 16
+└── archive/
+    └── HISTORICAL/              # Contextual "sorry" mentions, SORRY=0/0/0
+
+VERIFICATION SCRIPT — tests/verify.sh MUST PASS:
+#!/bin/bash
+set -e
+echo "=== MORNING STAR VERIFICATION ==="
+echo "1. CLAY checksum..."
+test $(sha256sum src/CLAY/CLAY_M1_M7.zip | cut -d' ' -f1) = "5b80b84d..."
+echo "   PASS: 5b80b84d... SEALED"
+echo "2. SORRY count in proofs/..."
+test $(grep -r "by sorry" proofs/ACT* | wc -l) -eq 0
+echo "   PASS: SORRY: 0"
+echo "3. Axioms audit..."
+AXIOMS=$(grep -rh "axiom" src/ | grep -v "propext\|Classical.choice\|Quot.sound" | wc -l)
+test $AXIOMS -eq 0
+echo "   PASS: Classic trio only"
+echo "4. SHA256SUMS verify..."
+sha256sum -c SHA256SUMS --quiet
+echo "   PASS: All files intact"
+echo "ALL CHECKS PASS. MORNING STAR CERTIFIED."
+
+DELIVERABLES:
+1. MORNING_STAR_REPO.tar.gz — downloadable, ~size of PDFs + Lean
+2. REPO_AUDIT.txt — diff vs 2.63GB template structure
+3. DOWNLOAD_INDEX.html — simple file list for GDrive hosting
+
+CLASSIC TRIO = LAW. Any other axiom = FAIL.
+SORRY: 0 in MAIN = LAW. Drafts = appendices only.
+CLAY 5b80b84d = LAW. If it changes, the repo is invalid.
+
+BEGIN.
