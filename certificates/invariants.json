@@ -2892,17 +2892,16 @@
     }
   },
   "bundle_all_certs": {
-    "description": "Full certified archive: all 77 PDFs + invariants.json. Complete Opera Numerorum record.",
+    "description": "Full certified archive: all 78 PDFs + invariants.json. Complete Opera Numerorum record.",
     "file": "OperaNumerorum_AllCerts.zip",
-    "size_bytes": 96769111,
+    "size_bytes": 96781361,
     "size_mb_approx": 92.3,
-    "sha256": "ccc6a5fce6e0813d0c4025510efbb409055cf5a10ec3f7fb6dffbd6fed8d1474",
-    "generated_utc": "2026-06-05T23:55:24.718313Z",
-    "pdf_count": 77,
-    "drive_url": "https://drive.google.com/file/d/1-ZzOhlJzDB4B80gmF_jyDz4XyKzym8tO/view?usp=drivesdk",
+    "sha256": "8375ae28a52c305961136a3039514954b47d46c158b758448b6db9f2b9aff355",
+    "generated_utc": "2026-06-06T01:59:00.344831Z",
+    "pdf_count": 78,
     "contents": [
       "invariants.json",
-      "PDFs/*.pdf (77 files)"
+      "PDFs/*.pdf (78 files)"
     ]
   },
   "p5_replacement_c13": {
@@ -3661,6 +3660,53 @@
         "drive_id": "1lt5cvfEfKiuhF0n36FNsBAP2-KE2kzg_",
         "drive_url": "https://drive.google.com/file/d/1lt5cvfEfKiuhF0n36FNsBAP2-KE2kzg_/view?usp=drivesdk",
         "note": "3 .cert files: propext + Classical.choice + Quot.sound statements and usage locations"
+      }
+    ]
+  },
+  "module_26": {
+    "description": "Firewall Crossing Certificate -- Morning Star zero-sorry threshold",
+    "date": "2026-06-06",
+    "sha256_receipt": "ac7fd2768767feedde962131644f1224bda3abdd578860bb799afa0b9f23090a",
+    "sha256_gdrive_receipt": "92543792f595b4b1dc722b36102bd13fca2cb47c6536d9c36e35d3cfab844238",
+    "sha256_sorry_map": "e95cec60c43374486d02d9a4e15e8745eae3b0303e910810f19d18bd161178b7",
+    "sha256_story_manifest": "56a135389ac7f2e73819f943b81a9935782d8f62507f1e0538c3e48a4ef6cb6b",
+    "sha256_clay_manifest": "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9",
+    "sha256_clay_sealed_zip": "518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1",
+    "sha256_pdf": "17330b75a4d3791982590485a85e4412350b623409369fe05713035a70b16f5e",
+    "parent_folder_id": "1jXSQNCvmXbImp2iqrQNHms8XkKJ8A6DB",
+    "parent_folder_url": "https://drive.google.com/drive/folders/1jXSQNCvmXbImp2iqrQNHms8XkKJ8A6DB",
+    "gate_passes": {
+      "CLAY": "PASS",
+      "LEAN": "PASS (sorry=0)",
+      "M_FINAL": "PASS (sorry=0)",
+      "STORY": "PASS (9 acts, 87 scenes)"
+    },
+    "upload_totals": {
+      "pdfs": 85,
+      "sha256sums_files": 10,
+      "manifest_files": 2,
+      "total_items": 97
+    },
+    "addenda": [
+      {
+        "file": "Replicut_10trillion_Data_Log.pdf",
+        "sha256": "867fe6ffd31de2c06a463897c49940cd97f2d57c75a47ee0522a0289d0778f44",
+        "drive_id": "12hC4apvYAVe11JI1KMDMrvZdlSselz8C"
+      },
+      {
+        "file": "EquationCensus_20260606.zip",
+        "sha256": "0bd95e445f4bb5e72fa14e4ee5e55cc35c83ade1c3a327eb525be0ebf1fd6c8e",
+        "drive_id": "1bSjoZ773xtygefmv_IODmKMOfE573_w0"
+      },
+      {
+        "file": "Equations_updated_20260606.docx",
+        "sha256": "7d6271bb3e89a84f60d89d8c87d9e01dfc833f533cf3d647be1196184df61734",
+        "drive_id": "1WOQym1fUYX3NqapFn4R9NgMHHlDCnx9QO"
+      },
+      {
+        "file": "MORNING_STAR_REPO.tar.gz",
+        "sha256": "ef700584089605a7874429a6475e0026454570746392181f159cd890cc7385f0",
+        "drive_id": "1El43TE20wrdRuqdg40qZdI9-CfvqwyMO"
       }
     ]
   }
