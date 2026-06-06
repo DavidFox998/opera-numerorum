@@ -1,0 +1,8 @@
+kappa = phi(143) * c_lemma / 1e10
+       = 120 * 403608451.6483666 / 1e10
+       = 4.843301419778039
+c_lemma = 403608451.6483666  (Lemma 4.1 conductor constant, 80-bit long double)
+k_bridge = 4302500812118
+|residual| = 0.000285
+error_bound = 0.040413
+Source: bin/print_kappa.c, M2 certified stdout SHA 3716c7db...

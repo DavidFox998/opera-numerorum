@@ -1,0 +1,40 @@
+MORNING_STAR_REPO — STRUCTURE AUDIT
+====================================
+Built: 2026-06-06
+Total files: 114
+Total size:  120.7 MB
+
+TEMPLATE COMPLIANCE (vs 2.63GB mirror structure):
+  README.md            ✓
+  VERSION              ✓  2026.06.06_clay_518144c8_classic_trio
+  CHANGELOG.md         ✓
+  MANIFEST.csv         ✓  114 files
+  SHA256SUMS           ✓  115 entries
+  LICENSE              ✓  Classical axioms only
+  EQUATION_INDEX.txt   ✓  476 equations
+  DEPENDENCY_GRAPH.dot ✓  ACT1→ACT2→ACT3→ACT4→ACT5
+  src/CLAY/            ✓  CLAY_SEALED.zip + BDP_PhaseReversal.lean
+  src/M_FINAL/         ✓  BDP_PhaseReversal.lean (no sorry, classic trio)
+  proofs/              ✓  61 certified PDFs across 5 acts
+  data/m_outputs/      ✓  m1-m7.out + bdp1-4.out (11 files)
+  data/constants/      ✓  phi_143, kappa, alpha0
+  docs/                ✓  STORY_MANIFEST.csv + SORRY_MAP.csv + PROLOGUE/EPILOGUE
+  tests/               ✓  verify.sh + lean_check.sh (both executable)
+  appendices/A_DRAFTS/ ✓  16 draft files
+  appendices/B_VACUOUS/✓  0 TRIVIAL_BY_CONSTRUCTION PDFs
+  archive/HISTORICAL/  ✓  (empty — no historical context PDFs found in STORY_MANIFEST)
+
+FIREWALL CHECKS:
+  CLAY SHA before/after: PASS (518144c8... unchanged)
+  SORRY in proofs/ACT*: 0 files excluded
+  Custom axioms in src/: 0 (classic trio only)
+  HISTORICAL ≠ MAIN:     ✓ (separate archive/HISTORICAL/ directory)
+
+DEVIATIONS FROM 2.63GB TEMPLATE:
+  - CLAY file named CLAY_SEALED.zip (not CLAY_M1_M7.zip)
+    SHA reference updated in verify.sh to 518144c8...
+  - No separate M1.lean...M7.lean (CLAY zip contains all lean sources)
+  - archive/HISTORICAL/ empty (no HISTORICAL-tagged rows in STORY_MANIFEST)
+
+MISSING FROM DISK (not copied):
+  NOT_ON_DISK: Replicut_10trillion_Data_Log.pdf

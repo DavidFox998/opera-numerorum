@@ -1,0 +1,13 @@
+Opera Numerorum — David J. Fox — ORCID 0009-0008-1290-6105
+
+AXIOM POLICY: Classical axioms only.
+  Permitted: propext, Classical.choice, Quot.sound
+  All others: PROHIBITED
+
+This work is released under CC BY 4.0 with the following additions:
+  1. CLAY is READ-ONLY. SHA 518144c8... is the canonical seal.
+  2. SORRY=0 in all MAIN proofs (proofs/ACT*/).
+  3. Draft work is segregated to appendices/A_DRAFTS/.
+  4. Historical context is segregated to archive/HISTORICAL/.
+
+Any redistribution must preserve the SHA chain.

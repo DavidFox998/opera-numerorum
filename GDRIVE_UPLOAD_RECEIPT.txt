@@ -95,3 +95,24 @@ EquationCensus_20260606.zip
     CERTIFIED_EQUATIONS_MASTER.txt  (476 EQ lines, COUNT_A==COUNT_B)
     EQUATION_CENSUS_LOG.txt         (grep commands + per-file counts)
     CHECKSUMS_BEFORE_AFTER.txt      (CLAY 518144c8 before==after, UNTOUCHED)
+
+ADDENDUM — 2026-06-06 (MORNING_STAR_REPO)
+------------------------------------------
+MORNING_STAR_REPO.tar.gz
+  SHA256:   ef700584089605a7874429a6475e0026454570746392181f159cd890cc7385f0
+  Size:     92.5 MB
+  Folder:   MANIFESTS (MORNING_STAR_20260606)
+  Drive ID: 1El43TE20wrdRuqdg40qZdI9-CfvqwyMO
+  URL:      https://drive.google.com/file/d/1El43TE20wrdRuqdg40qZdI9-CfvqwyMO/view?usp=drivesdk
+
+  verify.sh results:
+    1. CLAY 518144c8... PASS
+    2. SORRY=0 in proofs/ PASS
+    3. Classic trio axioms only PASS
+    4. SHA256SUMS all files intact PASS
+    5. 476 equations certified PASS
+    ALL CHECKS PASS. MORNING STAR CERTIFIED.
+
+Companion files (also in repo):
+  REPO_AUDIT.txt      — structure diff vs 2.63GB template
+  DOWNLOAD_INDEX.html — browsable file list

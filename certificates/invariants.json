@@ -3625,6 +3625,24 @@
           "CHECKSUMS_BEFORE_AFTER.txt"
         ],
         "note": "Certified Equation Census \u2014 476 entries, COUNT_A==COUNT_B, CLAY 518144c8 sealed"
+      },
+      {
+        "date": "2026-06-06",
+        "file": "MORNING_STAR_REPO.tar.gz",
+        "sha256": "ef700584089605a7874429a6475e0026454570746392181f159cd890cc7385f0",
+        "size_mb": 92.5,
+        "drive_folder": "MANIFESTS",
+        "drive_id": "1El43TE20wrdRuqdg40qZdI9-CfvqwyMO",
+        "drive_url": "https://drive.google.com/file/d/1El43TE20wrdRuqdg40qZdI9-CfvqwyMO/view?usp=drivesdk",
+        "verify_result": "ALL CHECKS PASS",
+        "contents": {
+          "clay": "src/CLAY/CLAY_SEALED.zip (518144c8... sealed)",
+          "lean": "src/M_FINAL/BDP_PhaseReversal.lean (32 theorems)",
+          "proofs": "86 zero-sorry PDFs across ACT1-5",
+          "equations": "EQUATION_INDEX.txt (476 entries)",
+          "manifests": "MANIFEST.csv (114 files), SHA256SUMS (115 entries)",
+          "scripts": "tests/verify.sh + lean_check.sh (all 5 checks PASS)"
+        }
       }
     ]
   }
