@@ -1891,14 +1891,14 @@ export default function CertificatePage() {
               <div className="flex items-center gap-2">
                 <span className="text-green-400 text-base">🗜</span>
                 <span className="text-xs font-bold text-white">
-                  Full Certificate Archive (All 80 PDFs)
+                  Full Certificate Archive (All 82 PDFs)
                 </span>
               </div>
               <p className="text-[10px] text-gray-400 leading-relaxed">
                 Every certified PDF — M1–M8Q, M9–M23, BDP, Wall256, Z Protocol, Field Report, Canonical Paper + invariants.json. <span className="text-amber-400">~95 MB</span>
               </p>
               <span className="font-mono text-[9px] text-gray-600 break-all mt-1">
-                SHA: {liveShas["ALL_CERTS_ZIP"] ?? "fa792b778bac6f1b311f8df1e34b402cb16a6920a2336b9257e6c946f16eaf09"}
+                SHA: {liveShas["ALL_CERTS_ZIP"] ?? "eb790ebed2687937c0e605599ab3a5f8f893680b85da7197a212701126aaa45d"}
               </span>
               <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                 <a
@@ -1909,7 +1909,7 @@ export default function CertificatePage() {
                   <Download className="w-3 h-3 shrink-0" />
                   Download
                 </a>
-                <VerifyFileButton sha={liveShas["ALL_CERTS_ZIP"] ?? "fa792b778bac6f1b311f8df1e34b402cb16a6920a2336b9257e6c946f16eaf09"} />
+                <VerifyFileButton sha={liveShas["ALL_CERTS_ZIP"] ?? "eb790ebed2687937c0e605599ab3a5f8f893680b85da7197a212701126aaa45d"} />
                 {liveUrls["ALL_CERTS_ZIP"] && (
                   <a
                     href={liveUrls["ALL_CERTS_ZIP"]}

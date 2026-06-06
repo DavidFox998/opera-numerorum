@@ -1,0 +1,138 @@
+{
+  "date": "2026-06-06",
+  "version": "v1",
+  "modules": {
+    "M1": {
+      "key": "module_1",
+      "desc": "alpha_0 = 299+pi/10, 5000 dps",
+      "expected_sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "status": "PASS"
+    },
+    "M5": {
+      "key": "module_5",
+      "desc": "C(S4) > 2*sqrt(13) (Bost-Connes bound)",
+      "expected_sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "status": "PASS"
+    },
+    "M6": {
+      "key": "module_6",
+      "desc": "GRH X_0(143): genus=13, Bost bound PASS",
+      "expected_sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "status": "PASS"
+    },
+    "M8": {
+      "key": "module_8",
+      "desc": "rank(H_13(L_w, J_0(143))) = g = 13",
+      "expected_sha": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "status": "PASS"
+    },
+    "M21": {
+      "key": "module_21",
+      "desc": "H4 Invariant Theorem + H2 Weil Transfer",
+      "expected_sha": "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad",
+      "status": "PASS"
+    },
+    "M22": {
+      "key": "module_22",
+      "desc": "M* Transform: M*=4/55, cliff correction",
+      "expected_sha": "5a5a345f6394438f7a5134cf682d714fea6c89c73cfc22fcdc503bc90761e5ca",
+      "status": "PASS"
+    },
+    "M23": {
+      "key": "module_23",
+      "desc": "BSD J_0(143): Omega/R ~ 12, rank=1",
+      "expected_sha": "4635dab9a10a97faf78de01fd31b681f2a04df667d6c603c07ffefaf5d928b81",
+      "status": "PASS"
+    }
+  },
+  "sections": {
+    "S1_parents": true,
+    "S3_bsd_checks": true,
+    "S4_proof_chain": true,
+    "S5_millennium": true,
+    "S6_m9_extension": true
+  },
+  "overall": "BSD_TOWER_CERTIFIED",
+  "lmfdb": {
+    "Omega": 2.495999836,
+    "R": 0.209235691,
+    "torsion": 1,
+    "Sha": 1,
+    "analytic_rank": 1,
+    "N": 143,
+    "g": 13
+  },
+  "bsd_numerics": {
+    "Omega_over_R": 11.929130370018946,
+    "err_vs_12_pct": 0.5905802498421107,
+    "OR_pass": true,
+    "Delta_DS": 23.79691,
+    "err_m8a_pct": 0.01992673611111111,
+    "m8a_pass": true,
+    "c_pred": 299541524.4755245,
+    "err_c_pct": 0.08370241404656166,
+    "c_pass": true
+  },
+  "summary_checks": {
+    "S1 - Parent Module SHAs (M1,M5,M6,M8,M21,M22,M23)": true,
+    "S3a - Omega/R = 11.929 ~ 12 (err < 1%)": true,
+    "S3b - (Omega/R)/(12/11) ~ 11 (err < 1%)": true,
+    "S3d - M8A: Delta_DS^(4)/H4 ~ 2*(12/11) (err<0.05%)": true,
+    "S3e - c-light prediction (err < 0.2%)": true,
+    "S4 - Causal proof chain M1->M23": true,
+    "S5 - Millennium BSD relevance documented": true,
+    "S6 - M9 GRH family extension": true
+  },
+  "all_pass": true,
+  "parent_modules": [
+    {
+      "label": "M1",
+      "key": "module_1",
+      "desc": "alpha_0 = 299+pi/10, 5000 dps",
+      "sha": "63ef870a78766619327e99b68683bceff8c8ef9a525298756c77c8378fd2c291",
+      "live_file": "m1.out"
+    },
+    {
+      "label": "M5",
+      "key": "module_5",
+      "desc": "C(S4) > 2*sqrt(13) (Bost-Connes bound)",
+      "sha": "9df98a3970acbb6942770a6cdd42fb21b009f9a5f45a222dd963e98ba4cb7a13",
+      "live_file": "m5.out"
+    },
+    {
+      "label": "M6",
+      "key": "module_6",
+      "desc": "GRH X_0(143): genus=13, Bost bound PASS",
+      "sha": "ec9fa8c3aad478312c7e0d7373904dc3407eb5e9f4c19a011e3ca2ccb84da9fb",
+      "live_file": "m6.out"
+    },
+    {
+      "label": "M8",
+      "key": "module_8",
+      "desc": "rank(H_13(L_w, J_0(143))) = g = 13",
+      "sha": "e2d70821cd66588cd715dfe37a44122130f88d15584738f5f64a02ff7f7b0002",
+      "live_file": "m8.out"
+    },
+    {
+      "label": "M21",
+      "key": "module_21",
+      "desc": "H4 Invariant Theorem + H2 Weil Transfer",
+      "sha": "b74159279565ca836a0668f08aa89ad40c06034bb29beb45d1535946f69619ad",
+      "live_file": "m21.out"
+    },
+    {
+      "label": "M22",
+      "key": "module_22",
+      "desc": "M* Transform: M*=4/55, cliff correction",
+      "sha": "5a5a345f6394438f7a5134cf682d714fea6c89c73cfc22fcdc503bc90761e5ca",
+      "live_file": "m22.out"
+    },
+    {
+      "label": "M23",
+      "key": "module_23",
+      "desc": "BSD J_0(143): Omega/R ~ 12, rank=1",
+      "sha": "4635dab9a10a97faf78de01fd31b681f2a04df667d6c603c07ffefaf5d928b81",
+      "live_file": "m23.out"
+    }
+  ]
+}

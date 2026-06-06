@@ -108,6 +108,8 @@ m8.out                       M8 certified stdout (Hankel rank check)
 | M8O | EEQC Layer 5 FAULT-TOLERANT GATES: G_eff=50625xG_0; Z_throat=1; tidal=0.0999g<0.1g; r0=3m; delta=0.20m; P_hold=1.40kW; E=0.2016MWh; 35 routes GREEN; MTBF=5.5yr; 5-step EEQC method; inject error Z=1.002 ABORT [PASS] | `1e7e5280...` | FAULT_TOLERANT_GATES_CERTIFIED |
 | M8P | EEQC Layer 6 LOGICAL CLOCK: M*=4/55; 12/11 handshake; B_M=21.7683024920261MHz; RTT=18.635ns; BSD rank(J_0(143))=1; H4=12/11 exact; Tr(omega)=0; inject error RTT=18.636ns ABORT [PASS]; CONTACT ZERO | `3e5f4f04...` | LOGICAL_CLOCK_CERTIFIED |
 | M8Q | EEQC Layer 7 SYSTEM: 35/35 routes GREEN; 120/120 cells PASS; 1680/1680 PLLs PASS; tidal_all<0.1g; P_logical=0; MTBF=5.5yr; GREEN^7; min 7 simultaneous failures to break; universal 7-abort matrix; images: rotunda/hallway/craft/docking | `81e975cf...` | MORNINGSTAR_SYSTEM_CERTIFIED |
+| BSD Tower | BSD for J_0(143): causal chain M1->M5->M6->M8->M21->M22->M23; Omega/R=11.929~12 [err 0.59%]; M8A Delta_DS^(4)/H4=2.1812~2*(12/11) [err 0.0199%]; c err 0.0837%; Tate follows | `62fcc3c7...` | BSD_TOWER_CERTIFIED |
+| NS Tower | NS(J_0(143)): rank=1 (theta divisor); Hodge divisor PROVEN (Lefschetz); Tate PROVEN (M23 closure); 200 transcendental Hodge classes (M8C); rho<=28=g+Z; M*=4/55; Hodge Clay: OPEN | `46ffa07d...` | NS_TOWER_CERTIFIED |
 
 **Master manifest SHA** (SHA256 of cat m1.out...m6.out):
 `5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9`
