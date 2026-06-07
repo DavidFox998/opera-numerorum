@@ -1,0 +1,26 @@
+{
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "publication_date": "2026-05-21",
+  "creators": [
+    {
+      "name": "Fox, David J.",
+      "orcid": "0009-0008-1290-6105",
+      "affiliation": "Independent researcher, Aberdeen/Seattle WA"
+    }
+  ],
+  "title": "Opera Numerorum: SHA-Bound Machine Certification Pipeline for GRH and BSD",
+  "description": "Full cryptographic certification pipeline for David Fox's results: GRH for X_0(143), BSD for J_0(143), and P vs NP phase reversal at p_5 = 3,993,746,143,633. Seven modules form a causal DAG sealed by a SHA-256 manifest. Named after Euler, Riemann, and Dirichlet.",
+  "keywords": [
+    "Riemann hypothesis",
+    "GRH",
+    "BSD",
+    "P vs NP",
+    "SHA-256",
+    "machine certification",
+    "Lean 4",
+    "mpmath",
+    "Opera Numerorum"
+  ]
+}
