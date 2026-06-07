@@ -8,7 +8,10 @@ Internal working title: **Battle Plan v1.6** — retained in all SHA-bound files
 
 ## Pre-commit Hook (format validator)
 
-The `hooks/pre-commit` script runs `python3 certificates/validate_invariants.py` automatically whenever `certificates/invariants.json` is staged. Any malformed SHA field blocks the commit and prints the offending paths.
+The `hooks/pre-commit` script runs two validators automatically:
+
+1. **EXEMPTIONS self-test** (`validate_invariants.py --self-test`) — runs unconditionally on every commit. Catches typos in newly-added `EXEMPTIONS` keys or dot-paths before they reach CI. Pure in-memory; completes in under a second.
+2. **SHA format check** (`validate_invariants.py <staged-blob>`) — fires whenever `certificates/invariants.json` is staged. Any malformed SHA field blocks the commit and prints the offending paths.
 
 ```bash
 # Install once after cloning (or after pulling a new hook template):
@@ -40,6 +43,9 @@ python3 certificates/build_module_1.py   # (through build_module_7.py)
 
 # Rebuild the All-Certs ZIP (run after adding any new PDF to certificates/):
 python3 certificates/build_allcerts_zip.py  # rebuilds OperaNumerorum_AllCerts.zip, patches invariants.json + Certificate.tsx
+
+# Regenerate STORAGE.md Drive table (run after any Drive upload):
+python3 certificates/build_storage_doc.py   # reads drive_url fields from invariants.json, rewrites "What is on Google Drive" section
 
 # Rebuild Field Report variants:
 python3 certificates/build_field_report.py --layout 1pp   # ~170 pages
@@ -96,7 +102,7 @@ Full SHA table: `certificates/invariants.json`
 | RH Tower | GRH for X_0(143) + all 147 X_0(N), g in [1,33] | `73a24c83...` | RH_TOWER_CERTIFIED |
 | BSD Tower | BSD for J_0(143): rank=1, Omega/R~12 [0.59%] | `62fcc3c7...` | BSD_TOWER_CERTIFIED |
 | NS Tower | NS(J_0(143)): Hodge+Tate PROVEN, Clay OPEN | `46ffa07d...` | NS_TOWER_CERTIFIED |
-| MS Tower | Morning Star GREEN^7, B_M=21.768MHz, RTT=18.635ns | `86834fbd...` | MS_TOWER_CERTIFIED |
+| MS Tower | Aureum GREEN^7, B_M=21.768MHz, RTT=18.635ns | `86834fbd...` | MS_TOWER_CERTIFIED |
 | P vs NP Tower | BDP Phase Reversal at p_5=3,993,746,143,633; Clay OPEN | `2f3c05b3...` | PVSNP_TOWER_CERTIFIED |
 | All Towers | Omnibus 8-page PDF: RH+BSD+NS+Z+MS+Health | — | ALL_TOWERS_CERTIFIED |
 

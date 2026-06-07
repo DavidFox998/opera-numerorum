@@ -1,0 +1,55 @@
+M8E COMSOL Template Specification
+Opera Numerorum -- Battle Plan v1.6
+David Fox -- June 2026
+
+TEMPLATE: M8E_24layer_Template.mph
+BASE:     Copy M8G_120cell_H4_Template.mph, then apply changes below.
+
+GEOMETRY CHANGES:
+  Via file:    24_vias.csv  (720 vias, 24 layers x 30)
+  Layers:      24  (not 120)
+  Layer pitch: 0.1mm  (Rogers 4350B, 0.1mm core)
+  Via radius:  5mm from board centre
+  Via drill:   0.1mm  (tolerance: 20um, relaxed from M8G 5um)
+  Board shape: circular disc, ~15mm diameter
+
+MATERIAL:
+  Substrate: Rogers 4350B
+    Dk  = 3.48 (at 10 GHz)
+    Df  = 0.0037 (at 10 GHz)
+    Not FR4. Critical for high-Q resonance.
+  Copper: 0.5 oz (18um), all 24 layers.
+
+PHYSICS TARGETS (M8E, NOT M8G):
+  f_res    = 299.314159 MHz  (same as M8G -- M1 certified)
+  k_c(H3)  = 2.13 +/- 0.10  (NOT 3.183 -- H3 Bost-Connes fixed point)
+  Cliff voltage: k_c * V_ref = 2.13 V  (for V_ref = 1.0V)
+  Via tolerance: 20um  (C08, optional gate)
+
+PASS CRITERIA (7/8 gates):
+  C01: Geometry loads correctly (720 vias, 24 layers, 30/layer)
+  C02: H3 symmetry valid per layer (180 angle checks, 0 failures)
+  C03: Layer count = 24
+  C04: Via count = 720  (24 x 30)
+  C05: f_res = 299.314159 MHz
+  C06: k_c = 2.13 +/- 0.10
+  C07: Cliff detected at 2.13V +/- 0.15V
+  C08: Via tolerance <= 20um  [OPTIONAL -- 7/8 passes if C08 fails]
+
+SPECIAL CASE -- C07 FAIL WITH C01-C06 PASS:
+  If cliff appears at wrong voltage (C07 fails), but geometry (C01-C06) is
+  correct, then k_c(H3) prediction is wrong. This means M8C gear ratio
+  (gear=3/6) may be incorrect. Recheck M8C before building M8G.
+
+SIM RUN:
+  Expected: 4 hours on 32 cores (vs M8G 8+ hours due to simpler geometry).
+  Output: results/m8e_comsol_out.txt
+  Validate: python3 m8e_sim_check.py --comsol results/m8e_comsol_out.txt
+
+DECISION AFTER SIM:
+  C01-C07 all PASS -> fab 24-layer board (~$400, 2 weeks, Rogers 4350B)
+  C01-C07 all PASS -> lab test (M8F-Lite: cliff at k_c=2.13, C_ratio, transit)
+  M8F-Lite PASS    -> M8G 120-layer has 80%+ confidence, proceed ($3k, 4wk)
+  M8F-Lite FAIL    -> M8B falsified, stop, saved $2600
+  C07 FAIL only    -> recheck M8C gear ratio, do not fab
+  Other FAIL       -> debug geometry/fab, do not fab

@@ -20,6 +20,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -90,6 +91,8 @@ BUILD_SCRIPT_MAP = {
     "clay_card":                        "certificates/build_clay_card.py",
     "morningstar_engineering_spec_v2":  "certificates/build_morningstar_engineering_spec_v2.py",
     "morningstar_feasibility_study":    "certificates/build_morningstar_feasibility_study.py",
+    "module_m23":                       "certificates/build_module_m23.py",
+    "module_m21":                       "certificates/build_module_m21.py",
 }
 
 # ---------------------------------------------------------------------------
@@ -560,6 +563,119 @@ def run_self_check():
             t7_checked += 1
     if not t7_fail:
         print(f"  {t7_checked} PDF(s) verified, {t7_skipped} skipped.")
+
+    # Test 8: source SHA freshness -- update_source_shas.py --check must exit 0
+    print("Test 8: Source SHA freshness (update_source_shas.py --check) ...")
+    src_sha_script = "certificates/update_source_shas.py"
+    if not os.path.exists(src_sha_script):
+        print(f"  FAIL: {src_sha_script} not found on disk")
+        ok = False
+    else:
+        t8_result = subprocess.run(
+            [sys.executable, src_sha_script, "--check"],
+            capture_output=True,
+            text=True,
+        )
+        if t8_result.returncode == 0:
+            # Count "OK" lines to give a useful summary
+            ok_count = t8_result.stdout.count("\n  OK ")
+            print(f"  PASS: all source SHAs are current ({ok_count} field(s) verified).")
+        else:
+            # Surface the stale entries from stdout
+            stale_lines = [
+                line.strip()
+                for line in t8_result.stdout.splitlines()
+                if "STALE" in line
+            ]
+            print(f"  FAIL: {len(stale_lines)} source SHA(s) stale in invariants.json:")
+            for line in stale_lines:
+                print(f"    {line}")
+            print("  Run: python3 certificates/update_source_shas.py")
+            ok = False
+
+    # Test 9: certify_script / builder_script cross-check
+    # For every tower that records both scripts in invariants.json, parse each
+    # file for the shared RESULTS_FILE = "..." constant (the handoff file that
+    # the certify script writes and the builder script reads).  A mismatch means
+    # one script was updated but the other was not -- the pipeline would break
+    # silently at build time.
+    print("Test 9: Builder/certify RESULTS_FILE constant agreement ...")
+    _RESULTS_RE = re.compile(r'^RESULTS_FILE\s*=\s*["\']([^"\']+)["\']', re.MULTILINE)
+
+    def _extract_results_file(path):
+        """Return the RESULTS_FILE value from a script, or None if absent."""
+        try:
+            with open(path, encoding="utf-8") as fh:
+                src = fh.read()
+        except OSError:
+            return None
+        m = _RESULTS_RE.search(src)
+        return m.group(1) if m else None
+
+    t9_fail = False
+    t9_checked = 0
+    t9_skipped = 0
+    for tower in TOWER_KEYS:
+        entry = data.get(tower)
+        if entry is None:
+            print(f"  SKIP: {tower} -- not in invariants.json")
+            t9_skipped += 1
+            continue
+        cs = entry.get("certify_script")
+        # builder_script may be absent from the invariants.json entry; fall back
+        # to BUILD_SCRIPT_MAP so all registered towers are checked regardless of
+        # whether the JSON field has been filled in.
+        bs = entry.get("builder_script") or BUILD_SCRIPT_MAP.get(tower)
+        if not cs:
+            print(f"  SKIP: {tower} -- no certify_script field in invariants.json")
+            t9_skipped += 1
+            continue
+        if not bs:
+            print(f"  SKIP: {tower} -- no builder_script in invariants.json or BUILD_SCRIPT_MAP")
+            t9_skipped += 1
+            continue
+        if not os.path.exists(bs):
+            print(f"  FAIL: {tower} -- builder_script not on disk: {bs}")
+            ok = False
+            t9_fail = True
+            continue
+        if not os.path.exists(cs):
+            print(f"  FAIL: {tower} -- certify_script not on disk: {cs}")
+            ok = False
+            t9_fail = True
+            continue
+        cs_val = _extract_results_file(cs)
+        bs_val = _extract_results_file(bs)
+        if cs_val is None and bs_val is None:
+            print(f"  FAIL: {tower} -- no RESULTS_FILE marker in either script")
+            print(f"    certify_script: {cs}")
+            print(f"    builder_script: {bs}")
+            ok = False
+            t9_fail = True
+            continue
+        if cs_val is None:
+            print(f"  FAIL: {tower} -- RESULTS_FILE marker absent in certify_script ({cs})")
+            print(f"    builder_script has: \"{bs_val}\"")
+            ok = False
+            t9_fail = True
+            continue
+        if bs_val is None:
+            print(f"  FAIL: {tower} -- RESULTS_FILE marker absent in builder_script ({bs})")
+            print(f"    certify_script has: \"{cs_val}\"")
+            ok = False
+            t9_fail = True
+            continue
+        if cs_val == bs_val:
+            print(f"  PASS: {tower} -- RESULTS_FILE = \"{cs_val}\" (both agree)")
+            t9_checked += 1
+        else:
+            print(f"  FAIL: {tower} -- RESULTS_FILE mismatch")
+            print(f"    certify_script ({cs}): \"{cs_val}\"")
+            print(f"    builder_script ({bs}): \"{bs_val}\"")
+            ok = False
+            t9_fail = True
+    if not t9_fail:
+        print(f"  {t9_checked} pair(s) verified, {t9_skipped} skipped.")
 
     print("=" * 60)
     if ok:

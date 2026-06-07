@@ -21,6 +21,21 @@
 INVARIANTS="certificates/invariants.json"
 
 # ---------------------------------------------------------------------------
+# CHECK 0: EXEMPTIONS self-test -- unconditional, runs on every commit.
+#
+# Catches typos in a newly-added EXEMPTIONS key or dot-path before the commit
+# reaches CI.  The self-test is pure in-memory (no file I/O) so it completes
+# in well under a second.
+# ---------------------------------------------------------------------------
+echo "pre-commit: running EXEMPTIONS self-test (validate_invariants.py --self-test)..."
+if ! python3 certificates/validate_invariants.py --self-test; then
+    echo ""
+    echo "pre-commit: commit blocked. Fix the EXEMPTIONS table in certificates/validate_invariants.py and retry."
+    exit 1
+fi
+echo ""
+
+# ---------------------------------------------------------------------------
 # Always extract invariants.json from the git INDEX (not the working tree).
 # `git show :path` reads the index entry, which equals HEAD for unmodified
 # files and the newly staged blob for staged changes.  This is the correct

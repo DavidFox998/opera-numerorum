@@ -1192,19 +1192,19 @@ for fname, cid, sc, desc in lean_file_data:
         origin="lean-proof-towers/ (computed at build time)"))
 
 story.append(make_figure(
-    "MORNING_STAR_REPO_BDP_BINDING",
-    "BINDING: MORNING_STAR_REPO/src/M_FINAL/BDP_PhaseReversal.lean",
-    ["MORNING_STAR_REPO copy SHA: " +
-     _file_sha256("MORNING_STAR_REPO/src/M_FINAL/BDP_PhaseReversal.lean"),
+    "AUREUM_REPO_BDP_BINDING",
+    "BINDING: AUREUM_REPO/src/M_FINAL/BDP_PhaseReversal.lean",
+    ["AUREUM_REPO copy SHA: " +
+     _file_sha256("AUREUM_REPO/src/M_FINAL/BDP_PhaseReversal.lean"),
      "lean-proof-towers copy SHA: " +
      LEAN_SHAS.get("BDP_PhaseReversal.lean","???"),
      "Both copies must match for chain integrity."],
     "BDP_PhaseReversal.lean exists in two locations: the primary"
-    " lean-proof-towers/ directory and the MORNING_STAR_REPO copy."
+    " lean-proof-towers/ directory and the AUREUM_REPO copy."
     " Both SHA-256 values are computed live. If the copies differ,"
     " the lean-proof-towers/ version is authoritative.",
     0, lean_file="BDP_PhaseReversal.lean",
-    origin="MORNING_STAR_REPO/src/M_FINAL/"))
+    origin="AUREUM_REPO/src/M_FINAL/"))
 
 story.append(make_figure(
     "LEAN_SORRY_TOTAL_SUMMARY",

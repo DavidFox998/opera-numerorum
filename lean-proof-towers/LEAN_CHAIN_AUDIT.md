@@ -1,6 +1,6 @@
 # TheoremaAureum143 — Lean Chain Audit
 Opera Numerorum / Battle Plan v1.6  
-Author: David Fox  |  Audit date: 2026-06-04 (rev 2)
+Author: David Fox  |  Audit date: 2026-06-04 (rev 2); C08 added 2026-06-06
 
 ## Chain Structure
 
@@ -12,10 +12,15 @@ C01_Arakelov       foundational definitions + arakelovSelfIntersection FIX
             └─ C05_Discriminant  torsion field discriminant bounds
                └─ C06_ZetaControl  grh_for_L_X0_143, zero-free regions, RH descent gap
                   └─ C07_RH        Main theorem: RH from ArakelovPositivity
+                     └─ C08_Descent  Lemma 4.1 gap formally named; Conjecture 4.1 stated
 ```
 
 Final theorem (C07):
   `C07_RH_of_Arakelov (hA : ArakelovPositivity (X₀ 143)) : RiemannHypothesis`
+
+Formal gap separator (C08):
+  `EquidistributionDescentConjecture` -- named open item, not proved, not assumed
+  `C08_Separation` -- makes Conjecture 4.1 syntactically explicit as the missing hypothesis
 
 ## Sorry Count — 2026-06-04 (after priority fixes)
 
@@ -166,15 +171,21 @@ REDUCTION         : RH ⟸ ArakelovPositivity(X₀(143)) + descent (Lemma 4.1 ga
 | C05_Discriminant.lean | f7a2c4dd9c6bdebbb91900fce0ce3dcf7dbee864d853fdae58a553cb5d8e9ce1 |
 | C06_ZetaControl.lean | 12782d642665bc758a89f9489d73aa44b7587a2af91289420be7200a31b64e4b |
 | C07_RH.lean | 0f7faf2c4e604e9c17619d5472ece16c1bfcb2591476169c7f21bca7377f9c3e |
+| C08_Descent.lean | 3f947ea26d7c42bcefb04a490db8aa4164715a68bcb77ad4890ea626d6edc6e6 |
 
-## Audit Verdict (2026-06-04 rev 2)
+## Audit Verdict (2026-06-04 rev 2; C08 added 2026-06-06)
 
 ```
 STATUS            : ARCHITECTURE_CERTIFIED (vacuousness bug resolved)
-SORRY COUNT       : 15 (down from 17; 4 closed, 2 new meaningful theorems)
-RH REDUCTION      : CORRECT — ArakelovPositivity(X₀(143)) → RH is a valid reduction
-CLAY-COMPLETE     : NO — zeta_zeros_on_critical_line requires a proof of RH
+C08 ADDITION      : DESCENT_GAP_DOCUMENTED (2026-06-06)
+SORRY COUNT       : 15 in C01-C07; +1 in C08 (CF_PrimeConvergents numerical bound)
+RH REDUCTION      : CORRECT -- ArakelovPositivity(X_0(143)) -> RH is a valid reduction
+CLAY-COMPLETE     : NO -- Conjecture 4.1 (EquidistributionDescentConjecture) is OPEN
 HONEST ASSESSMENT : The Lean chain is a correct and non-vacuous proof skeleton.
-                    The main open item is the descent Lemma 4.1 (Canonical Paper §8).
-                    All sorry's are documented with closure conditions.
+                    The descent gap is now formally named and machine-readable:
+                    EquidistributionDescentConjecture in C08_Descent.lean
+                    (SHA 3f947ea26d7c42bc...).
+                    All sorries are documented with closure conditions.
+                    The gap between ARCHITECTURE_CERTIFIED and CLAY_COMPLETE is
+                    syntactically enforced by the C08_Separation theorem.
 ```

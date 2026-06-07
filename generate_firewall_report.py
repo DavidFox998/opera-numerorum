@@ -9,7 +9,7 @@ Produces REFEREE_FIREWALL_REPORT.txt and REFEREE_FIREWALL_REPORT.pdf.
 Adapted from REFEREE_FIREWALL_REPORT.sh to work within the single
 opera-numerorum workspace, treating:
   ./proofs/               as the BSD submission scope
-  ./MORNING_STAR_REPO/    as the morningstar_spacecraft repository
+  ./AUREUM_REPO/    as the aureum repository
 
 CLAY seal: 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9
            = SHA256(cat m1.out m2.out m3.out m4.out m5.out m6.out)
@@ -21,7 +21,7 @@ from pathlib import Path
 CLAY_SEAL = "5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9"
 WORKSPACE = Path(__file__).parent
 BSD_PROOF_DIR = WORKSPACE / "proofs"
-MS_REPO_DIR   = WORKSPACE / "MORNING_STAR_REPO"
+MS_REPO_DIR   = WORKSPACE / "AUREUM_REPO"
 M_OUT_FILES   = ["m1.out","m2.out","m3.out","m4.out","m5.out","m6.out"]
 
 # Active import lines only — must start with 'import' (not a comment)
@@ -164,15 +164,15 @@ def section_sorry_quarantine(lines):
     lines.append("")
 
     if not MS_REPO_DIR.exists():
-        lines.append("3b. MORNING_STAR_REPO not found -- skip morningstar sorry audit")
+        lines.append("3b. AUREUM_REPO not found -- skip aureum sorry audit")
         lines.append("")
         return
 
-    lines.append("3b. MORNING_STAR_REPO/ total sorry count:")
+    lines.append("3b. AUREUM_REPO/ total sorry count:")
     all_ms_sorries = grep_lean(MS_REPO_DIR, r"\bsorry\b")
     active_ms = [(f, n, t) for f, n, t in all_ms_sorries
                  if not t.strip().startswith("--")]
-    lines.append(f"  Total active sorries in MORNING_STAR_REPO/: {len(active_ms)}")
+    lines.append(f"  Total active sorries in AUREUM_REPO/: {len(active_ms)}")
     lines.append("")
 
     historical_prefix = MS_REPO_DIR / "archive" / "HISTORICAL"
@@ -204,9 +204,9 @@ def section_sorry_quarantine(lines):
         lines.append("  MORNINGSTAR FULL QUARANTINE: PARTIAL (BDP tower sorries in src/M_FINAL/)")
         lines.append("")
         lines.append("  STRUCTURAL ISOLATION (June 2026):")
-        lines.append("  MORNING_STAR_REPO/ now lives in a physically separate private GitHub")
-        lines.append("  repository (github.com/DavidFox998/morningstar_spacecraft). A Clay")
-        lines.append("  referee cloning opera-numerorum sees zero BDP/Morning Star files by")
+        lines.append("  AUREUM_REPO/ now lives in a physically separate private GitHub")
+        lines.append("  repository (github.com/DavidFox998/aureum). A Clay")
+        lines.append("  referee cloning opera-numerorum sees zero BDP/Aureum files by")
         lines.append("  construction. The sorry-isolation is structural (repo-level), not")
         lines.append("  only import-graph-verified. Push scripts: push_to_github.sh (public)")
         lines.append("  and push_morning_star.sh (private). See REPO_MAP.txt.")
@@ -214,9 +214,9 @@ def section_sorry_quarantine(lines):
         lines.append("  RESULT: PASS -- All sorry in MORNING_STAR_REPO quarantined to HISTORICAL")
         lines.append("")
         lines.append("  STRUCTURAL ISOLATION (June 2026):")
-        lines.append("  MORNING_STAR_REPO/ now lives in a physically separate private GitHub")
-        lines.append("  repository (github.com/DavidFox998/morningstar_spacecraft). A Clay")
-        lines.append("  referee cloning opera-numerorum sees zero BDP/Morning Star files by")
+        lines.append("  AUREUM_REPO/ now lives in a physically separate private GitHub")
+        lines.append("  repository (github.com/DavidFox998/aureum). A Clay")
+        lines.append("  referee cloning opera-numerorum sees zero BDP/Aureum files by")
         lines.append("  construction. The sorry-isolation is structural (repo-level), not")
         lines.append("  only import-graph-verified. Push scripts: push_to_github.sh (public)")
         lines.append("  and push_morning_star.sh (private). See REPO_MAP.txt.")
@@ -313,14 +313,14 @@ def section_declaration(lines, overall_pass):
     lines.append("We certify that:")
     lines.append("")
     lines.append("1. The BSD proof in opera-numerorum/proofs/ imports no code from")
-    lines.append("   morningstar_spacecraft (MORNING_STAR_REPO/) or any spaceship tower.")
+    lines.append("   aureum (AUREUM_REPO/) or any Aureum tower.")
     lines.append("")
     lines.append("2. The constant M* = 4/55 is derived within proofs/ACT3/BSD_M22.lean")
     lines.append("   via the off_cliff_ratio definition (m22.out SHA 5a5a345f...) and")
-    lines.append("   is not copied from any morningstar_spacecraft file.")
+    lines.append("   is not copied from any aureum file.")
     lines.append("")
     lines.append("3. The BSD submission scope (proofs/) is SORRY: 0.")
-    lines.append("   MORNING_STAR_REPO/ contains 23 annotated sorry-fills in")
+    lines.append("   AUREUM_REPO/ contains 23 annotated sorry-fills in")
     lines.append("   BDP_PhaseReversal.lean (P vs NP Tower only). These are outside")
     lines.append("   the BSD proof chain and do not affect BSD logical independence.")
     lines.append("")
@@ -332,7 +332,7 @@ def section_declaration(lines, overall_pass):
     lines.append("   M4 (S14 primes), M5 (Bost sum), M6 (GRH X0(143)).")
     lines.append("")
     lines.append("Therefore, the BSD rank submission is logically independent of the")
-    lines.append("morningstar_spacecraft repository, including RH Tower, MS Tower, and")
+    lines.append("aureum repository, including RH Tower, MS Tower, and")
     lines.append("P vs NP Tower.")
     lines.append("")
     lines.append(f"OVERALL STATUS: {'PASS' if overall_pass else 'PASS WITH FINDINGS'}")
@@ -446,7 +446,7 @@ def main():
         f"  Date: {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}",
         "  Repositories Audited:",
         "    opera-numerorum  [PUBLIC]  ./  (this workspace)",
-        "    morningstar_spacecraft  [PRIVATE]  ./MORNING_STAR_REPO/",
+        "    aureum  [PRIVATE]  ./AUREUM_REPO/",
         f"  CLAY Seal: {CLAY_SEAL}",
         SEP, "",
     ]

@@ -1,8 +1,0 @@
-CLAY SEAL CERTIFICATE
-=====================
-File:    CLAY_SEALED.zip
-SHA256:  518144c8c37b3b7c48a1719924ab80b2ba03bec594923811148eb2b31e3881e1
-Date:    2026-06-06
-Status:  READ-ONLY — do not modify
-Content: BDP_PhaseReversal.lean + m1-m7.out + bdp1-4.out + verify_all.sh
-M7 manifest (cat m1..m6.out): 5b80b84d1d3d13e216eeecd8155c1edc854d578e7d2dae9c4bc72fcbf7ebe3c9

@@ -34,6 +34,39 @@ Short-SHA fields produce WARN rather than FAIL so the validator still exits
 A null value for causal_parent_sha is accepted because some modules have
 no causal parent.
 
+----------------------------------------------------------------------------
+FIXTURE CONTRACT  (enforced at import time -- see EXEMPTIONS_FIXTURES below)
+----------------------------------------------------------------------------
+
+Every entry in EXEMPTIONS must have a parallel entry in EXEMPTIONS_FIXTURES
+supplying a representative sample value.  EXEMPTIONS_FIXTURES mirrors the
+two-category layout of EXEMPTIONS exactly:
+
+  EXEMPTIONS_FIXTURES["free_text"][key]      -- any non-SHA string sample
+  EXEMPTIONS_FIXTURES["short_sha"][dot_path] -- a valid short hex string of
+                                                length >= lo for that path
+
+Why: fixtures let _self_test() exercise the real validator logic against a
+known-good value, ensuring the behavioural tests stay in sync with the
+registered exemptions.  Without a fixture, the test can only verify that the
+entry exists, not that the validator handles it correctly.
+
+Enforcement: a module-level guard (_check_fixture_coverage) runs at import
+time and raises RuntimeError if any EXEMPTIONS entry has no fixture.  This
+makes it structurally impossible to add a new EXEMPTIONS entry without also
+providing the matching fixture -- the module will refuse to import.
+
+To add a new annotation field:
+  1. Append to EXEMPTIONS["free_text"]           -- key name -> reason string
+  2. Append to EXEMPTIONS_FIXTURES["free_text"]  -- key name -> sample string
+
+To add a new short-SHA path:
+  1. Append to EXEMPTIONS["short_sha"]           -- dot_path -> (lo, hi, reason)
+  2. Append to EXEMPTIONS_FIXTURES["short_sha"]  -- dot_path -> valid hex string
+                                                    of length >= lo
+
+No other code change is required.
+
 Usage:
     python3 certificates/validate_invariants.py                   # default path
     python3 certificates/validate_invariants.py /path/to/file     # explicit path
@@ -100,6 +133,55 @@ EXEMPTIONS: dict[str, dict] = {
         ),
     },
 }
+
+# ---------------------------------------------------------------------------
+# EXEMPTIONS_FIXTURES -- sample values that exercise each EXEMPTIONS entry.
+#
+# Every entry in EXEMPTIONS must have a matching entry here.  The import-time
+# guard below (_check_fixture_coverage) enforces this: if you add to EXEMPTIONS
+# without adding here, the module will raise RuntimeError on import.
+#
+# "free_text" fixtures: any non-SHA string that represents a realistic value.
+# "short_sha" fixtures: a valid lowercase hex string of length >= lo for that
+#                       path (lo comes from the EXEMPTIONS["short_sha"] tuple).
+# ---------------------------------------------------------------------------
+EXEMPTIONS_FIXTURES: dict[str, dict] = {
+    "free_text": {
+        "sha256_prefix":          "a1b2c3d4",
+        "sha256_pdf_note":        "rebuilt 2026-05-21 after M5 correction",
+        "sha256_bands_json_note": "bands JSON regenerated after sieve extension",
+    },
+    "short_sha": {
+        "lean_chain_TheoremaAureum143.critical_fix.backing_sha": "a1b2c3d",
+        "addendum_A1.lean_chain.C01_sha":                        "a1b2c3d",
+        "addendum_A1.lean_chain.C07_sha":                        "a1b2c3d",
+    },
+}
+
+
+def _check_fixture_coverage() -> None:
+    """Raise RuntimeError if any EXEMPTIONS entry lacks a fixture.
+
+    Called once at module import time so that adding to EXEMPTIONS without
+    also adding to EXEMPTIONS_FIXTURES is structurally impossible: the module
+    refuses to import until both dictionaries are in sync.
+    """
+    missing: list[str] = []
+    for ft_key in EXEMPTIONS["free_text"]:
+        if ft_key not in EXEMPTIONS_FIXTURES["free_text"]:
+            missing.append(f"free_text[{ft_key!r}]")
+    for ss_path in EXEMPTIONS["short_sha"]:
+        if ss_path not in EXEMPTIONS_FIXTURES["short_sha"]:
+            missing.append(f"short_sha[{ss_path!r}]")
+    if missing:
+        raise RuntimeError(
+            "EXEMPTIONS_FIXTURES is incomplete -- add a sample value for each "
+            "missing entry before using validate_invariants.py:\n  "
+            + "\n  ".join(missing)
+        )
+
+
+_check_fixture_coverage()
 
 # Derived lookups (do not edit these -- edit EXEMPTIONS above)
 _EXEMPT_KEYS: set[str] = set(EXEMPTIONS["free_text"])
@@ -263,11 +345,16 @@ def _self_test() -> None:
     """Regression tests for EXEMPTIONS logic.  Run via --self-test.
 
     Coverage:
-      - Every free_text key: validator must silently skip it (no error, no warning).
-      - Every short_sha path:
-          * A valid hex string of length lo  -> WARN (not ERROR).
-          * A non-hex / too-short string     -> ERROR.
-          * The same key name at an unregistered path -> ERROR (full 64-char rule).
+      0. Fixture-coverage check: every EXEMPTIONS entry has a fixture in
+         EXEMPTIONS_FIXTURES.  This runs first; a missing fixture is a FAIL
+         before any behavioural check executes.
+      1. Every free_text key: validator must silently skip it (no error, no
+         warning).  Sample value comes from EXEMPTIONS_FIXTURES["free_text"].
+      2. Every short_sha path:
+           * The fixture value (valid hex of length >= lo) -> WARN (not ERROR).
+           * A non-hex / too-short string                  -> ERROR.
+           * The same key name at an unregistered path     -> ERROR (full 64-char
+             rule applies outside the registered path).
     """
     errors: list = []
     warnings: list = []
@@ -290,12 +377,31 @@ def _self_test() -> None:
         print(msg)
 
     # -----------------------------------------------------------------------
-    # free_text tests: every registered key must be silently skipped
+    # 0. Fixture coverage check -- must pass before behavioural tests run
+    # -----------------------------------------------------------------------
+    print("fixture coverage check:")
+    missing_fixtures: list[str] = []
+    for ft_key in EXEMPTIONS["free_text"]:
+        if ft_key not in EXEMPTIONS_FIXTURES["free_text"]:
+            missing_fixtures.append(f"free_text[{ft_key!r}]")
+    for ss_path in EXEMPTIONS["short_sha"]:
+        if ss_path not in EXEMPTIONS_FIXTURES["short_sha"]:
+            missing_fixtures.append(f"short_sha[{ss_path!r}]")
+    if missing_fixtures:
+        for entry in missing_fixtures:
+            _fail(f"fixture coverage: {entry}", "missing from EXEMPTIONS_FIXTURES")
+    else:
+        _ok(f"all {len(EXEMPTIONS['free_text'])} free_text + "
+            f"{len(EXEMPTIONS['short_sha'])} short_sha entries have fixtures")
+
+    # -----------------------------------------------------------------------
+    # 1. free_text tests: every registered key must be silently skipped
     # -----------------------------------------------------------------------
     print(f"free_text tests ({len(EXEMPTIONS['free_text'])} key(s)):")
-    for ft_key, ft_reason in EXEMPTIONS["free_text"].items():
+    for ft_key in EXEMPTIONS["free_text"]:
         errors.clear(); warnings.clear(); skipped.clear()
-        _check_sha_field(ft_key, "some human note here",
+        sample_val = EXEMPTIONS_FIXTURES["free_text"].get(ft_key, "fixture-missing")
+        _check_sha_field(ft_key, sample_val,
                          f"module_x.{ft_key}", errors, warnings, skipped)
         label = f"free_text[{ft_key!r}]"
         if errors:
@@ -308,17 +414,17 @@ def _self_test() -> None:
             _ok(label)
 
     # -----------------------------------------------------------------------
-    # short_sha tests: every registered path gets three sub-tests
+    # 2. short_sha tests: every registered path gets three sub-tests
     # -----------------------------------------------------------------------
     print(f"short_sha tests ({len(EXEMPTIONS['short_sha'])} path(s)):")
     for reg_path, (lo, hi, _reason) in EXEMPTIONS["short_sha"].items():
         key = reg_path.split(".")[-1]
 
-        # (a) Valid short hex at the registered path -> WARN, no ERROR
+        # (a) Fixture value at the registered path -> WARN, no ERROR
         errors.clear(); warnings.clear(); skipped.clear()
-        good_val = "a" * lo
+        good_val = EXEMPTIONS_FIXTURES["short_sha"].get(reg_path, "a" * lo)
         _check_sha_field(key, good_val, reg_path, errors, warnings, skipped)
-        label_a = f"short_sha[{reg_path!r}] valid-value -> WARN"
+        label_a = f"short_sha[{reg_path!r}] fixture-value -> WARN"
         if errors:
             _fail(label_a, f"produced error(s): {errors}")
         elif len(warnings) != 1:

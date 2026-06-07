@@ -32,6 +32,39 @@ echo "=== invariants.json SHA pre-flight ==="
 python3 certificates/check_invariants.py
 echo ""
 
+# --- Step 3.5: Stale .out pre-flight -- warn if source is newer than .out ---
+# Non-fatal: prints a warning and suggests re-running the module.
+# The hard SHA gate in Step 4 is the definitive stop.
+echo "=== Stale .out pre-flight (mtime check) ==="
+declare -A SOURCE_MAP
+SOURCE_MAP["m1.out"]="certificates/alpha0.py"
+SOURCE_MAP["m2.out"]="bin/print_kappa.c"
+SOURCE_MAP["m3.out"]="cf_pi10.py"
+SOURCE_MAP["m4.out"]="verify/bound_10_4000.py"
+SOURCE_MAP["m5.out"]="arb_bost.py"
+SOURCE_MAP["m6.out"]="x0_143.py"
+
+STALE_FOUND=0
+for out_file in m1.out m2.out m3.out m4.out m5.out m6.out; do
+  src="${SOURCE_MAP[$out_file]}"
+  if [ ! -f "$out_file" ]; then
+    echo "  WARNING: $out_file does not exist -- re-run its source module."
+    STALE_FOUND=1
+  elif [ ! -f "$src" ]; then
+    echo "  WARNING: source $src not found -- cannot check staleness of $out_file."
+  elif [ "$src" -nt "$out_file" ]; then
+    echo "  WARNING: $src is newer than $out_file -- $out_file may be stale."
+    echo "           Re-run: python3 $src > $out_file  (or the appropriate module command)"
+    STALE_FOUND=1
+  else
+    echo "  OK: $out_file is up-to-date relative to $src"
+  fi
+done
+if [ "$STALE_FOUND" -eq 0 ]; then
+  echo "  All .out files are current."
+fi
+echo ""
+
 # --- Step 4: Dynamic SHA verification for M1-M6 stdout files ---
 # Reads sha256_stdout for each module directly from invariants.json
 # (the single source of truth) instead of a hardcoded table.

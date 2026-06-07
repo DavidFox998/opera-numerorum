@@ -431,3 +431,87 @@ id = "-7pKhNP7_aaRJ-tJRpk6k"
 uri = "file://certificates/Module_24_Certificate.pdf"
 type = "pdf"
 title = "Module 24 Certificate — H4 Refraction Map"
+
+[[outputs]]
+id = "OIDVz2ZKOIiIfJKwOg19b"
+uri = "file://certificates/Bands_269_Certificate.pdf"
+type = "pdf"
+title = "Bands_269_Certificate — S(2pi/7) Rake v1.6, C07 Fix, Two Certified Bands"
+
+[[outputs]]
+id = "WaM5g5extgf2h1UHZxvnU"
+uri = "file://certificates/MASTER_INDEX.pdf"
+type = "pdf"
+title = "Master Index — 88 PDFs, 627 pages, Math vs Engineering split"
+
+[[outputs]]
+id = "w1EJqyMzqbwRfIqkYWJgi"
+uri = "file://certificates/MASTER_INDEX.txt"
+type = "text"
+title = "Master Index (plain text version)"
+
+[[outputs]]
+id = "LtE9Q60i3X5Yj5-nZZAWD"
+uri = "file://certificates/Field_Report_1pp.pdf"
+type = "pdf"
+title = "Field Report — 1-up layout (~170 pages, June 5)"
+
+[[outputs]]
+id = "n0KaMvg8H6Zffa8hBGp8M"
+uri = "file://certificates/Field_Report_2pp.pdf"
+type = "pdf"
+title = "Field Report — 2-up layout (~85 pages, June 5)"
+
+[[outputs]]
+id = "fDGACeiLWdgYttNXSmL29"
+uri = "file://certificates/Field_Report_Morningstar.pdf"
+type = "pdf"
+title = "Field Report — Morningstar (June 4 build)"
+
+[[outputs]]
+id = "dw6gQvvrP-0YTSPCrB8o_"
+uri = "file://certificates/MorningStar_Engineering_Spec_V1.pdf"
+type = "pdf"
+title = "Morningstar Engineering Specification V1 — 113 Control Modules"
+
+[[outputs]]
+id = "KAemLpeP5RAb8nu5erReu"
+uri = "file://certificates/MorningStar_Engineering_Spec_V2.pdf"
+type = "pdf"
+title = "Morningstar Engineering Spec V2"
+
+[[outputs]]
+id = "8Z46gCNc1cFl7Tm_rpxgx"
+uri = "file://certificates/Morningstar_Feasibility_Study.pdf"
+type = "pdf"
+title = "Morningstar Executive Brief (Feasibility Study)"
+
+[[outputs]]
+id = "G8E_fbIR9EfQ10h_YD69S"
+uri = "file://CERTIFICATION_REPORT.md"
+type = "text"
+title = "Full Certification Report"
+
+[[outputs]]
+id = "1tC0a5FUn1i7dqZ2Ocv8u"
+uri = "file://certificates/Opera_Numerorum_Chain_Custody_2026_06_06.pdf"
+type = "pdf"
+title = "Opera Numerorum: Chain-of-Custody Statement"
+
+[[outputs]]
+id = "W6HaFK8hxoUVAkwGNi6JW"
+uri = "file://certificates/Lemma41_Descent_Certificate.pdf"
+type = "pdf"
+title = "Lemma 4.1 Descent Gap Certificate"
+
+[[outputs]]
+id = "KXumqOv9BCoquf4MMvH75"
+uri = "file://certificates/p6_bridge_certificate.pdf"
+type = "pdf"
+title = "p6 Bridge Certificate"
+
+[[outputs]]
+id = "W52aXtjcgndSHOwdeCXgF"
+uri = "file://M8G_COMSOL_Package.zip"
+type = "unspecified"
+title = "M8G_COMSOL_Package.zip"

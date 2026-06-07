@@ -1,0 +1,32 @@
+{
+  "assertions": {
+    "C_ratio_check": true,
+    "Delta_DS4_check": true,
+    "c_bound_check": true
+  },
+  "axiom_debt": [],
+  "certifications": {
+    "C_cliff_prediction": {
+      "C_0_pF": 29.17,
+      "C_cliff_pF": 166.98,
+      "C_ratio": 5.724374357216318
+    },
+    "Delta_DS4_Bost_Connes": {
+      "Delta_DS4": 23.79691,
+      "source": "M5/M8A S_4 sum"
+    },
+    "c_bound_M23": {
+      "c_bound": 299541524,
+      "formula": "Delta_DS * 10^7 * 180/143"
+    }
+  },
+  "depends_on": [
+    "M1",
+    "M4",
+    "M5",
+    "M8A",
+    "M8C"
+  ],
+  "module": "M8B",
+  "theorem": "M8B: Morning Star Cliff + Delta_DS^(4) + c_bound"
+}

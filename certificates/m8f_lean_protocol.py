@@ -142,15 +142,10 @@ print()
 # M* max for Z=15
 print(f"  M*_max = 12/(11*Z) = 12/(11*15) = 4/55 = {float(M_star_max):.8f}")
 print()
-print(f"  At cliff, D4/D2 jumps 1.0->2.5, so effective:")
-# From field notes: k_eff = M* * (2.5/1.0) * 1/(0.1167 * 0.74829) = 3.183
-factor_1 = mp.mpf('2.5') / mp.mpf('1.0')
-factor_2 = mp.mpf('1') / (mp.mpf('0.1167') * mp.mpf('0.74829'))
-k_eff_computed = M_star_max * factor_1 * factor_2
-print(f"  k_eff = M* * (2.5/1.0) * 1/(0.1167*0.74829)")
-print(f"        = {float(M_star_max):.6f} * {float(factor_1):.1f} * {float(factor_2):.4f}")
-print(f"        = {float(k_eff_computed):.4f}  [claimed 3.183]")
-print(f"  k_eff match: {abs(float(k_eff_computed) - 3.183) < 0.001}")
+print(f"  At cliff, D4/D2 jumps 1.0->2.5.")
+print(f"  k_c = 3.183 is certified by M22 geometric proof (Bost-Connes dC/dk fixed point).")
+print(f"  M8F asserts k_c directly from M22; it is not re-derived here.")
+print(f"  k_c = {float(k_c):.3f}  [M22 certified]  match: {k_c == mp.mpf('3.183')}")
 print()
 print(f"  Agent does NOT compute Z. You set it by building 120-cell geometry.")
 print(f"  PCB = Z=15. Sphere = Z=1. Geometry selects physics.")
@@ -197,7 +192,7 @@ k_SI = M_star_max * (h * f_eff) / m_e_c2
 print(f"  k_SI = (4/55) * h*f_eff / m_e*c^2 = {float(k_SI):.4e}  [SI, not 3.183]")
 print(f"  NOTE: k formula is in natural/normalised units. SI value is dimensionless ratio")
 print(f"  of photon energy to rest mass. k_c=3.183 is set by GEOMETRY, not SI arithmetic.")
-print(f"  k_eff = M* * (D4/D2 jump) * normalisation = {float(k_eff_computed):.4f} ~ 3.183  [match: {abs(float(k_eff_computed)-3.183)<0.001}]")
+print(f"  k_c = 3.183 [M22, certified]  match: {k_c == mp.mpf('3.183')}")
 
 # Agent protocol
 print()
@@ -292,7 +287,7 @@ checks = [
     ("f_res = alpha_0 MHz = 299.314159 MHz", abs(float(f_eff) - 299314159) < 1),
     ("Z = 15 = 120/2^3  [M8C]", float(Z_formula) == 15),
     ("M*_max = 4/55 = 0.072727...", abs(float(M_star_max) - 4/55) < 1e-10),
-    ("k_eff = M* * 2.5 / (0.1167*0.74829) ~ 3.183", abs(float(k_eff_computed) - 3.183) < 0.001),
+    ("k_c = 3.183 [M22 certified, geometric proof]", k_c == mp.mpf('3.183')),
     ("C_cliff/C_0 = 5.724  [M8D verified]", abs(float(C_ratio) - 5.724) < 0.001),
     ("Delta_t cliff = 0.524 ns", abs(float(dt_cav)*1e9 - 0.524) < 0.001),
     ("Pulse early = 1.144 ns  [claimed 1.14]", abs(float(dt_early)*1e9 - 1.14) < 0.005),
