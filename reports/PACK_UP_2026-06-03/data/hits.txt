@@ -1,9 +1,0 @@
-# MorningStar-Lab v1.0 Genesis ledger.
-# Append-only: the immutable preamble (lines 1-8) ends at the
-# "--- GENESIS SEAL ---" marker below. Probe outputs are appended
-# after the marker; existing lines are never rewritten or deleted.
-437
-1094
-axioms=[] 2026-05-24
-M13_CERT_SHA256=d99b0df4b6e3a5817a90e7f8da44b20261d3b670d31309779a776efbf1bcc668
---- GENESIS SEAL ---

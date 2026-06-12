@@ -414,3 +414,69 @@ id = "LmkxdyfSBAFSQ62w3Xzs-"
 uri = "file://reports/PDF_263_YM_Tower_Equation_Honest.pdf"
 type = "pdf"
 title = "PDF_263 — Yang–Mills Tower Equation Report (Honest, Complete Audit)"
+
+[[outputs]]
+id = "luoHfnAqAgIhvtJU6HHR0"
+uri = "file://FORENSIC_HANDOFF_2026-06-03.txt"
+type = "text"
+title = "Handoff — what's included/omitted, restore steps, absent items"
+
+[[outputs]]
+id = "566_YYHQSEWwSgTxvaD0x"
+uri = "file://FORENSIC_MANIFEST_2026-06-03.txt"
+type = "text"
+title = "Forensic manifest (161,605 files — every file on disk)"
+
+[[outputs]]
+id = "8vP-gUYahkKJxK__8jWl2"
+uri = "file://GIT_HISTORY_2026-06-03.txt"
+type = "text"
+title = "Git commit graph (2,943 lines)"
+
+[[outputs]]
+id = "ANPVp9OMJx6RefZZKjbQS"
+uri = "file://FORENSIC_MANIFEST_2026-06-03.txt.gz"
+type = "unspecified"
+title = "Forensic Manifest (gzipped, 4.5 MB) — 161,605 files"
+
+[[outputs]]
+id = "X91Ajxt_LKc4B2oOp4-5G"
+uri = "file://FORENSIC_MANIFEST_2026-06-03.zip"
+type = "unspecified"
+title = "Forensic Manifest (zip, ~4.3 MB)"
+
+[[outputs]]
+id = "eEFeZI0uArfVvLKttcun2"
+uri = "file://TheoremaAureum143_FULL_HISTORY_2026-06-03.zip"
+type = "unspecified"
+title = "S5 — full git-history bundle (605M)"
+
+[[outputs]]
+id = "sCnOmDCo6cNqw9PnVcZoz"
+uri = "file://TheoremaAureum143_CONTENT_2026-06-03.zip"
+type = "unspecified"
+title = "Repository Content (zip, ~2.46 GB)"
+
+[[outputs]]
+id = "Yj9TjdbqtT3G72icMCaBO"
+uri = "file://TheoremaAureum143_SECTIONS_INDEX_2026-06-03.txt"
+type = "text"
+title = "INDEX — sections, sizes, sha512, regeneration recipe"
+
+[[outputs]]
+id = "YdbzQnqnn5aoZ_pyR6aUd"
+uri = "file://TheoremaAureum143_S1_proof-source_2026-06-03.zip"
+type = "unspecified"
+title = "S1 — Lean proof source (original contribution, 754K)"
+
+[[outputs]]
+id = "OFEyqDE5PPGA3EzpdaLvD"
+uri = "file://TheoremaAureum143_S2_docs-provenance_2026-06-03.zip"
+type = "unspecified"
+title = "S2 — docs / provenance / honesty record (47M)"
+
+[[outputs]]
+id = "RodTwl9POo2FMNz5smRzg"
+uri = "file://TheoremaAureum143_S3_dashboard-tooling_2026-06-03.zip"
+type = "unspecified"
+title = "S3 — dashboard + verification tooling (817K)"

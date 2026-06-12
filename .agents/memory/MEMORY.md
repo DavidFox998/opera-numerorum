@@ -1,6 +1,7 @@
 - [SU(3) Haar instances (Lean4 mathlib v4.12.0)](su3-haar-instances.md) — what haarMeasure actually requires + how to make SU(3) compact when Matrix has no metric.
 - [Lean star vs starRingEnd rfl gap](lean-star-defeq.md) — `rw` can't bridge `star z` / `(starRingEnd ℂ) z`; finish with `exact` (defeq), not `rw`.
 - [Durable long-running commands](durable-long-commands.md) — bash-tool background procs die at the call's systemd-scope teardown (looks like OOM, isn't); run >2min commands as workflows.
+- [Large-archive / forensic dumps](large-archive-dumps.md) — multi-GB tar/bundle: resumable skip-if-complete script in a workflow + relaunch until a long window lands; poll only with clean ≤45s sleeps; exclude regenerable caches.
 - [towers-build merge churn](towers-build-merge-churn.md) — towers-build auto-restarts on merges + runs `lake update`: wipes the mathlib pin/oleans AND starves the dashboard e2e (contention, not regression).
 - [Headline theorems are True-stubs](headline-theorems-are-true-stubs.md) — RH main_theorem proves `def RiemannHypothesis := True`; axiom-clean is vacuous; never report this repo as proving RH or the YM mass gap.
 - [EuclideanSpace mathlib v4.12.0](euclideanspace-mathlib-v4_12.md) — volume import is Haar.InnerProductSpace (not Lebesgue.EuclideanSpace); build elts via WithLp.equiv.symm; prove subspace closure via inner_*_right, not component indexing.
